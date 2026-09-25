@@ -1,0 +1,17 @@
+{
+  "manifestVersion": 1,
+  "lang": "Python",
+  "label": "wefunder",
+  "sdkVersion": "0.1.0b0",
+  "apiVersion": "2025-01-15",
+  "generatedBy": "scripts/build_examples_manifest.py",
+  "samples": {
+    "createWebhookEndpoint": "endpoint = wf.webhook_endpoints.create(\n    url=\"https://yourapp.com/webhooks/wefunder\",  # public HTTPS; localhost / private IPs are rejected\n    events=[\"offering.opened\", \"investment.executed\"],\n    mode=\"live\",  # \"test\" endpoints receive sandbox events\n)\n# The signing secret is returned ONLY here and on rotate — store it now.\nsave_secret(endpoint.attributes.secret)",
+    "getCurrentUser": "me = wf.users.me()\nprint(me.id, me.attributes.name)",
+    "getOffering": "try:\n    offering = wf.offerings.get(offering_id)\nexcept WefunderError as err:\n    # 404 → err.type == \"not_found\"; err.request_id is what support asks for.\n    print(err.status, err.type, err.request_id)\n    raise\nprint(offering.attributes.company_name, offering.attributes.status)",
+    "guides/client-credentials": "wf = Wefunder.from_client_credentials(\n    client_id=os.environ[\"WEFUNDER_CLIENT_ID\"],\n    client_secret=os.environ[\"WEFUNDER_CLIENT_SECRET\"],\n    scopes=[\"read:public\"],\n)\n\nprint(\"mode:\", wf.mode)  # \"live\" or \"test\", from the token prefix\n\n# client_credentials holds only read:public — browse public offerings.\n# (wf.users.me() would raise 403 insufficient_scope: it needs read:profile.)\nfor offering in wf.offerings.all():\n    print(offering.id)",
+    "guides/webhook-receiver": "try:\n    event = construct_event(raw_body, headers, secret)\nexcept WebhookSignatureError as err:\n    return 400, err.reason  # not authentic — don't process\n\n# Acknowledge first, then do the work. Deliveries are at-least-once and unordered:\n# deduplicate on event.id and, where a payload has occurred_at, keep the latest state.\ndef record_funding(e: WebhookEvent) -> None:\n    print(\"funded\", e.data[\"id\"], e.data[\"amounts\"][\"committed\"])\n\ndispatch_webhook(\n    event,\n    {\n        \"investment.executed\": record_funding,\n        \"offering.opened\": lambda e: print(\"opened\", e.data[\"company\"][\"name\"]),\n        \"default\": lambda e: print(\"unhandled\", e.event),\n    },\n)",
+    "listInvestments": "# First sync: no cursor. Persist meta.next_cursor after EVERY page — it is always\n# present, even on the last one — and pass it back next time for only what changed.\npage = wf.investments.list(company_id=\"co_abc123Example\")\nfor record in page.data:\n    print(record.id, record.visible)\ncheckpoint = page.meta.next_cursor\n\n# Or let the SDK walk every page (stops on has_more=false):\nchanged = wf.investments.collect(company_id=\"co_abc123Example\", updated_since=\"2026-09-01T00:00:00Z\")",
+    "listOfferings": "# Browse live offerings, sorted. The cursor is opaque and handled for you.\npage = wf.offerings.list(sort=\"most_raised\")\nfor offering in page.data:\n    print(offering.id, offering.attributes.company_name)\n\n# Or stream every offering lazily, one page fetched at a time:\nfor offering in wf.offerings.all(sort=\"newest\"):\n    print(offering.id)"
+  }
+}

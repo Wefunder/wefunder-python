@@ -1,0 +1,6 @@
+# openapi-python-client config. `package_name_override` places the generated code as the
+# private subpackage `wefunder._generated` (never hand-edited; regenerate with
+# `python scripts/generate.py`). See scripts/generate.py for the exact invocation.
+package_name_override: _generated
+project_name_override: wefunder-generated
+use_path_prefixes_for_title_model_names: false

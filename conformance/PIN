@@ -1,0 +1,4 @@
+# Source of the vendored vectors: Wefunder/wefunder-node, conformance/*.json at this ref.
+# Refresh with:  python scripts/sync_conformance.py [ref]
+repo=Wefunder/wefunder-node
+ref=46934a2d5cac6cc2d359a475be6081e5d22bebeb

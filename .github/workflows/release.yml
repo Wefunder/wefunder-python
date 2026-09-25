@@ -1,0 +1,57 @@
+name: Release
+
+# Publishes to PyPI when a version tag is pushed. Release flow:
+#   edit src/wefunder/_version.py (PEP 440, e.g. 0.1.0b1) + regenerate examples_manifest.json
+#   git commit -am "0.1.0b1" && git tag v0.1.0b1 && git push --follow-tags
+#
+# Auth is PyPI TRUSTED PUBLISHING (OIDC) — no API token to store/rotate/leak. One-time
+# PyPI setup: project → Publishing → add GitHub publisher (owner Wefunder, repo
+# wefunder-python, workflow release.yml, environment pypi). Pre-releases (PEP 440
+# a/b/rc) are not what `pip install wefunder` resolves to, so the canonical pre-GA
+# install is `pip install --pre wefunder` (README says so).
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev]"
+      # Guard: the pushed tag must match the package version (v0.1.0b1 ⇄ 0.1.0b1).
+      - name: Verify tag matches package version
+        run: |
+          PKG=$(python -c "import wefunder; print(wefunder.__version__)")
+          TAG="${GITHUB_REF_NAME#v}"
+          if [ "$PKG" != "$TAG" ]; then
+            echo "::error::tag $GITHUB_REF_NAME ($TAG) != package version ($PKG)"
+            exit 1
+          fi
+      # The release gate: same checks as CI, then build sdist + wheel.
+      - run: ruff check src tests scripts examples && pyright && pytest
+      - run: python -m build
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist/
+
+  publish:
+    needs: build
+    runs-on: ubuntu-latest
+    environment: pypi
+    permissions:
+      id-token: write # OIDC: trusted publishing + attestations
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist/
+      - uses: pypa/gh-action-pypi-publish@release/v1
