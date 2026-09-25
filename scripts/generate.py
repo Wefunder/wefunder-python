@@ -3,8 +3,10 @@
 
 The generated layer is committed. CI's `generated-in-sync` job re-runs this and fails on
 any diff, so run it after `scripts/sync_spec.py` and commit both spec/ and _generated/.
-Requires the pinned openapi-python-client (see pyproject [dev]) and ruff on PATH — the
-generator formats its output with ruff, so a different ruff version changes the diff.
+Requires the pinned openapi-python-client and ruff (see pyproject [dev]). The generator's
+own PATH-dependent ruff hooks are disabled (openapi-python-client.yaml `post_hooks: []`);
+this script runs the same two ruff passes explicitly through the current interpreter, so
+local and CI output are byte-identical regardless of what is on PATH.
 """
 
 from __future__ import annotations
@@ -43,6 +45,11 @@ def main() -> int:
             print(line)
     if proc.returncode != 0:
         return proc.returncode
+    # Same passes the generator would run, but via this interpreter's pinned ruff.
+    subprocess.run(
+        [sys.executable, "-m", "ruff", "check", str(OUT), "--fix-only", "--extend-select=I", "-q"], cwd=ROOT, check=True
+    )
+    subprocess.run([sys.executable, "-m", "ruff", "format", str(OUT), "-q"], cwd=ROOT, check=True)
     (OUT / "py.typed").touch()
     ops = sum(1 for _ in (ROOT / "spec" / "openapi.yaml").read_text().splitlines() if "operationId:" in _)
     print(f"generated {OUT.relative_to(ROOT)} from spec/openapi.yaml ({ops} public operations)")

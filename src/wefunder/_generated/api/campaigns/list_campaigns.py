@@ -1,36 +1,25 @@
 from http import HTTPStatus
-from typing import Any, cast
-from urllib.parse import quote
+from typing import Any
 
 import httpx
 
-from ...client import AuthenticatedClient, Client
-from ...types import Response, UNSET
 from ... import errors
-
+from ...client import AuthenticatedClient, Client
 from ...models.campaign_list_envelope import CampaignListEnvelope
 from ...models.error import Error
-from ...types import UNSET, Unset
-from typing import cast
-
+from ...types import UNSET, Response, Unset
 
 
 def _get_kwargs(
     *,
     cursor: int | Unset = UNSET,
-
 ) -> dict[str, Any]:
-    
-
-    
 
     params: dict[str, Any] = {}
 
     params["cursor"] = cursor
 
-
     params = {k: v for k, v in params.items() if v is not UNSET and v is not None}
-
 
     _kwargs: dict[str, Any] = {
         "method": "get",
@@ -38,37 +27,29 @@ def _get_kwargs(
         "params": params,
     }
 
-
     return _kwargs
 
 
-
-def _parse_response(*, client: AuthenticatedClient | Client, response: httpx.Response) -> CampaignListEnvelope | Error | None:
+def _parse_response(
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> CampaignListEnvelope | Error | None:
     if response.status_code == 200:
         response_200 = CampaignListEnvelope.from_dict(response.json())
-
-
 
         return response_200
 
     if response.status_code == 401:
         response_401 = Error.from_dict(response.json())
 
-
-
         return response_401
 
     if response.status_code == 403:
         response_403 = Error.from_dict(response.json())
 
-
-
         return response_403
 
     if response.status_code == 429:
         response_429 = Error.from_dict(response.json())
-
-
 
         return response_429
 
@@ -78,7 +59,9 @@ def _parse_response(*, client: AuthenticatedClient | Client, response: httpx.Res
         return None
 
 
-def _build_response(*, client: AuthenticatedClient | Client, response: httpx.Response) -> Response[CampaignListEnvelope | Error]:
+def _build_response(
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Response[CampaignListEnvelope | Error]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -91,9 +74,8 @@ def sync_detailed(
     *,
     client: AuthenticatedClient,
     cursor: int | Unset = UNSET,
-
 ) -> Response[CampaignListEnvelope | Error]:
-    """ List founder campaigns
+    """List founder campaigns
 
      Retrieves all fundraising campaigns for companies where the authenticated user is a founder.
     This endpoint returns comprehensive campaign data including funding progress, investor counts,
@@ -117,12 +99,10 @@ def sync_detailed(
 
     Returns:
         Response[CampaignListEnvelope | Error]
-     """
-
+    """
 
     kwargs = _get_kwargs(
         cursor=cursor,
-
     )
 
     response = client.get_httpx_client().request(
@@ -131,13 +111,13 @@ def sync_detailed(
 
     return _build_response(client=client, response=response)
 
+
 def sync(
     *,
     client: AuthenticatedClient,
     cursor: int | Unset = UNSET,
-
 ) -> CampaignListEnvelope | Error | None:
-    """ List founder campaigns
+    """List founder campaigns
 
      Retrieves all fundraising campaigns for companies where the authenticated user is a founder.
     This endpoint returns comprehensive campaign data including funding progress, investor counts,
@@ -161,22 +141,20 @@ def sync(
 
     Returns:
         CampaignListEnvelope | Error
-     """
-
+    """
 
     return sync_detailed(
         client=client,
-cursor=cursor,
-
+        cursor=cursor,
     ).parsed
+
 
 async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
     cursor: int | Unset = UNSET,
-
 ) -> Response[CampaignListEnvelope | Error]:
-    """ List founder campaigns
+    """List founder campaigns
 
      Retrieves all fundraising campaigns for companies where the authenticated user is a founder.
     This endpoint returns comprehensive campaign data including funding progress, investor counts,
@@ -200,27 +178,23 @@ async def asyncio_detailed(
 
     Returns:
         Response[CampaignListEnvelope | Error]
-     """
-
+    """
 
     kwargs = _get_kwargs(
         cursor=cursor,
-
     )
 
-    response = await client.get_async_httpx_client().request(
-        **kwargs
-    )
+    response = await client.get_async_httpx_client().request(**kwargs)
 
     return _build_response(client=client, response=response)
+
 
 async def asyncio(
     *,
     client: AuthenticatedClient,
     cursor: int | Unset = UNSET,
-
 ) -> CampaignListEnvelope | Error | None:
-    """ List founder campaigns
+    """List founder campaigns
 
      Retrieves all fundraising campaigns for companies where the authenticated user is a founder.
     This endpoint returns comprehensive campaign data including funding progress, investor counts,
@@ -244,11 +218,11 @@ async def asyncio(
 
     Returns:
         CampaignListEnvelope | Error
-     """
+    """
 
-
-    return (await asyncio_detailed(
-        client=client,
-cursor=cursor,
-
-    )).parsed
+    return (
+        await asyncio_detailed(
+            client=client,
+            cursor=cursor,
+        )
+    ).parsed

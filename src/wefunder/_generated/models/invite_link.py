@@ -1,30 +1,23 @@
 from __future__ import annotations
 
 from collections.abc import Mapping
-from typing import Any, TypeVar, BinaryIO, TextIO, TYPE_CHECKING, Generator
+from typing import TYPE_CHECKING, Any, TypeVar
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
 from ..types import UNSET, Unset
 
-from ..types import UNSET, Unset
-from typing import cast
-
 if TYPE_CHECKING:
-  from ..models.invite_link_attributes import InviteLinkAttributes
-
-
-
+    from ..models.invite_link_attributes import InviteLinkAttributes
 
 
 T = TypeVar("T", bound="InviteLink")
 
 
-
 @_attrs_define
 class InviteLink:
-    """ A partner invite link. `id` is the link's `il_...` id (distinct from the URL
+    """A partner invite link. `id` is the link's `il_...` id (distinct from the URL
     access `token`, which lives only in `url`). Per-person (`reuse: false`)
     links carry the extra recipient + derived-status attributes below; reusable
     links omit them.
@@ -33,19 +26,14 @@ class InviteLink:
             id (str | Unset):  Example: il_aB3xQ9k2vF8mNp1zT5wY7Q.
             type_ (str | Unset):  Example: invite_link.
             attributes (InviteLinkAttributes | Unset):
-     """
+    """
 
     id: str | Unset = UNSET
     type_: str | Unset = UNSET
     attributes: InviteLinkAttributes | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
-
-
-
-
     def to_dict(self) -> dict[str, Any]:
-        from ..models.invite_link_attributes import InviteLinkAttributes # noqa: PLC0415
         id = self.id
 
         type_ = self.type_
@@ -54,11 +42,9 @@ class InviteLink:
         if not isinstance(self.attributes, Unset):
             attributes = self.attributes.to_dict()
 
-
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({
-        })
+        field_dict.update({})
         if id is not UNSET:
             field_dict["id"] = id
         if type_ is not UNSET:
@@ -68,11 +54,10 @@ class InviteLink:
 
         return field_dict
 
-
-
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
-        from ..models.invite_link_attributes import InviteLinkAttributes # noqa: PLC0415
+        from ..models.invite_link_attributes import InviteLinkAttributes  # noqa: PLC0415
+
         d = dict(src_dict)
         id = d.pop("id", UNSET)
 
@@ -80,20 +65,16 @@ class InviteLink:
 
         _attributes = d.pop("attributes", UNSET)
         attributes: InviteLinkAttributes | Unset
-        if isinstance(_attributes,  Unset):
+        if isinstance(_attributes, Unset):
             attributes = UNSET
         else:
             attributes = InviteLinkAttributes.from_dict(_attributes)
-
-
-
 
         invite_link = cls(
             id=id,
             type_=type_,
             attributes=attributes,
         )
-
 
         invite_link.additional_properties = d
         return invite_link

@@ -1,37 +1,28 @@
 from __future__ import annotations
 
+import datetime
 from collections.abc import Mapping
-from typing import Any, TypeVar, BinaryIO, TextIO, TYPE_CHECKING, Generator
+from typing import Any, TypeVar, cast
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
 from ..types import UNSET, Unset
 
-from ..types import UNSET, Unset
-from typing import cast
-import datetime
-
-
-
-
-
-
 T = TypeVar("T", bound="InvestorAttributes")
-
 
 
 @_attrs_define
 class InvestorAttributes:
-    """ 
-        Attributes:
-            full_name (None | str | Unset):  Example: Jane Investor.
-            email (None | str | Unset):  Example: investor@example.com.
-            accredited (bool | None | Unset):  Example: True.
-            total_invested_cents (int | Unset):  Example: 7500000.
-            investment_count (int | Unset):  Example: 2.
-            created_at (datetime.datetime | Unset):  Example: 2025-01-15T10:00:00Z.
-     """
+    """
+    Attributes:
+        full_name (None | str | Unset):  Example: Jane Investor.
+        email (None | str | Unset):  Example: investor@example.com.
+        accredited (bool | None | Unset):  Example: True.
+        total_invested_cents (int | Unset):  Example: 7500000.
+        investment_count (int | Unset):  Example: 2.
+        created_at (datetime.datetime | Unset):  Example: 2025-01-15T10:00:00Z.
+    """
 
     full_name: None | str | Unset = UNSET
     email: None | str | Unset = UNSET
@@ -40,10 +31,6 @@ class InvestorAttributes:
     investment_count: int | Unset = UNSET
     created_at: datetime.datetime | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
-
-
-
-
 
     def to_dict(self) -> dict[str, Any]:
         full_name: None | str | Unset
@@ -72,11 +59,9 @@ class InvestorAttributes:
         if not isinstance(self.created_at, Unset):
             created_at = self.created_at.isoformat()
 
-
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({
-        })
+        field_dict.update({})
         if full_name is not UNSET:
             field_dict["full_name"] = full_name
         if email is not UNSET:
@@ -92,11 +77,10 @@ class InvestorAttributes:
 
         return field_dict
 
-
-
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
+
         def _parse_full_name(data: object) -> None | str | Unset:
             if data is None:
                 return data
@@ -105,7 +89,6 @@ class InvestorAttributes:
             return cast(None | str | Unset, data)
 
         full_name = _parse_full_name(d.pop("full_name", UNSET))
-
 
         def _parse_email(data: object) -> None | str | Unset:
             if data is None:
@@ -116,7 +99,6 @@ class InvestorAttributes:
 
         email = _parse_email(d.pop("email", UNSET))
 
-
         def _parse_accredited(data: object) -> bool | None | Unset:
             if data is None:
                 return data
@@ -126,20 +108,16 @@ class InvestorAttributes:
 
         accredited = _parse_accredited(d.pop("accredited", UNSET))
 
-
         total_invested_cents = d.pop("total_invested_cents", UNSET)
 
         investment_count = d.pop("investment_count", UNSET)
 
         _created_at = d.pop("created_at", UNSET)
         created_at: datetime.datetime | Unset
-        if isinstance(_created_at,  Unset):
+        if isinstance(_created_at, Unset):
             created_at = UNSET
         else:
             created_at = datetime.datetime.fromisoformat(_created_at)
-
-
-
 
         investor_attributes = cls(
             full_name=full_name,
@@ -149,7 +127,6 @@ class InvestorAttributes:
             investment_count=investment_count,
             created_at=created_at,
         )
-
 
         investor_attributes.additional_properties = d
         return investor_attributes

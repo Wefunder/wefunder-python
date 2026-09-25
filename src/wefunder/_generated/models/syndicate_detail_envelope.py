@@ -1,77 +1,58 @@
 from __future__ import annotations
 
 from collections.abc import Mapping
-from typing import Any, TypeVar, BinaryIO, TextIO, TYPE_CHECKING, Generator
+from typing import TYPE_CHECKING, Any, TypeVar
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
 from ..types import UNSET, Unset
 
-from ..types import UNSET, Unset
-from typing import cast
-
 if TYPE_CHECKING:
-  from ..models.syndicate import Syndicate
-
-
-
+    from ..models.syndicate import Syndicate
 
 
 T = TypeVar("T", bound="SyndicateDetailEnvelope")
 
 
-
 @_attrs_define
 class SyndicateDetailEnvelope:
-    """ 
-        Attributes:
-            data (Syndicate | Unset): JSON:API resource representing a syndicate
-     """
+    """
+    Attributes:
+        data (Syndicate | Unset): JSON:API resource representing a syndicate
+    """
 
     data: Syndicate | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
-
-
-
-
     def to_dict(self) -> dict[str, Any]:
-        from ..models.syndicate import Syndicate # noqa: PLC0415
         data: dict[str, Any] | Unset = UNSET
         if not isinstance(self.data, Unset):
             data = self.data.to_dict()
 
-
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({
-        })
+        field_dict.update({})
         if data is not UNSET:
             field_dict["data"] = data
 
         return field_dict
 
-
-
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
-        from ..models.syndicate import Syndicate # noqa: PLC0415
+        from ..models.syndicate import Syndicate  # noqa: PLC0415
+
         d = dict(src_dict)
         _data = d.pop("data", UNSET)
         data: Syndicate | Unset
-        if isinstance(_data,  Unset):
+        if isinstance(_data, Unset):
             data = UNSET
         else:
             data = Syndicate.from_dict(_data)
 
-
-
-
         syndicate_detail_envelope = cls(
             data=data,
         )
-
 
         syndicate_detail_envelope.additional_properties = d
         return syndicate_detail_envelope

@@ -1,5 +1,6 @@
 from enum import StrEnum
 
+
 class WebhookEndpointTestResultEnvelopeDataErrorType3Type1(StrEnum):
     BLOCKED_URL = "blocked_url"
     CONNECTION_FAILED = "connection_failed"

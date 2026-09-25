@@ -1,5 +1,6 @@
 from enum import StrEnum
 
+
 class SecuritySummaryType(StrEnum):
     CONVERTIBLE_NOTE = "convertible_note"
     DEBT = "debt"

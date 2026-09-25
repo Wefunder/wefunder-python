@@ -1,5 +1,6 @@
 from enum import StrEnum
 
+
 class AttributedInvestmentListEnvelopeMetaDetailLevel(StrEnum):
     ANONYMIZED = "anonymized"
     FULL = "full"

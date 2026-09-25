@@ -1,46 +1,37 @@
 from __future__ import annotations
 
+import datetime
 from collections.abc import Mapping
-from typing import Any, TypeVar, BinaryIO, TextIO, TYPE_CHECKING, Generator
+from typing import Any, TypeVar, cast
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
-from ..types import UNSET, Unset
-
 from ..models.partner_invite_direction import PartnerInviteDirection
 from ..models.partner_invite_status import PartnerInviteStatus
 from ..types import UNSET, Unset
-from typing import cast
-import datetime
-
-
-
-
-
 
 T = TypeVar("T", bound="PartnerInvite")
 
 
-
 @_attrs_define
 class PartnerInvite:
-    """ An invite to establish a partner-company connection
+    """An invite to establish a partner-company connection
 
-        Attributes:
-            id (int | Unset):  Example: 123.
-            token (str | Unset): Unique invite token (use in accept URL) Example: abc123xyz789.
-            direction (PartnerInviteDirection | Unset): Who initiated the invite Example: partner_to_founder.
-            status (PartnerInviteStatus | Unset):  Example: pending.
-            access_level (int | Unset): Access level granted on acceptance (1=anonymized, 2=detailed) Example: 1.
-            company_id (int | None | Unset): Target company (null for partner_to_founder until accepted) Example: 789.
-            company_name (None | str | Unset):  Example: My Startup Inc..
-            partner_email (None | str | Unset): Partner email (for founder_to_partner invites) Example: partner@agency.com.
-            expires_at (datetime.datetime | Unset):  Example: 2025-04-15T10:30:00Z.
-            created_at (datetime.datetime | Unset):  Example: 2025-03-15T10:30:00Z.
-            accept_url (str | Unset): URL to accept the invite Example:
-                https://wefunder.com/attribution/invites/abc123xyz789.
-     """
+    Attributes:
+        id (int | Unset):  Example: 123.
+        token (str | Unset): Unique invite token (use in accept URL) Example: abc123xyz789.
+        direction (PartnerInviteDirection | Unset): Who initiated the invite Example: partner_to_founder.
+        status (PartnerInviteStatus | Unset):  Example: pending.
+        access_level (int | Unset): Access level granted on acceptance (1=anonymized, 2=detailed) Example: 1.
+        company_id (int | None | Unset): Target company (null for partner_to_founder until accepted) Example: 789.
+        company_name (None | str | Unset):  Example: My Startup Inc..
+        partner_email (None | str | Unset): Partner email (for founder_to_partner invites) Example: partner@agency.com.
+        expires_at (datetime.datetime | Unset):  Example: 2025-04-15T10:30:00Z.
+        created_at (datetime.datetime | Unset):  Example: 2025-03-15T10:30:00Z.
+        accept_url (str | Unset): URL to accept the invite Example:
+            https://wefunder.com/attribution/invites/abc123xyz789.
+    """
 
     id: int | Unset = UNSET
     token: str | Unset = UNSET
@@ -55,10 +46,6 @@ class PartnerInvite:
     accept_url: str | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
-
-
-
-
     def to_dict(self) -> dict[str, Any]:
         id = self.id
 
@@ -68,11 +55,9 @@ class PartnerInvite:
         if not isinstance(self.direction, Unset):
             direction = self.direction.value
 
-
         status: str | Unset = UNSET
         if not isinstance(self.status, Unset):
             status = self.status.value
-
 
         access_level = self.access_level
 
@@ -104,11 +89,9 @@ class PartnerInvite:
 
         accept_url = self.accept_url
 
-
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({
-        })
+        field_dict.update({})
         if id is not UNSET:
             field_dict["id"] = id
         if token is not UNSET:
@@ -134,8 +117,6 @@ class PartnerInvite:
 
         return field_dict
 
-
-
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
@@ -145,23 +126,17 @@ class PartnerInvite:
 
         _direction = d.pop("direction", UNSET)
         direction: PartnerInviteDirection | Unset
-        if isinstance(_direction,  Unset):
+        if isinstance(_direction, Unset):
             direction = UNSET
         else:
             direction = PartnerInviteDirection(_direction)
 
-
-
-
         _status = d.pop("status", UNSET)
         status: PartnerInviteStatus | Unset
-        if isinstance(_status,  Unset):
+        if isinstance(_status, Unset):
             status = UNSET
         else:
             status = PartnerInviteStatus(_status)
-
-
-
 
         access_level = d.pop("access_level", UNSET)
 
@@ -174,7 +149,6 @@ class PartnerInvite:
 
         company_id = _parse_company_id(d.pop("company_id", UNSET))
 
-
         def _parse_company_name(data: object) -> None | str | Unset:
             if data is None:
                 return data
@@ -183,7 +157,6 @@ class PartnerInvite:
             return cast(None | str | Unset, data)
 
         company_name = _parse_company_name(d.pop("company_name", UNSET))
-
 
         def _parse_partner_email(data: object) -> None | str | Unset:
             if data is None:
@@ -194,26 +167,19 @@ class PartnerInvite:
 
         partner_email = _parse_partner_email(d.pop("partner_email", UNSET))
 
-
         _expires_at = d.pop("expires_at", UNSET)
         expires_at: datetime.datetime | Unset
-        if isinstance(_expires_at,  Unset):
+        if isinstance(_expires_at, Unset):
             expires_at = UNSET
         else:
             expires_at = datetime.datetime.fromisoformat(_expires_at)
 
-
-
-
         _created_at = d.pop("created_at", UNSET)
         created_at: datetime.datetime | Unset
-        if isinstance(_created_at,  Unset):
+        if isinstance(_created_at, Unset):
             created_at = UNSET
         else:
             created_at = datetime.datetime.fromisoformat(_created_at)
-
-
-
 
         accept_url = d.pop("accept_url", UNSET)
 
@@ -230,7 +196,6 @@ class PartnerInvite:
             created_at=created_at,
             accept_url=accept_url,
         )
-
 
         partner_invite.additional_properties = d
         return partner_invite

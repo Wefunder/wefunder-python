@@ -1,19 +1,15 @@
 from http import HTTPStatus
-from typing import Any, cast
+from typing import Any
 from urllib.parse import quote
 
 import httpx
 
-from ...client import AuthenticatedClient, Client
-from ...types import Response, UNSET
 from ... import errors
-
+from ...client import AuthenticatedClient, Client
 from ...models.error import Error
 from ...models.get_syndicate_portfolio_status import GetSyndicatePortfolioStatus
 from ...models.syndicate_portfolio_summary_envelope import SyndicatePortfolioSummaryEnvelope
-from ...types import UNSET, Unset
-from typing import cast
-
+from ...types import UNSET, Response, Unset
 
 
 def _get_kwargs(
@@ -21,11 +17,7 @@ def _get_kwargs(
     *,
     status: GetSyndicatePortfolioStatus | Unset = UNSET,
     company: str | Unset = UNSET,
-
 ) -> dict[str, Any]:
-    
-
-    
 
     params: dict[str, Any] = {}
 
@@ -37,47 +29,39 @@ def _get_kwargs(
 
     params["company"] = company
 
-
     params = {k: v for k, v in params.items() if v is not UNSET and v is not None}
-
 
     _kwargs: dict[str, Any] = {
         "method": "get",
-        "url": "/syndicates/{syndicate_id}/portfolio".format(syndicate_id=quote(str(syndicate_id), safe=""),),
+        "url": "/syndicates/{syndicate_id}/portfolio".format(
+            syndicate_id=quote(str(syndicate_id), safe=""),
+        ),
         "params": params,
     }
-
 
     return _kwargs
 
 
-
-def _parse_response(*, client: AuthenticatedClient | Client, response: httpx.Response) -> Error | SyndicatePortfolioSummaryEnvelope | None:
+def _parse_response(
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Error | SyndicatePortfolioSummaryEnvelope | None:
     if response.status_code == 200:
         response_200 = SyndicatePortfolioSummaryEnvelope.from_dict(response.json())
-
-
 
         return response_200
 
     if response.status_code == 401:
         response_401 = Error.from_dict(response.json())
 
-
-
         return response_401
 
     if response.status_code == 403:
         response_403 = Error.from_dict(response.json())
 
-
-
         return response_403
 
     if response.status_code == 404:
         response_404 = Error.from_dict(response.json())
-
-
 
         return response_404
 
@@ -87,7 +71,9 @@ def _parse_response(*, client: AuthenticatedClient | Client, response: httpx.Res
         return None
 
 
-def _build_response(*, client: AuthenticatedClient | Client, response: httpx.Response) -> Response[Error | SyndicatePortfolioSummaryEnvelope]:
+def _build_response(
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Response[Error | SyndicatePortfolioSummaryEnvelope]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -102,9 +88,8 @@ def sync_detailed(
     client: AuthenticatedClient,
     status: GetSyndicatePortfolioStatus | Unset = UNSET,
     company: str | Unset = UNSET,
-
 ) -> Response[Error | SyndicatePortfolioSummaryEnvelope]:
-    """ Get syndicate portfolio summary
+    """Get syndicate portfolio summary
 
      Returns totals across the syndicate's portfolio: cost basis, current value,
     gains, per-status deal counts, and the number of distinct investors.
@@ -133,14 +118,12 @@ def sync_detailed(
 
     Returns:
         Response[Error | SyndicatePortfolioSummaryEnvelope]
-     """
-
+    """
 
     kwargs = _get_kwargs(
         syndicate_id=syndicate_id,
-status=status,
-company=company,
-
+        status=status,
+        company=company,
     )
 
     response = client.get_httpx_client().request(
@@ -149,15 +132,15 @@ company=company,
 
     return _build_response(client=client, response=response)
 
+
 def sync(
     syndicate_id: str,
     *,
     client: AuthenticatedClient,
     status: GetSyndicatePortfolioStatus | Unset = UNSET,
     company: str | Unset = UNSET,
-
 ) -> Error | SyndicatePortfolioSummaryEnvelope | None:
-    """ Get syndicate portfolio summary
+    """Get syndicate portfolio summary
 
      Returns totals across the syndicate's portfolio: cost basis, current value,
     gains, per-status deal counts, and the number of distinct investors.
@@ -186,16 +169,15 @@ def sync(
 
     Returns:
         Error | SyndicatePortfolioSummaryEnvelope
-     """
-
+    """
 
     return sync_detailed(
         syndicate_id=syndicate_id,
-client=client,
-status=status,
-company=company,
-
+        client=client,
+        status=status,
+        company=company,
     ).parsed
+
 
 async def asyncio_detailed(
     syndicate_id: str,
@@ -203,9 +185,8 @@ async def asyncio_detailed(
     client: AuthenticatedClient,
     status: GetSyndicatePortfolioStatus | Unset = UNSET,
     company: str | Unset = UNSET,
-
 ) -> Response[Error | SyndicatePortfolioSummaryEnvelope]:
-    """ Get syndicate portfolio summary
+    """Get syndicate portfolio summary
 
      Returns totals across the syndicate's portfolio: cost basis, current value,
     gains, per-status deal counts, and the number of distinct investors.
@@ -234,21 +215,18 @@ async def asyncio_detailed(
 
     Returns:
         Response[Error | SyndicatePortfolioSummaryEnvelope]
-     """
-
+    """
 
     kwargs = _get_kwargs(
         syndicate_id=syndicate_id,
-status=status,
-company=company,
-
+        status=status,
+        company=company,
     )
 
-    response = await client.get_async_httpx_client().request(
-        **kwargs
-    )
+    response = await client.get_async_httpx_client().request(**kwargs)
 
     return _build_response(client=client, response=response)
+
 
 async def asyncio(
     syndicate_id: str,
@@ -256,9 +234,8 @@ async def asyncio(
     client: AuthenticatedClient,
     status: GetSyndicatePortfolioStatus | Unset = UNSET,
     company: str | Unset = UNSET,
-
 ) -> Error | SyndicatePortfolioSummaryEnvelope | None:
-    """ Get syndicate portfolio summary
+    """Get syndicate portfolio summary
 
      Returns totals across the syndicate's portfolio: cost basis, current value,
     gains, per-status deal counts, and the number of distinct investors.
@@ -287,13 +264,13 @@ async def asyncio(
 
     Returns:
         Error | SyndicatePortfolioSummaryEnvelope
-     """
+    """
 
-
-    return (await asyncio_detailed(
-        syndicate_id=syndicate_id,
-client=client,
-status=status,
-company=company,
-
-    )).parsed
+    return (
+        await asyncio_detailed(
+            syndicate_id=syndicate_id,
+            client=client,
+            status=status,
+            company=company,
+        )
+    ).parsed

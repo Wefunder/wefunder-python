@@ -1,5 +1,6 @@
 from enum import StrEnum
 
+
 class OfferingAttributesStatus(StrEnum):
     CANCELED = "canceled"
     CLOSED = "closed"

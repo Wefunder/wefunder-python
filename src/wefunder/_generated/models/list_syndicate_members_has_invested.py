@@ -1,5 +1,6 @@
 from enum import StrEnum
 
+
 class ListSyndicateMembersHasInvested(StrEnum):
     FALSE = "false"
     TRUE = "true"

@@ -1,5 +1,6 @@
 from enum import StrEnum
 
+
 class WebhookSubscriptionEventsItem(StrEnum):
     INVESTMENT_APPLIED = "investment.applied"
     INVESTMENT_CANCELED = "investment.canceled"

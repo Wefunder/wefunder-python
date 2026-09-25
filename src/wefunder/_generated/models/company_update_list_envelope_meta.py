@@ -1,44 +1,31 @@
 from __future__ import annotations
 
 from collections.abc import Mapping
-from typing import Any, TypeVar, BinaryIO, TextIO, TYPE_CHECKING, Generator
+from typing import Any, TypeVar, cast
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
 from ..types import UNSET, Unset
 
-from ..types import UNSET, Unset
-from typing import cast
-
-
-
-
-
-
 T = TypeVar("T", bound="CompanyUpdateListEnvelopeMeta")
-
 
 
 @_attrs_define
 class CompanyUpdateListEnvelopeMeta:
-    """ 
-        Attributes:
-            company (str | Unset): The company's id (`co_...`).
-            has_more (bool | Unset):
-            page_count (int | Unset):
-            next_cursor (int | None | Unset):
-     """
+    """
+    Attributes:
+        company (str | Unset): The company's id (`co_...`).
+        has_more (bool | Unset):
+        page_count (int | Unset):
+        next_cursor (int | None | Unset):
+    """
 
     company: str | Unset = UNSET
     has_more: bool | Unset = UNSET
     page_count: int | Unset = UNSET
     next_cursor: int | None | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
-
-
-
-
 
     def to_dict(self) -> dict[str, Any]:
         company = self.company
@@ -53,11 +40,9 @@ class CompanyUpdateListEnvelopeMeta:
         else:
             next_cursor = self.next_cursor
 
-
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({
-        })
+        field_dict.update({})
         if company is not UNSET:
             field_dict["company"] = company
         if has_more is not UNSET:
@@ -68,8 +53,6 @@ class CompanyUpdateListEnvelopeMeta:
             field_dict["next_cursor"] = next_cursor
 
         return field_dict
-
-
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
@@ -89,14 +72,12 @@ class CompanyUpdateListEnvelopeMeta:
 
         next_cursor = _parse_next_cursor(d.pop("next_cursor", UNSET))
 
-
         company_update_list_envelope_meta = cls(
             company=company,
             has_more=has_more,
             page_count=page_count,
             next_cursor=next_cursor,
         )
-
 
         company_update_list_envelope_meta.additional_properties = d
         return company_update_list_envelope_meta

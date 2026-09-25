@@ -1,5 +1,6 @@
 from enum import StrEnum
 
+
 class CompanyPitchAttributesAuthoredBy(StrEnum):
     COMPANY = "company"
     WEFUNDER = "wefunder"

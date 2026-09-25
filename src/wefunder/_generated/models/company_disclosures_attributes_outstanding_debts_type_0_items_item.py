@@ -1,36 +1,27 @@
 from __future__ import annotations
 
+import datetime
 from collections.abc import Mapping
-from typing import Any, TypeVar, BinaryIO, TextIO, TYPE_CHECKING, Generator
+from typing import Any, TypeVar, cast
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
 from ..types import UNSET, Unset
 
-from ..types import UNSET, Unset
-from typing import cast
-import datetime
-
-
-
-
-
-
 T = TypeVar("T", bound="CompanyDisclosuresAttributesOutstandingDebtsType0ItemsItem")
-
 
 
 @_attrs_define
 class CompanyDisclosuresAttributesOutstandingDebtsType0ItemsItem:
-    """ 
-        Attributes:
-            original_amount (None | str | Unset):
-            outstanding_principal (None | str | Unset):
-            current_with_payments (bool | None | Unset):
-            maturity_date (datetime.date | None | Unset):
-            description (None | str | Unset):
-     """
+    """
+    Attributes:
+        original_amount (None | str | Unset):
+        outstanding_principal (None | str | Unset):
+        current_with_payments (bool | None | Unset):
+        maturity_date (datetime.date | None | Unset):
+        description (None | str | Unset):
+    """
 
     original_amount: None | str | Unset = UNSET
     outstanding_principal: None | str | Unset = UNSET
@@ -38,10 +29,6 @@ class CompanyDisclosuresAttributesOutstandingDebtsType0ItemsItem:
     maturity_date: datetime.date | None | Unset = UNSET
     description: None | str | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
-
-
-
-
 
     def to_dict(self) -> dict[str, Any]:
         original_amount: None | str | Unset
@@ -76,11 +63,9 @@ class CompanyDisclosuresAttributesOutstandingDebtsType0ItemsItem:
         else:
             description = self.description
 
-
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({
-        })
+        field_dict.update({})
         if original_amount is not UNSET:
             field_dict["original_amount"] = original_amount
         if outstanding_principal is not UNSET:
@@ -94,11 +79,10 @@ class CompanyDisclosuresAttributesOutstandingDebtsType0ItemsItem:
 
         return field_dict
 
-
-
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
+
         def _parse_original_amount(data: object) -> None | str | Unset:
             if data is None:
                 return data
@@ -107,7 +91,6 @@ class CompanyDisclosuresAttributesOutstandingDebtsType0ItemsItem:
             return cast(None | str | Unset, data)
 
         original_amount = _parse_original_amount(d.pop("original_amount", UNSET))
-
 
         def _parse_outstanding_principal(data: object) -> None | str | Unset:
             if data is None:
@@ -118,7 +101,6 @@ class CompanyDisclosuresAttributesOutstandingDebtsType0ItemsItem:
 
         outstanding_principal = _parse_outstanding_principal(d.pop("outstanding_principal", UNSET))
 
-
         def _parse_current_with_payments(data: object) -> bool | None | Unset:
             if data is None:
                 return data
@@ -127,7 +109,6 @@ class CompanyDisclosuresAttributesOutstandingDebtsType0ItemsItem:
             return cast(bool | None | Unset, data)
 
         current_with_payments = _parse_current_with_payments(d.pop("current_with_payments", UNSET))
-
 
         def _parse_maturity_date(data: object) -> datetime.date | None | Unset:
             if data is None:
@@ -139,15 +120,12 @@ class CompanyDisclosuresAttributesOutstandingDebtsType0ItemsItem:
                     raise TypeError()
                 maturity_date_type_0 = datetime.date.fromisoformat(data)
 
-
-
                 return maturity_date_type_0
             except (TypeError, ValueError, AttributeError, KeyError):
                 pass
             return cast(datetime.date | None | Unset, data)
 
         maturity_date = _parse_maturity_date(d.pop("maturity_date", UNSET))
-
 
         def _parse_description(data: object) -> None | str | Unset:
             if data is None:
@@ -158,7 +136,6 @@ class CompanyDisclosuresAttributesOutstandingDebtsType0ItemsItem:
 
         description = _parse_description(d.pop("description", UNSET))
 
-
         company_disclosures_attributes_outstanding_debts_type_0_items_item = cls(
             original_amount=original_amount,
             outstanding_principal=outstanding_principal,
@@ -166,7 +143,6 @@ class CompanyDisclosuresAttributesOutstandingDebtsType0ItemsItem:
             maturity_date=maturity_date,
             description=description,
         )
-
 
         company_disclosures_attributes_outstanding_debts_type_0_items_item.additional_properties = d
         return company_disclosures_attributes_outstanding_debts_type_0_items_item

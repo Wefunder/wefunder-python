@@ -1,47 +1,34 @@
 from __future__ import annotations
 
 from collections.abc import Mapping
-from typing import Any, TypeVar, BinaryIO, TextIO, TYPE_CHECKING, Generator
+from typing import TYPE_CHECKING, Any, TypeVar
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
 from ..types import UNSET, Unset
 
-from ..types import UNSET, Unset
-from typing import cast
-
 if TYPE_CHECKING:
-  from ..models.offering_stats_envelope_data import OfferingStatsEnvelopeData
-  from ..models.offering_stats_envelope_meta import OfferingStatsEnvelopeMeta
-
-
-
+    from ..models.offering_stats_envelope_data import OfferingStatsEnvelopeData
+    from ..models.offering_stats_envelope_meta import OfferingStatsEnvelopeMeta
 
 
 T = TypeVar("T", bound="OfferingStatsEnvelope")
 
 
-
 @_attrs_define
 class OfferingStatsEnvelope:
-    """ 
-        Attributes:
-            data (OfferingStatsEnvelopeData | Unset):
-            meta (OfferingStatsEnvelopeMeta | Unset):
-     """
+    """
+    Attributes:
+        data (OfferingStatsEnvelopeData | Unset):
+        meta (OfferingStatsEnvelopeMeta | Unset):
+    """
 
     data: OfferingStatsEnvelopeData | Unset = UNSET
     meta: OfferingStatsEnvelopeMeta | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
-
-
-
-
     def to_dict(self) -> dict[str, Any]:
-        from ..models.offering_stats_envelope_data import OfferingStatsEnvelopeData # noqa: PLC0415
-        from ..models.offering_stats_envelope_meta import OfferingStatsEnvelopeMeta # noqa: PLC0415
         data: dict[str, Any] | Unset = UNSET
         if not isinstance(self.data, Unset):
             data = self.data.to_dict()
@@ -50,11 +37,9 @@ class OfferingStatsEnvelope:
         if not isinstance(self.meta, Unset):
             meta = self.meta.to_dict()
 
-
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({
-        })
+        field_dict.update({})
         if data is not UNSET:
             field_dict["data"] = data
         if meta is not UNSET:
@@ -62,38 +47,30 @@ class OfferingStatsEnvelope:
 
         return field_dict
 
-
-
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
-        from ..models.offering_stats_envelope_data import OfferingStatsEnvelopeData # noqa: PLC0415
-        from ..models.offering_stats_envelope_meta import OfferingStatsEnvelopeMeta # noqa: PLC0415
+        from ..models.offering_stats_envelope_data import OfferingStatsEnvelopeData  # noqa: PLC0415
+        from ..models.offering_stats_envelope_meta import OfferingStatsEnvelopeMeta  # noqa: PLC0415
+
         d = dict(src_dict)
         _data = d.pop("data", UNSET)
         data: OfferingStatsEnvelopeData | Unset
-        if isinstance(_data,  Unset):
+        if isinstance(_data, Unset):
             data = UNSET
         else:
             data = OfferingStatsEnvelopeData.from_dict(_data)
 
-
-
-
         _meta = d.pop("meta", UNSET)
         meta: OfferingStatsEnvelopeMeta | Unset
-        if isinstance(_meta,  Unset):
+        if isinstance(_meta, Unset):
             meta = UNSET
         else:
             meta = OfferingStatsEnvelopeMeta.from_dict(_meta)
-
-
-
 
         offering_stats_envelope = cls(
             data=data,
             meta=meta,
         )
-
 
         offering_stats_envelope.additional_properties = d
         return offering_stats_envelope

@@ -1,5 +1,6 @@
 from enum import StrEnum
 
+
 class SyndicateDealAttributesStatus(StrEnum):
     CANCELED = "canceled"
     CLOSED = "closed"

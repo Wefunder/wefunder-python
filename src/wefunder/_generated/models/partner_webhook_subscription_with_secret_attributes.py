@@ -1,54 +1,38 @@
 from __future__ import annotations
 
 from collections.abc import Mapping
-from typing import Any, TypeVar, BinaryIO, TextIO, TYPE_CHECKING, Generator
+from typing import Any, TypeVar
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
 from ..types import UNSET, Unset
 
-from ..types import UNSET, Unset
-
-
-
-
-
-
 T = TypeVar("T", bound="PartnerWebhookSubscriptionWithSecretAttributes")
-
 
 
 @_attrs_define
 class PartnerWebhookSubscriptionWithSecretAttributes:
-    """ 
-        Attributes:
-            secret (str | Unset): The signing secret, shown only once at creation. Used to verify the
-                `X-Wefunder-Signature` header on delivered events.
-                 Example: whsec_abc123def456.
-     """
+    """
+    Attributes:
+        secret (str | Unset): The signing secret, shown only once at creation. Used to verify the
+            `X-Wefunder-Signature` header on delivered events.
+             Example: whsec_abc123def456.
+    """
 
     secret: str | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
-
-
-
-
     def to_dict(self) -> dict[str, Any]:
         secret = self.secret
 
-
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({
-        })
+        field_dict.update({})
         if secret is not UNSET:
             field_dict["secret"] = secret
 
         return field_dict
-
-
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
@@ -58,7 +42,6 @@ class PartnerWebhookSubscriptionWithSecretAttributes:
         partner_webhook_subscription_with_secret_attributes = cls(
             secret=secret,
         )
-
 
         partner_webhook_subscription_with_secret_attributes.additional_properties = d
         return partner_webhook_subscription_with_secret_attributes

@@ -1,40 +1,27 @@
 from __future__ import annotations
 
 from collections.abc import Mapping
-from typing import Any, TypeVar, BinaryIO, TextIO, TYPE_CHECKING, Generator
+from typing import Any, TypeVar, cast
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
 from ..types import UNSET, Unset
 
-from ..types import UNSET, Unset
-from typing import cast
-
-
-
-
-
-
 T = TypeVar("T", bound="PerkTier")
-
 
 
 @_attrs_define
 class PerkTier:
-    """ 
-        Attributes:
-            qualifying_amount (str | Unset): Investment that unlocks the tier, as a decimal string in `perks.currency`.
-            description (None | str | Unset): Plain text, the founder's own words.
-     """
+    """
+    Attributes:
+        qualifying_amount (str | Unset): Investment that unlocks the tier, as a decimal string in `perks.currency`.
+        description (None | str | Unset): Plain text, the founder's own words.
+    """
 
     qualifying_amount: str | Unset = UNSET
     description: None | str | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
-
-
-
-
 
     def to_dict(self) -> dict[str, Any]:
         qualifying_amount = self.qualifying_amount
@@ -45,19 +32,15 @@ class PerkTier:
         else:
             description = self.description
 
-
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({
-        })
+        field_dict.update({})
         if qualifying_amount is not UNSET:
             field_dict["qualifying_amount"] = qualifying_amount
         if description is not UNSET:
             field_dict["description"] = description
 
         return field_dict
-
-
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
@@ -73,12 +56,10 @@ class PerkTier:
 
         description = _parse_description(d.pop("description", UNSET))
 
-
         perk_tier = cls(
             qualifying_amount=qualifying_amount,
             description=description,
         )
-
 
         perk_tier.additional_properties = d
         return perk_tier

@@ -1,5 +1,6 @@
 from enum import StrEnum
 
+
 class CreateIntentBodyActionName(StrEnum):
     COMMENTS_CREATE = "comments.create"
     SYNDICATES_CLOSE_DEAL = "syndicates.close_deal"

@@ -1,43 +1,34 @@
 from __future__ import annotations
 
+import datetime
 from collections.abc import Mapping
-from typing import Any, TypeVar, BinaryIO, TextIO, TYPE_CHECKING, Generator
+from typing import Any, TypeVar, cast
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
-from ..types import UNSET, Unset
-
 from ..models.member_investment_attributes_status import MemberInvestmentAttributesStatus
 from ..types import UNSET, Unset
-from typing import cast
-import datetime
-
-
-
-
-
 
 T = TypeVar("T", bound="MemberInvestmentAttributes")
 
 
-
 @_attrs_define
 class MemberInvestmentAttributes:
-    """ 
-        Attributes:
-            fundraise_id (int | Unset): Internal integer id. Deprecated — use `offering` (`ofr_...`) instead. Example:
-                75496.
-            offering (None | str | Unset): The deal's id (`ofr_...`), accepted by the deal endpoints. Example:
-                ofr_8Kd0aB3xQ9k2vF8mNp1zT5wY.
-            company_name (None | str | Unset): Name of the company the deal is for Example: Substack.
-            amount (str | Unset): Investment amount in cents, as a string to avoid floating-point precision issues Example:
-                500000.
-            status (MemberInvestmentAttributesStatus | Unset): `confirmed` is final; `pending` is committed but not yet
-                final. Example: confirmed.
-            created_at (datetime.datetime | Unset): ISO 8601 timestamp when the investment was created Example:
-                2025-03-01T12:00:00Z.
-     """
+    """
+    Attributes:
+        fundraise_id (int | Unset): Internal integer id. Deprecated — use `offering` (`ofr_...`) instead. Example:
+            75496.
+        offering (None | str | Unset): The deal's id (`ofr_...`), accepted by the deal endpoints. Example:
+            ofr_8Kd0aB3xQ9k2vF8mNp1zT5wY.
+        company_name (None | str | Unset): Name of the company the deal is for Example: Substack.
+        amount (str | Unset): Investment amount in cents, as a string to avoid floating-point precision issues Example:
+            500000.
+        status (MemberInvestmentAttributesStatus | Unset): `confirmed` is final; `pending` is committed but not yet
+            final. Example: confirmed.
+        created_at (datetime.datetime | Unset): ISO 8601 timestamp when the investment was created Example:
+            2025-03-01T12:00:00Z.
+    """
 
     fundraise_id: int | Unset = UNSET
     offering: None | str | Unset = UNSET
@@ -46,10 +37,6 @@ class MemberInvestmentAttributes:
     status: MemberInvestmentAttributesStatus | Unset = UNSET
     created_at: datetime.datetime | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
-
-
-
-
 
     def to_dict(self) -> dict[str, Any]:
         fundraise_id = self.fundraise_id
@@ -72,16 +59,13 @@ class MemberInvestmentAttributes:
         if not isinstance(self.status, Unset):
             status = self.status.value
 
-
         created_at: str | Unset = UNSET
         if not isinstance(self.created_at, Unset):
             created_at = self.created_at.isoformat()
 
-
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({
-        })
+        field_dict.update({})
         if fundraise_id is not UNSET:
             field_dict["fundraise_id"] = fundraise_id
         if offering is not UNSET:
@@ -97,8 +81,6 @@ class MemberInvestmentAttributes:
 
         return field_dict
 
-
-
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
@@ -113,7 +95,6 @@ class MemberInvestmentAttributes:
 
         offering = _parse_offering(d.pop("offering", UNSET))
 
-
         def _parse_company_name(data: object) -> None | str | Unset:
             if data is None:
                 return data
@@ -123,28 +104,21 @@ class MemberInvestmentAttributes:
 
         company_name = _parse_company_name(d.pop("company_name", UNSET))
 
-
         amount = d.pop("amount", UNSET)
 
         _status = d.pop("status", UNSET)
         status: MemberInvestmentAttributesStatus | Unset
-        if isinstance(_status,  Unset):
+        if isinstance(_status, Unset):
             status = UNSET
         else:
             status = MemberInvestmentAttributesStatus(_status)
 
-
-
-
         _created_at = d.pop("created_at", UNSET)
         created_at: datetime.datetime | Unset
-        if isinstance(_created_at,  Unset):
+        if isinstance(_created_at, Unset):
             created_at = UNSET
         else:
             created_at = datetime.datetime.fromisoformat(_created_at)
-
-
-
 
         member_investment_attributes = cls(
             fundraise_id=fundraise_id,
@@ -154,7 +128,6 @@ class MemberInvestmentAttributes:
             status=status,
             created_at=created_at,
         )
-
 
         member_investment_attributes.additional_properties = d
         return member_investment_attributes

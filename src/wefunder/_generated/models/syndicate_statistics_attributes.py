@@ -1,44 +1,37 @@
 from __future__ import annotations
 
 from collections.abc import Mapping
-from typing import Any, TypeVar, BinaryIO, TextIO, TYPE_CHECKING, Generator
+from typing import TYPE_CHECKING, Any, TypeVar
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
 from ..types import UNSET, Unset
 
-from ..types import UNSET, Unset
-from typing import cast
-
 if TYPE_CHECKING:
-  from ..models.syndicate_statistics_attributes_members_by_role import SyndicateStatisticsAttributesMembersByRole
-
-
-
+    from ..models.syndicate_statistics_attributes_members_by_role import SyndicateStatisticsAttributesMembersByRole
 
 
 T = TypeVar("T", bound="SyndicateStatisticsAttributes")
 
 
-
 @_attrs_define
 class SyndicateStatisticsAttributes:
-    """ 
-        Attributes:
-            total_members (int | Unset): Count of active members (excludes resigned and exiled, filters out soft-deleted and
-                hellbanned users) Example: 45.
-            members_by_role (SyndicateStatisticsAttributesMembersByRole | Unset): Member count grouped by role Example:
-                {'manager': 3, 'member': 35, 'invitee': 5, 'creator': 1, 'applicant': 1}.
-            total_deals (int | Unset): Total number of linked deals (all linked fundraises) Example: 3.
-            live_deals (int | Unset): Number of currently live deals (open/oversubscribed/closing states) Example: 1.
-            total_raised (str | Unset): Total amount raised across directory-selected deals (one per company), in cents.
-                String to avoid floating-point precision issues.
-                 Example: 10780000.
-            total_investors (int | Unset): Count of distinct investors across directory-selected deals (one per company)
-                Example: 6527.
-            recent_activity_count (int | Unset): Count of audit events in the last 30 days for this syndicate Example: 4.
-     """
+    """
+    Attributes:
+        total_members (int | Unset): Count of active members (excludes resigned and exiled, filters out soft-deleted and
+            hellbanned users) Example: 45.
+        members_by_role (SyndicateStatisticsAttributesMembersByRole | Unset): Member count grouped by role Example:
+            {'manager': 3, 'member': 35, 'invitee': 5, 'creator': 1, 'applicant': 1}.
+        total_deals (int | Unset): Total number of linked deals (all linked fundraises) Example: 3.
+        live_deals (int | Unset): Number of currently live deals (open/oversubscribed/closing states) Example: 1.
+        total_raised (str | Unset): Total amount raised across directory-selected deals (one per company), in cents.
+            String to avoid floating-point precision issues.
+             Example: 10780000.
+        total_investors (int | Unset): Count of distinct investors across directory-selected deals (one per company)
+            Example: 6527.
+        recent_activity_count (int | Unset): Count of audit events in the last 30 days for this syndicate Example: 4.
+    """
 
     total_members: int | Unset = UNSET
     members_by_role: SyndicateStatisticsAttributesMembersByRole | Unset = UNSET
@@ -49,12 +42,7 @@ class SyndicateStatisticsAttributes:
     recent_activity_count: int | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
-
-
-
-
     def to_dict(self) -> dict[str, Any]:
-        from ..models.syndicate_statistics_attributes_members_by_role import SyndicateStatisticsAttributesMembersByRole # noqa: PLC0415
         total_members = self.total_members
 
         members_by_role: dict[str, Any] | Unset = UNSET
@@ -71,11 +59,9 @@ class SyndicateStatisticsAttributes:
 
         recent_activity_count = self.recent_activity_count
 
-
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({
-        })
+        field_dict.update({})
         if total_members is not UNSET:
             field_dict["total_members"] = total_members
         if members_by_role is not UNSET:
@@ -93,23 +79,21 @@ class SyndicateStatisticsAttributes:
 
         return field_dict
 
-
-
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
-        from ..models.syndicate_statistics_attributes_members_by_role import SyndicateStatisticsAttributesMembersByRole # noqa: PLC0415
+        from ..models.syndicate_statistics_attributes_members_by_role import (
+            SyndicateStatisticsAttributesMembersByRole,  # noqa: PLC0415
+        )
+
         d = dict(src_dict)
         total_members = d.pop("total_members", UNSET)
 
         _members_by_role = d.pop("members_by_role", UNSET)
         members_by_role: SyndicateStatisticsAttributesMembersByRole | Unset
-        if isinstance(_members_by_role,  Unset):
+        if isinstance(_members_by_role, Unset):
             members_by_role = UNSET
         else:
             members_by_role = SyndicateStatisticsAttributesMembersByRole.from_dict(_members_by_role)
-
-
-
 
         total_deals = d.pop("total_deals", UNSET)
 
@@ -130,7 +114,6 @@ class SyndicateStatisticsAttributes:
             total_investors=total_investors,
             recent_activity_count=recent_activity_count,
         )
-
 
         syndicate_statistics_attributes.additional_properties = d
         return syndicate_statistics_attributes

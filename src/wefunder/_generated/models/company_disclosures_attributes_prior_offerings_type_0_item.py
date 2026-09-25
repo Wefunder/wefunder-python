@@ -1,37 +1,28 @@
 from __future__ import annotations
 
+import datetime
 from collections.abc import Mapping
-from typing import Any, TypeVar, BinaryIO, TextIO, TYPE_CHECKING, Generator
+from typing import Any, TypeVar, cast
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
 from ..types import UNSET, Unset
 
-from ..types import UNSET, Unset
-from typing import cast
-import datetime
-
-
-
-
-
-
 T = TypeVar("T", bound="CompanyDisclosuresAttributesPriorOfferingsType0Item")
-
 
 
 @_attrs_define
 class CompanyDisclosuresAttributesPriorOfferingsType0Item:
-    """ 
-        Attributes:
-            date (datetime.date | None | Unset):
-            exemption (None | str | Unset):
-            security_type (None | str | Unset):
-            amount_sold (None | str | Unset):
-            use_of_proceeds (None | str | Unset):
-            offering_id (None | str | Unset): The Wefunder offering (`ofr_...`) when the prior offering ran here.
-     """
+    """
+    Attributes:
+        date (datetime.date | None | Unset):
+        exemption (None | str | Unset):
+        security_type (None | str | Unset):
+        amount_sold (None | str | Unset):
+        use_of_proceeds (None | str | Unset):
+        offering_id (None | str | Unset): The Wefunder offering (`ofr_...`) when the prior offering ran here.
+    """
 
     date: datetime.date | None | Unset = UNSET
     exemption: None | str | Unset = UNSET
@@ -40,10 +31,6 @@ class CompanyDisclosuresAttributesPriorOfferingsType0Item:
     use_of_proceeds: None | str | Unset = UNSET
     offering_id: None | str | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
-
-
-
-
 
     def to_dict(self) -> dict[str, Any]:
         date: None | str | Unset
@@ -84,11 +71,9 @@ class CompanyDisclosuresAttributesPriorOfferingsType0Item:
         else:
             offering_id = self.offering_id
 
-
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({
-        })
+        field_dict.update({})
         if date is not UNSET:
             field_dict["date"] = date
         if exemption is not UNSET:
@@ -104,11 +89,10 @@ class CompanyDisclosuresAttributesPriorOfferingsType0Item:
 
         return field_dict
 
-
-
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
+
         def _parse_date(data: object) -> datetime.date | None | Unset:
             if data is None:
                 return data
@@ -119,15 +103,12 @@ class CompanyDisclosuresAttributesPriorOfferingsType0Item:
                     raise TypeError()
                 date_type_0 = datetime.date.fromisoformat(data)
 
-
-
                 return date_type_0
             except (TypeError, ValueError, AttributeError, KeyError):
                 pass
             return cast(datetime.date | None | Unset, data)
 
         date = _parse_date(d.pop("date", UNSET))
-
 
         def _parse_exemption(data: object) -> None | str | Unset:
             if data is None:
@@ -138,7 +119,6 @@ class CompanyDisclosuresAttributesPriorOfferingsType0Item:
 
         exemption = _parse_exemption(d.pop("exemption", UNSET))
 
-
         def _parse_security_type(data: object) -> None | str | Unset:
             if data is None:
                 return data
@@ -147,7 +127,6 @@ class CompanyDisclosuresAttributesPriorOfferingsType0Item:
             return cast(None | str | Unset, data)
 
         security_type = _parse_security_type(d.pop("security_type", UNSET))
-
 
         def _parse_amount_sold(data: object) -> None | str | Unset:
             if data is None:
@@ -158,7 +137,6 @@ class CompanyDisclosuresAttributesPriorOfferingsType0Item:
 
         amount_sold = _parse_amount_sold(d.pop("amount_sold", UNSET))
 
-
         def _parse_use_of_proceeds(data: object) -> None | str | Unset:
             if data is None:
                 return data
@@ -167,7 +145,6 @@ class CompanyDisclosuresAttributesPriorOfferingsType0Item:
             return cast(None | str | Unset, data)
 
         use_of_proceeds = _parse_use_of_proceeds(d.pop("use_of_proceeds", UNSET))
-
 
         def _parse_offering_id(data: object) -> None | str | Unset:
             if data is None:
@@ -178,7 +155,6 @@ class CompanyDisclosuresAttributesPriorOfferingsType0Item:
 
         offering_id = _parse_offering_id(d.pop("offering_id", UNSET))
 
-
         company_disclosures_attributes_prior_offerings_type_0_item = cls(
             date=date,
             exemption=exemption,
@@ -187,7 +163,6 @@ class CompanyDisclosuresAttributesPriorOfferingsType0Item:
             use_of_proceeds=use_of_proceeds,
             offering_id=offering_id,
         )
-
 
         company_disclosures_attributes_prior_offerings_type_0_item.additional_properties = d
         return company_disclosures_attributes_prior_offerings_type_0_item

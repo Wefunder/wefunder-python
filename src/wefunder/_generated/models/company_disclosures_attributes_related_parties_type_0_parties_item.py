@@ -1,37 +1,28 @@
 from __future__ import annotations
 
+import datetime
 from collections.abc import Mapping
-from typing import Any, TypeVar, BinaryIO, TextIO, TYPE_CHECKING, Generator
+from typing import Any, TypeVar, cast
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
 from ..types import UNSET, Unset
 
-from ..types import UNSET, Unset
-from typing import cast
-import datetime
-
-
-
-
-
-
 T = TypeVar("T", bound="CompanyDisclosuresAttributesRelatedPartiesType0PartiesItem")
-
 
 
 @_attrs_define
 class CompanyDisclosuresAttributesRelatedPartiesType0PartiesItem:
-    """ 
-        Attributes:
-            name (None | str | Unset):
-            relationship (None | str | Unset):
-            amount (None | str | Unset):
-            date (datetime.date | None | Unset):
-            outstanding_principal (None | str | Unset):
-            description (None | str | Unset):
-     """
+    """
+    Attributes:
+        name (None | str | Unset):
+        relationship (None | str | Unset):
+        amount (None | str | Unset):
+        date (datetime.date | None | Unset):
+        outstanding_principal (None | str | Unset):
+        description (None | str | Unset):
+    """
 
     name: None | str | Unset = UNSET
     relationship: None | str | Unset = UNSET
@@ -40,10 +31,6 @@ class CompanyDisclosuresAttributesRelatedPartiesType0PartiesItem:
     outstanding_principal: None | str | Unset = UNSET
     description: None | str | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
-
-
-
-
 
     def to_dict(self) -> dict[str, Any]:
         name: None | str | Unset
@@ -84,11 +71,9 @@ class CompanyDisclosuresAttributesRelatedPartiesType0PartiesItem:
         else:
             description = self.description
 
-
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({
-        })
+        field_dict.update({})
         if name is not UNSET:
             field_dict["name"] = name
         if relationship is not UNSET:
@@ -104,11 +89,10 @@ class CompanyDisclosuresAttributesRelatedPartiesType0PartiesItem:
 
         return field_dict
 
-
-
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
+
         def _parse_name(data: object) -> None | str | Unset:
             if data is None:
                 return data
@@ -117,7 +101,6 @@ class CompanyDisclosuresAttributesRelatedPartiesType0PartiesItem:
             return cast(None | str | Unset, data)
 
         name = _parse_name(d.pop("name", UNSET))
-
 
         def _parse_relationship(data: object) -> None | str | Unset:
             if data is None:
@@ -128,7 +111,6 @@ class CompanyDisclosuresAttributesRelatedPartiesType0PartiesItem:
 
         relationship = _parse_relationship(d.pop("relationship", UNSET))
 
-
         def _parse_amount(data: object) -> None | str | Unset:
             if data is None:
                 return data
@@ -137,7 +119,6 @@ class CompanyDisclosuresAttributesRelatedPartiesType0PartiesItem:
             return cast(None | str | Unset, data)
 
         amount = _parse_amount(d.pop("amount", UNSET))
-
 
         def _parse_date(data: object) -> datetime.date | None | Unset:
             if data is None:
@@ -149,15 +130,12 @@ class CompanyDisclosuresAttributesRelatedPartiesType0PartiesItem:
                     raise TypeError()
                 date_type_0 = datetime.date.fromisoformat(data)
 
-
-
                 return date_type_0
             except (TypeError, ValueError, AttributeError, KeyError):
                 pass
             return cast(datetime.date | None | Unset, data)
 
         date = _parse_date(d.pop("date", UNSET))
-
 
         def _parse_outstanding_principal(data: object) -> None | str | Unset:
             if data is None:
@@ -168,7 +146,6 @@ class CompanyDisclosuresAttributesRelatedPartiesType0PartiesItem:
 
         outstanding_principal = _parse_outstanding_principal(d.pop("outstanding_principal", UNSET))
 
-
         def _parse_description(data: object) -> None | str | Unset:
             if data is None:
                 return data
@@ -178,7 +155,6 @@ class CompanyDisclosuresAttributesRelatedPartiesType0PartiesItem:
 
         description = _parse_description(d.pop("description", UNSET))
 
-
         company_disclosures_attributes_related_parties_type_0_parties_item = cls(
             name=name,
             relationship=relationship,
@@ -187,7 +163,6 @@ class CompanyDisclosuresAttributesRelatedPartiesType0PartiesItem:
             outstanding_principal=outstanding_principal,
             description=description,
         )
-
 
         company_disclosures_attributes_related_parties_type_0_parties_item.additional_properties = d
         return company_disclosures_attributes_related_parties_type_0_parties_item

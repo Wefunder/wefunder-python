@@ -1,39 +1,32 @@
 from __future__ import annotations
 
 from collections.abc import Mapping
-from typing import Any, TypeVar, BinaryIO, TextIO, TYPE_CHECKING, Generator
+from typing import TYPE_CHECKING, Any, TypeVar, cast
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
-from ..types import UNSET, Unset
-
 from ..models.eligible_target_list_envelope_data_item_type import EligibleTargetListEnvelopeDataItemType
 from ..types import UNSET, Unset
-from typing import cast
 
 if TYPE_CHECKING:
-  from ..models.installation import Installation
-
-
-
+    from ..models.installation import Installation
 
 
 T = TypeVar("T", bound="EligibleTargetListEnvelopeDataItem")
 
 
-
 @_attrs_define
 class EligibleTargetListEnvelopeDataItem:
-    """ 
-        Attributes:
-            type_ (EligibleTargetListEnvelopeDataItemType | Unset):
-            id (str | Unset):
-            name (str | Unset):
-            tier (str | Unset): The tier an install would be granted at.
-            installed (bool | Unset):
-            installation (Installation | None | Unset):
-     """
+    """
+    Attributes:
+        type_ (EligibleTargetListEnvelopeDataItemType | Unset):
+        id (str | Unset):
+        name (str | Unset):
+        tier (str | Unset): The tier an install would be granted at.
+        installed (bool | Unset):
+        installation (Installation | None | Unset):
+    """
 
     type_: EligibleTargetListEnvelopeDataItemType | Unset = UNSET
     id: str | Unset = UNSET
@@ -43,16 +36,12 @@ class EligibleTargetListEnvelopeDataItem:
     installation: Installation | None | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
-
-
-
-
     def to_dict(self) -> dict[str, Any]:
-        from ..models.installation import Installation # noqa: PLC0415
+        from ..models.installation import Installation  # noqa: PLC0415
+
         type_: str | Unset = UNSET
         if not isinstance(self.type_, Unset):
             type_ = self.type_.value
-
 
         id = self.id
 
@@ -70,11 +59,9 @@ class EligibleTargetListEnvelopeDataItem:
         else:
             installation = self.installation
 
-
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({
-        })
+        field_dict.update({})
         if type_ is not UNSET:
             field_dict["type"] = type_
         if id is not UNSET:
@@ -90,21 +77,17 @@ class EligibleTargetListEnvelopeDataItem:
 
         return field_dict
 
-
-
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
-        from ..models.installation import Installation # noqa: PLC0415
+        from ..models.installation import Installation  # noqa: PLC0415
+
         d = dict(src_dict)
         _type_ = d.pop("type", UNSET)
         type_: EligibleTargetListEnvelopeDataItemType | Unset
-        if isinstance(_type_,  Unset):
+        if isinstance(_type_, Unset):
             type_ = UNSET
         else:
             type_ = EligibleTargetListEnvelopeDataItemType(_type_)
-
-
-
 
         id = d.pop("id", UNSET)
 
@@ -124,15 +107,12 @@ class EligibleTargetListEnvelopeDataItem:
                     raise TypeError()
                 installation_type_1 = Installation.from_dict(data)
 
-
-
                 return installation_type_1
             except (TypeError, ValueError, AttributeError, KeyError):
                 pass
             return cast(Installation | None | Unset, data)
 
         installation = _parse_installation(d.pop("installation", UNSET))
-
 
         eligible_target_list_envelope_data_item = cls(
             type_=type_,
@@ -142,7 +122,6 @@ class EligibleTargetListEnvelopeDataItem:
             installed=installed,
             installation=installation,
         )
-
 
         eligible_target_list_envelope_data_item.additional_properties = d
         return eligible_target_list_envelope_data_item

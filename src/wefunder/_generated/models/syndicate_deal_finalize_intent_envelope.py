@@ -1,48 +1,35 @@
 from __future__ import annotations
 
 from collections.abc import Mapping
-from typing import Any, TypeVar, BinaryIO, TextIO, TYPE_CHECKING, Generator
+from typing import TYPE_CHECKING, Any, TypeVar
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
 from ..types import UNSET, Unset
 
-from ..types import UNSET, Unset
-from typing import cast
-
 if TYPE_CHECKING:
-  from ..models.syndicate_deal import SyndicateDeal
-  from ..models.syndicate_deal_finalize_intent_envelope_meta import SyndicateDealFinalizeIntentEnvelopeMeta
-
-
-
+    from ..models.syndicate_deal import SyndicateDeal
+    from ..models.syndicate_deal_finalize_intent_envelope_meta import SyndicateDealFinalizeIntentEnvelopeMeta
 
 
 T = TypeVar("T", bound="SyndicateDealFinalizeIntentEnvelope")
 
 
-
 @_attrs_define
 class SyndicateDealFinalizeIntentEnvelope:
-    """ The deal plus the pending finalize_deal intent a permitted human approves to finalize it.
+    """The deal plus the pending finalize_deal intent a permitted human approves to finalize it.
 
-        Attributes:
-            data (SyndicateDeal | Unset): JSON:API resource representing a syndicate deal (Fundraise)
-            meta (SyndicateDealFinalizeIntentEnvelopeMeta | Unset):
-     """
+    Attributes:
+        data (SyndicateDeal | Unset): JSON:API resource representing a syndicate deal (Fundraise)
+        meta (SyndicateDealFinalizeIntentEnvelopeMeta | Unset):
+    """
 
     data: SyndicateDeal | Unset = UNSET
     meta: SyndicateDealFinalizeIntentEnvelopeMeta | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
-
-
-
-
     def to_dict(self) -> dict[str, Any]:
-        from ..models.syndicate_deal import SyndicateDeal # noqa: PLC0415
-        from ..models.syndicate_deal_finalize_intent_envelope_meta import SyndicateDealFinalizeIntentEnvelopeMeta # noqa: PLC0415
         data: dict[str, Any] | Unset = UNSET
         if not isinstance(self.data, Unset):
             data = self.data.to_dict()
@@ -51,11 +38,9 @@ class SyndicateDealFinalizeIntentEnvelope:
         if not isinstance(self.meta, Unset):
             meta = self.meta.to_dict()
 
-
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({
-        })
+        field_dict.update({})
         if data is not UNSET:
             field_dict["data"] = data
         if meta is not UNSET:
@@ -63,38 +48,32 @@ class SyndicateDealFinalizeIntentEnvelope:
 
         return field_dict
 
-
-
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
-        from ..models.syndicate_deal import SyndicateDeal # noqa: PLC0415
-        from ..models.syndicate_deal_finalize_intent_envelope_meta import SyndicateDealFinalizeIntentEnvelopeMeta # noqa: PLC0415
+        from ..models.syndicate_deal import SyndicateDeal  # noqa: PLC0415
+        from ..models.syndicate_deal_finalize_intent_envelope_meta import (
+            SyndicateDealFinalizeIntentEnvelopeMeta,  # noqa: PLC0415
+        )
+
         d = dict(src_dict)
         _data = d.pop("data", UNSET)
         data: SyndicateDeal | Unset
-        if isinstance(_data,  Unset):
+        if isinstance(_data, Unset):
             data = UNSET
         else:
             data = SyndicateDeal.from_dict(_data)
 
-
-
-
         _meta = d.pop("meta", UNSET)
         meta: SyndicateDealFinalizeIntentEnvelopeMeta | Unset
-        if isinstance(_meta,  Unset):
+        if isinstance(_meta, Unset):
             meta = UNSET
         else:
             meta = SyndicateDealFinalizeIntentEnvelopeMeta.from_dict(_meta)
-
-
-
 
         syndicate_deal_finalize_intent_envelope = cls(
             data=data,
             meta=meta,
         )
-
 
         syndicate_deal_finalize_intent_envelope.additional_properties = d
         return syndicate_deal_finalize_intent_envelope

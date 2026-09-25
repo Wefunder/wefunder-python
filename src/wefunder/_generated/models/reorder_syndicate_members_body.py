@@ -1,64 +1,45 @@
 from __future__ import annotations
 
 from collections.abc import Mapping
-from typing import Any, TypeVar, BinaryIO, TextIO, TYPE_CHECKING, Generator
+from typing import Any, TypeVar, cast
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
-from ..types import UNSET, Unset
-
-from typing import cast
-
-
-
-
-
-
 T = TypeVar("T", bound="ReorderSyndicateMembersBody")
-
 
 
 @_attrs_define
 class ReorderSyndicateMembersBody:
-    """ 
-        Attributes:
-            member_ids (list[str]):  Example: ['cr_123', 'cr_456', 'cr_789'].
-     """
+    """
+    Attributes:
+        member_ids (list[str]):  Example: ['cr_123', 'cr_456', 'cr_789'].
+    """
 
     member_ids: list[str]
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
-
-
-
-
     def to_dict(self) -> dict[str, Any]:
         member_ids = self.member_ids
 
-
-
-
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({
-            "member_ids": member_ids,
-        })
+        field_dict.update(
+            {
+                "member_ids": member_ids,
+            }
+        )
 
         return field_dict
-
-
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
         member_ids = cast(list[str], d.pop("member_ids"))
 
-
         reorder_syndicate_members_body = cls(
             member_ids=member_ids,
         )
-
 
         reorder_syndicate_members_body.additional_properties = d
         return reorder_syndicate_members_body

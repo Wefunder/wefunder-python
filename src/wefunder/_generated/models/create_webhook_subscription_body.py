@@ -1,41 +1,28 @@
 from __future__ import annotations
 
 from collections.abc import Mapping
-from typing import Any, TypeVar, BinaryIO, TextIO, TYPE_CHECKING, Generator
+from typing import Any, TypeVar
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
-from ..types import UNSET, Unset
-
 from ..models.create_webhook_subscription_body_events_item import CreateWebhookSubscriptionBodyEventsItem
-from typing import cast
-
-
-
-
-
 
 T = TypeVar("T", bound="CreateWebhookSubscriptionBody")
 
 
-
 @_attrs_define
 class CreateWebhookSubscriptionBody:
-    """ 
-        Attributes:
-            target_url (str): HTTPS URL to receive webhook POSTs Example: https://yourapp.com/webhooks/wefunder.
-            events (list[CreateWebhookSubscriptionBodyEventsItem]): Events to subscribe to Example: ['investment.applied',
-                'investment.confirmed'].
-     """
+    """
+    Attributes:
+        target_url (str): HTTPS URL to receive webhook POSTs Example: https://yourapp.com/webhooks/wefunder.
+        events (list[CreateWebhookSubscriptionBodyEventsItem]): Events to subscribe to Example: ['investment.applied',
+            'investment.confirmed'].
+    """
 
     target_url: str
     events: list[CreateWebhookSubscriptionBodyEventsItem]
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
-
-
-
-
 
     def to_dict(self) -> dict[str, Any]:
         target_url = self.target_url
@@ -45,19 +32,16 @@ class CreateWebhookSubscriptionBody:
             events_item = events_item_data.value
             events.append(events_item)
 
-
-
-
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({
-            "target_url": target_url,
-            "events": events,
-        })
+        field_dict.update(
+            {
+                "target_url": target_url,
+                "events": events,
+            }
+        )
 
         return field_dict
-
-
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
@@ -66,19 +50,15 @@ class CreateWebhookSubscriptionBody:
 
         events = []
         _events = d.pop("events")
-        for events_item_data in (_events):
+        for events_item_data in _events:
             events_item = CreateWebhookSubscriptionBodyEventsItem(events_item_data)
 
-
-
             events.append(events_item)
-
 
         create_webhook_subscription_body = cls(
             target_url=target_url,
             events=events,
         )
-
 
         create_webhook_subscription_body.additional_properties = d
         return create_webhook_subscription_body

@@ -1,71 +1,64 @@
 from __future__ import annotations
 
+import datetime
 from collections.abc import Mapping
-from typing import Any, TypeVar, BinaryIO, TextIO, TYPE_CHECKING, Generator
+from typing import TYPE_CHECKING, Any, TypeVar, cast
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
-
-from ..types import UNSET, Unset
 
 from ..models.portfolio_position_attributes_asset_type import PortfolioPositionAttributesAssetType
 from ..models.portfolio_position_attributes_exit_reason import PortfolioPositionAttributesExitReason
 from ..models.portfolio_position_attributes_status import PortfolioPositionAttributesStatus
 from ..types import UNSET, Unset
-from typing import cast
-import datetime
 
 if TYPE_CHECKING:
-  from ..models.portfolio_company_ref import PortfolioCompanyRef
-  from ..models.portfolio_holding import PortfolioHolding
-  from ..models.portfolio_security import PortfolioSecurity
-  from ..models.security_summary import SecuritySummary
-
-
-
+    from ..models.portfolio_company_ref import PortfolioCompanyRef
+    from ..models.portfolio_holding import PortfolioHolding
+    from ..models.portfolio_security import PortfolioSecurity
+    from ..models.security_summary import SecuritySummary
 
 
 T = TypeVar("T", bound="PortfolioPositionAttributes")
 
 
-
 @_attrs_define
 class PortfolioPositionAttributes:
-    """ 
-        Attributes:
-            offering_id (str | Unset):  Example: ofr_9aKxQ2vF8mNp1zT5wY7Qb3Cd.
-            company (PortfolioCompanyRef | Unset): The company behind a portfolio position or holding.
-            asset_type (PortfolioPositionAttributesAssetType | Unset): `fund` for SPV and fund vehicles; the underlying
-                companies appear in `holdings` where recorded.
-            security (None | SecuritySummary | Unset): What the round issued, as `{ type, label }`. Null when the round has
-                no security recorded.
-            status (PortfolioPositionAttributesStatus | Unset): `sold` means the stake was transferred away (secondary
-                sale).
-            exit_reason (PortfolioPositionAttributesExitReason | Unset): Why the position ended. Set only for `exited` and
-                `failed`
-                positions — a `sold` position ended with the transfer itself, and
-                some older positions have no recorded ending. `ipo` means the
-                company went public; distributions, if any, appear in
-                `realized_gain_cents`.
-            invested_at (datetime.datetime | None | Unset):
-            currency (str | Unset):  Example: usd.
-            cost_basis_cents (int | Unset):
-            current_value_cents (int | Unset): Estimated current value; based on cost basis when no newer valuation has been
-                recorded.
-            unrealized_gain_cents (int | Unset): Can be negative.
-            realized_gain_cents (int | Unset):
-            return_multiple (None | str | Unset): Decimal string. Null when cost basis is zero. Example: 1.6492.
-            shares_held (None | str | Unset):
-            current_share_price (None | str | Unset): Null when the position's securities carry different prices — see the
-                per-entry values.
-            securities (list[PortfolioSecurity] | Unset):
-            holdings (list[PortfolioHolding] | Unset): Companies the vehicle invested in, for fund positions. Empty for non-
-                fund positions and for vehicles without recorded holdings.
-            investor_count (int | Unset): The number of distinct investors in this deal. Present on the syndicate endpoint
-                only.
-            as_of (datetime.datetime | Unset): When the values in this position were last calculated (the oldest timestamp
-                when several underlying records are combined).
-     """
+    """
+    Attributes:
+        offering_id (str | Unset):  Example: ofr_9aKxQ2vF8mNp1zT5wY7Qb3Cd.
+        company (PortfolioCompanyRef | Unset): The company behind a portfolio position or holding.
+        asset_type (PortfolioPositionAttributesAssetType | Unset): `fund` for SPV and fund vehicles; the underlying
+            companies appear in `holdings` where recorded.
+        security (None | SecuritySummary | Unset): What the round issued, as `{ type, label }`. Null when the round has
+            no security recorded.
+        status (PortfolioPositionAttributesStatus | Unset): `sold` means the stake was transferred away (secondary
+            sale).
+        exit_reason (PortfolioPositionAttributesExitReason | Unset): Why the position ended. Set only for `exited` and
+            `failed`
+            positions — a `sold` position ended with the transfer itself, and
+            some older positions have no recorded ending. `ipo` means the
+            company went public; distributions, if any, appear in
+            `realized_gain_cents`.
+        invested_at (datetime.datetime | None | Unset):
+        currency (str | Unset):  Example: usd.
+        cost_basis_cents (int | Unset):
+        current_value_cents (int | Unset): Estimated current value; based on cost basis when no newer valuation has been
+            recorded.
+        unrealized_gain_cents (int | Unset): Can be negative.
+        realized_gain_cents (int | Unset):
+        return_multiple (None | str | Unset): Decimal string. Null when cost basis is zero. Example: 1.6492.
+        shares_held (None | str | Unset):
+        current_share_price (None | str | Unset): Null when the position's securities carry different prices — see the
+            per-entry values.
+        securities (list[PortfolioSecurity] | Unset):
+        holdings (list[PortfolioHolding] | Unset): Companies the vehicle invested in, for fund positions. Empty for non-
+            fund positions and for vehicles without recorded holdings.
+        investor_count (int | Unset): The number of distinct investors in this deal. Present on the syndicate endpoint
+            only.
+        as_of (datetime.datetime | Unset): When the values in this position were last calculated (the oldest timestamp
+            when several underlying records are combined).
+    """
 
     offering_id: str | Unset = UNSET
     company: PortfolioCompanyRef | Unset = UNSET
@@ -88,15 +81,9 @@ class PortfolioPositionAttributes:
     as_of: datetime.datetime | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
-
-
-
-
     def to_dict(self) -> dict[str, Any]:
-        from ..models.portfolio_company_ref import PortfolioCompanyRef # noqa: PLC0415
-        from ..models.portfolio_holding import PortfolioHolding # noqa: PLC0415
-        from ..models.portfolio_security import PortfolioSecurity # noqa: PLC0415
-        from ..models.security_summary import SecuritySummary # noqa: PLC0415
+        from ..models.security_summary import SecuritySummary  # noqa: PLC0415
+
         offering_id = self.offering_id
 
         company: dict[str, Any] | Unset = UNSET
@@ -106,7 +93,6 @@ class PortfolioPositionAttributes:
         asset_type: str | Unset = UNSET
         if not isinstance(self.asset_type, Unset):
             asset_type = self.asset_type.value
-
 
         security: dict[str, Any] | None | Unset
         if isinstance(self.security, Unset):
@@ -120,11 +106,9 @@ class PortfolioPositionAttributes:
         if not isinstance(self.status, Unset):
             status = self.status.value
 
-
         exit_reason: str | Unset = UNSET
         if not isinstance(self.exit_reason, Unset):
             exit_reason = self.exit_reason.value
-
 
         invested_at: None | str | Unset
         if isinstance(self.invested_at, Unset):
@@ -169,8 +153,6 @@ class PortfolioPositionAttributes:
                 securities_item = securities_item_data.to_dict()
                 securities.append(securities_item)
 
-
-
         holdings: list[dict[str, Any]] | Unset = UNSET
         if not isinstance(self.holdings, Unset):
             holdings = []
@@ -178,19 +160,15 @@ class PortfolioPositionAttributes:
                 holdings_item = holdings_item_data.to_dict()
                 holdings.append(holdings_item)
 
-
-
         investor_count = self.investor_count
 
         as_of: str | Unset = UNSET
         if not isinstance(self.as_of, Unset):
             as_of = self.as_of.isoformat()
 
-
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({
-        })
+        field_dict.update({})
         if offering_id is not UNSET:
             field_dict["offering_id"] = offering_id
         if company is not UNSET:
@@ -232,36 +210,29 @@ class PortfolioPositionAttributes:
 
         return field_dict
 
-
-
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
-        from ..models.portfolio_company_ref import PortfolioCompanyRef # noqa: PLC0415
-        from ..models.portfolio_holding import PortfolioHolding # noqa: PLC0415
-        from ..models.portfolio_security import PortfolioSecurity # noqa: PLC0415
-        from ..models.security_summary import SecuritySummary # noqa: PLC0415
+        from ..models.portfolio_company_ref import PortfolioCompanyRef  # noqa: PLC0415
+        from ..models.portfolio_holding import PortfolioHolding  # noqa: PLC0415
+        from ..models.portfolio_security import PortfolioSecurity  # noqa: PLC0415
+        from ..models.security_summary import SecuritySummary  # noqa: PLC0415
+
         d = dict(src_dict)
         offering_id = d.pop("offering_id", UNSET)
 
         _company = d.pop("company", UNSET)
         company: PortfolioCompanyRef | Unset
-        if isinstance(_company,  Unset):
+        if isinstance(_company, Unset):
             company = UNSET
         else:
             company = PortfolioCompanyRef.from_dict(_company)
 
-
-
-
         _asset_type = d.pop("asset_type", UNSET)
         asset_type: PortfolioPositionAttributesAssetType | Unset
-        if isinstance(_asset_type,  Unset):
+        if isinstance(_asset_type, Unset):
             asset_type = UNSET
         else:
             asset_type = PortfolioPositionAttributesAssetType(_asset_type)
-
-
-
 
         def _parse_security(data: object) -> None | SecuritySummary | Unset:
             if data is None:
@@ -273,8 +244,6 @@ class PortfolioPositionAttributes:
                     raise TypeError()
                 security_type_1 = SecuritySummary.from_dict(data)
 
-
-
                 return security_type_1
             except (TypeError, ValueError, AttributeError, KeyError):
                 pass
@@ -282,26 +251,19 @@ class PortfolioPositionAttributes:
 
         security = _parse_security(d.pop("security", UNSET))
 
-
         _status = d.pop("status", UNSET)
         status: PortfolioPositionAttributesStatus | Unset
-        if isinstance(_status,  Unset):
+        if isinstance(_status, Unset):
             status = UNSET
         else:
             status = PortfolioPositionAttributesStatus(_status)
 
-
-
-
         _exit_reason = d.pop("exit_reason", UNSET)
         exit_reason: PortfolioPositionAttributesExitReason | Unset
-        if isinstance(_exit_reason,  Unset):
+        if isinstance(_exit_reason, Unset):
             exit_reason = UNSET
         else:
             exit_reason = PortfolioPositionAttributesExitReason(_exit_reason)
-
-
-
 
         def _parse_invested_at(data: object) -> datetime.datetime | None | Unset:
             if data is None:
@@ -313,15 +275,12 @@ class PortfolioPositionAttributes:
                     raise TypeError()
                 invested_at_type_0 = datetime.datetime.fromisoformat(data)
 
-
-
                 return invested_at_type_0
             except (TypeError, ValueError, AttributeError, KeyError):
                 pass
             return cast(datetime.datetime | None | Unset, data)
 
         invested_at = _parse_invested_at(d.pop("invested_at", UNSET))
-
 
         currency = d.pop("currency", UNSET)
 
@@ -342,7 +301,6 @@ class PortfolioPositionAttributes:
 
         return_multiple = _parse_return_multiple(d.pop("return_multiple", UNSET))
 
-
         def _parse_shares_held(data: object) -> None | str | Unset:
             if data is None:
                 return data
@@ -351,7 +309,6 @@ class PortfolioPositionAttributes:
             return cast(None | str | Unset, data)
 
         shares_held = _parse_shares_held(d.pop("shares_held", UNSET))
-
 
         def _parse_current_share_price(data: object) -> None | str | Unset:
             if data is None:
@@ -362,7 +319,6 @@ class PortfolioPositionAttributes:
 
         current_share_price = _parse_current_share_price(d.pop("current_share_price", UNSET))
 
-
         _securities = d.pop("securities", UNSET)
         securities: list[PortfolioSecurity] | Unset = UNSET
         if _securities is not UNSET:
@@ -370,10 +326,7 @@ class PortfolioPositionAttributes:
             for securities_item_data in _securities:
                 securities_item = PortfolioSecurity.from_dict(securities_item_data)
 
-
-
                 securities.append(securities_item)
-
 
         _holdings = d.pop("holdings", UNSET)
         holdings: list[PortfolioHolding] | Unset = UNSET
@@ -382,22 +335,16 @@ class PortfolioPositionAttributes:
             for holdings_item_data in _holdings:
                 holdings_item = PortfolioHolding.from_dict(holdings_item_data)
 
-
-
                 holdings.append(holdings_item)
-
 
         investor_count = d.pop("investor_count", UNSET)
 
         _as_of = d.pop("as_of", UNSET)
         as_of: datetime.datetime | Unset
-        if isinstance(_as_of,  Unset):
+        if isinstance(_as_of, Unset):
             as_of = UNSET
         else:
             as_of = datetime.datetime.fromisoformat(_as_of)
-
-
-
 
         portfolio_position_attributes = cls(
             offering_id=offering_id,
@@ -420,7 +367,6 @@ class PortfolioPositionAttributes:
             investor_count=investor_count,
             as_of=as_of,
         )
-
 
         portfolio_position_attributes.additional_properties = d
         return portfolio_position_attributes

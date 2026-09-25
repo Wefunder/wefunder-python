@@ -1,5 +1,6 @@
 from enum import StrEnum
 
+
 class InviteLinkAttributesStatus(StrEnum):
     INVESTED = "invested"
     OPENED = "opened"

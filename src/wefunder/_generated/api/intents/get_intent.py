@@ -1,58 +1,43 @@
 from http import HTTPStatus
-from typing import Any, cast
+from typing import Any
 from urllib.parse import quote
 
 import httpx
 
-from ...client import AuthenticatedClient, Client
-from ...types import Response, UNSET
 from ... import errors
-
+from ...client import AuthenticatedClient, Client
 from ...models.error import Error
 from ...models.intent_envelope import IntentEnvelope
-from typing import cast
-
+from ...types import Response
 
 
 def _get_kwargs(
     intent_id: str,
-
 ) -> dict[str, Any]:
-    
-
-    
-
-    
 
     _kwargs: dict[str, Any] = {
         "method": "get",
-        "url": "/intents/{intent_id}".format(intent_id=quote(str(intent_id), safe=""),),
+        "url": "/intents/{intent_id}".format(
+            intent_id=quote(str(intent_id), safe=""),
+        ),
     }
 
-
     return _kwargs
-
 
 
 def _parse_response(*, client: AuthenticatedClient | Client, response: httpx.Response) -> Error | IntentEnvelope | None:
     if response.status_code == 200:
         response_200 = IntentEnvelope.from_dict(response.json())
 
-
-
         return response_200
 
     if response.status_code == 401:
         response_401 = Error.from_dict(response.json())
 
-
-
         return response_401
 
     if response.status_code == 404:
         response_404 = Error.from_dict(response.json())
-
-
 
         return response_404
 
@@ -62,7 +47,9 @@ def _parse_response(*, client: AuthenticatedClient | Client, response: httpx.Res
         return None
 
 
-def _build_response(*, client: AuthenticatedClient | Client, response: httpx.Response) -> Response[Error | IntentEnvelope]:
+def _build_response(
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Response[Error | IntentEnvelope]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -75,9 +62,8 @@ def sync_detailed(
     intent_id: str,
     *,
     client: AuthenticatedClient,
-
 ) -> Response[Error | IntentEnvelope]:
-    """ Get intent status
+    """Get intent status
 
      Check the current status of an intent. Use this to poll for approval
     after proposing an intent, or subscribe to `intent.*` webhook events instead.
@@ -91,12 +77,10 @@ def sync_detailed(
 
     Returns:
         Response[Error | IntentEnvelope]
-     """
-
+    """
 
     kwargs = _get_kwargs(
         intent_id=intent_id,
-
     )
 
     response = client.get_httpx_client().request(
@@ -105,13 +89,13 @@ def sync_detailed(
 
     return _build_response(client=client, response=response)
 
+
 def sync(
     intent_id: str,
     *,
     client: AuthenticatedClient,
-
 ) -> Error | IntentEnvelope | None:
-    """ Get intent status
+    """Get intent status
 
      Check the current status of an intent. Use this to poll for approval
     after proposing an intent, or subscribe to `intent.*` webhook events instead.
@@ -125,22 +109,20 @@ def sync(
 
     Returns:
         Error | IntentEnvelope
-     """
-
+    """
 
     return sync_detailed(
         intent_id=intent_id,
-client=client,
-
+        client=client,
     ).parsed
+
 
 async def asyncio_detailed(
     intent_id: str,
     *,
     client: AuthenticatedClient,
-
 ) -> Response[Error | IntentEnvelope]:
-    """ Get intent status
+    """Get intent status
 
      Check the current status of an intent. Use this to poll for approval
     after proposing an intent, or subscribe to `intent.*` webhook events instead.
@@ -154,27 +136,23 @@ async def asyncio_detailed(
 
     Returns:
         Response[Error | IntentEnvelope]
-     """
-
+    """
 
     kwargs = _get_kwargs(
         intent_id=intent_id,
-
     )
 
-    response = await client.get_async_httpx_client().request(
-        **kwargs
-    )
+    response = await client.get_async_httpx_client().request(**kwargs)
 
     return _build_response(client=client, response=response)
+
 
 async def asyncio(
     intent_id: str,
     *,
     client: AuthenticatedClient,
-
 ) -> Error | IntentEnvelope | None:
-    """ Get intent status
+    """Get intent status
 
      Check the current status of an intent. Use this to poll for approval
     after proposing an intent, or subscribe to `intent.*` webhook events instead.
@@ -188,11 +166,11 @@ async def asyncio(
 
     Returns:
         Error | IntentEnvelope
-     """
+    """
 
-
-    return (await asyncio_detailed(
-        intent_id=intent_id,
-client=client,
-
-    )).parsed
+    return (
+        await asyncio_detailed(
+            intent_id=intent_id,
+            client=client,
+        )
+    ).parsed

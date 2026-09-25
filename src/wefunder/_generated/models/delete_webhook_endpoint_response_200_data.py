@@ -1,41 +1,29 @@
 from __future__ import annotations
 
 from collections.abc import Mapping
-from typing import Any, TypeVar, BinaryIO, TextIO, TYPE_CHECKING, Generator
+from typing import Any, TypeVar
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
 from ..types import UNSET, Unset
 
-from ..types import UNSET, Unset
-
-
-
-
-
-
 T = TypeVar("T", bound="DeleteWebhookEndpointResponse200Data")
-
 
 
 @_attrs_define
 class DeleteWebhookEndpointResponse200Data:
-    """ 
-        Attributes:
-            id (str | Unset):
-            type_ (str | Unset):  Example: webhook_endpoint.
-            removed (bool | Unset):  Example: True.
-     """
+    """
+    Attributes:
+        id (str | Unset):
+        type_ (str | Unset):  Example: webhook_endpoint.
+        removed (bool | Unset):  Example: True.
+    """
 
     id: str | Unset = UNSET
     type_: str | Unset = UNSET
     removed: bool | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
-
-
-
-
 
     def to_dict(self) -> dict[str, Any]:
         id = self.id
@@ -44,11 +32,9 @@ class DeleteWebhookEndpointResponse200Data:
 
         removed = self.removed
 
-
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({
-        })
+        field_dict.update({})
         if id is not UNSET:
             field_dict["id"] = id
         if type_ is not UNSET:
@@ -57,8 +43,6 @@ class DeleteWebhookEndpointResponse200Data:
             field_dict["removed"] = removed
 
         return field_dict
-
-
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
@@ -74,7 +58,6 @@ class DeleteWebhookEndpointResponse200Data:
             type_=type_,
             removed=removed,
         )
-
 
         delete_webhook_endpoint_response_200_data.additional_properties = d
         return delete_webhook_endpoint_response_200_data

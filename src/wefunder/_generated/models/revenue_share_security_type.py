@@ -1,5 +1,6 @@
 from enum import StrEnum
 
+
 class RevenueShareSecurityType(StrEnum):
     REVENUE_SHARE = "revenue_share"
 

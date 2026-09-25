@@ -1,5 +1,6 @@
 from enum import StrEnum
 
+
 class FullAttributionStatusBucket(StrEnum):
     CANCELED = "canceled"
     CONFIRMED = "confirmed"

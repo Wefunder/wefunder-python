@@ -1,5 +1,6 @@
 from enum import StrEnum
 
+
 class OfferingAttributesIntendedSecurityType0Type(StrEnum):
     CONVERTIBLE_NOTE = "convertible_note"
     DEBT = "debt"

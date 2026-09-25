@@ -1,34 +1,26 @@
 from __future__ import annotations
 
 from collections.abc import Mapping
-from typing import Any, TypeVar, BinaryIO, TextIO, TYPE_CHECKING, Generator
+from typing import Any, TypeVar
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
 from ..types import UNSET, Unset
 
-from ..types import UNSET, Unset
-
-
-
-
-
-
 T = TypeVar("T", bound="AttributionCampaignSummary")
-
 
 
 @_attrs_define
 class AttributionCampaignSummary:
-    """ 
-        Attributes:
-            id (int | Unset):  Example: 123.
-            company_name (str | Unset):  Example: Example Name.
-            company_id (int | Unset):  Example: 123.
-            state (str | Unset):  Example: active.
-            access_level (int | Unset): 1=anonymized, 2=detailed (future) Example: 1.
-     """
+    """
+    Attributes:
+        id (int | Unset):  Example: 123.
+        company_name (str | Unset):  Example: Example Name.
+        company_id (int | Unset):  Example: 123.
+        state (str | Unset):  Example: active.
+        access_level (int | Unset): 1=anonymized, 2=detailed (future) Example: 1.
+    """
 
     id: int | Unset = UNSET
     company_name: str | Unset = UNSET
@@ -36,10 +28,6 @@ class AttributionCampaignSummary:
     state: str | Unset = UNSET
     access_level: int | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
-
-
-
-
 
     def to_dict(self) -> dict[str, Any]:
         id = self.id
@@ -52,11 +40,9 @@ class AttributionCampaignSummary:
 
         access_level = self.access_level
 
-
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({
-        })
+        field_dict.update({})
         if id is not UNSET:
             field_dict["id"] = id
         if company_name is not UNSET:
@@ -69,8 +55,6 @@ class AttributionCampaignSummary:
             field_dict["access_level"] = access_level
 
         return field_dict
-
-
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
@@ -92,7 +76,6 @@ class AttributionCampaignSummary:
             state=state,
             access_level=access_level,
         )
-
 
         attribution_campaign_summary.additional_properties = d
         return attribution_campaign_summary

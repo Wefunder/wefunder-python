@@ -1,5 +1,6 @@
 from enum import StrEnum
 
+
 class InstallationAttributesStatus(StrEnum):
     ACTIVE = "active"
     REVOKED = "revoked"

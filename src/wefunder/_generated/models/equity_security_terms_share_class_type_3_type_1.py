@@ -1,5 +1,6 @@
 from enum import StrEnum
 
+
 class EquitySecurityTermsShareClassType3Type1(StrEnum):
     COMMON = "common"
     PREFERRED = "preferred"

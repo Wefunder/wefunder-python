@@ -1,5 +1,6 @@
 from enum import StrEnum
 
+
 class PitchBlockType(StrEnum):
     FOOTNOTE = "footnote"
     HEADING = "heading"

@@ -1,5 +1,6 @@
 from enum import StrEnum
 
+
 class AnonymizedAttributionAmountTier(StrEnum):
     LARGE = "large"
     MEDIUM = "medium"

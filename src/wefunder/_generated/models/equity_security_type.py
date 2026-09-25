@@ -1,5 +1,6 @@
 from enum import StrEnum
 
+
 class EquitySecurityType(StrEnum):
     EQUITY = "equity"
 

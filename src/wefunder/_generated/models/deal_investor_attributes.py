@@ -1,46 +1,37 @@
 from __future__ import annotations
 
+import datetime
 from collections.abc import Mapping
-from typing import Any, TypeVar, BinaryIO, TextIO, TYPE_CHECKING, Generator
+from typing import Any, TypeVar, cast
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
-from ..types import UNSET, Unset
-
 from ..models.deal_investor_attributes_status import DealInvestorAttributesStatus
 from ..types import UNSET, Unset
-from typing import cast
-import datetime
-
-
-
-
-
 
 T = TypeVar("T", bound="DealInvestorAttributes")
 
 
-
 @_attrs_define
 class DealInvestorAttributes:
-    """ 
-        Attributes:
-            user_id (int | Unset): Internal integer id. Deprecated — use `user` (`usr_...`) instead. Example: 456.
-            user (str | Unset): The investor's id (`usr_...`). Example: usr_aB3xQ9k2vF8mNp1zT5wY7Qc4.
-            user_name (None | str | Unset):  Example: Jane Smith.
-            user_email (None | str | Unset): **Moderator-only.** Investor's email address.
-                Returns null for non-moderator callers (users who are not a manager/operator).
-                 Example: user@example.com.
-            avatar_url (None | str | Unset): Investor's profile photo URL Example:
-                https://uploads.wefunder.com/uploads/user/avatar/456/large_photo.jpg.
-            amount (str | Unset): Investment amount in cents, as a string to avoid floating-point precision issues Example:
-                500000.
-            status (DealInvestorAttributesStatus | Unset): The investor's most advanced commitment in this deal —
-                `confirmed` is final, `pending` is committed but not yet final. Example: confirmed.
-            invested_at (datetime.datetime | Unset): ISO 8601 timestamp when the investment was created Example:
-                2025-03-01T12:00:00Z.
-     """
+    """
+    Attributes:
+        user_id (int | Unset): Internal integer id. Deprecated — use `user` (`usr_...`) instead. Example: 456.
+        user (str | Unset): The investor's id (`usr_...`). Example: usr_aB3xQ9k2vF8mNp1zT5wY7Qc4.
+        user_name (None | str | Unset):  Example: Jane Smith.
+        user_email (None | str | Unset): **Moderator-only.** Investor's email address.
+            Returns null for non-moderator callers (users who are not a manager/operator).
+             Example: user@example.com.
+        avatar_url (None | str | Unset): Investor's profile photo URL Example:
+            https://uploads.wefunder.com/uploads/user/avatar/456/large_photo.jpg.
+        amount (str | Unset): Investment amount in cents, as a string to avoid floating-point precision issues Example:
+            500000.
+        status (DealInvestorAttributesStatus | Unset): The investor's most advanced commitment in this deal —
+            `confirmed` is final, `pending` is committed but not yet final. Example: confirmed.
+        invested_at (datetime.datetime | Unset): ISO 8601 timestamp when the investment was created Example:
+            2025-03-01T12:00:00Z.
+    """
 
     user_id: int | Unset = UNSET
     user: str | Unset = UNSET
@@ -51,10 +42,6 @@ class DealInvestorAttributes:
     status: DealInvestorAttributesStatus | Unset = UNSET
     invested_at: datetime.datetime | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
-
-
-
-
 
     def to_dict(self) -> dict[str, Any]:
         user_id = self.user_id
@@ -85,16 +72,13 @@ class DealInvestorAttributes:
         if not isinstance(self.status, Unset):
             status = self.status.value
 
-
         invested_at: str | Unset = UNSET
         if not isinstance(self.invested_at, Unset):
             invested_at = self.invested_at.isoformat()
 
-
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({
-        })
+        field_dict.update({})
         if user_id is not UNSET:
             field_dict["user_id"] = user_id
         if user is not UNSET:
@@ -114,8 +98,6 @@ class DealInvestorAttributes:
 
         return field_dict
 
-
-
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
@@ -132,7 +114,6 @@ class DealInvestorAttributes:
 
         user_name = _parse_user_name(d.pop("user_name", UNSET))
 
-
         def _parse_user_email(data: object) -> None | str | Unset:
             if data is None:
                 return data
@@ -141,7 +122,6 @@ class DealInvestorAttributes:
             return cast(None | str | Unset, data)
 
         user_email = _parse_user_email(d.pop("user_email", UNSET))
-
 
         def _parse_avatar_url(data: object) -> None | str | Unset:
             if data is None:
@@ -152,28 +132,21 @@ class DealInvestorAttributes:
 
         avatar_url = _parse_avatar_url(d.pop("avatar_url", UNSET))
 
-
         amount = d.pop("amount", UNSET)
 
         _status = d.pop("status", UNSET)
         status: DealInvestorAttributesStatus | Unset
-        if isinstance(_status,  Unset):
+        if isinstance(_status, Unset):
             status = UNSET
         else:
             status = DealInvestorAttributesStatus(_status)
 
-
-
-
         _invested_at = d.pop("invested_at", UNSET)
         invested_at: datetime.datetime | Unset
-        if isinstance(_invested_at,  Unset):
+        if isinstance(_invested_at, Unset):
             invested_at = UNSET
         else:
             invested_at = datetime.datetime.fromisoformat(_invested_at)
-
-
-
 
         deal_investor_attributes = cls(
             user_id=user_id,
@@ -185,7 +158,6 @@ class DealInvestorAttributes:
             status=status,
             invested_at=invested_at,
         )
-
 
         deal_investor_attributes.additional_properties = d
         return deal_investor_attributes

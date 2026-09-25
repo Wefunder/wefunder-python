@@ -1,30 +1,23 @@
 from __future__ import annotations
 
 from collections.abc import Mapping
-from typing import Any, TypeVar, BinaryIO, TextIO, TYPE_CHECKING, Generator
+from typing import TYPE_CHECKING, Any, TypeVar, cast
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
 from ..types import UNSET, Unset
 
-from ..types import UNSET, Unset
-from typing import cast
-
 if TYPE_CHECKING:
-  from ..models.investment_session_create_input_metadata_type_0 import InvestmentSessionCreateInputMetadataType0
-
-
-
+    from ..models.investment_session_create_input_metadata_type_0 import InvestmentSessionCreateInputMetadataType0
 
 
 T = TypeVar("T", bound="InvestmentSessionCreateInput")
 
 
-
 @_attrs_define
 class InvestmentSessionCreateInput:
-    """ Either `email` (invite an unknown recipient) or `wefunder_user_id` (target an
+    """Either `email` (invite an unknown recipient) or `wefunder_user_id` (target an
     existing Wefunder user) should be provided. `spv_id` is required on
     `POST /partner/investment_sessions`; on the deprecated SPV-nested path the
     SPV comes from the URL instead.
@@ -45,7 +38,7 @@ class InvestmentSessionCreateInput:
                 session and echoed back on reads.
             intent_id (None | str | Unset): The Intent that gated the SPV's creation, for audit; stored in `metadata`.
                 Example: int_abc123.
-     """
+    """
 
     spv_id: None | str | Unset = UNSET
     email: None | str | Unset = UNSET
@@ -57,12 +50,11 @@ class InvestmentSessionCreateInput:
     intent_id: None | str | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
-
-
-
-
     def to_dict(self) -> dict[str, Any]:
-        from ..models.investment_session_create_input_metadata_type_0 import InvestmentSessionCreateInputMetadataType0 # noqa: PLC0415
+        from ..models.investment_session_create_input_metadata_type_0 import (
+            InvestmentSessionCreateInputMetadataType0,  # noqa: PLC0415
+        )
+
         spv_id: None | str | Unset
         if isinstance(self.spv_id, Unset):
             spv_id = UNSET
@@ -113,11 +105,9 @@ class InvestmentSessionCreateInput:
         else:
             intent_id = self.intent_id
 
-
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({
-        })
+        field_dict.update({})
         if spv_id is not UNSET:
             field_dict["spv_id"] = spv_id
         if email is not UNSET:
@@ -137,12 +127,14 @@ class InvestmentSessionCreateInput:
 
         return field_dict
 
-
-
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
-        from ..models.investment_session_create_input_metadata_type_0 import InvestmentSessionCreateInputMetadataType0 # noqa: PLC0415
+        from ..models.investment_session_create_input_metadata_type_0 import (
+            InvestmentSessionCreateInputMetadataType0,  # noqa: PLC0415
+        )
+
         d = dict(src_dict)
+
         def _parse_spv_id(data: object) -> None | str | Unset:
             if data is None:
                 return data
@@ -151,7 +143,6 @@ class InvestmentSessionCreateInput:
             return cast(None | str | Unset, data)
 
         spv_id = _parse_spv_id(d.pop("spv_id", UNSET))
-
 
         def _parse_email(data: object) -> None | str | Unset:
             if data is None:
@@ -162,7 +153,6 @@ class InvestmentSessionCreateInput:
 
         email = _parse_email(d.pop("email", UNSET))
 
-
         def _parse_wefunder_user_id(data: object) -> None | str | Unset:
             if data is None:
                 return data
@@ -171,7 +161,6 @@ class InvestmentSessionCreateInput:
             return cast(None | str | Unset, data)
 
         wefunder_user_id = _parse_wefunder_user_id(d.pop("wefunder_user_id", UNSET))
-
 
         def _parse_allocation_cents(data: object) -> int | None | Unset:
             if data is None:
@@ -182,7 +171,6 @@ class InvestmentSessionCreateInput:
 
         allocation_cents = _parse_allocation_cents(d.pop("allocation_cents", UNSET))
 
-
         def _parse_success_url(data: object) -> None | str | Unset:
             if data is None:
                 return data
@@ -192,7 +180,6 @@ class InvestmentSessionCreateInput:
 
         success_url = _parse_success_url(d.pop("success_url", UNSET))
 
-
         def _parse_expires_in_hours(data: object) -> int | None | Unset:
             if data is None:
                 return data
@@ -201,7 +188,6 @@ class InvestmentSessionCreateInput:
             return cast(int | None | Unset, data)
 
         expires_in_hours = _parse_expires_in_hours(d.pop("expires_in_hours", UNSET))
-
 
         def _parse_metadata(data: object) -> InvestmentSessionCreateInputMetadataType0 | None | Unset:
             if data is None:
@@ -213,15 +199,12 @@ class InvestmentSessionCreateInput:
                     raise TypeError()
                 metadata_type_0 = InvestmentSessionCreateInputMetadataType0.from_dict(data)
 
-
-
                 return metadata_type_0
             except (TypeError, ValueError, AttributeError, KeyError):
                 pass
             return cast(InvestmentSessionCreateInputMetadataType0 | None | Unset, data)
 
         metadata = _parse_metadata(d.pop("metadata", UNSET))
-
 
         def _parse_intent_id(data: object) -> None | str | Unset:
             if data is None:
@@ -231,7 +214,6 @@ class InvestmentSessionCreateInput:
             return cast(None | str | Unset, data)
 
         intent_id = _parse_intent_id(d.pop("intent_id", UNSET))
-
 
         investment_session_create_input = cls(
             spv_id=spv_id,
@@ -243,7 +225,6 @@ class InvestmentSessionCreateInput:
             metadata=metadata,
             intent_id=intent_id,
         )
-
 
         investment_session_create_input.additional_properties = d
         return investment_session_create_input

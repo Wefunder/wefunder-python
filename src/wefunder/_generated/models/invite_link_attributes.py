@@ -1,55 +1,48 @@
 from __future__ import annotations
 
+import datetime
 from collections.abc import Mapping
-from typing import Any, TypeVar, BinaryIO, TextIO, TYPE_CHECKING, Generator
+from typing import TYPE_CHECKING, Any, TypeVar, cast
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
-from ..types import UNSET, Unset
-
 from ..models.invite_link_attributes_status import InviteLinkAttributesStatus
 from ..types import UNSET, Unset
-from typing import cast
-import datetime
 
 if TYPE_CHECKING:
-  from ..models.invite_link_attributes_events_item import InviteLinkAttributesEventsItem
-
-
-
+    from ..models.invite_link_attributes_events_item import InviteLinkAttributesEventsItem
 
 
 T = TypeVar("T", bound="InviteLinkAttributes")
 
 
-
 @_attrs_define
 class InviteLinkAttributes:
-    """ 
-        Attributes:
-            url (str | Unset): Shareable invite URL. Carries the access token, not the id. Example:
-                https://wefunder.com/i/abc123token.
-            allocation_cents (int | None | Unset):  Example: 5000000.
-            max_uses (int | None | Unset):  Example: 50.
-            uses_count (int | Unset):  Example: 0.
-            active (bool | Unset): False once the link is canceled (soft-deleted). Example: True.
-            created_at (datetime.datetime | Unset):  Example: 2025-01-15T10:00:00Z.
-            email (None | str | Unset): Per-person only — recipient email. Example: investor@example.com.
-            wefunder_user_id (None | str | Unset): Per-person only — the recipient's id (`usr_...`), when they are an
-                existing user. Example: usr_existing123.
-            status (InviteLinkAttributesStatus | Unset): Per-person only — derived live, not stored. `pending` (sent, not
-                yet
-                opened), `opened` (link clicked), `invested` (a matching active
-                investment exists), `revoked` (canceled).
-                 Example: pending.
-            opened_at (datetime.datetime | None | Unset): Per-person only.
-            invested_at (datetime.datetime | None | Unset): Per-person only.
-            investment_id (None | str | Unset): Per-person only — the id (`inv_...`) of the matching investment. Example:
-                inv_def789.
-            events (list[InviteLinkAttributesEventsItem] | Unset): Engagement timeline. Present on the show (get-one)
-                endpoint only.
-     """
+    """
+    Attributes:
+        url (str | Unset): Shareable invite URL. Carries the access token, not the id. Example:
+            https://wefunder.com/i/abc123token.
+        allocation_cents (int | None | Unset):  Example: 5000000.
+        max_uses (int | None | Unset):  Example: 50.
+        uses_count (int | Unset):  Example: 0.
+        active (bool | Unset): False once the link is canceled (soft-deleted). Example: True.
+        created_at (datetime.datetime | Unset):  Example: 2025-01-15T10:00:00Z.
+        email (None | str | Unset): Per-person only — recipient email. Example: investor@example.com.
+        wefunder_user_id (None | str | Unset): Per-person only — the recipient's id (`usr_...`), when they are an
+            existing user. Example: usr_existing123.
+        status (InviteLinkAttributesStatus | Unset): Per-person only — derived live, not stored. `pending` (sent, not
+            yet
+            opened), `opened` (link clicked), `invested` (a matching active
+            investment exists), `revoked` (canceled).
+             Example: pending.
+        opened_at (datetime.datetime | None | Unset): Per-person only.
+        invested_at (datetime.datetime | None | Unset): Per-person only.
+        investment_id (None | str | Unset): Per-person only — the id (`inv_...`) of the matching investment. Example:
+            inv_def789.
+        events (list[InviteLinkAttributesEventsItem] | Unset): Engagement timeline. Present on the show (get-one)
+            endpoint only.
+    """
 
     url: str | Unset = UNSET
     allocation_cents: int | None | Unset = UNSET
@@ -66,12 +59,7 @@ class InviteLinkAttributes:
     events: list[InviteLinkAttributesEventsItem] | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
-
-
-
-
     def to_dict(self) -> dict[str, Any]:
-        from ..models.invite_link_attributes_events_item import InviteLinkAttributesEventsItem # noqa: PLC0415
         url = self.url
 
         allocation_cents: int | None | Unset
@@ -110,7 +98,6 @@ class InviteLinkAttributes:
         if not isinstance(self.status, Unset):
             status = self.status.value
 
-
         opened_at: None | str | Unset
         if isinstance(self.opened_at, Unset):
             opened_at = UNSET
@@ -140,13 +127,9 @@ class InviteLinkAttributes:
                 events_item = events_item_data.to_dict()
                 events.append(events_item)
 
-
-
-
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({
-        })
+        field_dict.update({})
         if url is not UNSET:
             field_dict["url"] = url
         if allocation_cents is not UNSET:
@@ -176,11 +159,10 @@ class InviteLinkAttributes:
 
         return field_dict
 
-
-
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
-        from ..models.invite_link_attributes_events_item import InviteLinkAttributesEventsItem # noqa: PLC0415
+        from ..models.invite_link_attributes_events_item import InviteLinkAttributesEventsItem  # noqa: PLC0415
+
         d = dict(src_dict)
         url = d.pop("url", UNSET)
 
@@ -193,7 +175,6 @@ class InviteLinkAttributes:
 
         allocation_cents = _parse_allocation_cents(d.pop("allocation_cents", UNSET))
 
-
         def _parse_max_uses(data: object) -> int | None | Unset:
             if data is None:
                 return data
@@ -203,20 +184,16 @@ class InviteLinkAttributes:
 
         max_uses = _parse_max_uses(d.pop("max_uses", UNSET))
 
-
         uses_count = d.pop("uses_count", UNSET)
 
         active = d.pop("active", UNSET)
 
         _created_at = d.pop("created_at", UNSET)
         created_at: datetime.datetime | Unset
-        if isinstance(_created_at,  Unset):
+        if isinstance(_created_at, Unset):
             created_at = UNSET
         else:
             created_at = datetime.datetime.fromisoformat(_created_at)
-
-
-
 
         def _parse_email(data: object) -> None | str | Unset:
             if data is None:
@@ -227,7 +204,6 @@ class InviteLinkAttributes:
 
         email = _parse_email(d.pop("email", UNSET))
 
-
         def _parse_wefunder_user_id(data: object) -> None | str | Unset:
             if data is None:
                 return data
@@ -237,16 +213,12 @@ class InviteLinkAttributes:
 
         wefunder_user_id = _parse_wefunder_user_id(d.pop("wefunder_user_id", UNSET))
 
-
         _status = d.pop("status", UNSET)
         status: InviteLinkAttributesStatus | Unset
-        if isinstance(_status,  Unset):
+        if isinstance(_status, Unset):
             status = UNSET
         else:
             status = InviteLinkAttributesStatus(_status)
-
-
-
 
         def _parse_opened_at(data: object) -> datetime.datetime | None | Unset:
             if data is None:
@@ -258,15 +230,12 @@ class InviteLinkAttributes:
                     raise TypeError()
                 opened_at_type_0 = datetime.datetime.fromisoformat(data)
 
-
-
                 return opened_at_type_0
             except (TypeError, ValueError, AttributeError, KeyError):
                 pass
             return cast(datetime.datetime | None | Unset, data)
 
         opened_at = _parse_opened_at(d.pop("opened_at", UNSET))
-
 
         def _parse_invested_at(data: object) -> datetime.datetime | None | Unset:
             if data is None:
@@ -278,15 +247,12 @@ class InviteLinkAttributes:
                     raise TypeError()
                 invested_at_type_0 = datetime.datetime.fromisoformat(data)
 
-
-
                 return invested_at_type_0
             except (TypeError, ValueError, AttributeError, KeyError):
                 pass
             return cast(datetime.datetime | None | Unset, data)
 
         invested_at = _parse_invested_at(d.pop("invested_at", UNSET))
-
 
         def _parse_investment_id(data: object) -> None | str | Unset:
             if data is None:
@@ -297,7 +263,6 @@ class InviteLinkAttributes:
 
         investment_id = _parse_investment_id(d.pop("investment_id", UNSET))
 
-
         _events = d.pop("events", UNSET)
         events: list[InviteLinkAttributesEventsItem] | Unset = UNSET
         if _events is not UNSET:
@@ -305,10 +270,7 @@ class InviteLinkAttributes:
             for events_item_data in _events:
                 events_item = InviteLinkAttributesEventsItem.from_dict(events_item_data)
 
-
-
                 events.append(events_item)
-
 
         invite_link_attributes = cls(
             url=url,
@@ -325,7 +287,6 @@ class InviteLinkAttributes:
             investment_id=investment_id,
             events=events,
         )
-
 
         invite_link_attributes.additional_properties = d
         return invite_link_attributes

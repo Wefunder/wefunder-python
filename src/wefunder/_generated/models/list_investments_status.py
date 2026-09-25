@@ -1,5 +1,6 @@
 from enum import StrEnum
 
+
 class ListInvestmentsStatus(StrEnum):
     ACTIVE = "active"
     CANCELED = "canceled"

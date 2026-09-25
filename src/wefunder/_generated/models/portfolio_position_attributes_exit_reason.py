@@ -1,5 +1,6 @@
 from enum import StrEnum
 
+
 class PortfolioPositionAttributesExitReason(StrEnum):
     ACQUISITION = "acquisition"
     BUYBACK = "buyback"

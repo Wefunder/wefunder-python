@@ -1,45 +1,38 @@
 from __future__ import annotations
 
+import datetime
 from collections.abc import Mapping
-from typing import Any, TypeVar, BinaryIO, TextIO, TYPE_CHECKING, Generator
+from typing import TYPE_CHECKING, Any, TypeVar, cast
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
-from ..types import UNSET, Unset
-
 from ..models.company_question_attributes_match import CompanyQuestionAttributesMatch
 from ..types import UNSET, Unset
-from typing import cast
-import datetime
 
 if TYPE_CHECKING:
-  from ..models.company_question_attributes_answers_item import CompanyQuestionAttributesAnswersItem
-  from ..models.company_question_person import CompanyQuestionPerson
-
-
-
+    from ..models.company_question_attributes_answers_item import CompanyQuestionAttributesAnswersItem
+    from ..models.company_question_person import CompanyQuestionPerson
 
 
 T = TypeVar("T", bound="CompanyQuestionAttributes")
 
 
-
 @_attrs_define
 class CompanyQuestionAttributes:
-    """ 
-        Attributes:
-            question (None | str | Unset):
-            asked_at (datetime.datetime | None | Unset):
-            asked_by (CompanyQuestionPerson | Unset):
-            likes_count (int | Unset):
-            highlighted (bool | Unset): The team highlighted this question on the tab.
-            answered_by_team (bool | Unset):
-            match (CompanyQuestionAttributesMatch | Unset): In a search (`q`), whether the question's own text or one of its
-                answers matched. Null otherwise.
-            answers (list[CompanyQuestionAttributesAnswersItem] | Unset):
-            url (None | str | Unset): The company's Ask tab on wefunder.com.
-     """
+    """
+    Attributes:
+        question (None | str | Unset):
+        asked_at (datetime.datetime | None | Unset):
+        asked_by (CompanyQuestionPerson | Unset):
+        likes_count (int | Unset):
+        highlighted (bool | Unset): The team highlighted this question on the tab.
+        answered_by_team (bool | Unset):
+        match (CompanyQuestionAttributesMatch | Unset): In a search (`q`), whether the question's own text or one of its
+            answers matched. Null otherwise.
+        answers (list[CompanyQuestionAttributesAnswersItem] | Unset):
+        url (None | str | Unset): The company's Ask tab on wefunder.com.
+    """
 
     question: None | str | Unset = UNSET
     asked_at: datetime.datetime | None | Unset = UNSET
@@ -52,13 +45,7 @@ class CompanyQuestionAttributes:
     url: None | str | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
-
-
-
-
     def to_dict(self) -> dict[str, Any]:
-        from ..models.company_question_attributes_answers_item import CompanyQuestionAttributesAnswersItem # noqa: PLC0415
-        from ..models.company_question_person import CompanyQuestionPerson # noqa: PLC0415
         question: None | str | Unset
         if isinstance(self.question, Unset):
             question = UNSET
@@ -87,7 +74,6 @@ class CompanyQuestionAttributes:
         if not isinstance(self.match, Unset):
             match = self.match.value
 
-
         answers: list[dict[str, Any]] | Unset = UNSET
         if not isinstance(self.answers, Unset):
             answers = []
@@ -95,19 +81,15 @@ class CompanyQuestionAttributes:
                 answers_item = answers_item_data.to_dict()
                 answers.append(answers_item)
 
-
-
         url: None | str | Unset
         if isinstance(self.url, Unset):
             url = UNSET
         else:
             url = self.url
 
-
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({
-        })
+        field_dict.update({})
         if question is not UNSET:
             field_dict["question"] = question
         if asked_at is not UNSET:
@@ -129,13 +111,15 @@ class CompanyQuestionAttributes:
 
         return field_dict
 
-
-
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
-        from ..models.company_question_attributes_answers_item import CompanyQuestionAttributesAnswersItem # noqa: PLC0415
-        from ..models.company_question_person import CompanyQuestionPerson # noqa: PLC0415
+        from ..models.company_question_attributes_answers_item import (
+            CompanyQuestionAttributesAnswersItem,  # noqa: PLC0415
+        )
+        from ..models.company_question_person import CompanyQuestionPerson  # noqa: PLC0415
+
         d = dict(src_dict)
+
         def _parse_question(data: object) -> None | str | Unset:
             if data is None:
                 return data
@@ -144,7 +128,6 @@ class CompanyQuestionAttributes:
             return cast(None | str | Unset, data)
 
         question = _parse_question(d.pop("question", UNSET))
-
 
         def _parse_asked_at(data: object) -> datetime.datetime | None | Unset:
             if data is None:
@@ -156,8 +139,6 @@ class CompanyQuestionAttributes:
                     raise TypeError()
                 asked_at_type_0 = datetime.datetime.fromisoformat(data)
 
-
-
                 return asked_at_type_0
             except (TypeError, ValueError, AttributeError, KeyError):
                 pass
@@ -165,16 +146,12 @@ class CompanyQuestionAttributes:
 
         asked_at = _parse_asked_at(d.pop("asked_at", UNSET))
 
-
         _asked_by = d.pop("asked_by", UNSET)
         asked_by: CompanyQuestionPerson | Unset
-        if isinstance(_asked_by,  Unset):
+        if isinstance(_asked_by, Unset):
             asked_by = UNSET
         else:
             asked_by = CompanyQuestionPerson.from_dict(_asked_by)
-
-
-
 
         likes_count = d.pop("likes_count", UNSET)
 
@@ -184,13 +161,10 @@ class CompanyQuestionAttributes:
 
         _match = d.pop("match", UNSET)
         match: CompanyQuestionAttributesMatch | Unset
-        if isinstance(_match,  Unset):
+        if isinstance(_match, Unset):
             match = UNSET
         else:
             match = CompanyQuestionAttributesMatch(_match)
-
-
-
 
         _answers = d.pop("answers", UNSET)
         answers: list[CompanyQuestionAttributesAnswersItem] | Unset = UNSET
@@ -199,10 +173,7 @@ class CompanyQuestionAttributes:
             for answers_item_data in _answers:
                 answers_item = CompanyQuestionAttributesAnswersItem.from_dict(answers_item_data)
 
-
-
                 answers.append(answers_item)
-
 
         def _parse_url(data: object) -> None | str | Unset:
             if data is None:
@@ -212,7 +183,6 @@ class CompanyQuestionAttributes:
             return cast(None | str | Unset, data)
 
         url = _parse_url(d.pop("url", UNSET))
-
 
         company_question_attributes = cls(
             question=question,
@@ -225,7 +195,6 @@ class CompanyQuestionAttributes:
             answers=answers,
             url=url,
         )
-
 
         company_question_attributes.additional_properties = d
         return company_question_attributes

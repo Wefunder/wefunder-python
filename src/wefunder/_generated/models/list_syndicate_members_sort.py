@@ -1,5 +1,6 @@
 from enum import StrEnum
 
+
 class ListSyndicateMembersSort(StrEnum):
     ALPHABETICAL = "alphabetical"
     LAST_ACTIVITY = "last_activity"

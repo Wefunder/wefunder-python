@@ -1,5 +1,6 @@
 from enum import StrEnum
 
+
 class PastRoundSource(StrEnum):
     REPORTED = "reported"
     WEFUNDER = "wefunder"

@@ -1,41 +1,32 @@
 from __future__ import annotations
 
+import datetime
 from collections.abc import Mapping
-from typing import Any, TypeVar, BinaryIO, TextIO, TYPE_CHECKING, Generator
+from typing import Any, TypeVar, cast
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
 from ..types import UNSET, Unset
 
-from ..types import UNSET, Unset
-from typing import cast
-import datetime
-
-
-
-
-
-
 T = TypeVar("T", bound="CampaignAttributes")
-
 
 
 @_attrs_define
 class CampaignAttributes:
-    """ 
-        Attributes:
-            state (str | Unset):  Example: active.
-            company_id (int | Unset): Internal integer id. Deprecated — use `company` (`co_...`) instead. Example: 101.
-            company (None | str | Unset): The company's id (`co_...`). Example: co_8Kd0aB3xQ9k2vF8mNp1zT5wY.
-            company_name (str | Unset):  Example: My Startup Inc..
-            company_url (None | str | Unset):  Example: my-startup-inc.
-            created_at (datetime.datetime | Unset):  Example: 2023-01-10T09:00:00Z.
-            updated_at (datetime.datetime | Unset):  Example: 2023-03-15T14:30:00Z.
-            closed_at (datetime.datetime | None | Unset):  Example: 2023-06-30T23:59:59Z.
-            amount_raised (float | None | Unset):  Example: 25000.
-            investor_count (int | Unset):  Example: 42.
-     """
+    """
+    Attributes:
+        state (str | Unset):  Example: active.
+        company_id (int | Unset): Internal integer id. Deprecated — use `company` (`co_...`) instead. Example: 101.
+        company (None | str | Unset): The company's id (`co_...`). Example: co_8Kd0aB3xQ9k2vF8mNp1zT5wY.
+        company_name (str | Unset):  Example: My Startup Inc..
+        company_url (None | str | Unset):  Example: my-startup-inc.
+        created_at (datetime.datetime | Unset):  Example: 2023-01-10T09:00:00Z.
+        updated_at (datetime.datetime | Unset):  Example: 2023-03-15T14:30:00Z.
+        closed_at (datetime.datetime | None | Unset):  Example: 2023-06-30T23:59:59Z.
+        amount_raised (float | None | Unset):  Example: 25000.
+        investor_count (int | Unset):  Example: 42.
+    """
 
     state: str | Unset = UNSET
     company_id: int | Unset = UNSET
@@ -48,10 +39,6 @@ class CampaignAttributes:
     amount_raised: float | None | Unset = UNSET
     investor_count: int | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
-
-
-
-
 
     def to_dict(self) -> dict[str, Any]:
         state = self.state
@@ -96,11 +83,9 @@ class CampaignAttributes:
 
         investor_count = self.investor_count
 
-
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({
-        })
+        field_dict.update({})
         if state is not UNSET:
             field_dict["state"] = state
         if company_id is not UNSET:
@@ -124,8 +109,6 @@ class CampaignAttributes:
 
         return field_dict
 
-
-
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
@@ -142,7 +125,6 @@ class CampaignAttributes:
 
         company = _parse_company(d.pop("company", UNSET))
 
-
         company_name = d.pop("company_name", UNSET)
 
         def _parse_company_url(data: object) -> None | str | Unset:
@@ -154,26 +136,19 @@ class CampaignAttributes:
 
         company_url = _parse_company_url(d.pop("company_url", UNSET))
 
-
         _created_at = d.pop("created_at", UNSET)
         created_at: datetime.datetime | Unset
-        if isinstance(_created_at,  Unset):
+        if isinstance(_created_at, Unset):
             created_at = UNSET
         else:
             created_at = datetime.datetime.fromisoformat(_created_at)
 
-
-
-
         _updated_at = d.pop("updated_at", UNSET)
         updated_at: datetime.datetime | Unset
-        if isinstance(_updated_at,  Unset):
+        if isinstance(_updated_at, Unset):
             updated_at = UNSET
         else:
             updated_at = datetime.datetime.fromisoformat(_updated_at)
-
-
-
 
         def _parse_closed_at(data: object) -> datetime.datetime | None | Unset:
             if data is None:
@@ -185,15 +160,12 @@ class CampaignAttributes:
                     raise TypeError()
                 closed_at_type_0 = datetime.datetime.fromisoformat(data)
 
-
-
                 return closed_at_type_0
             except (TypeError, ValueError, AttributeError, KeyError):
                 pass
             return cast(datetime.datetime | None | Unset, data)
 
         closed_at = _parse_closed_at(d.pop("closed_at", UNSET))
-
 
         def _parse_amount_raised(data: object) -> float | None | Unset:
             if data is None:
@@ -203,7 +175,6 @@ class CampaignAttributes:
             return cast(float | None | Unset, data)
 
         amount_raised = _parse_amount_raised(d.pop("amount_raised", UNSET))
-
 
         investor_count = d.pop("investor_count", UNSET)
 
@@ -219,7 +190,6 @@ class CampaignAttributes:
             amount_raised=amount_raised,
             investor_count=investor_count,
         )
-
 
         campaign_attributes.additional_properties = d
         return campaign_attributes

@@ -1,47 +1,35 @@
 from __future__ import annotations
 
 from collections.abc import Mapping
-from typing import Any, TypeVar, BinaryIO, TextIO, TYPE_CHECKING, Generator
+from typing import TYPE_CHECKING, Any, TypeVar
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
 from ..types import UNSET, Unset
 
-from ..types import UNSET, Unset
-from typing import cast
-
 if TYPE_CHECKING:
-  from ..models.spv_attributes import SpvAttributes
-
-
-
+    from ..models.spv_attributes import SpvAttributes
 
 
 T = TypeVar("T", bound="Spv")
 
 
-
 @_attrs_define
 class Spv:
-    """ 
-        Attributes:
-            id (str | Unset):  Example: spv_abc123.
-            type_ (str | Unset):  Example: spv.
-            attributes (SpvAttributes | Unset):
-     """
+    """
+    Attributes:
+        id (str | Unset):  Example: spv_abc123.
+        type_ (str | Unset):  Example: spv.
+        attributes (SpvAttributes | Unset):
+    """
 
     id: str | Unset = UNSET
     type_: str | Unset = UNSET
     attributes: SpvAttributes | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
-
-
-
-
     def to_dict(self) -> dict[str, Any]:
-        from ..models.spv_attributes import SpvAttributes # noqa: PLC0415
         id = self.id
 
         type_ = self.type_
@@ -50,11 +38,9 @@ class Spv:
         if not isinstance(self.attributes, Unset):
             attributes = self.attributes.to_dict()
 
-
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({
-        })
+        field_dict.update({})
         if id is not UNSET:
             field_dict["id"] = id
         if type_ is not UNSET:
@@ -64,11 +50,10 @@ class Spv:
 
         return field_dict
 
-
-
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
-        from ..models.spv_attributes import SpvAttributes # noqa: PLC0415
+        from ..models.spv_attributes import SpvAttributes  # noqa: PLC0415
+
         d = dict(src_dict)
         id = d.pop("id", UNSET)
 
@@ -76,20 +61,16 @@ class Spv:
 
         _attributes = d.pop("attributes", UNSET)
         attributes: SpvAttributes | Unset
-        if isinstance(_attributes,  Unset):
+        if isinstance(_attributes, Unset):
             attributes = UNSET
         else:
             attributes = SpvAttributes.from_dict(_attributes)
-
-
-
 
         spv = cls(
             id=id,
             type_=type_,
             attributes=attributes,
         )
-
 
         spv.additional_properties = d
         return spv

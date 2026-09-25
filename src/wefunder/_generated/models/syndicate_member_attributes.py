@@ -1,78 +1,69 @@
 from __future__ import annotations
 
+import datetime
 from collections.abc import Mapping
-from typing import Any, TypeVar, BinaryIO, TextIO, TYPE_CHECKING, Generator
+from typing import Any, TypeVar, cast
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
-from ..types import UNSET, Unset
-
 from ..models.syndicate_member_attributes_syndicate_permission import SyndicateMemberAttributesSyndicatePermission
 from ..types import UNSET, Unset
-from typing import cast
-import datetime
-
-
-
-
-
 
 T = TypeVar("T", bound="SyndicateMemberAttributes")
 
 
-
 @_attrs_define
 class SyndicateMemberAttributes:
-    """ 
-        Attributes:
-            user_id (int | None | Unset): Internal integer id. Deprecated — use `user` (`usr_...`) instead. Example: 123.
-            user (None | str | Unset): The member's user id (`usr_...`); null for invitees who haven't signed up. Example:
-                usr_8Kd0aB3xQ9k2vF8mNp1zT5wY.
-            user_name (None | str | Unset):  Example: Jane Smith.
-            user_email (None | str | Unset): **Moderator-only.** User email (or invite_email for pending invitees).
-                Returns null for non-moderator callers. Requires the requesting user
-                to be a manager/operator of the syndicate.
-                 Example: user@example.com.
-            role (str | Unset): Current role (creator, manager, member, invitee, applicant, exiled, resigned, etc.) Example:
-                member.
-            invite_role (None | str | Unset): The role the member was invited as Example: admin.
-            syndicate_permission (SyndicateMemberAttributesSyndicatePermission | Unset): Permission level within the
-                syndicate
-            title (None | str | Unset): Custom title for the member Example: Example title.
-            sort_order (int | None | Unset): Display order position Example: 5.
-            carry_percentage_override (int | None | Unset): Override carry percentage for this member Example: 20.
-            avatar_url (None | str | Unset): User profile photo URL (null for invitees without a user account) Example:
-                https://uploads.wefunder.com/uploads/user/avatar/456/large_photo.jpg.
-            bio (None | str | Unset): User bio with fallback chain (bio -> thesis -> about). Null for invitees without a
-                user account. Example: Example text.
-            city (None | str | Unset): User's city Example: San Francisco.
-            country (None | str | Unset): User's country Example: US.
-            last_activity_at (datetime.datetime | None | Unset): ISO 8601 timestamp of user's last login. Null for invitees
-                without a user account. Example: 2025-03-01T12:00:00Z.
-            profile_url (None | str | Unset): Relative path to user's profile (e.g. '/janedoe'). Null for invitees without a
-                user account. Example: /janedoe.
-            tags (list[str] | Unset): 'Can help with' tags from the user's investor profile. Empty array for invitees.
-                Example: ['Fundraising', 'Product Strategy'].
-            joined_at (datetime.datetime | Unset): ISO 8601 join date (alias for created_at) Example: 2025-03-01T12:00:00Z.
-            investment_total (None | str | Unset): Total amount invested in syndicate deals, in cents. String to avoid
-                floating-point precision issues. Example: 500000.
-            deal_count (int | None | Unset): Number of syndicate deals the member has invested in Example: 2.
-            accredited (bool | Unset): **Moderator-only.** Whether the user is an accredited investor.
-                Only included when the requesting user is a manager/operator.
-                 Example: True.
-            legal_name (None | str | Unset): **Moderator-only.** Full legal name of the user.
-                Only included when the requesting user is a manager/operator.
-                 Example: Example Name.
-            starred (bool | Unset): **Moderator-only.** Whether the current moderator has starred this member.
-                Only included when the requesting user is a manager/operator.
-                 Example: True.
-            private_tags (list[str] | Unset): **Moderator-only.** Labels assigned by moderators via ClubMemberLabel.
-                Only included when the requesting user is a manager/operator.
-                 Example: ['VIP', 'Follow up'].
-            created_at (datetime.datetime | Unset):  Example: 2025-03-01T12:00:00Z.
-            updated_at (datetime.datetime | Unset):  Example: 2025-03-01T12:00:00Z.
-     """
+    """
+    Attributes:
+        user_id (int | None | Unset): Internal integer id. Deprecated — use `user` (`usr_...`) instead. Example: 123.
+        user (None | str | Unset): The member's user id (`usr_...`); null for invitees who haven't signed up. Example:
+            usr_8Kd0aB3xQ9k2vF8mNp1zT5wY.
+        user_name (None | str | Unset):  Example: Jane Smith.
+        user_email (None | str | Unset): **Moderator-only.** User email (or invite_email for pending invitees).
+            Returns null for non-moderator callers. Requires the requesting user
+            to be a manager/operator of the syndicate.
+             Example: user@example.com.
+        role (str | Unset): Current role (creator, manager, member, invitee, applicant, exiled, resigned, etc.) Example:
+            member.
+        invite_role (None | str | Unset): The role the member was invited as Example: admin.
+        syndicate_permission (SyndicateMemberAttributesSyndicatePermission | Unset): Permission level within the
+            syndicate
+        title (None | str | Unset): Custom title for the member Example: Example title.
+        sort_order (int | None | Unset): Display order position Example: 5.
+        carry_percentage_override (int | None | Unset): Override carry percentage for this member Example: 20.
+        avatar_url (None | str | Unset): User profile photo URL (null for invitees without a user account) Example:
+            https://uploads.wefunder.com/uploads/user/avatar/456/large_photo.jpg.
+        bio (None | str | Unset): User bio with fallback chain (bio -> thesis -> about). Null for invitees without a
+            user account. Example: Example text.
+        city (None | str | Unset): User's city Example: San Francisco.
+        country (None | str | Unset): User's country Example: US.
+        last_activity_at (datetime.datetime | None | Unset): ISO 8601 timestamp of user's last login. Null for invitees
+            without a user account. Example: 2025-03-01T12:00:00Z.
+        profile_url (None | str | Unset): Relative path to user's profile (e.g. '/janedoe'). Null for invitees without a
+            user account. Example: /janedoe.
+        tags (list[str] | Unset): 'Can help with' tags from the user's investor profile. Empty array for invitees.
+            Example: ['Fundraising', 'Product Strategy'].
+        joined_at (datetime.datetime | Unset): ISO 8601 join date (alias for created_at) Example: 2025-03-01T12:00:00Z.
+        investment_total (None | str | Unset): Total amount invested in syndicate deals, in cents. String to avoid
+            floating-point precision issues. Example: 500000.
+        deal_count (int | None | Unset): Number of syndicate deals the member has invested in Example: 2.
+        accredited (bool | Unset): **Moderator-only.** Whether the user is an accredited investor.
+            Only included when the requesting user is a manager/operator.
+             Example: True.
+        legal_name (None | str | Unset): **Moderator-only.** Full legal name of the user.
+            Only included when the requesting user is a manager/operator.
+             Example: Example Name.
+        starred (bool | Unset): **Moderator-only.** Whether the current moderator has starred this member.
+            Only included when the requesting user is a manager/operator.
+             Example: True.
+        private_tags (list[str] | Unset): **Moderator-only.** Labels assigned by moderators via ClubMemberLabel.
+            Only included when the requesting user is a manager/operator.
+             Example: ['VIP', 'Follow up'].
+        created_at (datetime.datetime | Unset):  Example: 2025-03-01T12:00:00Z.
+        updated_at (datetime.datetime | Unset):  Example: 2025-03-01T12:00:00Z.
+    """
 
     user_id: int | None | Unset = UNSET
     user: None | str | Unset = UNSET
@@ -101,10 +92,6 @@ class SyndicateMemberAttributes:
     created_at: datetime.datetime | Unset = UNSET
     updated_at: datetime.datetime | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
-
-
-
-
 
     def to_dict(self) -> dict[str, Any]:
         user_id: int | None | Unset
@@ -142,7 +129,6 @@ class SyndicateMemberAttributes:
         syndicate_permission: str | Unset = UNSET
         if not isinstance(self.syndicate_permission, Unset):
             syndicate_permission = self.syndicate_permission.value
-
 
         title: None | str | Unset
         if isinstance(self.title, Unset):
@@ -204,8 +190,6 @@ class SyndicateMemberAttributes:
         if not isinstance(self.tags, Unset):
             tags = self.tags
 
-
-
         joined_at: str | Unset = UNSET
         if not isinstance(self.joined_at, Unset):
             joined_at = self.joined_at.isoformat()
@@ -236,8 +220,6 @@ class SyndicateMemberAttributes:
         if not isinstance(self.private_tags, Unset):
             private_tags = self.private_tags
 
-
-
         created_at: str | Unset = UNSET
         if not isinstance(self.created_at, Unset):
             created_at = self.created_at.isoformat()
@@ -246,11 +228,9 @@ class SyndicateMemberAttributes:
         if not isinstance(self.updated_at, Unset):
             updated_at = self.updated_at.isoformat()
 
-
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({
-        })
+        field_dict.update({})
         if user_id is not UNSET:
             field_dict["user_id"] = user_id
         if user is not UNSET:
@@ -306,11 +286,10 @@ class SyndicateMemberAttributes:
 
         return field_dict
 
-
-
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
+
         def _parse_user_id(data: object) -> int | None | Unset:
             if data is None:
                 return data
@@ -319,7 +298,6 @@ class SyndicateMemberAttributes:
             return cast(int | None | Unset, data)
 
         user_id = _parse_user_id(d.pop("user_id", UNSET))
-
 
         def _parse_user(data: object) -> None | str | Unset:
             if data is None:
@@ -330,7 +308,6 @@ class SyndicateMemberAttributes:
 
         user = _parse_user(d.pop("user", UNSET))
 
-
         def _parse_user_name(data: object) -> None | str | Unset:
             if data is None:
                 return data
@@ -340,7 +317,6 @@ class SyndicateMemberAttributes:
 
         user_name = _parse_user_name(d.pop("user_name", UNSET))
 
-
         def _parse_user_email(data: object) -> None | str | Unset:
             if data is None:
                 return data
@@ -349,7 +325,6 @@ class SyndicateMemberAttributes:
             return cast(None | str | Unset, data)
 
         user_email = _parse_user_email(d.pop("user_email", UNSET))
-
 
         role = d.pop("role", UNSET)
 
@@ -362,16 +337,12 @@ class SyndicateMemberAttributes:
 
         invite_role = _parse_invite_role(d.pop("invite_role", UNSET))
 
-
         _syndicate_permission = d.pop("syndicate_permission", UNSET)
         syndicate_permission: SyndicateMemberAttributesSyndicatePermission | Unset
-        if isinstance(_syndicate_permission,  Unset):
+        if isinstance(_syndicate_permission, Unset):
             syndicate_permission = UNSET
         else:
             syndicate_permission = SyndicateMemberAttributesSyndicatePermission(_syndicate_permission)
-
-
-
 
         def _parse_title(data: object) -> None | str | Unset:
             if data is None:
@@ -382,7 +353,6 @@ class SyndicateMemberAttributes:
 
         title = _parse_title(d.pop("title", UNSET))
 
-
         def _parse_sort_order(data: object) -> int | None | Unset:
             if data is None:
                 return data
@@ -391,7 +361,6 @@ class SyndicateMemberAttributes:
             return cast(int | None | Unset, data)
 
         sort_order = _parse_sort_order(d.pop("sort_order", UNSET))
-
 
         def _parse_carry_percentage_override(data: object) -> int | None | Unset:
             if data is None:
@@ -402,7 +371,6 @@ class SyndicateMemberAttributes:
 
         carry_percentage_override = _parse_carry_percentage_override(d.pop("carry_percentage_override", UNSET))
 
-
         def _parse_avatar_url(data: object) -> None | str | Unset:
             if data is None:
                 return data
@@ -411,7 +379,6 @@ class SyndicateMemberAttributes:
             return cast(None | str | Unset, data)
 
         avatar_url = _parse_avatar_url(d.pop("avatar_url", UNSET))
-
 
         def _parse_bio(data: object) -> None | str | Unset:
             if data is None:
@@ -422,7 +389,6 @@ class SyndicateMemberAttributes:
 
         bio = _parse_bio(d.pop("bio", UNSET))
 
-
         def _parse_city(data: object) -> None | str | Unset:
             if data is None:
                 return data
@@ -432,7 +398,6 @@ class SyndicateMemberAttributes:
 
         city = _parse_city(d.pop("city", UNSET))
 
-
         def _parse_country(data: object) -> None | str | Unset:
             if data is None:
                 return data
@@ -441,7 +406,6 @@ class SyndicateMemberAttributes:
             return cast(None | str | Unset, data)
 
         country = _parse_country(d.pop("country", UNSET))
-
 
         def _parse_last_activity_at(data: object) -> datetime.datetime | None | Unset:
             if data is None:
@@ -453,15 +417,12 @@ class SyndicateMemberAttributes:
                     raise TypeError()
                 last_activity_at_type_0 = datetime.datetime.fromisoformat(data)
 
-
-
                 return last_activity_at_type_0
             except (TypeError, ValueError, AttributeError, KeyError):
                 pass
             return cast(datetime.datetime | None | Unset, data)
 
         last_activity_at = _parse_last_activity_at(d.pop("last_activity_at", UNSET))
-
 
         def _parse_profile_url(data: object) -> None | str | Unset:
             if data is None:
@@ -472,19 +433,14 @@ class SyndicateMemberAttributes:
 
         profile_url = _parse_profile_url(d.pop("profile_url", UNSET))
 
-
         tags = cast(list[str], d.pop("tags", UNSET))
-
 
         _joined_at = d.pop("joined_at", UNSET)
         joined_at: datetime.datetime | Unset
-        if isinstance(_joined_at,  Unset):
+        if isinstance(_joined_at, Unset):
             joined_at = UNSET
         else:
             joined_at = datetime.datetime.fromisoformat(_joined_at)
-
-
-
 
         def _parse_investment_total(data: object) -> None | str | Unset:
             if data is None:
@@ -495,7 +451,6 @@ class SyndicateMemberAttributes:
 
         investment_total = _parse_investment_total(d.pop("investment_total", UNSET))
 
-
         def _parse_deal_count(data: object) -> int | None | Unset:
             if data is None:
                 return data
@@ -504,7 +459,6 @@ class SyndicateMemberAttributes:
             return cast(int | None | Unset, data)
 
         deal_count = _parse_deal_count(d.pop("deal_count", UNSET))
-
 
         accredited = d.pop("accredited", UNSET)
 
@@ -517,31 +471,23 @@ class SyndicateMemberAttributes:
 
         legal_name = _parse_legal_name(d.pop("legal_name", UNSET))
 
-
         starred = d.pop("starred", UNSET)
 
         private_tags = cast(list[str], d.pop("private_tags", UNSET))
 
-
         _created_at = d.pop("created_at", UNSET)
         created_at: datetime.datetime | Unset
-        if isinstance(_created_at,  Unset):
+        if isinstance(_created_at, Unset):
             created_at = UNSET
         else:
             created_at = datetime.datetime.fromisoformat(_created_at)
 
-
-
-
         _updated_at = d.pop("updated_at", UNSET)
         updated_at: datetime.datetime | Unset
-        if isinstance(_updated_at,  Unset):
+        if isinstance(_updated_at, Unset):
             updated_at = UNSET
         else:
             updated_at = datetime.datetime.fromisoformat(_updated_at)
-
-
-
 
         syndicate_member_attributes = cls(
             user_id=user_id,
@@ -571,7 +517,6 @@ class SyndicateMemberAttributes:
             created_at=created_at,
             updated_at=updated_at,
         )
-
 
         syndicate_member_attributes.additional_properties = d
         return syndicate_member_attributes

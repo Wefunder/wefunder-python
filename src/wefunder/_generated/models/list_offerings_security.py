@@ -1,5 +1,6 @@
 from enum import StrEnum
 
+
 class ListOfferingsSecurity(StrEnum):
     CONVERTIBLE_NOTE = "convertible_note"
     DEBT = "debt"

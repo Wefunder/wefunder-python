@@ -1,5 +1,6 @@
 from enum import StrEnum
 
+
 class ConvertibleNoteSecurityType(StrEnum):
     CONVERTIBLE_NOTE = "convertible_note"
 

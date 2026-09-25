@@ -4,27 +4,19 @@ from urllib.parse import quote
 
 import httpx
 
-from ...client import AuthenticatedClient, Client
-from ...types import Response, UNSET
 from ... import errors
-
+from ...client import AuthenticatedClient, Client
 from ...models.company_disclosures_envelope import CompanyDisclosuresEnvelope
 from ...models.error import Error
 from ...models.get_company_disclosures_sections_item import GetCompanyDisclosuresSectionsItem
-from ...types import UNSET, Unset
-from typing import cast
-
+from ...types import UNSET, Response, Unset
 
 
 def _get_kwargs(
     id: str,
     *,
     sections: list[GetCompanyDisclosuresSectionsItem] | Unset = UNSET,
-
 ) -> dict[str, Any]:
-    
-
-    
 
     params: dict[str, Any] = {}
 
@@ -35,29 +27,26 @@ def _get_kwargs(
             sections_item = sections_item_data.value
             json_sections.append(sections_item)
 
-
     params["sections"] = json_sections
-
 
     params = {k: v for k, v in params.items() if v is not UNSET and v is not None}
 
-
     _kwargs: dict[str, Any] = {
         "method": "get",
-        "url": "/companies/{id}/disclosures".format(id=quote(str(id), safe=""),),
+        "url": "/companies/{id}/disclosures".format(
+            id=quote(str(id), safe=""),
+        ),
         "params": params,
     }
-
 
     return _kwargs
 
 
-
-def _parse_response(*, client: AuthenticatedClient | Client, response: httpx.Response) -> Any | CompanyDisclosuresEnvelope | Error | None:
+def _parse_response(
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Any | CompanyDisclosuresEnvelope | Error | None:
     if response.status_code == 200:
         response_200 = CompanyDisclosuresEnvelope.from_dict(response.json())
-
-
 
         return response_200
 
@@ -68,8 +57,6 @@ def _parse_response(*, client: AuthenticatedClient | Client, response: httpx.Res
     if response.status_code == 401:
         response_401 = Error.from_dict(response.json())
 
-
-
         return response_401
 
     if response.status_code == 404:
@@ -79,8 +66,6 @@ def _parse_response(*, client: AuthenticatedClient | Client, response: httpx.Res
     if response.status_code == 429:
         response_429 = Error.from_dict(response.json())
 
-
-
         return response_429
 
     if client.raise_on_unexpected_status:
@@ -89,7 +74,9 @@ def _parse_response(*, client: AuthenticatedClient | Client, response: httpx.Res
         return None
 
 
-def _build_response(*, client: AuthenticatedClient | Client, response: httpx.Response) -> Response[Any | CompanyDisclosuresEnvelope | Error]:
+def _build_response(
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Response[Any | CompanyDisclosuresEnvelope | Error]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -103,9 +90,8 @@ def sync_detailed(
     *,
     client: AuthenticatedClient,
     sections: list[GetCompanyDisclosuresSectionsItem] | Unset = UNSET,
-
 ) -> Response[Any | CompanyDisclosuresEnvelope | Error]:
-    """ Get a company's public Form C disclosures
+    """Get a company's public Form C disclosures
 
      The Details tab of the company's Wefunder page as structured data — the company's own
     Form C disclosures, section for section: financial statements for the fiscal years on
@@ -133,13 +119,11 @@ def sync_detailed(
 
     Returns:
         Response[Any | CompanyDisclosuresEnvelope | Error]
-     """
-
+    """
 
     kwargs = _get_kwargs(
         id=id,
-sections=sections,
-
+        sections=sections,
     )
 
     response = client.get_httpx_client().request(
@@ -148,14 +132,14 @@ sections=sections,
 
     return _build_response(client=client, response=response)
 
+
 def sync(
     id: str,
     *,
     client: AuthenticatedClient,
     sections: list[GetCompanyDisclosuresSectionsItem] | Unset = UNSET,
-
 ) -> Any | CompanyDisclosuresEnvelope | Error | None:
-    """ Get a company's public Form C disclosures
+    """Get a company's public Form C disclosures
 
      The Details tab of the company's Wefunder page as structured data — the company's own
     Form C disclosures, section for section: financial statements for the fiscal years on
@@ -183,24 +167,22 @@ def sync(
 
     Returns:
         Any | CompanyDisclosuresEnvelope | Error
-     """
-
+    """
 
     return sync_detailed(
         id=id,
-client=client,
-sections=sections,
-
+        client=client,
+        sections=sections,
     ).parsed
+
 
 async def asyncio_detailed(
     id: str,
     *,
     client: AuthenticatedClient,
     sections: list[GetCompanyDisclosuresSectionsItem] | Unset = UNSET,
-
 ) -> Response[Any | CompanyDisclosuresEnvelope | Error]:
-    """ Get a company's public Form C disclosures
+    """Get a company's public Form C disclosures
 
      The Details tab of the company's Wefunder page as structured data — the company's own
     Form C disclosures, section for section: financial statements for the fiscal years on
@@ -228,29 +210,25 @@ async def asyncio_detailed(
 
     Returns:
         Response[Any | CompanyDisclosuresEnvelope | Error]
-     """
-
+    """
 
     kwargs = _get_kwargs(
         id=id,
-sections=sections,
-
+        sections=sections,
     )
 
-    response = await client.get_async_httpx_client().request(
-        **kwargs
-    )
+    response = await client.get_async_httpx_client().request(**kwargs)
 
     return _build_response(client=client, response=response)
+
 
 async def asyncio(
     id: str,
     *,
     client: AuthenticatedClient,
     sections: list[GetCompanyDisclosuresSectionsItem] | Unset = UNSET,
-
 ) -> Any | CompanyDisclosuresEnvelope | Error | None:
-    """ Get a company's public Form C disclosures
+    """Get a company's public Form C disclosures
 
      The Details tab of the company's Wefunder page as structured data — the company's own
     Form C disclosures, section for section: financial statements for the fiscal years on
@@ -278,12 +256,12 @@ async def asyncio(
 
     Returns:
         Any | CompanyDisclosuresEnvelope | Error
-     """
+    """
 
-
-    return (await asyncio_detailed(
-        id=id,
-client=client,
-sections=sections,
-
-    )).parsed
+    return (
+        await asyncio_detailed(
+            id=id,
+            client=client,
+            sections=sections,
+        )
+    ).parsed

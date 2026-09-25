@@ -1,43 +1,34 @@
 from __future__ import annotations
 
+import datetime
 from collections.abc import Mapping
-from typing import Any, TypeVar, BinaryIO, TextIO, TYPE_CHECKING, Generator
+from typing import Any, TypeVar, cast
+from uuid import UUID
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
-from ..types import UNSET, Unset
-
 from ..models.webhook_delivery_status import WebhookDeliveryStatus
 from ..types import UNSET, Unset
-from typing import cast
-from uuid import UUID
-import datetime
-
-
-
-
-
 
 T = TypeVar("T", bound="WebhookDelivery")
 
 
-
 @_attrs_define
 class WebhookDelivery:
-    """ A single webhook delivery attempt
+    """A single webhook delivery attempt
 
-        Attributes:
-            id (int | Unset):  Example: 456.
-            delivery_uuid (UUID | Unset): Unique delivery identifier (use for idempotency) Example:
-                f47ac10b-58cc-4372-a567-0e02b2c3d479.
-            event_type (str | Unset): The event that triggered this delivery Example: investment.applied.
-            status (WebhookDeliveryStatus | Unset):  Example: delivered.
-            attempts (int | Unset): Number of delivery attempts Example: 1.
-            response_code (int | None | Unset): HTTP status code from the last attempt Example: 200.
-            last_attempt_at (datetime.datetime | None | Unset):  Example: 2025-03-15T10:31:00Z.
-            created_at (datetime.datetime | Unset):  Example: 2025-03-15T10:30:00Z.
-     """
+    Attributes:
+        id (int | Unset):  Example: 456.
+        delivery_uuid (UUID | Unset): Unique delivery identifier (use for idempotency) Example:
+            f47ac10b-58cc-4372-a567-0e02b2c3d479.
+        event_type (str | Unset): The event that triggered this delivery Example: investment.applied.
+        status (WebhookDeliveryStatus | Unset):  Example: delivered.
+        attempts (int | Unset): Number of delivery attempts Example: 1.
+        response_code (int | None | Unset): HTTP status code from the last attempt Example: 200.
+        last_attempt_at (datetime.datetime | None | Unset):  Example: 2025-03-15T10:31:00Z.
+        created_at (datetime.datetime | Unset):  Example: 2025-03-15T10:30:00Z.
+    """
 
     id: int | Unset = UNSET
     delivery_uuid: UUID | Unset = UNSET
@@ -48,10 +39,6 @@ class WebhookDelivery:
     last_attempt_at: datetime.datetime | None | Unset = UNSET
     created_at: datetime.datetime | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
-
-
-
-
 
     def to_dict(self) -> dict[str, Any]:
         id = self.id
@@ -65,7 +52,6 @@ class WebhookDelivery:
         status: str | Unset = UNSET
         if not isinstance(self.status, Unset):
             status = self.status.value
-
 
         attempts = self.attempts
 
@@ -87,11 +73,9 @@ class WebhookDelivery:
         if not isinstance(self.created_at, Unset):
             created_at = self.created_at.isoformat()
 
-
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({
-        })
+        field_dict.update({})
         if id is not UNSET:
             field_dict["id"] = id
         if delivery_uuid is not UNSET:
@@ -111,8 +95,6 @@ class WebhookDelivery:
 
         return field_dict
 
-
-
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
@@ -120,25 +102,19 @@ class WebhookDelivery:
 
         _delivery_uuid = d.pop("delivery_uuid", UNSET)
         delivery_uuid: UUID | Unset
-        if isinstance(_delivery_uuid,  Unset):
+        if isinstance(_delivery_uuid, Unset):
             delivery_uuid = UNSET
         else:
             delivery_uuid = UUID(_delivery_uuid)
-
-
-
 
         event_type = d.pop("event_type", UNSET)
 
         _status = d.pop("status", UNSET)
         status: WebhookDeliveryStatus | Unset
-        if isinstance(_status,  Unset):
+        if isinstance(_status, Unset):
             status = UNSET
         else:
             status = WebhookDeliveryStatus(_status)
-
-
-
 
         attempts = d.pop("attempts", UNSET)
 
@@ -151,7 +127,6 @@ class WebhookDelivery:
 
         response_code = _parse_response_code(d.pop("response_code", UNSET))
 
-
         def _parse_last_attempt_at(data: object) -> datetime.datetime | None | Unset:
             if data is None:
                 return data
@@ -162,8 +137,6 @@ class WebhookDelivery:
                     raise TypeError()
                 last_attempt_at_type_0 = datetime.datetime.fromisoformat(data)
 
-
-
                 return last_attempt_at_type_0
             except (TypeError, ValueError, AttributeError, KeyError):
                 pass
@@ -171,16 +144,12 @@ class WebhookDelivery:
 
         last_attempt_at = _parse_last_attempt_at(d.pop("last_attempt_at", UNSET))
 
-
         _created_at = d.pop("created_at", UNSET)
         created_at: datetime.datetime | Unset
-        if isinstance(_created_at,  Unset):
+        if isinstance(_created_at, Unset):
             created_at = UNSET
         else:
             created_at = datetime.datetime.fromisoformat(_created_at)
-
-
-
 
         webhook_delivery = cls(
             id=id,
@@ -192,7 +161,6 @@ class WebhookDelivery:
             last_attempt_at=last_attempt_at,
             created_at=created_at,
         )
-
 
         webhook_delivery.additional_properties = d
         return webhook_delivery

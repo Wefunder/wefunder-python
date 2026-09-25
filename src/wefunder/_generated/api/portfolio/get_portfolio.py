@@ -1,30 +1,21 @@
 from http import HTTPStatus
-from typing import Any, cast
-from urllib.parse import quote
+from typing import Any
 
 import httpx
 
-from ...client import AuthenticatedClient, Client
-from ...types import Response, UNSET
 from ... import errors
-
+from ...client import AuthenticatedClient, Client
 from ...models.error import Error
 from ...models.get_portfolio_status import GetPortfolioStatus
 from ...models.portfolio_summary_envelope import PortfolioSummaryEnvelope
-from ...types import UNSET, Unset
-from typing import cast
-
+from ...types import UNSET, Response, Unset
 
 
 def _get_kwargs(
     *,
     status: GetPortfolioStatus | Unset = UNSET,
     company: str | Unset = UNSET,
-
 ) -> dict[str, Any]:
-    
-
-    
 
     params: dict[str, Any] = {}
 
@@ -36,9 +27,7 @@ def _get_kwargs(
 
     params["company"] = company
 
-
     params = {k: v for k, v in params.items() if v is not UNSET and v is not None}
-
 
     _kwargs: dict[str, Any] = {
         "method": "get",
@@ -46,37 +35,29 @@ def _get_kwargs(
         "params": params,
     }
 
-
     return _kwargs
 
 
-
-def _parse_response(*, client: AuthenticatedClient | Client, response: httpx.Response) -> Error | PortfolioSummaryEnvelope | None:
+def _parse_response(
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Error | PortfolioSummaryEnvelope | None:
     if response.status_code == 200:
         response_200 = PortfolioSummaryEnvelope.from_dict(response.json())
-
-
 
         return response_200
 
     if response.status_code == 401:
         response_401 = Error.from_dict(response.json())
 
-
-
         return response_401
 
     if response.status_code == 403:
         response_403 = Error.from_dict(response.json())
 
-
-
         return response_403
 
     if response.status_code == 429:
         response_429 = Error.from_dict(response.json())
-
-
 
         return response_429
 
@@ -86,7 +67,9 @@ def _parse_response(*, client: AuthenticatedClient | Client, response: httpx.Res
         return None
 
 
-def _build_response(*, client: AuthenticatedClient | Client, response: httpx.Response) -> Response[Error | PortfolioSummaryEnvelope]:
+def _build_response(
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Response[Error | PortfolioSummaryEnvelope]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -100,9 +83,8 @@ def sync_detailed(
     client: AuthenticatedClient,
     status: GetPortfolioStatus | Unset = UNSET,
     company: str | Unset = UNSET,
-
 ) -> Response[Error | PortfolioSummaryEnvelope]:
-    """ Get portfolio summary
+    """Get portfolio summary
 
      Returns totals across the authenticated investor's portfolio: cost basis,
     current value, realized and unrealized gains, and per-status position counts.
@@ -129,13 +111,11 @@ def sync_detailed(
 
     Returns:
         Response[Error | PortfolioSummaryEnvelope]
-     """
-
+    """
 
     kwargs = _get_kwargs(
         status=status,
-company=company,
-
+        company=company,
     )
 
     response = client.get_httpx_client().request(
@@ -144,14 +124,14 @@ company=company,
 
     return _build_response(client=client, response=response)
 
+
 def sync(
     *,
     client: AuthenticatedClient,
     status: GetPortfolioStatus | Unset = UNSET,
     company: str | Unset = UNSET,
-
 ) -> Error | PortfolioSummaryEnvelope | None:
-    """ Get portfolio summary
+    """Get portfolio summary
 
      Returns totals across the authenticated investor's portfolio: cost basis,
     current value, realized and unrealized gains, and per-status position counts.
@@ -178,24 +158,22 @@ def sync(
 
     Returns:
         Error | PortfolioSummaryEnvelope
-     """
-
+    """
 
     return sync_detailed(
         client=client,
-status=status,
-company=company,
-
+        status=status,
+        company=company,
     ).parsed
+
 
 async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
     status: GetPortfolioStatus | Unset = UNSET,
     company: str | Unset = UNSET,
-
 ) -> Response[Error | PortfolioSummaryEnvelope]:
-    """ Get portfolio summary
+    """Get portfolio summary
 
      Returns totals across the authenticated investor's portfolio: cost basis,
     current value, realized and unrealized gains, and per-status position counts.
@@ -222,29 +200,25 @@ async def asyncio_detailed(
 
     Returns:
         Response[Error | PortfolioSummaryEnvelope]
-     """
-
+    """
 
     kwargs = _get_kwargs(
         status=status,
-company=company,
-
+        company=company,
     )
 
-    response = await client.get_async_httpx_client().request(
-        **kwargs
-    )
+    response = await client.get_async_httpx_client().request(**kwargs)
 
     return _build_response(client=client, response=response)
+
 
 async def asyncio(
     *,
     client: AuthenticatedClient,
     status: GetPortfolioStatus | Unset = UNSET,
     company: str | Unset = UNSET,
-
 ) -> Error | PortfolioSummaryEnvelope | None:
-    """ Get portfolio summary
+    """Get portfolio summary
 
      Returns totals across the authenticated investor's portfolio: cost basis,
     current value, realized and unrealized gains, and per-status position counts.
@@ -271,12 +245,12 @@ async def asyncio(
 
     Returns:
         Error | PortfolioSummaryEnvelope
-     """
+    """
 
-
-    return (await asyncio_detailed(
-        client=client,
-status=status,
-company=company,
-
-    )).parsed
+    return (
+        await asyncio_detailed(
+            client=client,
+            status=status,
+            company=company,
+        )
+    ).parsed

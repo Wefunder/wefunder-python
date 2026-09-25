@@ -1,36 +1,27 @@
 from http import HTTPStatus
-from typing import Any, cast
+from typing import Any
 from urllib.parse import quote
 
 import httpx
 
-from ...client import AuthenticatedClient, Client
-from ...types import Response, UNSET
 from ... import errors
-
+from ...client import AuthenticatedClient, Client
 from ...models.error import Error
-from typing import cast
-
+from ...types import Response
 
 
 def _get_kwargs(
     syndicate_id: str,
-
 ) -> dict[str, Any]:
-    
-
-    
-
-    
 
     _kwargs: dict[str, Any] = {
         "method": "post",
-        "url": "/syndicates/{syndicate_id}/members/export_csv".format(syndicate_id=quote(str(syndicate_id), safe=""),),
+        "url": "/syndicates/{syndicate_id}/members/export_csv".format(
+            syndicate_id=quote(str(syndicate_id), safe=""),
+        ),
     }
 
-
     return _kwargs
-
 
 
 def _parse_response(*, client: AuthenticatedClient | Client, response: httpx.Response) -> Error | str | None:
@@ -41,14 +32,10 @@ def _parse_response(*, client: AuthenticatedClient | Client, response: httpx.Res
     if response.status_code == 401:
         response_401 = Error.from_dict(response.json())
 
-
-
         return response_401
 
     if response.status_code == 403:
         response_403 = Error.from_dict(response.json())
-
-
 
         return response_403
 
@@ -71,9 +58,8 @@ def sync_detailed(
     syndicate_id: str,
     *,
     client: AuthenticatedClient,
-
 ) -> Response[Error | str]:
-    """ Export members CSV
+    """Export members CSV
 
      Generate a CSV export of the member directory. Returns the CSV data directly
     with Content-Type text/csv. Requires operator permission.
@@ -87,12 +73,10 @@ def sync_detailed(
 
     Returns:
         Response[Error | str]
-     """
-
+    """
 
     kwargs = _get_kwargs(
         syndicate_id=syndicate_id,
-
     )
 
     response = client.get_httpx_client().request(
@@ -101,13 +85,13 @@ def sync_detailed(
 
     return _build_response(client=client, response=response)
 
+
 def sync(
     syndicate_id: str,
     *,
     client: AuthenticatedClient,
-
 ) -> Error | str | None:
-    """ Export members CSV
+    """Export members CSV
 
      Generate a CSV export of the member directory. Returns the CSV data directly
     with Content-Type text/csv. Requires operator permission.
@@ -121,22 +105,20 @@ def sync(
 
     Returns:
         Error | str
-     """
-
+    """
 
     return sync_detailed(
         syndicate_id=syndicate_id,
-client=client,
-
+        client=client,
     ).parsed
+
 
 async def asyncio_detailed(
     syndicate_id: str,
     *,
     client: AuthenticatedClient,
-
 ) -> Response[Error | str]:
-    """ Export members CSV
+    """Export members CSV
 
      Generate a CSV export of the member directory. Returns the CSV data directly
     with Content-Type text/csv. Requires operator permission.
@@ -150,27 +132,23 @@ async def asyncio_detailed(
 
     Returns:
         Response[Error | str]
-     """
-
+    """
 
     kwargs = _get_kwargs(
         syndicate_id=syndicate_id,
-
     )
 
-    response = await client.get_async_httpx_client().request(
-        **kwargs
-    )
+    response = await client.get_async_httpx_client().request(**kwargs)
 
     return _build_response(client=client, response=response)
+
 
 async def asyncio(
     syndicate_id: str,
     *,
     client: AuthenticatedClient,
-
 ) -> Error | str | None:
-    """ Export members CSV
+    """Export members CSV
 
      Generate a CSV export of the member directory. Returns the CSV data directly
     with Content-Type text/csv. Requires operator permission.
@@ -184,11 +162,11 @@ async def asyncio(
 
     Returns:
         Error | str
-     """
+    """
 
-
-    return (await asyncio_detailed(
-        syndicate_id=syndicate_id,
-client=client,
-
-    )).parsed
+    return (
+        await asyncio_detailed(
+            syndicate_id=syndicate_id,
+            client=client,
+        )
+    ).parsed

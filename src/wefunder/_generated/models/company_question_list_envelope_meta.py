@@ -1,42 +1,33 @@
 from __future__ import annotations
 
+import datetime
 from collections.abc import Mapping
-from typing import Any, TypeVar, BinaryIO, TextIO, TYPE_CHECKING, Generator
+from typing import Any, TypeVar, cast
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
 from ..types import UNSET, Unset
 
-from ..types import UNSET, Unset
-from typing import cast
-import datetime
-
-
-
-
-
-
 T = TypeVar("T", bound="CompanyQuestionListEnvelopeMeta")
-
 
 
 @_attrs_define
 class CompanyQuestionListEnvelopeMeta:
-    """ 
-        Attributes:
-            company (str | Unset):
-            sort (str | Unset): The sort applied; `search` when `q` was given (results are ranked by match).
-            q (None | str | Unset):
-            unanswered_by_team (bool | Unset):
-            past_raises (bool | Unset):
-            questions_since (datetime.date | None | Unset): The current raise's opening date when `past_raises` is false;
-                null otherwise.
-            total (int | Unset): Questions matching, across all pages.
-            has_more (bool | Unset):
-            page_count (int | Unset):
-            next_cursor (int | None | Unset):
-     """
+    """
+    Attributes:
+        company (str | Unset):
+        sort (str | Unset): The sort applied; `search` when `q` was given (results are ranked by match).
+        q (None | str | Unset):
+        unanswered_by_team (bool | Unset):
+        past_raises (bool | Unset):
+        questions_since (datetime.date | None | Unset): The current raise's opening date when `past_raises` is false;
+            null otherwise.
+        total (int | Unset): Questions matching, across all pages.
+        has_more (bool | Unset):
+        page_count (int | Unset):
+        next_cursor (int | None | Unset):
+    """
 
     company: str | Unset = UNSET
     sort: str | Unset = UNSET
@@ -49,10 +40,6 @@ class CompanyQuestionListEnvelopeMeta:
     page_count: int | Unset = UNSET
     next_cursor: int | None | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
-
-
-
-
 
     def to_dict(self) -> dict[str, Any]:
         company = self.company
@@ -89,11 +76,9 @@ class CompanyQuestionListEnvelopeMeta:
         else:
             next_cursor = self.next_cursor
 
-
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({
-        })
+        field_dict.update({})
         if company is not UNSET:
             field_dict["company"] = company
         if sort is not UNSET:
@@ -117,8 +102,6 @@ class CompanyQuestionListEnvelopeMeta:
 
         return field_dict
 
-
-
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
@@ -135,7 +118,6 @@ class CompanyQuestionListEnvelopeMeta:
 
         q = _parse_q(d.pop("q", UNSET))
 
-
         unanswered_by_team = d.pop("unanswered_by_team", UNSET)
 
         past_raises = d.pop("past_raises", UNSET)
@@ -150,15 +132,12 @@ class CompanyQuestionListEnvelopeMeta:
                     raise TypeError()
                 questions_since_type_0 = datetime.date.fromisoformat(data)
 
-
-
                 return questions_since_type_0
             except (TypeError, ValueError, AttributeError, KeyError):
                 pass
             return cast(datetime.date | None | Unset, data)
 
         questions_since = _parse_questions_since(d.pop("questions_since", UNSET))
-
 
         total = d.pop("total", UNSET)
 
@@ -175,7 +154,6 @@ class CompanyQuestionListEnvelopeMeta:
 
         next_cursor = _parse_next_cursor(d.pop("next_cursor", UNSET))
 
-
         company_question_list_envelope_meta = cls(
             company=company,
             sort=sort,
@@ -188,7 +166,6 @@ class CompanyQuestionListEnvelopeMeta:
             page_count=page_count,
             next_cursor=next_cursor,
         )
-
 
         company_question_list_envelope_meta.additional_properties = d
         return company_question_list_envelope_meta

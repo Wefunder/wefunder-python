@@ -1,5 +1,6 @@
 from enum import StrEnum
 
+
 class MyCompanyType(StrEnum):
     COMPANY = "company"
 

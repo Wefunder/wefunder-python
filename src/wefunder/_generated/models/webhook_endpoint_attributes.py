@@ -1,45 +1,36 @@
 from __future__ import annotations
 
+import datetime
 from collections.abc import Mapping
-from typing import Any, TypeVar, BinaryIO, TextIO, TYPE_CHECKING, Generator
+from typing import Any, TypeVar, cast
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
-from ..types import UNSET, Unset
-
 from ..models.webhook_endpoint_attributes_mode import WebhookEndpointAttributesMode
 from ..types import UNSET, Unset
-from typing import cast
-import datetime
-
-
-
-
-
 
 T = TypeVar("T", bound="WebhookEndpointAttributes")
 
 
-
 @_attrs_define
 class WebhookEndpointAttributes:
-    """ 
-        Attributes:
-            url (str | Unset):
-            mode (WebhookEndpointAttributesMode | Unset):
-            events (list[str] | Unset):
-            enabled (bool | Unset):
-            secret (str | Unset): Signing secret. Present only in create and rotate_secret responses.
-            failing_since (datetime.datetime | None | Unset):
-            last_delivery_at (datetime.datetime | None | Unset):
-            last_delivery_status (None | str | Unset): Outcome of the most recent delivery: the HTTP status code as a string
-                (for
-                example `"200"` or `"503"`), or, when no response came back, one of
-                `timeout`, `blocked_url`, `tls_error`, `connection_failed`.
-                 Example: 200.
-            created_at (datetime.datetime | Unset):
-     """
+    """
+    Attributes:
+        url (str | Unset):
+        mode (WebhookEndpointAttributesMode | Unset):
+        events (list[str] | Unset):
+        enabled (bool | Unset):
+        secret (str | Unset): Signing secret. Present only in create and rotate_secret responses.
+        failing_since (datetime.datetime | None | Unset):
+        last_delivery_at (datetime.datetime | None | Unset):
+        last_delivery_status (None | str | Unset): Outcome of the most recent delivery: the HTTP status code as a string
+            (for
+            example `"200"` or `"503"`), or, when no response came back, one of
+            `timeout`, `blocked_url`, `tls_error`, `connection_failed`.
+             Example: 200.
+        created_at (datetime.datetime | Unset):
+    """
 
     url: str | Unset = UNSET
     mode: WebhookEndpointAttributesMode | Unset = UNSET
@@ -52,10 +43,6 @@ class WebhookEndpointAttributes:
     created_at: datetime.datetime | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
-
-
-
-
     def to_dict(self) -> dict[str, Any]:
         url = self.url
 
@@ -63,12 +50,9 @@ class WebhookEndpointAttributes:
         if not isinstance(self.mode, Unset):
             mode = self.mode.value
 
-
         events: list[str] | Unset = UNSET
         if not isinstance(self.events, Unset):
             events = self.events
-
-
 
         enabled = self.enabled
 
@@ -100,11 +84,9 @@ class WebhookEndpointAttributes:
         if not isinstance(self.created_at, Unset):
             created_at = self.created_at.isoformat()
 
-
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({
-        })
+        field_dict.update({})
         if url is not UNSET:
             field_dict["url"] = url
         if mode is not UNSET:
@@ -126,8 +108,6 @@ class WebhookEndpointAttributes:
 
         return field_dict
 
-
-
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
@@ -135,16 +115,12 @@ class WebhookEndpointAttributes:
 
         _mode = d.pop("mode", UNSET)
         mode: WebhookEndpointAttributesMode | Unset
-        if isinstance(_mode,  Unset):
+        if isinstance(_mode, Unset):
             mode = UNSET
         else:
             mode = WebhookEndpointAttributesMode(_mode)
 
-
-
-
         events = cast(list[str], d.pop("events", UNSET))
-
 
         enabled = d.pop("enabled", UNSET)
 
@@ -160,15 +136,12 @@ class WebhookEndpointAttributes:
                     raise TypeError()
                 failing_since_type_0 = datetime.datetime.fromisoformat(data)
 
-
-
                 return failing_since_type_0
             except (TypeError, ValueError, AttributeError, KeyError):
                 pass
             return cast(datetime.datetime | None | Unset, data)
 
         failing_since = _parse_failing_since(d.pop("failing_since", UNSET))
-
 
         def _parse_last_delivery_at(data: object) -> datetime.datetime | None | Unset:
             if data is None:
@@ -180,15 +153,12 @@ class WebhookEndpointAttributes:
                     raise TypeError()
                 last_delivery_at_type_0 = datetime.datetime.fromisoformat(data)
 
-
-
                 return last_delivery_at_type_0
             except (TypeError, ValueError, AttributeError, KeyError):
                 pass
             return cast(datetime.datetime | None | Unset, data)
 
         last_delivery_at = _parse_last_delivery_at(d.pop("last_delivery_at", UNSET))
-
 
         def _parse_last_delivery_status(data: object) -> None | str | Unset:
             if data is None:
@@ -199,16 +169,12 @@ class WebhookEndpointAttributes:
 
         last_delivery_status = _parse_last_delivery_status(d.pop("last_delivery_status", UNSET))
 
-
         _created_at = d.pop("created_at", UNSET)
         created_at: datetime.datetime | Unset
-        if isinstance(_created_at,  Unset):
+        if isinstance(_created_at, Unset):
             created_at = UNSET
         else:
             created_at = datetime.datetime.fromisoformat(_created_at)
-
-
-
 
         webhook_endpoint_attributes = cls(
             url=url,
@@ -221,7 +187,6 @@ class WebhookEndpointAttributes:
             last_delivery_status=last_delivery_status,
             created_at=created_at,
         )
-
 
         webhook_endpoint_attributes.additional_properties = d
         return webhook_endpoint_attributes

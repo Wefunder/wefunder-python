@@ -1,20 +1,15 @@
+import datetime
 from http import HTTPStatus
 from typing import Any, cast
-from urllib.parse import quote
 
 import httpx
 
-from ...client import AuthenticatedClient, Client
-from ...types import Response, UNSET
 from ... import errors
-
+from ...client import AuthenticatedClient, Client
 from ...models.error import Error
 from ...models.investment_list_envelope import InvestmentListEnvelope
 from ...models.list_investments_status import ListInvestmentsStatus
-from ...types import UNSET, Unset
-from typing import cast
-import datetime
-
+from ...types import UNSET, Response, Unset
 
 
 def _get_kwargs(
@@ -26,11 +21,7 @@ def _get_kwargs(
     updated_since: datetime.datetime | Unset = UNSET,
     cursor: str | Unset = UNSET,
     per_page: int | Unset = 25,
-
 ) -> dict[str, Any]:
-    
-
-    
 
     params: dict[str, Any] = {}
 
@@ -55,9 +46,7 @@ def _get_kwargs(
 
     params["per_page"] = per_page
 
-
     params = {k: v for k, v in params.items() if v is not UNSET and v is not None}
-
 
     _kwargs: dict[str, Any] = {
         "method": "get",
@@ -65,16 +54,14 @@ def _get_kwargs(
         "params": params,
     }
 
-
     return _kwargs
 
 
-
-def _parse_response(*, client: AuthenticatedClient | Client, response: httpx.Response) -> Any | Error | InvestmentListEnvelope | None:
+def _parse_response(
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Any | Error | InvestmentListEnvelope | None:
     if response.status_code == 200:
         response_200 = InvestmentListEnvelope.from_dict(response.json())
-
-
 
         return response_200
 
@@ -84,8 +71,6 @@ def _parse_response(*, client: AuthenticatedClient | Client, response: httpx.Res
 
     if response.status_code == 401:
         response_401 = Error.from_dict(response.json())
-
-
 
         return response_401
 
@@ -100,8 +85,6 @@ def _parse_response(*, client: AuthenticatedClient | Client, response: httpx.Res
     if response.status_code == 429:
         response_429 = Error.from_dict(response.json())
 
-
-
         return response_429
 
     if client.raise_on_unexpected_status:
@@ -110,7 +93,9 @@ def _parse_response(*, client: AuthenticatedClient | Client, response: httpx.Res
         return None
 
 
-def _build_response(*, client: AuthenticatedClient | Client, response: httpx.Response) -> Response[Any | Error | InvestmentListEnvelope]:
+def _build_response(
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Response[Any | Error | InvestmentListEnvelope]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -129,9 +114,8 @@ def sync_detailed(
     updated_since: datetime.datetime | Unset = UNSET,
     cursor: str | Unset = UNSET,
     per_page: int | Unset = 25,
-
 ) -> Response[Any | Error | InvestmentListEnvelope]:
-    """ List or sync investments
+    """List or sync investments
 
      The investment records the token may see, served from **published** state
     (docs: *Investments: list, sync, retrieve*). The audience is the union of the companies
@@ -174,18 +158,16 @@ def sync_detailed(
 
     Returns:
         Response[Any | Error | InvestmentListEnvelope]
-     """
-
+    """
 
     kwargs = _get_kwargs(
         company_id=company_id,
-offering_id=offering_id,
-investor_id=investor_id,
-status=status,
-updated_since=updated_since,
-cursor=cursor,
-per_page=per_page,
-
+        offering_id=offering_id,
+        investor_id=investor_id,
+        status=status,
+        updated_since=updated_since,
+        cursor=cursor,
+        per_page=per_page,
     )
 
     response = client.get_httpx_client().request(
@@ -193,6 +175,7 @@ per_page=per_page,
     )
 
     return _build_response(client=client, response=response)
+
 
 def sync(
     *,
@@ -204,9 +187,8 @@ def sync(
     updated_since: datetime.datetime | Unset = UNSET,
     cursor: str | Unset = UNSET,
     per_page: int | Unset = 25,
-
 ) -> Any | Error | InvestmentListEnvelope | None:
-    """ List or sync investments
+    """List or sync investments
 
      The investment records the token may see, served from **published** state
     (docs: *Investments: list, sync, retrieve*). The audience is the union of the companies
@@ -249,20 +231,19 @@ def sync(
 
     Returns:
         Any | Error | InvestmentListEnvelope
-     """
-
+    """
 
     return sync_detailed(
         client=client,
-company_id=company_id,
-offering_id=offering_id,
-investor_id=investor_id,
-status=status,
-updated_since=updated_since,
-cursor=cursor,
-per_page=per_page,
-
+        company_id=company_id,
+        offering_id=offering_id,
+        investor_id=investor_id,
+        status=status,
+        updated_since=updated_since,
+        cursor=cursor,
+        per_page=per_page,
     ).parsed
+
 
 async def asyncio_detailed(
     *,
@@ -274,9 +255,8 @@ async def asyncio_detailed(
     updated_since: datetime.datetime | Unset = UNSET,
     cursor: str | Unset = UNSET,
     per_page: int | Unset = 25,
-
 ) -> Response[Any | Error | InvestmentListEnvelope]:
-    """ List or sync investments
+    """List or sync investments
 
      The investment records the token may see, served from **published** state
     (docs: *Investments: list, sync, retrieve*). The audience is the union of the companies
@@ -319,25 +299,22 @@ async def asyncio_detailed(
 
     Returns:
         Response[Any | Error | InvestmentListEnvelope]
-     """
-
+    """
 
     kwargs = _get_kwargs(
         company_id=company_id,
-offering_id=offering_id,
-investor_id=investor_id,
-status=status,
-updated_since=updated_since,
-cursor=cursor,
-per_page=per_page,
-
+        offering_id=offering_id,
+        investor_id=investor_id,
+        status=status,
+        updated_since=updated_since,
+        cursor=cursor,
+        per_page=per_page,
     )
 
-    response = await client.get_async_httpx_client().request(
-        **kwargs
-    )
+    response = await client.get_async_httpx_client().request(**kwargs)
 
     return _build_response(client=client, response=response)
+
 
 async def asyncio(
     *,
@@ -349,9 +326,8 @@ async def asyncio(
     updated_since: datetime.datetime | Unset = UNSET,
     cursor: str | Unset = UNSET,
     per_page: int | Unset = 25,
-
 ) -> Any | Error | InvestmentListEnvelope | None:
-    """ List or sync investments
+    """List or sync investments
 
      The investment records the token may see, served from **published** state
     (docs: *Investments: list, sync, retrieve*). The audience is the union of the companies
@@ -394,17 +370,17 @@ async def asyncio(
 
     Returns:
         Any | Error | InvestmentListEnvelope
-     """
+    """
 
-
-    return (await asyncio_detailed(
-        client=client,
-company_id=company_id,
-offering_id=offering_id,
-investor_id=investor_id,
-status=status,
-updated_since=updated_since,
-cursor=cursor,
-per_page=per_page,
-
-    )).parsed
+    return (
+        await asyncio_detailed(
+            client=client,
+            company_id=company_id,
+            offering_id=offering_id,
+            investor_id=investor_id,
+            status=status,
+            updated_since=updated_since,
+            cursor=cursor,
+            per_page=per_page,
+        )
+    ).parsed

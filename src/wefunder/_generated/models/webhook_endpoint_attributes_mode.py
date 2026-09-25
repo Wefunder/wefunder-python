@@ -1,5 +1,6 @@
 from enum import StrEnum
 
+
 class WebhookEndpointAttributesMode(StrEnum):
     LIVE = "live"
     TEST = "test"

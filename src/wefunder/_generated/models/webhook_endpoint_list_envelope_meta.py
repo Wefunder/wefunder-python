@@ -1,41 +1,29 @@
 from __future__ import annotations
 
 from collections.abc import Mapping
-from typing import Any, TypeVar, BinaryIO, TextIO, TYPE_CHECKING, Generator
+from typing import Any, TypeVar
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
 from ..types import UNSET, Unset
 
-from ..types import UNSET, Unset
-
-
-
-
-
-
 T = TypeVar("T", bound="WebhookEndpointListEnvelopeMeta")
-
 
 
 @_attrs_define
 class WebhookEndpointListEnvelopeMeta:
-    """ 
-        Attributes:
-            count (int | Unset):
-            quota (int | Unset): Maximum endpoints allowed for this application.
-            request_id (str | Unset):
-     """
+    """
+    Attributes:
+        count (int | Unset):
+        quota (int | Unset): Maximum endpoints allowed for this application.
+        request_id (str | Unset):
+    """
 
     count: int | Unset = UNSET
     quota: int | Unset = UNSET
     request_id: str | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
-
-
-
-
 
     def to_dict(self) -> dict[str, Any]:
         count = self.count
@@ -44,11 +32,9 @@ class WebhookEndpointListEnvelopeMeta:
 
         request_id = self.request_id
 
-
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({
-        })
+        field_dict.update({})
         if count is not UNSET:
             field_dict["count"] = count
         if quota is not UNSET:
@@ -57,8 +43,6 @@ class WebhookEndpointListEnvelopeMeta:
             field_dict["request_id"] = request_id
 
         return field_dict
-
-
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
@@ -74,7 +58,6 @@ class WebhookEndpointListEnvelopeMeta:
             quota=quota,
             request_id=request_id,
         )
-
 
         webhook_endpoint_list_envelope_meta.additional_properties = d
         return webhook_endpoint_list_envelope_meta

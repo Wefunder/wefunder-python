@@ -1,44 +1,32 @@
 from __future__ import annotations
 
 from collections.abc import Mapping
-from typing import Any, TypeVar, BinaryIO, TextIO, TYPE_CHECKING, Generator
+from typing import Any, TypeVar
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
-from ..types import UNSET, Unset
-
 from ..models.attribution_partner_type_0_status import AttributionPartnerType0Status
 from ..types import UNSET, Unset
-
-
-
-
-
 
 T = TypeVar("T", bound="AttributionPartnerType0")
 
 
-
 @_attrs_define
 class AttributionPartnerType0:
-    """ 
-        Attributes:
-            id (int | Unset):  Example: 123.
-            company_name (str | Unset):  Example: Example Name.
-            website (str | Unset):  Example: https://example.com.
-            status (AttributionPartnerType0Status | Unset):
-     """
+    """
+    Attributes:
+        id (int | Unset):  Example: 123.
+        company_name (str | Unset):  Example: Example Name.
+        website (str | Unset):  Example: https://example.com.
+        status (AttributionPartnerType0Status | Unset):
+    """
 
     id: int | Unset = UNSET
     company_name: str | Unset = UNSET
     website: str | Unset = UNSET
     status: AttributionPartnerType0Status | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
-
-
-
-
 
     def to_dict(self) -> dict[str, Any]:
         id = self.id
@@ -51,12 +39,9 @@ class AttributionPartnerType0:
         if not isinstance(self.status, Unset):
             status = self.status.value
 
-
-
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({
-        })
+        field_dict.update({})
         if id is not UNSET:
             field_dict["id"] = id
         if company_name is not UNSET:
@@ -67,8 +52,6 @@ class AttributionPartnerType0:
             field_dict["status"] = status
 
         return field_dict
-
-
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
@@ -81,13 +64,10 @@ class AttributionPartnerType0:
 
         _status = d.pop("status", UNSET)
         status: AttributionPartnerType0Status | Unset
-        if isinstance(_status,  Unset):
+        if isinstance(_status, Unset):
             status = UNSET
         else:
             status = AttributionPartnerType0Status(_status)
-
-
-
 
         attribution_partner_type_0 = cls(
             id=id,
@@ -95,7 +75,6 @@ class AttributionPartnerType0:
             website=website,
             status=status,
         )
-
 
         attribution_partner_type_0.additional_properties = d
         return attribution_partner_type_0

@@ -1,58 +1,45 @@
 from http import HTTPStatus
-from typing import Any, cast
+from typing import Any
 from urllib.parse import quote
 
 import httpx
 
-from ...client import AuthenticatedClient, Client
-from ...types import Response, UNSET
 from ... import errors
-
+from ...client import AuthenticatedClient, Client
 from ...models.error import Error
 from ...models.webhook_subscription_list_envelope import WebhookSubscriptionListEnvelope
-from typing import cast
-
+from ...types import Response
 
 
 def _get_kwargs(
     campaign_id: int,
-
 ) -> dict[str, Any]:
-    
-
-    
-
-    
 
     _kwargs: dict[str, Any] = {
         "method": "get",
-        "url": "/campaigns/{campaign_id}/attribution/webhooks".format(campaign_id=quote(str(campaign_id), safe=""),),
+        "url": "/campaigns/{campaign_id}/attribution/webhooks".format(
+            campaign_id=quote(str(campaign_id), safe=""),
+        ),
     }
-
 
     return _kwargs
 
 
-
-def _parse_response(*, client: AuthenticatedClient | Client, response: httpx.Response) -> Error | WebhookSubscriptionListEnvelope | None:
+def _parse_response(
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Error | WebhookSubscriptionListEnvelope | None:
     if response.status_code == 200:
         response_200 = WebhookSubscriptionListEnvelope.from_dict(response.json())
-
-
 
         return response_200
 
     if response.status_code == 401:
         response_401 = Error.from_dict(response.json())
 
-
-
         return response_401
 
     if response.status_code == 403:
         response_403 = Error.from_dict(response.json())
-
-
 
         return response_403
 
@@ -62,7 +49,9 @@ def _parse_response(*, client: AuthenticatedClient | Client, response: httpx.Res
         return None
 
 
-def _build_response(*, client: AuthenticatedClient | Client, response: httpx.Response) -> Response[Error | WebhookSubscriptionListEnvelope]:
+def _build_response(
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Response[Error | WebhookSubscriptionListEnvelope]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -75,9 +64,8 @@ def sync_detailed(
     campaign_id: int,
     *,
     client: AuthenticatedClient,
-
 ) -> Response[Error | WebhookSubscriptionListEnvelope]:
-    """ List attribution webhook subscriptions
+    """List attribution webhook subscriptions
 
      Returns all active webhook subscriptions for this campaign belonging to
     your OAuth application.
@@ -94,12 +82,10 @@ def sync_detailed(
 
     Returns:
         Response[Error | WebhookSubscriptionListEnvelope]
-     """
-
+    """
 
     kwargs = _get_kwargs(
         campaign_id=campaign_id,
-
     )
 
     response = client.get_httpx_client().request(
@@ -108,13 +94,13 @@ def sync_detailed(
 
     return _build_response(client=client, response=response)
 
+
 def sync(
     campaign_id: int,
     *,
     client: AuthenticatedClient,
-
 ) -> Error | WebhookSubscriptionListEnvelope | None:
-    """ List attribution webhook subscriptions
+    """List attribution webhook subscriptions
 
      Returns all active webhook subscriptions for this campaign belonging to
     your OAuth application.
@@ -131,22 +117,20 @@ def sync(
 
     Returns:
         Error | WebhookSubscriptionListEnvelope
-     """
-
+    """
 
     return sync_detailed(
         campaign_id=campaign_id,
-client=client,
-
+        client=client,
     ).parsed
+
 
 async def asyncio_detailed(
     campaign_id: int,
     *,
     client: AuthenticatedClient,
-
 ) -> Response[Error | WebhookSubscriptionListEnvelope]:
-    """ List attribution webhook subscriptions
+    """List attribution webhook subscriptions
 
      Returns all active webhook subscriptions for this campaign belonging to
     your OAuth application.
@@ -163,27 +147,23 @@ async def asyncio_detailed(
 
     Returns:
         Response[Error | WebhookSubscriptionListEnvelope]
-     """
-
+    """
 
     kwargs = _get_kwargs(
         campaign_id=campaign_id,
-
     )
 
-    response = await client.get_async_httpx_client().request(
-        **kwargs
-    )
+    response = await client.get_async_httpx_client().request(**kwargs)
 
     return _build_response(client=client, response=response)
+
 
 async def asyncio(
     campaign_id: int,
     *,
     client: AuthenticatedClient,
-
 ) -> Error | WebhookSubscriptionListEnvelope | None:
-    """ List attribution webhook subscriptions
+    """List attribution webhook subscriptions
 
      Returns all active webhook subscriptions for this campaign belonging to
     your OAuth application.
@@ -200,11 +180,11 @@ async def asyncio(
 
     Returns:
         Error | WebhookSubscriptionListEnvelope
-     """
+    """
 
-
-    return (await asyncio_detailed(
-        campaign_id=campaign_id,
-client=client,
-
-    )).parsed
+    return (
+        await asyncio_detailed(
+            campaign_id=campaign_id,
+            client=client,
+        )
+    ).parsed

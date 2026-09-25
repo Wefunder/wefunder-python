@@ -1,5 +1,6 @@
 from enum import StrEnum
 
+
 class ListAttributedInvestmentsDetailLevel(StrEnum):
     ANONYMIZED = "anonymized"
     FULL = "full"

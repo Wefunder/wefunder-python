@@ -1,5 +1,6 @@
 from enum import StrEnum
 
+
 class ListEligibleInstallTargetsTargetType(StrEnum):
     COMPANY = "company"
     SYNDICATE = "syndicate"

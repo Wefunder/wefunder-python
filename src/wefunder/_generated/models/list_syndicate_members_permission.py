@@ -1,5 +1,6 @@
 from enum import StrEnum
 
+
 class ListSyndicateMembersPermission(StrEnum):
     FULL_ACCESS = "full_access"
     OPERATOR = "operator"

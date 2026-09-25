@@ -1,5 +1,6 @@
 from enum import StrEnum
 
+
 class CompanyUpdateType(StrEnum):
     COMPANY_UPDATE = "company_update"
 

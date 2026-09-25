@@ -1,31 +1,21 @@
 from http import HTTPStatus
-from typing import Any, cast
-from urllib.parse import quote
+from typing import Any
 
 import httpx
 
-from ...client import AuthenticatedClient, Client
-from ...types import Response, UNSET
 from ... import errors
-
+from ...client import AuthenticatedClient, Client
 from ...models.error import Error
 from ...models.marketing_partner_envelope import MarketingPartnerEnvelope
 from ...models.register_as_partner_body import RegisterAsPartnerBody
-from typing import cast
-
+from ...types import Response
 
 
 def _get_kwargs(
     *,
     body: RegisterAsPartnerBody,
-
 ) -> dict[str, Any]:
     headers: dict[str, Any] = {}
-
-
-    
-
-    
 
     _kwargs: dict[str, Any] = {
         "method": "post",
@@ -40,26 +30,21 @@ def _get_kwargs(
     return _kwargs
 
 
-
-def _parse_response(*, client: AuthenticatedClient | Client, response: httpx.Response) -> Error | MarketingPartnerEnvelope | None:
+def _parse_response(
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Error | MarketingPartnerEnvelope | None:
     if response.status_code == 201:
         response_201 = MarketingPartnerEnvelope.from_dict(response.json())
-
-
 
         return response_201
 
     if response.status_code == 401:
         response_401 = Error.from_dict(response.json())
 
-
-
         return response_401
 
     if response.status_code == 422:
         response_422 = Error.from_dict(response.json())
-
-
 
         return response_422
 
@@ -69,7 +54,9 @@ def _parse_response(*, client: AuthenticatedClient | Client, response: httpx.Res
         return None
 
 
-def _build_response(*, client: AuthenticatedClient | Client, response: httpx.Response) -> Response[Error | MarketingPartnerEnvelope]:
+def _build_response(
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Response[Error | MarketingPartnerEnvelope]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -82,9 +69,8 @@ def sync_detailed(
     *,
     client: AuthenticatedClient,
     body: RegisterAsPartnerBody,
-
 ) -> Response[Error | MarketingPartnerEnvelope]:
-    """ Register as a marketing partner
+    """Register as a marketing partner
 
      Registers the authenticated user as a marketing partner.
     After registration, the partner can create invites to request access to campaigns.
@@ -98,12 +84,10 @@ def sync_detailed(
 
     Returns:
         Response[Error | MarketingPartnerEnvelope]
-     """
-
+    """
 
     kwargs = _get_kwargs(
         body=body,
-
     )
 
     response = client.get_httpx_client().request(
@@ -112,13 +96,13 @@ def sync_detailed(
 
     return _build_response(client=client, response=response)
 
+
 def sync(
     *,
     client: AuthenticatedClient,
     body: RegisterAsPartnerBody,
-
 ) -> Error | MarketingPartnerEnvelope | None:
-    """ Register as a marketing partner
+    """Register as a marketing partner
 
      Registers the authenticated user as a marketing partner.
     After registration, the partner can create invites to request access to campaigns.
@@ -132,22 +116,20 @@ def sync(
 
     Returns:
         Error | MarketingPartnerEnvelope
-     """
-
+    """
 
     return sync_detailed(
         client=client,
-body=body,
-
+        body=body,
     ).parsed
+
 
 async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
     body: RegisterAsPartnerBody,
-
 ) -> Response[Error | MarketingPartnerEnvelope]:
-    """ Register as a marketing partner
+    """Register as a marketing partner
 
      Registers the authenticated user as a marketing partner.
     After registration, the partner can create invites to request access to campaigns.
@@ -161,27 +143,23 @@ async def asyncio_detailed(
 
     Returns:
         Response[Error | MarketingPartnerEnvelope]
-     """
-
+    """
 
     kwargs = _get_kwargs(
         body=body,
-
     )
 
-    response = await client.get_async_httpx_client().request(
-        **kwargs
-    )
+    response = await client.get_async_httpx_client().request(**kwargs)
 
     return _build_response(client=client, response=response)
+
 
 async def asyncio(
     *,
     client: AuthenticatedClient,
     body: RegisterAsPartnerBody,
-
 ) -> Error | MarketingPartnerEnvelope | None:
-    """ Register as a marketing partner
+    """Register as a marketing partner
 
      Registers the authenticated user as a marketing partner.
     After registration, the partner can create invites to request access to campaigns.
@@ -195,11 +173,11 @@ async def asyncio(
 
     Returns:
         Error | MarketingPartnerEnvelope
-     """
+    """
 
-
-    return (await asyncio_detailed(
-        client=client,
-body=body,
-
-    )).parsed
+    return (
+        await asyncio_detailed(
+            client=client,
+            body=body,
+        )
+    ).parsed

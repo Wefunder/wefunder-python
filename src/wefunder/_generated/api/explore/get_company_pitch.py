@@ -4,27 +4,19 @@ from urllib.parse import quote
 
 import httpx
 
-from ...client import AuthenticatedClient, Client
-from ...types import Response, UNSET
 from ... import errors
-
+from ...client import AuthenticatedClient, Client
 from ...models.company_pitch_envelope import CompanyPitchEnvelope
 from ...models.error import Error
 from ...models.get_company_pitch_sections_item import GetCompanyPitchSectionsItem
-from ...types import UNSET, Unset
-from typing import cast
-
+from ...types import UNSET, Response, Unset
 
 
 def _get_kwargs(
     id: str,
     *,
     sections: list[GetCompanyPitchSectionsItem] | Unset = UNSET,
-
 ) -> dict[str, Any]:
-    
-
-    
 
     params: dict[str, Any] = {}
 
@@ -35,29 +27,26 @@ def _get_kwargs(
             sections_item = sections_item_data.value
             json_sections.append(sections_item)
 
-
     params["sections"] = json_sections
-
 
     params = {k: v for k, v in params.items() if v is not UNSET and v is not None}
 
-
     _kwargs: dict[str, Any] = {
         "method": "get",
-        "url": "/companies/{id}/pitch".format(id=quote(str(id), safe=""),),
+        "url": "/companies/{id}/pitch".format(
+            id=quote(str(id), safe=""),
+        ),
         "params": params,
     }
-
 
     return _kwargs
 
 
-
-def _parse_response(*, client: AuthenticatedClient | Client, response: httpx.Response) -> Any | CompanyPitchEnvelope | Error | None:
+def _parse_response(
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Any | CompanyPitchEnvelope | Error | None:
     if response.status_code == 200:
         response_200 = CompanyPitchEnvelope.from_dict(response.json())
-
-
 
         return response_200
 
@@ -68,8 +57,6 @@ def _parse_response(*, client: AuthenticatedClient | Client, response: httpx.Res
     if response.status_code == 401:
         response_401 = Error.from_dict(response.json())
 
-
-
         return response_401
 
     if response.status_code == 404:
@@ -79,8 +66,6 @@ def _parse_response(*, client: AuthenticatedClient | Client, response: httpx.Res
     if response.status_code == 429:
         response_429 = Error.from_dict(response.json())
 
-
-
         return response_429
 
     if client.raise_on_unexpected_status:
@@ -89,7 +74,9 @@ def _parse_response(*, client: AuthenticatedClient | Client, response: httpx.Res
         return None
 
 
-def _build_response(*, client: AuthenticatedClient | Client, response: httpx.Response) -> Response[Any | CompanyPitchEnvelope | Error]:
+def _build_response(
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Response[Any | CompanyPitchEnvelope | Error]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -103,9 +90,8 @@ def sync_detailed(
     *,
     client: AuthenticatedClient,
     sections: list[GetCompanyPitchSectionsItem] | Unset = UNSET,
-
 ) -> Response[Any | CompanyPitchEnvelope | Error]:
-    """ Get a company's pitch
+    """Get a company's pitch
 
      The Overview tab's pitch as structured data: the story as ordered blocks (`heading`,
     `paragraph`, `list`, `image`, `video`, `footnote`), plus the perk tiers of the round the page
@@ -136,13 +122,11 @@ def sync_detailed(
 
     Returns:
         Response[Any | CompanyPitchEnvelope | Error]
-     """
-
+    """
 
     kwargs = _get_kwargs(
         id=id,
-sections=sections,
-
+        sections=sections,
     )
 
     response = client.get_httpx_client().request(
@@ -151,14 +135,14 @@ sections=sections,
 
     return _build_response(client=client, response=response)
 
+
 def sync(
     id: str,
     *,
     client: AuthenticatedClient,
     sections: list[GetCompanyPitchSectionsItem] | Unset = UNSET,
-
 ) -> Any | CompanyPitchEnvelope | Error | None:
-    """ Get a company's pitch
+    """Get a company's pitch
 
      The Overview tab's pitch as structured data: the story as ordered blocks (`heading`,
     `paragraph`, `list`, `image`, `video`, `footnote`), plus the perk tiers of the round the page
@@ -189,24 +173,22 @@ def sync(
 
     Returns:
         Any | CompanyPitchEnvelope | Error
-     """
-
+    """
 
     return sync_detailed(
         id=id,
-client=client,
-sections=sections,
-
+        client=client,
+        sections=sections,
     ).parsed
+
 
 async def asyncio_detailed(
     id: str,
     *,
     client: AuthenticatedClient,
     sections: list[GetCompanyPitchSectionsItem] | Unset = UNSET,
-
 ) -> Response[Any | CompanyPitchEnvelope | Error]:
-    """ Get a company's pitch
+    """Get a company's pitch
 
      The Overview tab's pitch as structured data: the story as ordered blocks (`heading`,
     `paragraph`, `list`, `image`, `video`, `footnote`), plus the perk tiers of the round the page
@@ -237,29 +219,25 @@ async def asyncio_detailed(
 
     Returns:
         Response[Any | CompanyPitchEnvelope | Error]
-     """
-
+    """
 
     kwargs = _get_kwargs(
         id=id,
-sections=sections,
-
+        sections=sections,
     )
 
-    response = await client.get_async_httpx_client().request(
-        **kwargs
-    )
+    response = await client.get_async_httpx_client().request(**kwargs)
 
     return _build_response(client=client, response=response)
+
 
 async def asyncio(
     id: str,
     *,
     client: AuthenticatedClient,
     sections: list[GetCompanyPitchSectionsItem] | Unset = UNSET,
-
 ) -> Any | CompanyPitchEnvelope | Error | None:
-    """ Get a company's pitch
+    """Get a company's pitch
 
      The Overview tab's pitch as structured data: the story as ordered blocks (`heading`,
     `paragraph`, `list`, `image`, `video`, `footnote`), plus the perk tiers of the round the page
@@ -290,12 +268,12 @@ async def asyncio(
 
     Returns:
         Any | CompanyPitchEnvelope | Error
-     """
+    """
 
-
-    return (await asyncio_detailed(
-        id=id,
-client=client,
-sections=sections,
-
-    )).parsed
+    return (
+        await asyncio_detailed(
+            id=id,
+            client=client,
+            sections=sections,
+        )
+    ).parsed

@@ -1,5 +1,6 @@
 from enum import StrEnum
 
+
 class FullAttributionAttributionTimeToInvestBucket(StrEnum):
     ASSISTED = "assisted"
     DELAYED = "delayed"

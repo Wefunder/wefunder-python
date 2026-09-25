@@ -1,5 +1,6 @@
 from enum import StrEnum
 
+
 class IntentAttributesStatus(StrEnum):
     APPROVED = "approved"
     EXECUTED = "executed"

@@ -1,42 +1,33 @@
 from __future__ import annotations
 
+import datetime
 from collections.abc import Mapping
-from typing import Any, TypeVar, BinaryIO, TextIO, TYPE_CHECKING, Generator
+from typing import Any, TypeVar, cast
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
 from ..types import UNSET, Unset
 
-from ..types import UNSET, Unset
-from typing import cast
-import datetime
-
-
-
-
-
-
 T = TypeVar("T", bound="CurrentRaise")
-
 
 
 @_attrs_define
 class CurrentRaise:
-    """ The round the page shows this viewer, with its linked legs combined.
+    """The round the page shows this viewer, with its linked legs combined.
 
-        Attributes:
-            offering_id (str | Unset): The displayed offering (`ofr_...`); fetch it with `/offerings/{id}`.
-            offering_ids (list[str] | Unset): Every live leg combined into `amount_raised` that the viewer may see (e.g. a
-                Reg CF round and its Reg D round).
-            testing_the_waters (bool | Unset): True when the current raise collects non-binding reservations, not
-                investments.
-            amount_raised (None | str | Unset): Raised across the combined legs, on Wefunder, USD decimal string.
-            funding_target (None | str | Unset):
-            investor_count (int | None | Unset):
-            oversubscribed (bool | Unset):
-            closes_at (datetime.datetime | None | Unset):
-     """
+    Attributes:
+        offering_id (str | Unset): The displayed offering (`ofr_...`); fetch it with `/offerings/{id}`.
+        offering_ids (list[str] | Unset): Every live leg combined into `amount_raised` that the viewer may see (e.g. a
+            Reg CF round and its Reg D round).
+        testing_the_waters (bool | Unset): True when the current raise collects non-binding reservations, not
+            investments.
+        amount_raised (None | str | Unset): Raised across the combined legs, on Wefunder, USD decimal string.
+        funding_target (None | str | Unset):
+        investor_count (int | None | Unset):
+        oversubscribed (bool | Unset):
+        closes_at (datetime.datetime | None | Unset):
+    """
 
     offering_id: str | Unset = UNSET
     offering_ids: list[str] | Unset = UNSET
@@ -48,18 +39,12 @@ class CurrentRaise:
     closes_at: datetime.datetime | None | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
-
-
-
-
     def to_dict(self) -> dict[str, Any]:
         offering_id = self.offering_id
 
         offering_ids: list[str] | Unset = UNSET
         if not isinstance(self.offering_ids, Unset):
             offering_ids = self.offering_ids
-
-
 
         testing_the_waters = self.testing_the_waters
 
@@ -91,11 +76,9 @@ class CurrentRaise:
         else:
             closes_at = self.closes_at
 
-
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({
-        })
+        field_dict.update({})
         if offering_id is not UNSET:
             field_dict["offering_id"] = offering_id
         if offering_ids is not UNSET:
@@ -115,15 +98,12 @@ class CurrentRaise:
 
         return field_dict
 
-
-
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
         offering_id = d.pop("offering_id", UNSET)
 
         offering_ids = cast(list[str], d.pop("offering_ids", UNSET))
-
 
         testing_the_waters = d.pop("testing_the_waters", UNSET)
 
@@ -136,7 +116,6 @@ class CurrentRaise:
 
         amount_raised = _parse_amount_raised(d.pop("amount_raised", UNSET))
 
-
         def _parse_funding_target(data: object) -> None | str | Unset:
             if data is None:
                 return data
@@ -146,7 +125,6 @@ class CurrentRaise:
 
         funding_target = _parse_funding_target(d.pop("funding_target", UNSET))
 
-
         def _parse_investor_count(data: object) -> int | None | Unset:
             if data is None:
                 return data
@@ -155,7 +133,6 @@ class CurrentRaise:
             return cast(int | None | Unset, data)
 
         investor_count = _parse_investor_count(d.pop("investor_count", UNSET))
-
 
         oversubscribed = d.pop("oversubscribed", UNSET)
 
@@ -169,15 +146,12 @@ class CurrentRaise:
                     raise TypeError()
                 closes_at_type_0 = datetime.datetime.fromisoformat(data)
 
-
-
                 return closes_at_type_0
             except (TypeError, ValueError, AttributeError, KeyError):
                 pass
             return cast(datetime.datetime | None | Unset, data)
 
         closes_at = _parse_closes_at(d.pop("closes_at", UNSET))
-
 
         current_raise = cls(
             offering_id=offering_id,
@@ -189,7 +163,6 @@ class CurrentRaise:
             oversubscribed=oversubscribed,
             closes_at=closes_at,
         )
-
 
         current_raise.additional_properties = d
         return current_raise

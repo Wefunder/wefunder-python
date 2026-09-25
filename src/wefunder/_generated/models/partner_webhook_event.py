@@ -1,48 +1,41 @@
 from __future__ import annotations
 
+import datetime
 from collections.abc import Mapping
-from typing import Any, TypeVar, BinaryIO, TextIO, TYPE_CHECKING, Generator
+from typing import TYPE_CHECKING, Any, TypeVar, cast
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
 from ..types import UNSET, Unset
 
-from ..types import UNSET, Unset
-from typing import cast
-import datetime
-
 if TYPE_CHECKING:
-  from ..models.partner_webhook_event_data import PartnerWebhookEventData
-
-
-
+    from ..models.partner_webhook_event_data import PartnerWebhookEventData
 
 
 T = TypeVar("T", bound="PartnerWebhookEvent")
 
 
-
 @_attrs_define
 class PartnerWebhookEvent:
-    """ The payload delivered to a subscribed webhook URL.
+    """The payload delivered to a subscribed webhook URL.
 
-        Attributes:
-            id (str | Unset):  Example: evt_abc123.
-            event (str | Unset): The event type. SPV: `spv.created`, `spv.opened`, `spv.updated`,
-                `spv.closing`, `spv.closed`, `spv.canceled`. Invites/sessions:
-                `invite.created`, `invite.opened`, `invite.invested`, `invite.expired`,
-                `investment_session.created`, `investment_session.completed`. Investments:
-                `investment.created`, `investment.confirmed`, `investment.canceled`,
-                `investment.accreditation_verified`, `investment.accreditation_failed`.
-                Disbursement: `disbursement.initiated`, `disbursement.completed`,
-                `disbursement.failed`. Plus `webhook.test`.
-                 Example: investment.created.
-            created_at (datetime.datetime | Unset):  Example: 2025-01-15T15:00:00Z.
-            data (PartnerWebhookEventData | Unset): Event-specific payload (e.g. the affected SPV and investment).
-            partner_reference (None | str | Unset): Echoes the SPV's `metadata.partner_reference` when present. Example:
-                acme-series-a-2025.
-     """
+    Attributes:
+        id (str | Unset):  Example: evt_abc123.
+        event (str | Unset): The event type. SPV: `spv.created`, `spv.opened`, `spv.updated`,
+            `spv.closing`, `spv.closed`, `spv.canceled`. Invites/sessions:
+            `invite.created`, `invite.opened`, `invite.invested`, `invite.expired`,
+            `investment_session.created`, `investment_session.completed`. Investments:
+            `investment.created`, `investment.confirmed`, `investment.canceled`,
+            `investment.accreditation_verified`, `investment.accreditation_failed`.
+            Disbursement: `disbursement.initiated`, `disbursement.completed`,
+            `disbursement.failed`. Plus `webhook.test`.
+             Example: investment.created.
+        created_at (datetime.datetime | Unset):  Example: 2025-01-15T15:00:00Z.
+        data (PartnerWebhookEventData | Unset): Event-specific payload (e.g. the affected SPV and investment).
+        partner_reference (None | str | Unset): Echoes the SPV's `metadata.partner_reference` when present. Example:
+            acme-series-a-2025.
+    """
 
     id: str | Unset = UNSET
     event: str | Unset = UNSET
@@ -51,12 +44,7 @@ class PartnerWebhookEvent:
     partner_reference: None | str | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
-
-
-
-
     def to_dict(self) -> dict[str, Any]:
-        from ..models.partner_webhook_event_data import PartnerWebhookEventData # noqa: PLC0415
         id = self.id
 
         event = self.event
@@ -75,11 +63,9 @@ class PartnerWebhookEvent:
         else:
             partner_reference = self.partner_reference
 
-
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({
-        })
+        field_dict.update({})
         if id is not UNSET:
             field_dict["id"] = id
         if event is not UNSET:
@@ -93,11 +79,10 @@ class PartnerWebhookEvent:
 
         return field_dict
 
-
-
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
-        from ..models.partner_webhook_event_data import PartnerWebhookEventData # noqa: PLC0415
+        from ..models.partner_webhook_event_data import PartnerWebhookEventData  # noqa: PLC0415
+
         d = dict(src_dict)
         id = d.pop("id", UNSET)
 
@@ -105,23 +90,17 @@ class PartnerWebhookEvent:
 
         _created_at = d.pop("created_at", UNSET)
         created_at: datetime.datetime | Unset
-        if isinstance(_created_at,  Unset):
+        if isinstance(_created_at, Unset):
             created_at = UNSET
         else:
             created_at = datetime.datetime.fromisoformat(_created_at)
 
-
-
-
         _data = d.pop("data", UNSET)
         data: PartnerWebhookEventData | Unset
-        if isinstance(_data,  Unset):
+        if isinstance(_data, Unset):
             data = UNSET
         else:
             data = PartnerWebhookEventData.from_dict(_data)
-
-
-
 
         def _parse_partner_reference(data: object) -> None | str | Unset:
             if data is None:
@@ -132,7 +111,6 @@ class PartnerWebhookEvent:
 
         partner_reference = _parse_partner_reference(d.pop("partner_reference", UNSET))
 
-
         partner_webhook_event = cls(
             id=id,
             event=event,
@@ -140,7 +118,6 @@ class PartnerWebhookEvent:
             data=data,
             partner_reference=partner_reference,
         )
-
 
         partner_webhook_event.additional_properties = d
         return partner_webhook_event

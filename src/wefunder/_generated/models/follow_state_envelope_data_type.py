@@ -1,5 +1,6 @@
 from enum import StrEnum
 
+
 class FollowStateEnvelopeDataType(StrEnum):
     FOLLOW_STATE = "follow_state"
 

@@ -4,48 +4,37 @@ from urllib.parse import quote
 
 import httpx
 
-from ...client import AuthenticatedClient, Client
-from ...types import Response, UNSET
 from ... import errors
-
+from ...client import AuthenticatedClient, Client
 from ...models.error import Error
 from ...models.investment_envelope import InvestmentEnvelope
-from typing import cast
-
+from ...types import Response
 
 
 def _get_kwargs(
     id: str,
-
 ) -> dict[str, Any]:
-    
-
-    
-
-    
 
     _kwargs: dict[str, Any] = {
         "method": "get",
-        "url": "/investments/{id}".format(id=quote(str(id), safe=""),),
+        "url": "/investments/{id}".format(
+            id=quote(str(id), safe=""),
+        ),
     }
-
 
     return _kwargs
 
 
-
-def _parse_response(*, client: AuthenticatedClient | Client, response: httpx.Response) -> Any | Error | InvestmentEnvelope | None:
+def _parse_response(
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Any | Error | InvestmentEnvelope | None:
     if response.status_code == 200:
         response_200 = InvestmentEnvelope.from_dict(response.json())
-
-
 
         return response_200
 
     if response.status_code == 401:
         response_401 = Error.from_dict(response.json())
-
-
 
         return response_401
 
@@ -56,8 +45,6 @@ def _parse_response(*, client: AuthenticatedClient | Client, response: httpx.Res
     if response.status_code == 429:
         response_429 = Error.from_dict(response.json())
 
-
-
         return response_429
 
     if client.raise_on_unexpected_status:
@@ -66,7 +53,9 @@ def _parse_response(*, client: AuthenticatedClient | Client, response: httpx.Res
         return None
 
 
-def _build_response(*, client: AuthenticatedClient | Client, response: httpx.Response) -> Response[Any | Error | InvestmentEnvelope]:
+def _build_response(
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Response[Any | Error | InvestmentEnvelope]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -79,9 +68,8 @@ def sync_detailed(
     id: str,
     *,
     client: AuthenticatedClient,
-
 ) -> Response[Any | Error | InvestmentEnvelope]:
-    """ Retrieve an investment (current)
+    """Retrieve an investment (current)
 
      The same record shape as the list, derived **now** from the investment rather than read
     from published state, so an investor who just acted sees the change at once. Available
@@ -99,12 +87,10 @@ def sync_detailed(
 
     Returns:
         Response[Any | Error | InvestmentEnvelope]
-     """
-
+    """
 
     kwargs = _get_kwargs(
         id=id,
-
     )
 
     response = client.get_httpx_client().request(
@@ -113,13 +99,13 @@ def sync_detailed(
 
     return _build_response(client=client, response=response)
 
+
 def sync(
     id: str,
     *,
     client: AuthenticatedClient,
-
 ) -> Any | Error | InvestmentEnvelope | None:
-    """ Retrieve an investment (current)
+    """Retrieve an investment (current)
 
      The same record shape as the list, derived **now** from the investment rather than read
     from published state, so an investor who just acted sees the change at once. Available
@@ -137,22 +123,20 @@ def sync(
 
     Returns:
         Any | Error | InvestmentEnvelope
-     """
-
+    """
 
     return sync_detailed(
         id=id,
-client=client,
-
+        client=client,
     ).parsed
+
 
 async def asyncio_detailed(
     id: str,
     *,
     client: AuthenticatedClient,
-
 ) -> Response[Any | Error | InvestmentEnvelope]:
-    """ Retrieve an investment (current)
+    """Retrieve an investment (current)
 
      The same record shape as the list, derived **now** from the investment rather than read
     from published state, so an investor who just acted sees the change at once. Available
@@ -170,27 +154,23 @@ async def asyncio_detailed(
 
     Returns:
         Response[Any | Error | InvestmentEnvelope]
-     """
-
+    """
 
     kwargs = _get_kwargs(
         id=id,
-
     )
 
-    response = await client.get_async_httpx_client().request(
-        **kwargs
-    )
+    response = await client.get_async_httpx_client().request(**kwargs)
 
     return _build_response(client=client, response=response)
+
 
 async def asyncio(
     id: str,
     *,
     client: AuthenticatedClient,
-
 ) -> Any | Error | InvestmentEnvelope | None:
-    """ Retrieve an investment (current)
+    """Retrieve an investment (current)
 
      The same record shape as the list, derived **now** from the investment rather than read
     from published state, so an investor who just acted sees the change at once. Available
@@ -208,11 +188,11 @@ async def asyncio(
 
     Returns:
         Any | Error | InvestmentEnvelope
-     """
+    """
 
-
-    return (await asyncio_detailed(
-        id=id,
-client=client,
-
-    )).parsed
+    return (
+        await asyncio_detailed(
+            id=id,
+            client=client,
+        )
+    ).parsed

@@ -1,54 +1,47 @@
 from __future__ import annotations
 
+import datetime
 from collections.abc import Mapping
-from typing import Any, TypeVar, BinaryIO, TextIO, TYPE_CHECKING, Generator
+from typing import TYPE_CHECKING, Any, TypeVar, cast
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
-from ..types import UNSET, Unset
-
 from ..models.intent_attributes_status import IntentAttributesStatus
 from ..types import UNSET, Unset
-from typing import cast
-import datetime
 
 if TYPE_CHECKING:
-  from ..models.intent_attributes_execution_result_type_0 import IntentAttributesExecutionResultType0
-
-
-
+    from ..models.intent_attributes_execution_result_type_0 import IntentAttributesExecutionResultType0
 
 
 T = TypeVar("T", bound="IntentAttributes")
 
 
-
 @_attrs_define
 class IntentAttributes:
-    """ 
-        Attributes:
-            action (str | Unset):  Example: syndicates.close_deal.
-            status (IntentAttributesStatus | Unset):  Example: pending.
-            resource_type (str | Unset):  Example: Club.
-            resource_id (int | None | str | Unset): For Club resources, the syndicate's id (`syn_...`). For every other
-                `resource_type` (contract change plans, tranches, applications, ...) the
-                resource's integer id, since those models have no external id yet.
-                 Example: syn_aB3xQ9k2vF8mNp1zT5wY7Qc4.
-            impact_summary (str | Unset):  Example: Close the Acme Corp Series A deal. 47 investors have committed $2.3M..
-            review_url (str | Unset): URL where a human can review and approve/reject this intent Example:
-                https://wefunder.com/intents/a1b2c3d4-e5f6-7890-abcd-ef1234567890/review.
-            requested_by_agent (None | str | Unset): Human-readable name of the agent that proposed this intent Example:
-                Claude via MCP.
-            expires_at (datetime.datetime | None | Unset):  Example: 2025-03-01T12:00:00Z.
-            approved_at (datetime.datetime | None | Unset):  Example: 2025-03-01T12:00:00Z.
-            executed_at (datetime.datetime | None | Unset):  Example: 2025-03-01T12:00:00Z.
-            rejection_reason (None | str | Unset):  Example: Example text.
-            execution_result (IntentAttributesExecutionResultType0 | None | Unset): Action-specific result data (only
-                present when status is executed)
-            created_at (datetime.datetime | Unset):  Example: 2025-03-01T12:00:00Z.
-            updated_at (datetime.datetime | Unset):  Example: 2025-03-01T12:00:00Z.
-     """
+    """
+    Attributes:
+        action (str | Unset):  Example: syndicates.close_deal.
+        status (IntentAttributesStatus | Unset):  Example: pending.
+        resource_type (str | Unset):  Example: Club.
+        resource_id (int | None | str | Unset): For Club resources, the syndicate's id (`syn_...`). For every other
+            `resource_type` (contract change plans, tranches, applications, ...) the
+            resource's integer id, since those models have no external id yet.
+             Example: syn_aB3xQ9k2vF8mNp1zT5wY7Qc4.
+        impact_summary (str | Unset):  Example: Close the Acme Corp Series A deal. 47 investors have committed $2.3M..
+        review_url (str | Unset): URL where a human can review and approve/reject this intent Example:
+            https://wefunder.com/intents/a1b2c3d4-e5f6-7890-abcd-ef1234567890/review.
+        requested_by_agent (None | str | Unset): Human-readable name of the agent that proposed this intent Example:
+            Claude via MCP.
+        expires_at (datetime.datetime | None | Unset):  Example: 2025-03-01T12:00:00Z.
+        approved_at (datetime.datetime | None | Unset):  Example: 2025-03-01T12:00:00Z.
+        executed_at (datetime.datetime | None | Unset):  Example: 2025-03-01T12:00:00Z.
+        rejection_reason (None | str | Unset):  Example: Example text.
+        execution_result (IntentAttributesExecutionResultType0 | None | Unset): Action-specific result data (only
+            present when status is executed)
+        created_at (datetime.datetime | Unset):  Example: 2025-03-01T12:00:00Z.
+        updated_at (datetime.datetime | Unset):  Example: 2025-03-01T12:00:00Z.
+    """
 
     action: str | Unset = UNSET
     status: IntentAttributesStatus | Unset = UNSET
@@ -66,18 +59,16 @@ class IntentAttributes:
     updated_at: datetime.datetime | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
-
-
-
-
     def to_dict(self) -> dict[str, Any]:
-        from ..models.intent_attributes_execution_result_type_0 import IntentAttributesExecutionResultType0 # noqa: PLC0415
+        from ..models.intent_attributes_execution_result_type_0 import (
+            IntentAttributesExecutionResultType0,  # noqa: PLC0415
+        )
+
         action = self.action
 
         status: str | Unset = UNSET
         if not isinstance(self.status, Unset):
             status = self.status.value
-
 
         resource_type = self.resource_type
 
@@ -143,11 +134,9 @@ class IntentAttributes:
         if not isinstance(self.updated_at, Unset):
             updated_at = self.updated_at.isoformat()
 
-
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({
-        })
+        field_dict.update({})
         if action is not UNSET:
             field_dict["action"] = action
         if status is not UNSET:
@@ -179,23 +168,21 @@ class IntentAttributes:
 
         return field_dict
 
-
-
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
-        from ..models.intent_attributes_execution_result_type_0 import IntentAttributesExecutionResultType0 # noqa: PLC0415
+        from ..models.intent_attributes_execution_result_type_0 import (
+            IntentAttributesExecutionResultType0,  # noqa: PLC0415
+        )
+
         d = dict(src_dict)
         action = d.pop("action", UNSET)
 
         _status = d.pop("status", UNSET)
         status: IntentAttributesStatus | Unset
-        if isinstance(_status,  Unset):
+        if isinstance(_status, Unset):
             status = UNSET
         else:
             status = IntentAttributesStatus(_status)
-
-
-
 
         resource_type = d.pop("resource_type", UNSET)
 
@@ -207,7 +194,6 @@ class IntentAttributes:
             return cast(int | None | str | Unset, data)
 
         resource_id = _parse_resource_id(d.pop("resource_id", UNSET))
-
 
         impact_summary = d.pop("impact_summary", UNSET)
 
@@ -222,7 +208,6 @@ class IntentAttributes:
 
         requested_by_agent = _parse_requested_by_agent(d.pop("requested_by_agent", UNSET))
 
-
         def _parse_expires_at(data: object) -> datetime.datetime | None | Unset:
             if data is None:
                 return data
@@ -233,15 +218,12 @@ class IntentAttributes:
                     raise TypeError()
                 expires_at_type_0 = datetime.datetime.fromisoformat(data)
 
-
-
                 return expires_at_type_0
             except (TypeError, ValueError, AttributeError, KeyError):
                 pass
             return cast(datetime.datetime | None | Unset, data)
 
         expires_at = _parse_expires_at(d.pop("expires_at", UNSET))
-
 
         def _parse_approved_at(data: object) -> datetime.datetime | None | Unset:
             if data is None:
@@ -253,15 +235,12 @@ class IntentAttributes:
                     raise TypeError()
                 approved_at_type_0 = datetime.datetime.fromisoformat(data)
 
-
-
                 return approved_at_type_0
             except (TypeError, ValueError, AttributeError, KeyError):
                 pass
             return cast(datetime.datetime | None | Unset, data)
 
         approved_at = _parse_approved_at(d.pop("approved_at", UNSET))
-
 
         def _parse_executed_at(data: object) -> datetime.datetime | None | Unset:
             if data is None:
@@ -273,15 +252,12 @@ class IntentAttributes:
                     raise TypeError()
                 executed_at_type_0 = datetime.datetime.fromisoformat(data)
 
-
-
                 return executed_at_type_0
             except (TypeError, ValueError, AttributeError, KeyError):
                 pass
             return cast(datetime.datetime | None | Unset, data)
 
         executed_at = _parse_executed_at(d.pop("executed_at", UNSET))
-
 
         def _parse_rejection_reason(data: object) -> None | str | Unset:
             if data is None:
@@ -291,7 +267,6 @@ class IntentAttributes:
             return cast(None | str | Unset, data)
 
         rejection_reason = _parse_rejection_reason(d.pop("rejection_reason", UNSET))
-
 
         def _parse_execution_result(data: object) -> IntentAttributesExecutionResultType0 | None | Unset:
             if data is None:
@@ -303,8 +278,6 @@ class IntentAttributes:
                     raise TypeError()
                 execution_result_type_0 = IntentAttributesExecutionResultType0.from_dict(data)
 
-
-
                 return execution_result_type_0
             except (TypeError, ValueError, AttributeError, KeyError):
                 pass
@@ -312,26 +285,19 @@ class IntentAttributes:
 
         execution_result = _parse_execution_result(d.pop("execution_result", UNSET))
 
-
         _created_at = d.pop("created_at", UNSET)
         created_at: datetime.datetime | Unset
-        if isinstance(_created_at,  Unset):
+        if isinstance(_created_at, Unset):
             created_at = UNSET
         else:
             created_at = datetime.datetime.fromisoformat(_created_at)
 
-
-
-
         _updated_at = d.pop("updated_at", UNSET)
         updated_at: datetime.datetime | Unset
-        if isinstance(_updated_at,  Unset):
+        if isinstance(_updated_at, Unset):
             updated_at = UNSET
         else:
             updated_at = datetime.datetime.fromisoformat(_updated_at)
-
-
-
 
         intent_attributes = cls(
             action=action,
@@ -349,7 +315,6 @@ class IntentAttributes:
             created_at=created_at,
             updated_at=updated_at,
         )
-
 
         intent_attributes.additional_properties = d
         return intent_attributes

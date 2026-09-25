@@ -1,5 +1,6 @@
 from enum import StrEnum
 
+
 class InvestmentSessionAttributesKycStatus(StrEnum):
     FAILED = "failed"
     PASSED = "passed"

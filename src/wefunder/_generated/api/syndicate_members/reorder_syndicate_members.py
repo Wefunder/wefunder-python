@@ -4,32 +4,25 @@ from urllib.parse import quote
 
 import httpx
 
-from ...client import AuthenticatedClient, Client
-from ...types import Response, UNSET
 from ... import errors
-
+from ...client import AuthenticatedClient, Client
 from ...models.error import Error
 from ...models.reorder_syndicate_members_body import ReorderSyndicateMembersBody
-from typing import cast
-
+from ...types import Response
 
 
 def _get_kwargs(
     syndicate_id: str,
     *,
     body: ReorderSyndicateMembersBody,
-
 ) -> dict[str, Any]:
     headers: dict[str, Any] = {}
 
-
-    
-
-    
-
     _kwargs: dict[str, Any] = {
         "method": "post",
-        "url": "/syndicates/{syndicate_id}/members/reorder".format(syndicate_id=quote(str(syndicate_id), safe=""),),
+        "url": "/syndicates/{syndicate_id}/members/reorder".format(
+            syndicate_id=quote(str(syndicate_id), safe=""),
+        ),
     }
 
     _kwargs["json"] = body.to_dict()
@@ -40,7 +33,6 @@ def _get_kwargs(
     return _kwargs
 
 
-
 def _parse_response(*, client: AuthenticatedClient | Client, response: httpx.Response) -> Any | Error | None:
     if response.status_code == 200:
         response_200 = cast(Any, None)
@@ -49,14 +41,10 @@ def _parse_response(*, client: AuthenticatedClient | Client, response: httpx.Res
     if response.status_code == 401:
         response_401 = Error.from_dict(response.json())
 
-
-
         return response_401
 
     if response.status_code == 403:
         response_403 = Error.from_dict(response.json())
-
-
 
         return response_403
 
@@ -80,9 +68,8 @@ def sync_detailed(
     *,
     client: AuthenticatedClient,
     body: ReorderSyndicateMembersBody,
-
 ) -> Response[Any | Error]:
-    """ Reorder members
+    """Reorder members
 
      Set the display order for the member directory.
 
@@ -96,13 +83,11 @@ def sync_detailed(
 
     Returns:
         Response[Any | Error]
-     """
-
+    """
 
     kwargs = _get_kwargs(
         syndicate_id=syndicate_id,
-body=body,
-
+        body=body,
     )
 
     response = client.get_httpx_client().request(
@@ -111,14 +96,14 @@ body=body,
 
     return _build_response(client=client, response=response)
 
+
 def sync(
     syndicate_id: str,
     *,
     client: AuthenticatedClient,
     body: ReorderSyndicateMembersBody,
-
 ) -> Any | Error | None:
-    """ Reorder members
+    """Reorder members
 
      Set the display order for the member directory.
 
@@ -132,24 +117,22 @@ def sync(
 
     Returns:
         Any | Error
-     """
-
+    """
 
     return sync_detailed(
         syndicate_id=syndicate_id,
-client=client,
-body=body,
-
+        client=client,
+        body=body,
     ).parsed
+
 
 async def asyncio_detailed(
     syndicate_id: str,
     *,
     client: AuthenticatedClient,
     body: ReorderSyndicateMembersBody,
-
 ) -> Response[Any | Error]:
-    """ Reorder members
+    """Reorder members
 
      Set the display order for the member directory.
 
@@ -163,29 +146,25 @@ async def asyncio_detailed(
 
     Returns:
         Response[Any | Error]
-     """
-
+    """
 
     kwargs = _get_kwargs(
         syndicate_id=syndicate_id,
-body=body,
-
+        body=body,
     )
 
-    response = await client.get_async_httpx_client().request(
-        **kwargs
-    )
+    response = await client.get_async_httpx_client().request(**kwargs)
 
     return _build_response(client=client, response=response)
+
 
 async def asyncio(
     syndicate_id: str,
     *,
     client: AuthenticatedClient,
     body: ReorderSyndicateMembersBody,
-
 ) -> Any | Error | None:
-    """ Reorder members
+    """Reorder members
 
      Set the display order for the member directory.
 
@@ -199,12 +178,12 @@ async def asyncio(
 
     Returns:
         Any | Error
-     """
+    """
 
-
-    return (await asyncio_detailed(
-        syndicate_id=syndicate_id,
-client=client,
-body=body,
-
-    )).parsed
+    return (
+        await asyncio_detailed(
+            syndicate_id=syndicate_id,
+            client=client,
+            body=body,
+        )
+    ).parsed

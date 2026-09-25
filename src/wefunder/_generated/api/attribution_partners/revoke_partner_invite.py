@@ -4,33 +4,24 @@ from urllib.parse import quote
 
 import httpx
 
-from ...client import AuthenticatedClient, Client
-from ...types import Response, UNSET
 from ... import errors
-
+from ...client import AuthenticatedClient, Client
 from ...models.error import Error
-from typing import cast
-
+from ...types import Response
 
 
 def _get_kwargs(
     token: str,
-
 ) -> dict[str, Any]:
-    
-
-    
-
-    
 
     _kwargs: dict[str, Any] = {
         "method": "delete",
-        "url": "/attribution/invites/{token}".format(token=quote(str(token), safe=""),),
+        "url": "/attribution/invites/{token}".format(
+            token=quote(str(token), safe=""),
+        ),
     }
 
-
     return _kwargs
-
 
 
 def _parse_response(*, client: AuthenticatedClient | Client, response: httpx.Response) -> Any | Error | None:
@@ -41,21 +32,15 @@ def _parse_response(*, client: AuthenticatedClient | Client, response: httpx.Res
     if response.status_code == 401:
         response_401 = Error.from_dict(response.json())
 
-
-
         return response_401
 
     if response.status_code == 403:
         response_403 = Error.from_dict(response.json())
 
-
-
         return response_403
 
     if response.status_code == 404:
         response_404 = Error.from_dict(response.json())
-
-
 
         return response_404
 
@@ -78,9 +63,8 @@ def sync_detailed(
     token: str,
     *,
     client: AuthenticatedClient,
-
 ) -> Response[Any | Error]:
-    """ Revoke a partner invite
+    """Revoke a partner invite
 
      Revokes a pending invite. Only the creator can revoke an invite.
     Accepted invites cannot be revoked (delete the connection instead).
@@ -94,12 +78,10 @@ def sync_detailed(
 
     Returns:
         Response[Any | Error]
-     """
-
+    """
 
     kwargs = _get_kwargs(
         token=token,
-
     )
 
     response = client.get_httpx_client().request(
@@ -108,13 +90,13 @@ def sync_detailed(
 
     return _build_response(client=client, response=response)
 
+
 def sync(
     token: str,
     *,
     client: AuthenticatedClient,
-
 ) -> Any | Error | None:
-    """ Revoke a partner invite
+    """Revoke a partner invite
 
      Revokes a pending invite. Only the creator can revoke an invite.
     Accepted invites cannot be revoked (delete the connection instead).
@@ -128,22 +110,20 @@ def sync(
 
     Returns:
         Any | Error
-     """
-
+    """
 
     return sync_detailed(
         token=token,
-client=client,
-
+        client=client,
     ).parsed
+
 
 async def asyncio_detailed(
     token: str,
     *,
     client: AuthenticatedClient,
-
 ) -> Response[Any | Error]:
-    """ Revoke a partner invite
+    """Revoke a partner invite
 
      Revokes a pending invite. Only the creator can revoke an invite.
     Accepted invites cannot be revoked (delete the connection instead).
@@ -157,27 +137,23 @@ async def asyncio_detailed(
 
     Returns:
         Response[Any | Error]
-     """
-
+    """
 
     kwargs = _get_kwargs(
         token=token,
-
     )
 
-    response = await client.get_async_httpx_client().request(
-        **kwargs
-    )
+    response = await client.get_async_httpx_client().request(**kwargs)
 
     return _build_response(client=client, response=response)
+
 
 async def asyncio(
     token: str,
     *,
     client: AuthenticatedClient,
-
 ) -> Any | Error | None:
-    """ Revoke a partner invite
+    """Revoke a partner invite
 
      Revokes a pending invite. Only the creator can revoke an invite.
     Accepted invites cannot be revoked (delete the connection instead).
@@ -191,11 +167,11 @@ async def asyncio(
 
     Returns:
         Any | Error
-     """
+    """
 
-
-    return (await asyncio_detailed(
-        token=token,
-client=client,
-
-    )).parsed
+    return (
+        await asyncio_detailed(
+            token=token,
+            client=client,
+        )
+    ).parsed

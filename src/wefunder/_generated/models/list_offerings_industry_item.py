@@ -1,5 +1,6 @@
 from enum import StrEnum
 
+
 class ListOfferingsIndustryItem(StrEnum):
     AGRICULTURE_AND_AGTECH = "agriculture_and_agtech"
     ALCOHOL_AND_VICE = "alcohol_and_vice"

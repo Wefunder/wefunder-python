@@ -1,5 +1,6 @@
 from enum import StrEnum
 
+
 class OtherSecurityType(StrEnum):
     OTHER = "other"
 

@@ -1,41 +1,32 @@
 from __future__ import annotations
 
+import datetime
 from collections.abc import Mapping
-from typing import Any, TypeVar, BinaryIO, TextIO, TYPE_CHECKING, Generator
+from typing import Any, TypeVar
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
-from ..types import UNSET, Unset
-
 from ..models.webhook_subscription_events_item import WebhookSubscriptionEventsItem
 from ..types import UNSET, Unset
-from typing import cast
-import datetime
-
-
-
-
-
 
 T = TypeVar("T", bound="WebhookSubscriptionWithSecret2EnvelopeData")
 
 
-
 @_attrs_define
 class WebhookSubscriptionWithSecret2EnvelopeData:
-    """ 
-        Attributes:
-            id (int | Unset):  Example: 123.
-            campaign_id (int | Unset):  Example: 789.
-            target_url (str | Unset):  Example: https://yourapp.com/webhooks/wefunder.
-            events (list[WebhookSubscriptionEventsItem] | Unset):  Example: ['investment.applied', 'investment.confirmed'].
-            active (bool | Unset): Whether the subscription is active Example: True.
-            consecutive_failures (int | Unset): Number of consecutive delivery failures (resets on success) Example: 0.
-            created_at (datetime.datetime | Unset):  Example: 2025-03-15T10:30:00Z.
-            updated_at (datetime.datetime | Unset):  Example: 2025-03-15T10:30:00Z.
-            secret (str | Unset): New HMAC signing secret Example: whsec_a1b2c3d4e5f6g7h8i9j0....
-     """
+    """
+    Attributes:
+        id (int | Unset):  Example: 123.
+        campaign_id (int | Unset):  Example: 789.
+        target_url (str | Unset):  Example: https://yourapp.com/webhooks/wefunder.
+        events (list[WebhookSubscriptionEventsItem] | Unset):  Example: ['investment.applied', 'investment.confirmed'].
+        active (bool | Unset): Whether the subscription is active Example: True.
+        consecutive_failures (int | Unset): Number of consecutive delivery failures (resets on success) Example: 0.
+        created_at (datetime.datetime | Unset):  Example: 2025-03-15T10:30:00Z.
+        updated_at (datetime.datetime | Unset):  Example: 2025-03-15T10:30:00Z.
+        secret (str | Unset): New HMAC signing secret Example: whsec_a1b2c3d4e5f6g7h8i9j0....
+    """
 
     id: int | Unset = UNSET
     campaign_id: int | Unset = UNSET
@@ -47,10 +38,6 @@ class WebhookSubscriptionWithSecret2EnvelopeData:
     updated_at: datetime.datetime | Unset = UNSET
     secret: str | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
-
-
-
-
 
     def to_dict(self) -> dict[str, Any]:
         id = self.id
@@ -66,8 +53,6 @@ class WebhookSubscriptionWithSecret2EnvelopeData:
                 events_item = events_item_data.value
                 events.append(events_item)
 
-
-
         active = self.active
 
         consecutive_failures = self.consecutive_failures
@@ -82,11 +67,9 @@ class WebhookSubscriptionWithSecret2EnvelopeData:
 
         secret = self.secret
 
-
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({
-        })
+        field_dict.update({})
         if id is not UNSET:
             field_dict["id"] = id
         if campaign_id is not UNSET:
@@ -108,8 +91,6 @@ class WebhookSubscriptionWithSecret2EnvelopeData:
 
         return field_dict
 
-
-
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
@@ -126,10 +107,7 @@ class WebhookSubscriptionWithSecret2EnvelopeData:
             for events_item_data in _events:
                 events_item = WebhookSubscriptionEventsItem(events_item_data)
 
-
-
                 events.append(events_item)
-
 
         active = d.pop("active", UNSET)
 
@@ -137,23 +115,17 @@ class WebhookSubscriptionWithSecret2EnvelopeData:
 
         _created_at = d.pop("created_at", UNSET)
         created_at: datetime.datetime | Unset
-        if isinstance(_created_at,  Unset):
+        if isinstance(_created_at, Unset):
             created_at = UNSET
         else:
             created_at = datetime.datetime.fromisoformat(_created_at)
 
-
-
-
         _updated_at = d.pop("updated_at", UNSET)
         updated_at: datetime.datetime | Unset
-        if isinstance(_updated_at,  Unset):
+        if isinstance(_updated_at, Unset):
             updated_at = UNSET
         else:
             updated_at = datetime.datetime.fromisoformat(_updated_at)
-
-
-
 
         secret = d.pop("secret", UNSET)
 
@@ -168,7 +140,6 @@ class WebhookSubscriptionWithSecret2EnvelopeData:
             updated_at=updated_at,
             secret=secret,
         )
-
 
         webhook_subscription_with_secret_2_envelope_data.additional_properties = d
         return webhook_subscription_with_secret_2_envelope_data

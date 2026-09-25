@@ -1,5 +1,6 @@
 from enum import StrEnum
 
+
 class PortfolioSecurityOwnerType0Kind(StrEnum):
     ENTITY = "entity"
     INDIVIDUAL = "individual"

@@ -1,41 +1,29 @@
 from __future__ import annotations
 
 from collections.abc import Mapping
-from typing import Any, TypeVar, BinaryIO, TextIO, TYPE_CHECKING, Generator
+from typing import Any, TypeVar
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
 from ..types import UNSET, Unset
 
-from ..types import UNSET, Unset
-
-
-
-
-
-
 T = TypeVar("T", bound="AttributionStatsBySourceItem")
-
 
 
 @_attrs_define
 class AttributionStatsBySourceItem:
-    """ 
-        Attributes:
-            utm_source (str | Unset):  Example: GoogleAds.
-            investment_count (int | Unset):  Example: 47.
-            total_amount (float | Unset):  Example: 142500.
-     """
+    """
+    Attributes:
+        utm_source (str | Unset):  Example: GoogleAds.
+        investment_count (int | Unset):  Example: 47.
+        total_amount (float | Unset):  Example: 142500.
+    """
 
     utm_source: str | Unset = UNSET
     investment_count: int | Unset = UNSET
     total_amount: float | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
-
-
-
-
 
     def to_dict(self) -> dict[str, Any]:
         utm_source = self.utm_source
@@ -44,11 +32,9 @@ class AttributionStatsBySourceItem:
 
         total_amount = self.total_amount
 
-
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({
-        })
+        field_dict.update({})
         if utm_source is not UNSET:
             field_dict["utm_source"] = utm_source
         if investment_count is not UNSET:
@@ -57,8 +43,6 @@ class AttributionStatsBySourceItem:
             field_dict["total_amount"] = total_amount
 
         return field_dict
-
-
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
@@ -74,7 +58,6 @@ class AttributionStatsBySourceItem:
             investment_count=investment_count,
             total_amount=total_amount,
         )
-
 
         attribution_stats_by_source_item.additional_properties = d
         return attribution_stats_by_source_item

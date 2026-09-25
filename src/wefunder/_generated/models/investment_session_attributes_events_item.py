@@ -1,43 +1,30 @@
 from __future__ import annotations
 
+import datetime
 from collections.abc import Mapping
-from typing import Any, TypeVar, BinaryIO, TextIO, TYPE_CHECKING, Generator
+from typing import Any, TypeVar
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
 from ..types import UNSET, Unset
 
-from ..types import UNSET, Unset
-from typing import cast
-import datetime
-
-
-
-
-
-
 T = TypeVar("T", bound="InvestmentSessionAttributesEventsItem")
-
 
 
 @_attrs_define
 class InvestmentSessionAttributesEventsItem:
-    """ 
-        Attributes:
-            id (str | Unset):  Example: evt_abc123.
-            event (str | Unset):  Example: investment_session.completed.
-            occurred_at (datetime.datetime | Unset):
-     """
+    """
+    Attributes:
+        id (str | Unset):  Example: evt_abc123.
+        event (str | Unset):  Example: investment_session.completed.
+        occurred_at (datetime.datetime | Unset):
+    """
 
     id: str | Unset = UNSET
     event: str | Unset = UNSET
     occurred_at: datetime.datetime | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
-
-
-
-
 
     def to_dict(self) -> dict[str, Any]:
         id = self.id
@@ -48,11 +35,9 @@ class InvestmentSessionAttributesEventsItem:
         if not isinstance(self.occurred_at, Unset):
             occurred_at = self.occurred_at.isoformat()
 
-
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({
-        })
+        field_dict.update({})
         if id is not UNSET:
             field_dict["id"] = id
         if event is not UNSET:
@@ -61,8 +46,6 @@ class InvestmentSessionAttributesEventsItem:
             field_dict["occurred_at"] = occurred_at
 
         return field_dict
-
-
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
@@ -73,20 +56,16 @@ class InvestmentSessionAttributesEventsItem:
 
         _occurred_at = d.pop("occurred_at", UNSET)
         occurred_at: datetime.datetime | Unset
-        if isinstance(_occurred_at,  Unset):
+        if isinstance(_occurred_at, Unset):
             occurred_at = UNSET
         else:
             occurred_at = datetime.datetime.fromisoformat(_occurred_at)
-
-
-
 
         investment_session_attributes_events_item = cls(
             id=id,
             event=event,
             occurred_at=occurred_at,
         )
-
 
         investment_session_attributes_events_item.additional_properties = d
         return investment_session_attributes_events_item

@@ -1,47 +1,34 @@
 from __future__ import annotations
 
 from collections.abc import Mapping
-from typing import Any, TypeVar, BinaryIO, TextIO, TYPE_CHECKING, Generator
+from typing import TYPE_CHECKING, Any, TypeVar
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
 from ..types import UNSET, Unset
 
-from ..types import UNSET, Unset
-from typing import cast
-
 if TYPE_CHECKING:
-  from ..models.pagination_meta import PaginationMeta
-  from ..models.syndicate import Syndicate
-
-
-
+    from ..models.pagination_meta import PaginationMeta
+    from ..models.syndicate import Syndicate
 
 
 T = TypeVar("T", bound="SyndicateListEnvelope")
 
 
-
 @_attrs_define
 class SyndicateListEnvelope:
-    """ 
-        Attributes:
-            data (list[Syndicate] | Unset):
-            meta (PaginationMeta | Unset):
-     """
+    """
+    Attributes:
+        data (list[Syndicate] | Unset):
+        meta (PaginationMeta | Unset):
+    """
 
     data: list[Syndicate] | Unset = UNSET
     meta: PaginationMeta | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
-
-
-
-
     def to_dict(self) -> dict[str, Any]:
-        from ..models.pagination_meta import PaginationMeta # noqa: PLC0415
-        from ..models.syndicate import Syndicate # noqa: PLC0415
         data: list[dict[str, Any]] | Unset = UNSET
         if not isinstance(self.data, Unset):
             data = []
@@ -49,17 +36,13 @@ class SyndicateListEnvelope:
                 data_item = data_item_data.to_dict()
                 data.append(data_item)
 
-
-
         meta: dict[str, Any] | Unset = UNSET
         if not isinstance(self.meta, Unset):
             meta = self.meta.to_dict()
 
-
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({
-        })
+        field_dict.update({})
         if data is not UNSET:
             field_dict["data"] = data
         if meta is not UNSET:
@@ -67,12 +50,11 @@ class SyndicateListEnvelope:
 
         return field_dict
 
-
-
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
-        from ..models.pagination_meta import PaginationMeta # noqa: PLC0415
-        from ..models.syndicate import Syndicate # noqa: PLC0415
+        from ..models.pagination_meta import PaginationMeta  # noqa: PLC0415
+        from ..models.syndicate import Syndicate  # noqa: PLC0415
+
         d = dict(src_dict)
         _data = d.pop("data", UNSET)
         data: list[Syndicate] | Unset = UNSET
@@ -81,26 +63,19 @@ class SyndicateListEnvelope:
             for data_item_data in _data:
                 data_item = Syndicate.from_dict(data_item_data)
 
-
-
                 data.append(data_item)
-
 
         _meta = d.pop("meta", UNSET)
         meta: PaginationMeta | Unset
-        if isinstance(_meta,  Unset):
+        if isinstance(_meta, Unset):
             meta = UNSET
         else:
             meta = PaginationMeta.from_dict(_meta)
-
-
-
 
         syndicate_list_envelope = cls(
             data=data,
             meta=meta,
         )
-
 
         syndicate_list_envelope.additional_properties = d
         return syndicate_list_envelope

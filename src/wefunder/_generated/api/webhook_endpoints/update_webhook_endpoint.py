@@ -1,40 +1,31 @@
 from http import HTTPStatus
-from typing import Any, cast
+from typing import Any
 from urllib.parse import quote
 
 import httpx
 
-from ...client import AuthenticatedClient, Client
-from ...types import Response, UNSET
 from ... import errors
-
+from ...client import AuthenticatedClient, Client
 from ...models.error import Error
 from ...models.update_webhook_endpoint_body import UpdateWebhookEndpointBody
 from ...models.webhook_endpoint_envelope import WebhookEndpointEnvelope
-from ...types import UNSET, Unset
-from typing import cast
-
+from ...types import UNSET, Response, Unset
 
 
 def _get_kwargs(
     external_id: str,
     *,
     body: UpdateWebhookEndpointBody | Unset = UNSET,
-
 ) -> dict[str, Any]:
     headers: dict[str, Any] = {}
 
-
-    
-
-    
-
     _kwargs: dict[str, Any] = {
         "method": "patch",
-        "url": "/webhook_endpoints/{external_id}".format(external_id=quote(str(external_id), safe=""),),
+        "url": "/webhook_endpoints/{external_id}".format(
+            external_id=quote(str(external_id), safe=""),
+        ),
     }
 
-    
     if not isinstance(body, Unset):
         _kwargs["json"] = body.to_dict()
 
@@ -44,40 +35,31 @@ def _get_kwargs(
     return _kwargs
 
 
-
-def _parse_response(*, client: AuthenticatedClient | Client, response: httpx.Response) -> Error | WebhookEndpointEnvelope | None:
+def _parse_response(
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Error | WebhookEndpointEnvelope | None:
     if response.status_code == 200:
         response_200 = WebhookEndpointEnvelope.from_dict(response.json())
-
-
 
         return response_200
 
     if response.status_code == 401:
         response_401 = Error.from_dict(response.json())
 
-
-
         return response_401
 
     if response.status_code == 403:
         response_403 = Error.from_dict(response.json())
-
-
 
         return response_403
 
     if response.status_code == 404:
         response_404 = Error.from_dict(response.json())
 
-
-
         return response_404
 
     if response.status_code == 422:
         response_422 = Error.from_dict(response.json())
-
-
 
         return response_422
 
@@ -87,7 +69,9 @@ def _parse_response(*, client: AuthenticatedClient | Client, response: httpx.Res
         return None
 
 
-def _build_response(*, client: AuthenticatedClient | Client, response: httpx.Response) -> Response[Error | WebhookEndpointEnvelope]:
+def _build_response(
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Response[Error | WebhookEndpointEnvelope]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -101,9 +85,8 @@ def sync_detailed(
     *,
     client: AuthenticatedClient,
     body: UpdateWebhookEndpointBody | Unset = UNSET,
-
 ) -> Response[Error | WebhookEndpointEnvelope]:
-    """ Update a webhook endpoint
+    """Update a webhook endpoint
 
      `events` replaces the subscription list wholesale (no merge); omit it to leave it
     unchanged. An endpoint must subscribe to at least one event, so `[]` and `null` are
@@ -120,13 +103,11 @@ def sync_detailed(
 
     Returns:
         Response[Error | WebhookEndpointEnvelope]
-     """
-
+    """
 
     kwargs = _get_kwargs(
         external_id=external_id,
-body=body,
-
+        body=body,
     )
 
     response = client.get_httpx_client().request(
@@ -135,14 +116,14 @@ body=body,
 
     return _build_response(client=client, response=response)
 
+
 def sync(
     external_id: str,
     *,
     client: AuthenticatedClient,
     body: UpdateWebhookEndpointBody | Unset = UNSET,
-
 ) -> Error | WebhookEndpointEnvelope | None:
-    """ Update a webhook endpoint
+    """Update a webhook endpoint
 
      `events` replaces the subscription list wholesale (no merge); omit it to leave it
     unchanged. An endpoint must subscribe to at least one event, so `[]` and `null` are
@@ -159,24 +140,22 @@ def sync(
 
     Returns:
         Error | WebhookEndpointEnvelope
-     """
-
+    """
 
     return sync_detailed(
         external_id=external_id,
-client=client,
-body=body,
-
+        client=client,
+        body=body,
     ).parsed
+
 
 async def asyncio_detailed(
     external_id: str,
     *,
     client: AuthenticatedClient,
     body: UpdateWebhookEndpointBody | Unset = UNSET,
-
 ) -> Response[Error | WebhookEndpointEnvelope]:
-    """ Update a webhook endpoint
+    """Update a webhook endpoint
 
      `events` replaces the subscription list wholesale (no merge); omit it to leave it
     unchanged. An endpoint must subscribe to at least one event, so `[]` and `null` are
@@ -193,29 +172,25 @@ async def asyncio_detailed(
 
     Returns:
         Response[Error | WebhookEndpointEnvelope]
-     """
-
+    """
 
     kwargs = _get_kwargs(
         external_id=external_id,
-body=body,
-
+        body=body,
     )
 
-    response = await client.get_async_httpx_client().request(
-        **kwargs
-    )
+    response = await client.get_async_httpx_client().request(**kwargs)
 
     return _build_response(client=client, response=response)
+
 
 async def asyncio(
     external_id: str,
     *,
     client: AuthenticatedClient,
     body: UpdateWebhookEndpointBody | Unset = UNSET,
-
 ) -> Error | WebhookEndpointEnvelope | None:
-    """ Update a webhook endpoint
+    """Update a webhook endpoint
 
      `events` replaces the subscription list wholesale (no merge); omit it to leave it
     unchanged. An endpoint must subscribe to at least one event, so `[]` and `null` are
@@ -232,12 +207,12 @@ async def asyncio(
 
     Returns:
         Error | WebhookEndpointEnvelope
-     """
+    """
 
-
-    return (await asyncio_detailed(
-        external_id=external_id,
-client=client,
-body=body,
-
-    )).parsed
+    return (
+        await asyncio_detailed(
+            external_id=external_id,
+            client=client,
+            body=body,
+        )
+    ).parsed

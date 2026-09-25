@@ -1,5 +1,6 @@
 from enum import StrEnum
 
+
 class OfferingStatsEnvelopeMetaSource(StrEnum):
     PUBLISHED = "published"
 

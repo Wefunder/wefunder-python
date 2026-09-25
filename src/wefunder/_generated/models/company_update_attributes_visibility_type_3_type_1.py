@@ -1,5 +1,6 @@
 from enum import StrEnum
 
+
 class CompanyUpdateAttributesVisibilityType3Type1(StrEnum):
     COMMUNITY = "community"
     FOUNDERS = "founders"

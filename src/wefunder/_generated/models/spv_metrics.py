@@ -1,36 +1,28 @@
 from __future__ import annotations
 
 from collections.abc import Mapping
-from typing import Any, TypeVar, BinaryIO, TextIO, TYPE_CHECKING, Generator
+from typing import Any, TypeVar
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
 from ..types import UNSET, Unset
 
-from ..types import UNSET, Unset
-
-
-
-
-
-
 T = TypeVar("T", bound="SpvMetrics")
-
 
 
 @_attrs_define
 class SpvMetrics:
-    """ 
-        Attributes:
-            total_raised_cents (int | Unset):  Example: 5000000.
-            investor_count (int | Unset): Investors with an active investment in this SPV. Example: 12.
-            documented_soft_cap (int | Unset): The documented per-SPV investor soft cap (247). Advisory only — it is not
-                enforced, and `investor_count` may exceed it. Example: 247.
-            confirmed_count (int | Unset):  Example: 8.
-            pending_count (int | Unset):  Example: 4.
-            average_investment_cents (int | Unset):  Example: 416666.
-     """
+    """
+    Attributes:
+        total_raised_cents (int | Unset):  Example: 5000000.
+        investor_count (int | Unset): Investors with an active investment in this SPV. Example: 12.
+        documented_soft_cap (int | Unset): The documented per-SPV investor soft cap (247). Advisory only — it is not
+            enforced, and `investor_count` may exceed it. Example: 247.
+        confirmed_count (int | Unset):  Example: 8.
+        pending_count (int | Unset):  Example: 4.
+        average_investment_cents (int | Unset):  Example: 416666.
+    """
 
     total_raised_cents: int | Unset = UNSET
     investor_count: int | Unset = UNSET
@@ -39,10 +31,6 @@ class SpvMetrics:
     pending_count: int | Unset = UNSET
     average_investment_cents: int | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
-
-
-
-
 
     def to_dict(self) -> dict[str, Any]:
         total_raised_cents = self.total_raised_cents
@@ -57,11 +45,9 @@ class SpvMetrics:
 
         average_investment_cents = self.average_investment_cents
 
-
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({
-        })
+        field_dict.update({})
         if total_raised_cents is not UNSET:
             field_dict["total_raised_cents"] = total_raised_cents
         if investor_count is not UNSET:
@@ -76,8 +62,6 @@ class SpvMetrics:
             field_dict["average_investment_cents"] = average_investment_cents
 
         return field_dict
-
-
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
@@ -102,7 +86,6 @@ class SpvMetrics:
             pending_count=pending_count,
             average_investment_cents=average_investment_cents,
         )
-
 
         spv_metrics.additional_properties = d
         return spv_metrics

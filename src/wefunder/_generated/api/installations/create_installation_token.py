@@ -4,37 +4,28 @@ from urllib.parse import quote
 
 import httpx
 
-from ...client import AuthenticatedClient, Client
-from ...types import Response, UNSET
 from ... import errors
-
+from ...client import AuthenticatedClient, Client
 from ...models.create_installation_token_body import CreateInstallationTokenBody
 from ...models.error import Error
 from ...models.installation_token_envelope import InstallationTokenEnvelope
-from ...types import UNSET, Unset
-from typing import cast
-
+from ...types import UNSET, Response, Unset
 
 
 def _get_kwargs(
     external_id: str,
     *,
     body: CreateInstallationTokenBody | Unset = UNSET,
-
 ) -> dict[str, Any]:
     headers: dict[str, Any] = {}
 
-
-    
-
-    
-
     _kwargs: dict[str, Any] = {
         "method": "post",
-        "url": "/installations/{external_id}/tokens".format(external_id=quote(str(external_id), safe=""),),
+        "url": "/installations/{external_id}/tokens".format(
+            external_id=quote(str(external_id), safe=""),
+        ),
     }
 
-    
     if not isinstance(body, Unset):
         _kwargs["json"] = body.to_dict()
 
@@ -44,33 +35,26 @@ def _get_kwargs(
     return _kwargs
 
 
-
-def _parse_response(*, client: AuthenticatedClient | Client, response: httpx.Response) -> Any | Error | InstallationTokenEnvelope | None:
+def _parse_response(
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Any | Error | InstallationTokenEnvelope | None:
     if response.status_code == 201:
         response_201 = InstallationTokenEnvelope.from_dict(response.json())
-
-
 
         return response_201
 
     if response.status_code == 401:
         response_401 = Error.from_dict(response.json())
 
-
-
         return response_401
 
     if response.status_code == 403:
         response_403 = Error.from_dict(response.json())
 
-
-
         return response_403
 
     if response.status_code == 404:
         response_404 = Error.from_dict(response.json())
-
-
 
         return response_404
 
@@ -84,7 +68,9 @@ def _parse_response(*, client: AuthenticatedClient | Client, response: httpx.Res
         return None
 
 
-def _build_response(*, client: AuthenticatedClient | Client, response: httpx.Response) -> Response[Any | Error | InstallationTokenEnvelope]:
+def _build_response(
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Response[Any | Error | InstallationTokenEnvelope]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -98,9 +84,8 @@ def sync_detailed(
     *,
     client: AuthenticatedClient,
     body: CreateInstallationTokenBody | Unset = UNSET,
-
 ) -> Response[Any | Error | InstallationTokenEnvelope]:
-    """ Mint a token for an installation
+    """Mint a token for an installation
 
      Mints another company-owned token for an active install — for example one a founder made through
     the install link. Scopes default to the install's grant and can only narrow it. The token appears
@@ -117,13 +102,11 @@ def sync_detailed(
 
     Returns:
         Response[Any | Error | InstallationTokenEnvelope]
-     """
-
+    """
 
     kwargs = _get_kwargs(
         external_id=external_id,
-body=body,
-
+        body=body,
     )
 
     response = client.get_httpx_client().request(
@@ -132,14 +115,14 @@ body=body,
 
     return _build_response(client=client, response=response)
 
+
 def sync(
     external_id: str,
     *,
     client: AuthenticatedClient,
     body: CreateInstallationTokenBody | Unset = UNSET,
-
 ) -> Any | Error | InstallationTokenEnvelope | None:
-    """ Mint a token for an installation
+    """Mint a token for an installation
 
      Mints another company-owned token for an active install — for example one a founder made through
     the install link. Scopes default to the install's grant and can only narrow it. The token appears
@@ -156,24 +139,22 @@ def sync(
 
     Returns:
         Any | Error | InstallationTokenEnvelope
-     """
-
+    """
 
     return sync_detailed(
         external_id=external_id,
-client=client,
-body=body,
-
+        client=client,
+        body=body,
     ).parsed
+
 
 async def asyncio_detailed(
     external_id: str,
     *,
     client: AuthenticatedClient,
     body: CreateInstallationTokenBody | Unset = UNSET,
-
 ) -> Response[Any | Error | InstallationTokenEnvelope]:
-    """ Mint a token for an installation
+    """Mint a token for an installation
 
      Mints another company-owned token for an active install — for example one a founder made through
     the install link. Scopes default to the install's grant and can only narrow it. The token appears
@@ -190,29 +171,25 @@ async def asyncio_detailed(
 
     Returns:
         Response[Any | Error | InstallationTokenEnvelope]
-     """
-
+    """
 
     kwargs = _get_kwargs(
         external_id=external_id,
-body=body,
-
+        body=body,
     )
 
-    response = await client.get_async_httpx_client().request(
-        **kwargs
-    )
+    response = await client.get_async_httpx_client().request(**kwargs)
 
     return _build_response(client=client, response=response)
+
 
 async def asyncio(
     external_id: str,
     *,
     client: AuthenticatedClient,
     body: CreateInstallationTokenBody | Unset = UNSET,
-
 ) -> Any | Error | InstallationTokenEnvelope | None:
-    """ Mint a token for an installation
+    """Mint a token for an installation
 
      Mints another company-owned token for an active install — for example one a founder made through
     the install link. Scopes default to the install's grant and can only narrow it. The token appears
@@ -229,12 +206,12 @@ async def asyncio(
 
     Returns:
         Any | Error | InstallationTokenEnvelope
-     """
+    """
 
-
-    return (await asyncio_detailed(
-        external_id=external_id,
-client=client,
-body=body,
-
-    )).parsed
+    return (
+        await asyncio_detailed(
+            external_id=external_id,
+            client=client,
+            body=body,
+        )
+    ).parsed

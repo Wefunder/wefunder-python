@@ -1,5 +1,6 @@
 from enum import StrEnum
 
+
 class InvestmentListEnvelopeMetaMode(StrEnum):
     BOOTSTRAP = "bootstrap"
     DELTA = "delta"

@@ -1,37 +1,29 @@
 from __future__ import annotations
 
 from collections.abc import Mapping
-from typing import Any, TypeVar, BinaryIO, TextIO, TYPE_CHECKING, Generator
+from typing import Any, TypeVar
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
 from ..types import UNSET, Unset
 
-from ..types import UNSET, Unset
-
-
-
-
-
-
 T = TypeVar("T", bound="InvestmentDeltaRecordAmounts")
-
 
 
 @_attrs_define
 class InvestmentDeltaRecordAmounts:
-    """ 
-        Attributes:
-            committed_cents (int | Unset):
-            investment_size_cents (int | Unset):
-            in_escrow_cents (int | Unset):
-            raised_cents (int | Unset): What this investment contributes to the offering's public raised figure (the deal
-                page, company card and directory header). Equals `investment_size_cents` once the investment is soft-confirmed;
-                0 until then (see `needs_whitelisting`). Summing `raised_cents` over an offering's records reproduces the site's
-                number; summing `committed_cents` does not.
-            currency (str | Unset):  Example: usd.
-     """
+    """
+    Attributes:
+        committed_cents (int | Unset):
+        investment_size_cents (int | Unset):
+        in_escrow_cents (int | Unset):
+        raised_cents (int | Unset): What this investment contributes to the offering's public raised figure (the deal
+            page, company card and directory header). Equals `investment_size_cents` once the investment is soft-confirmed;
+            0 until then (see `needs_whitelisting`). Summing `raised_cents` over an offering's records reproduces the site's
+            number; summing `committed_cents` does not.
+        currency (str | Unset):  Example: usd.
+    """
 
     committed_cents: int | Unset = UNSET
     investment_size_cents: int | Unset = UNSET
@@ -39,10 +31,6 @@ class InvestmentDeltaRecordAmounts:
     raised_cents: int | Unset = UNSET
     currency: str | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
-
-
-
-
 
     def to_dict(self) -> dict[str, Any]:
         committed_cents = self.committed_cents
@@ -55,11 +43,9 @@ class InvestmentDeltaRecordAmounts:
 
         currency = self.currency
 
-
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({
-        })
+        field_dict.update({})
         if committed_cents is not UNSET:
             field_dict["committed_cents"] = committed_cents
         if investment_size_cents is not UNSET:
@@ -72,8 +58,6 @@ class InvestmentDeltaRecordAmounts:
             field_dict["currency"] = currency
 
         return field_dict
-
-
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
@@ -95,7 +79,6 @@ class InvestmentDeltaRecordAmounts:
             raised_cents=raised_cents,
             currency=currency,
         )
-
 
         investment_delta_record_amounts.additional_properties = d
         return investment_delta_record_amounts

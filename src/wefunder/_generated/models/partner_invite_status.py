@@ -1,5 +1,6 @@
 from enum import StrEnum
 
+
 class PartnerInviteStatus(StrEnum):
     ACCEPTED = "accepted"
     EXPIRED = "expired"

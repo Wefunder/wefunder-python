@@ -1,38 +1,31 @@
 from __future__ import annotations
 
 from collections.abc import Mapping
-from typing import Any, TypeVar, BinaryIO, TextIO, TYPE_CHECKING, Generator
+from typing import TYPE_CHECKING, Any, TypeVar
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
 from ..types import UNSET, Unset
 
-from ..types import UNSET, Unset
-from typing import cast
-
 if TYPE_CHECKING:
-  from ..models.error_error_details import ErrorErrorDetails
-
-
-
+    from ..models.error_error_details import ErrorErrorDetails
 
 
 T = TypeVar("T", bound="ErrorError")
 
 
-
 @_attrs_define
 class ErrorError:
-    """ 
-        Attributes:
-            type_ (str | Unset):  Example: unauthorized.
-            message (str | Unset):  Example: Invalid or expired token.
-            details (ErrorErrorDetails | Unset):
-            request_id (str | Unset): Unique identifier for this request. Quote it in support tickets. Example: req_abc123.
-            remediation (str | Unset): When present, a hint on how to resolve the error. Example: Obtain a new access token
-                using the OAuth 2.0 flow..
-     """
+    """
+    Attributes:
+        type_ (str | Unset):  Example: unauthorized.
+        message (str | Unset):  Example: Invalid or expired token.
+        details (ErrorErrorDetails | Unset):
+        request_id (str | Unset): Unique identifier for this request. Quote it in support tickets. Example: req_abc123.
+        remediation (str | Unset): When present, a hint on how to resolve the error. Example: Obtain a new access token
+            using the OAuth 2.0 flow..
+    """
 
     type_: str | Unset = UNSET
     message: str | Unset = UNSET
@@ -41,12 +34,7 @@ class ErrorError:
     remediation: str | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
-
-
-
-
     def to_dict(self) -> dict[str, Any]:
-        from ..models.error_error_details import ErrorErrorDetails # noqa: PLC0415
         type_ = self.type_
 
         message = self.message
@@ -59,11 +47,9 @@ class ErrorError:
 
         remediation = self.remediation
 
-
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({
-        })
+        field_dict.update({})
         if type_ is not UNSET:
             field_dict["type"] = type_
         if message is not UNSET:
@@ -77,11 +63,10 @@ class ErrorError:
 
         return field_dict
 
-
-
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
-        from ..models.error_error_details import ErrorErrorDetails # noqa: PLC0415
+        from ..models.error_error_details import ErrorErrorDetails  # noqa: PLC0415
+
         d = dict(src_dict)
         type_ = d.pop("type", UNSET)
 
@@ -89,13 +74,10 @@ class ErrorError:
 
         _details = d.pop("details", UNSET)
         details: ErrorErrorDetails | Unset
-        if isinstance(_details,  Unset):
+        if isinstance(_details, Unset):
             details = UNSET
         else:
             details = ErrorErrorDetails.from_dict(_details)
-
-
-
 
         request_id = d.pop("request_id", UNSET)
 
@@ -108,7 +90,6 @@ class ErrorError:
             request_id=request_id,
             remediation=remediation,
         )
-
 
         error_error.additional_properties = d
         return error_error

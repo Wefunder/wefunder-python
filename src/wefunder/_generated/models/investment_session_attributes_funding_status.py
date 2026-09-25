@@ -1,5 +1,6 @@
 from enum import StrEnum
 
+
 class InvestmentSessionAttributesFundingStatus(StrEnum):
     CARD_DECLINED = "card_declined"
     INSUFFICIENT_FUNDS = "insufficient_funds"

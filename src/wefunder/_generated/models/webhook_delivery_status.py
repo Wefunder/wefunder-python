@@ -1,5 +1,6 @@
 from enum import StrEnum
 
+
 class WebhookDeliveryStatus(StrEnum):
     DELIVERED = "delivered"
     FAILED = "failed"

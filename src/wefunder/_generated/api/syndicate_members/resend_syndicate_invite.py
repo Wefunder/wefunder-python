@@ -4,34 +4,26 @@ from urllib.parse import quote
 
 import httpx
 
-from ...client import AuthenticatedClient, Client
-from ...types import Response, UNSET
 from ... import errors
-
+from ...client import AuthenticatedClient, Client
 from ...models.error import Error
-from typing import cast
-
+from ...types import Response
 
 
 def _get_kwargs(
     syndicate_id: str,
     member_id: str,
-
 ) -> dict[str, Any]:
-    
-
-    
-
-    
 
     _kwargs: dict[str, Any] = {
         "method": "post",
-        "url": "/syndicates/{syndicate_id}/members/{member_id}/resend_invite".format(syndicate_id=quote(str(syndicate_id), safe=""),member_id=quote(str(member_id), safe=""),),
+        "url": "/syndicates/{syndicate_id}/members/{member_id}/resend_invite".format(
+            syndicate_id=quote(str(syndicate_id), safe=""),
+            member_id=quote(str(member_id), safe=""),
+        ),
     }
 
-
     return _kwargs
-
 
 
 def _parse_response(*, client: AuthenticatedClient | Client, response: httpx.Response) -> Any | Error | None:
@@ -42,14 +34,10 @@ def _parse_response(*, client: AuthenticatedClient | Client, response: httpx.Res
     if response.status_code == 401:
         response_401 = Error.from_dict(response.json())
 
-
-
         return response_401
 
     if response.status_code == 403:
         response_403 = Error.from_dict(response.json())
-
-
 
         return response_403
 
@@ -73,9 +61,8 @@ def sync_detailed(
     member_id: str,
     *,
     client: AuthenticatedClient,
-
 ) -> Response[Any | Error]:
-    """ Resend invitation
+    """Resend invitation
 
     Args:
         syndicate_id (str):
@@ -87,13 +74,11 @@ def sync_detailed(
 
     Returns:
         Response[Any | Error]
-     """
-
+    """
 
     kwargs = _get_kwargs(
         syndicate_id=syndicate_id,
-member_id=member_id,
-
+        member_id=member_id,
     )
 
     response = client.get_httpx_client().request(
@@ -102,14 +87,14 @@ member_id=member_id,
 
     return _build_response(client=client, response=response)
 
+
 def sync(
     syndicate_id: str,
     member_id: str,
     *,
     client: AuthenticatedClient,
-
 ) -> Any | Error | None:
-    """ Resend invitation
+    """Resend invitation
 
     Args:
         syndicate_id (str):
@@ -121,24 +106,22 @@ def sync(
 
     Returns:
         Any | Error
-     """
-
+    """
 
     return sync_detailed(
         syndicate_id=syndicate_id,
-member_id=member_id,
-client=client,
-
+        member_id=member_id,
+        client=client,
     ).parsed
+
 
 async def asyncio_detailed(
     syndicate_id: str,
     member_id: str,
     *,
     client: AuthenticatedClient,
-
 ) -> Response[Any | Error]:
-    """ Resend invitation
+    """Resend invitation
 
     Args:
         syndicate_id (str):
@@ -150,29 +133,25 @@ async def asyncio_detailed(
 
     Returns:
         Response[Any | Error]
-     """
-
+    """
 
     kwargs = _get_kwargs(
         syndicate_id=syndicate_id,
-member_id=member_id,
-
+        member_id=member_id,
     )
 
-    response = await client.get_async_httpx_client().request(
-        **kwargs
-    )
+    response = await client.get_async_httpx_client().request(**kwargs)
 
     return _build_response(client=client, response=response)
+
 
 async def asyncio(
     syndicate_id: str,
     member_id: str,
     *,
     client: AuthenticatedClient,
-
 ) -> Any | Error | None:
-    """ Resend invitation
+    """Resend invitation
 
     Args:
         syndicate_id (str):
@@ -184,12 +163,12 @@ async def asyncio(
 
     Returns:
         Any | Error
-     """
+    """
 
-
-    return (await asyncio_detailed(
-        syndicate_id=syndicate_id,
-member_id=member_id,
-client=client,
-
-    )).parsed
+    return (
+        await asyncio_detailed(
+            syndicate_id=syndicate_id,
+            member_id=member_id,
+            client=client,
+        )
+    ).parsed

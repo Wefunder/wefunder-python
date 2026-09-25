@@ -1,42 +1,33 @@
 from __future__ import annotations
 
+import datetime
 from collections.abc import Mapping
-from typing import Any, TypeVar, BinaryIO, TextIO, TYPE_CHECKING, Generator
+from typing import Any, TypeVar, cast
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
-from ..types import UNSET, Unset
-
 from ..models.full_attribution_attribution_quality_score import FullAttributionAttributionQualityScore
 from ..models.full_attribution_attribution_time_to_invest_bucket import FullAttributionAttributionTimeToInvestBucket
 from ..types import UNSET, Unset
-from typing import cast
-import datetime
-
-
-
-
-
 
 T = TypeVar("T", bound="FullAttributionAttribution")
 
 
-
 @_attrs_define
 class FullAttributionAttribution:
-    """ UTM attribution data (same as anonymized)
+    """UTM attribution data (same as anonymized)
 
-        Attributes:
-            utm_source (str | Unset):  Example: example.
-            utm_campaign (str | Unset):  Example: example.
-            utm_medium (None | str | Unset):  Example: example.
-            utm_content (None | str | Unset):  Example: example.
-            clicked_at (datetime.datetime | Unset):  Example: 2025-03-01T12:00:00Z.
-            time_to_invest_bucket (FullAttributionAttributionTimeToInvestBucket | Unset):
-            quality_score (FullAttributionAttributionQualityScore | Unset):
-            competing_sources (int | Unset):  Example: 1.
-     """
+    Attributes:
+        utm_source (str | Unset):  Example: example.
+        utm_campaign (str | Unset):  Example: example.
+        utm_medium (None | str | Unset):  Example: example.
+        utm_content (None | str | Unset):  Example: example.
+        clicked_at (datetime.datetime | Unset):  Example: 2025-03-01T12:00:00Z.
+        time_to_invest_bucket (FullAttributionAttributionTimeToInvestBucket | Unset):
+        quality_score (FullAttributionAttributionQualityScore | Unset):
+        competing_sources (int | Unset):  Example: 1.
+    """
 
     utm_source: str | Unset = UNSET
     utm_campaign: str | Unset = UNSET
@@ -47,10 +38,6 @@ class FullAttributionAttribution:
     quality_score: FullAttributionAttributionQualityScore | Unset = UNSET
     competing_sources: int | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
-
-
-
-
 
     def to_dict(self) -> dict[str, Any]:
         utm_source = self.utm_source
@@ -77,19 +64,15 @@ class FullAttributionAttribution:
         if not isinstance(self.time_to_invest_bucket, Unset):
             time_to_invest_bucket = self.time_to_invest_bucket.value
 
-
         quality_score: str | Unset = UNSET
         if not isinstance(self.quality_score, Unset):
             quality_score = self.quality_score.value
 
-
         competing_sources = self.competing_sources
-
 
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({
-        })
+        field_dict.update({})
         if utm_source is not UNSET:
             field_dict["utm_source"] = utm_source
         if utm_campaign is not UNSET:
@@ -109,8 +92,6 @@ class FullAttributionAttribution:
 
         return field_dict
 
-
-
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
@@ -127,7 +108,6 @@ class FullAttributionAttribution:
 
         utm_medium = _parse_utm_medium(d.pop("utm_medium", UNSET))
 
-
         def _parse_utm_content(data: object) -> None | str | Unset:
             if data is None:
                 return data
@@ -137,36 +117,26 @@ class FullAttributionAttribution:
 
         utm_content = _parse_utm_content(d.pop("utm_content", UNSET))
 
-
         _clicked_at = d.pop("clicked_at", UNSET)
         clicked_at: datetime.datetime | Unset
-        if isinstance(_clicked_at,  Unset):
+        if isinstance(_clicked_at, Unset):
             clicked_at = UNSET
         else:
             clicked_at = datetime.datetime.fromisoformat(_clicked_at)
 
-
-
-
         _time_to_invest_bucket = d.pop("time_to_invest_bucket", UNSET)
         time_to_invest_bucket: FullAttributionAttributionTimeToInvestBucket | Unset
-        if isinstance(_time_to_invest_bucket,  Unset):
+        if isinstance(_time_to_invest_bucket, Unset):
             time_to_invest_bucket = UNSET
         else:
             time_to_invest_bucket = FullAttributionAttributionTimeToInvestBucket(_time_to_invest_bucket)
 
-
-
-
         _quality_score = d.pop("quality_score", UNSET)
         quality_score: FullAttributionAttributionQualityScore | Unset
-        if isinstance(_quality_score,  Unset):
+        if isinstance(_quality_score, Unset):
             quality_score = UNSET
         else:
             quality_score = FullAttributionAttributionQualityScore(_quality_score)
-
-
-
 
         competing_sources = d.pop("competing_sources", UNSET)
 
@@ -180,7 +150,6 @@ class FullAttributionAttribution:
             quality_score=quality_score,
             competing_sources=competing_sources,
         )
-
 
         full_attribution_attribution.additional_properties = d
         return full_attribution_attribution

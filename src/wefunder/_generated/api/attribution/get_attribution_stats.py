@@ -1,19 +1,15 @@
+import datetime
 from http import HTTPStatus
-from typing import Any, cast
+from typing import Any
 from urllib.parse import quote
 
 import httpx
 
-from ...client import AuthenticatedClient, Client
-from ...types import Response, UNSET
 from ... import errors
-
+from ...client import AuthenticatedClient, Client
 from ...models.attribution_stats_envelope import AttributionStatsEnvelope
 from ...models.error import Error
-from ...types import UNSET, Unset
-from typing import cast
-import datetime
-
+from ...types import UNSET, Response, Unset
 
 
 def _get_kwargs(
@@ -23,11 +19,7 @@ def _get_kwargs(
     end_date: datetime.date | Unset = UNSET,
     utm_source: str | Unset = UNSET,
     utm_campaign: str | Unset = UNSET,
-
 ) -> dict[str, Any]:
-    
-
-    
 
     params: dict[str, Any] = {}
 
@@ -45,47 +37,39 @@ def _get_kwargs(
 
     params["utm_campaign"] = utm_campaign
 
-
     params = {k: v for k, v in params.items() if v is not UNSET and v is not None}
-
 
     _kwargs: dict[str, Any] = {
         "method": "get",
-        "url": "/campaigns/{campaign_id}/attribution/stats".format(campaign_id=quote(str(campaign_id), safe=""),),
+        "url": "/campaigns/{campaign_id}/attribution/stats".format(
+            campaign_id=quote(str(campaign_id), safe=""),
+        ),
         "params": params,
     }
-
 
     return _kwargs
 
 
-
-def _parse_response(*, client: AuthenticatedClient | Client, response: httpx.Response) -> AttributionStatsEnvelope | Error | None:
+def _parse_response(
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> AttributionStatsEnvelope | Error | None:
     if response.status_code == 200:
         response_200 = AttributionStatsEnvelope.from_dict(response.json())
-
-
 
         return response_200
 
     if response.status_code == 401:
         response_401 = Error.from_dict(response.json())
 
-
-
         return response_401
 
     if response.status_code == 403:
         response_403 = Error.from_dict(response.json())
 
-
-
         return response_403
 
     if response.status_code == 429:
         response_429 = Error.from_dict(response.json())
-
-
 
         return response_429
 
@@ -95,7 +79,9 @@ def _parse_response(*, client: AuthenticatedClient | Client, response: httpx.Res
         return None
 
 
-def _build_response(*, client: AuthenticatedClient | Client, response: httpx.Response) -> Response[AttributionStatsEnvelope | Error]:
+def _build_response(
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Response[AttributionStatsEnvelope | Error]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -112,9 +98,8 @@ def sync_detailed(
     end_date: datetime.date | Unset = UNSET,
     utm_source: str | Unset = UNSET,
     utm_campaign: str | Unset = UNSET,
-
 ) -> Response[AttributionStatsEnvelope | Error]:
-    """ Get aggregate attribution statistics
+    """Get aggregate attribution statistics
 
      Returns aggregate attribution statistics for a campaign. This is a **Tier 0** endpoint
     available to all OAuth applications with the `read:attribution:aggregate` scope.
@@ -144,16 +129,14 @@ def sync_detailed(
 
     Returns:
         Response[AttributionStatsEnvelope | Error]
-     """
-
+    """
 
     kwargs = _get_kwargs(
         campaign_id=campaign_id,
-start_date=start_date,
-end_date=end_date,
-utm_source=utm_source,
-utm_campaign=utm_campaign,
-
+        start_date=start_date,
+        end_date=end_date,
+        utm_source=utm_source,
+        utm_campaign=utm_campaign,
     )
 
     response = client.get_httpx_client().request(
@@ -161,6 +144,7 @@ utm_campaign=utm_campaign,
     )
 
     return _build_response(client=client, response=response)
+
 
 def sync(
     campaign_id: int,
@@ -170,9 +154,8 @@ def sync(
     end_date: datetime.date | Unset = UNSET,
     utm_source: str | Unset = UNSET,
     utm_campaign: str | Unset = UNSET,
-
 ) -> AttributionStatsEnvelope | Error | None:
-    """ Get aggregate attribution statistics
+    """Get aggregate attribution statistics
 
      Returns aggregate attribution statistics for a campaign. This is a **Tier 0** endpoint
     available to all OAuth applications with the `read:attribution:aggregate` scope.
@@ -202,18 +185,17 @@ def sync(
 
     Returns:
         AttributionStatsEnvelope | Error
-     """
-
+    """
 
     return sync_detailed(
         campaign_id=campaign_id,
-client=client,
-start_date=start_date,
-end_date=end_date,
-utm_source=utm_source,
-utm_campaign=utm_campaign,
-
+        client=client,
+        start_date=start_date,
+        end_date=end_date,
+        utm_source=utm_source,
+        utm_campaign=utm_campaign,
     ).parsed
+
 
 async def asyncio_detailed(
     campaign_id: int,
@@ -223,9 +205,8 @@ async def asyncio_detailed(
     end_date: datetime.date | Unset = UNSET,
     utm_source: str | Unset = UNSET,
     utm_campaign: str | Unset = UNSET,
-
 ) -> Response[AttributionStatsEnvelope | Error]:
-    """ Get aggregate attribution statistics
+    """Get aggregate attribution statistics
 
      Returns aggregate attribution statistics for a campaign. This is a **Tier 0** endpoint
     available to all OAuth applications with the `read:attribution:aggregate` scope.
@@ -255,23 +236,20 @@ async def asyncio_detailed(
 
     Returns:
         Response[AttributionStatsEnvelope | Error]
-     """
-
+    """
 
     kwargs = _get_kwargs(
         campaign_id=campaign_id,
-start_date=start_date,
-end_date=end_date,
-utm_source=utm_source,
-utm_campaign=utm_campaign,
-
+        start_date=start_date,
+        end_date=end_date,
+        utm_source=utm_source,
+        utm_campaign=utm_campaign,
     )
 
-    response = await client.get_async_httpx_client().request(
-        **kwargs
-    )
+    response = await client.get_async_httpx_client().request(**kwargs)
 
     return _build_response(client=client, response=response)
+
 
 async def asyncio(
     campaign_id: int,
@@ -281,9 +259,8 @@ async def asyncio(
     end_date: datetime.date | Unset = UNSET,
     utm_source: str | Unset = UNSET,
     utm_campaign: str | Unset = UNSET,
-
 ) -> AttributionStatsEnvelope | Error | None:
-    """ Get aggregate attribution statistics
+    """Get aggregate attribution statistics
 
      Returns aggregate attribution statistics for a campaign. This is a **Tier 0** endpoint
     available to all OAuth applications with the `read:attribution:aggregate` scope.
@@ -313,15 +290,15 @@ async def asyncio(
 
     Returns:
         AttributionStatsEnvelope | Error
-     """
+    """
 
-
-    return (await asyncio_detailed(
-        campaign_id=campaign_id,
-client=client,
-start_date=start_date,
-end_date=end_date,
-utm_source=utm_source,
-utm_campaign=utm_campaign,
-
-    )).parsed
+    return (
+        await asyncio_detailed(
+            campaign_id=campaign_id,
+            client=client,
+            start_date=start_date,
+            end_date=end_date,
+            utm_source=utm_source,
+            utm_campaign=utm_campaign,
+        )
+    ).parsed

@@ -1,36 +1,27 @@
 from __future__ import annotations
 
 from collections.abc import Mapping
-from typing import Any, TypeVar, BinaryIO, TextIO, TYPE_CHECKING, Generator
+from typing import Any, TypeVar, cast
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
 from ..types import UNSET, Unset
 
-from ..types import UNSET, Unset
-from typing import cast
-
-
-
-
-
-
 T = TypeVar("T", bound="CommentProposalEnvelopeRelatedQuestionsItem")
-
 
 
 @_attrs_define
 class CommentProposalEnvelopeRelatedQuestionsItem:
-    """ 
-        Attributes:
-            id (str | Unset):
-            question (None | str | Unset):
-            asked_at (None | str | Unset):
-            answered_by_team (bool | Unset):
-            answers (list[None | str] | Unset):
-            url (None | str | Unset):
-     """
+    """
+    Attributes:
+        id (str | Unset):
+        question (None | str | Unset):
+        asked_at (None | str | Unset):
+        answered_by_team (bool | Unset):
+        answers (list[None | str] | Unset):
+        url (None | str | Unset):
+    """
 
     id: str | Unset = UNSET
     question: None | str | Unset = UNSET
@@ -39,10 +30,6 @@ class CommentProposalEnvelopeRelatedQuestionsItem:
     answers: list[None | str] | Unset = UNSET
     url: None | str | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
-
-
-
-
 
     def to_dict(self) -> dict[str, Any]:
         id = self.id
@@ -69,19 +56,15 @@ class CommentProposalEnvelopeRelatedQuestionsItem:
                 answers_item = answers_item_data
                 answers.append(answers_item)
 
-
-
         url: None | str | Unset
         if isinstance(self.url, Unset):
             url = UNSET
         else:
             url = self.url
 
-
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({
-        })
+        field_dict.update({})
         if id is not UNSET:
             field_dict["id"] = id
         if question is not UNSET:
@@ -97,8 +80,6 @@ class CommentProposalEnvelopeRelatedQuestionsItem:
 
         return field_dict
 
-
-
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
@@ -113,7 +94,6 @@ class CommentProposalEnvelopeRelatedQuestionsItem:
 
         question = _parse_question(d.pop("question", UNSET))
 
-
         def _parse_asked_at(data: object) -> None | str | Unset:
             if data is None:
                 return data
@@ -123,7 +103,6 @@ class CommentProposalEnvelopeRelatedQuestionsItem:
 
         asked_at = _parse_asked_at(d.pop("asked_at", UNSET))
 
-
         answered_by_team = d.pop("answered_by_team", UNSET)
 
         _answers = d.pop("answers", UNSET)
@@ -131,6 +110,7 @@ class CommentProposalEnvelopeRelatedQuestionsItem:
         if _answers is not UNSET:
             answers = []
             for answers_item_data in _answers:
+
                 def _parse_answers_item(data: object) -> None | str:
                     if data is None:
                         return data
@@ -139,7 +119,6 @@ class CommentProposalEnvelopeRelatedQuestionsItem:
                 answers_item = _parse_answers_item(answers_item_data)
 
                 answers.append(answers_item)
-
 
         def _parse_url(data: object) -> None | str | Unset:
             if data is None:
@@ -150,7 +129,6 @@ class CommentProposalEnvelopeRelatedQuestionsItem:
 
         url = _parse_url(d.pop("url", UNSET))
 
-
         comment_proposal_envelope_related_questions_item = cls(
             id=id,
             question=question,
@@ -159,7 +137,6 @@ class CommentProposalEnvelopeRelatedQuestionsItem:
             answers=answers,
             url=url,
         )
-
 
         comment_proposal_envelope_related_questions_item.additional_properties = d
         return comment_proposal_envelope_related_questions_item

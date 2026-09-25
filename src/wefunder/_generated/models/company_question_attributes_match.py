@@ -1,5 +1,6 @@
 from enum import StrEnum
 
+
 class CompanyQuestionAttributesMatch(StrEnum):
     ANSWER = "answer"
     QUESTION = "question"

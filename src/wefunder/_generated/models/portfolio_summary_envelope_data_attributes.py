@@ -1,41 +1,36 @@
 from __future__ import annotations
 
+import datetime
 from collections.abc import Mapping
-from typing import Any, TypeVar, BinaryIO, TextIO, TYPE_CHECKING, Generator
+from typing import TYPE_CHECKING, Any, TypeVar, cast
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
 from ..types import UNSET, Unset
 
-from ..types import UNSET, Unset
-from typing import cast
-import datetime
-
 if TYPE_CHECKING:
-  from ..models.portfolio_summary_envelope_data_attributes_position_counts import PortfolioSummaryEnvelopeDataAttributesPositionCounts
-
-
-
+    from ..models.portfolio_summary_envelope_data_attributes_position_counts import (
+        PortfolioSummaryEnvelopeDataAttributesPositionCounts,
+    )
 
 
 T = TypeVar("T", bound="PortfolioSummaryEnvelopeDataAttributes")
 
 
-
 @_attrs_define
 class PortfolioSummaryEnvelopeDataAttributes:
-    """ 
-        Attributes:
-            currency (str | Unset):  Example: usd.
-            total_cost_basis_cents (int | Unset):
-            total_current_value_cents (int | Unset):
-            total_unrealized_gain_cents (int | Unset):
-            total_realized_gain_cents (int | Unset):
-            return_multiple (None | str | Unset):  Example: 1.3107.
-            position_counts (PortfolioSummaryEnvelopeDataAttributesPositionCounts | Unset): Distinct offerings per status.
-            as_of (datetime.datetime | None | Unset):
-     """
+    """
+    Attributes:
+        currency (str | Unset):  Example: usd.
+        total_cost_basis_cents (int | Unset):
+        total_current_value_cents (int | Unset):
+        total_unrealized_gain_cents (int | Unset):
+        total_realized_gain_cents (int | Unset):
+        return_multiple (None | str | Unset):  Example: 1.3107.
+        position_counts (PortfolioSummaryEnvelopeDataAttributesPositionCounts | Unset): Distinct offerings per status.
+        as_of (datetime.datetime | None | Unset):
+    """
 
     currency: str | Unset = UNSET
     total_cost_basis_cents: int | Unset = UNSET
@@ -47,12 +42,7 @@ class PortfolioSummaryEnvelopeDataAttributes:
     as_of: datetime.datetime | None | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
-
-
-
-
     def to_dict(self) -> dict[str, Any]:
-        from ..models.portfolio_summary_envelope_data_attributes_position_counts import PortfolioSummaryEnvelopeDataAttributesPositionCounts # noqa: PLC0415
         currency = self.currency
 
         total_cost_basis_cents = self.total_cost_basis_cents
@@ -81,11 +71,9 @@ class PortfolioSummaryEnvelopeDataAttributes:
         else:
             as_of = self.as_of
 
-
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({
-        })
+        field_dict.update({})
         if currency is not UNSET:
             field_dict["currency"] = currency
         if total_cost_basis_cents is not UNSET:
@@ -105,11 +93,12 @@ class PortfolioSummaryEnvelopeDataAttributes:
 
         return field_dict
 
-
-
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
-        from ..models.portfolio_summary_envelope_data_attributes_position_counts import PortfolioSummaryEnvelopeDataAttributesPositionCounts # noqa: PLC0415
+        from ..models.portfolio_summary_envelope_data_attributes_position_counts import (
+            PortfolioSummaryEnvelopeDataAttributesPositionCounts,  # noqa: PLC0415
+        )
+
         d = dict(src_dict)
         currency = d.pop("currency", UNSET)
 
@@ -130,16 +119,12 @@ class PortfolioSummaryEnvelopeDataAttributes:
 
         return_multiple = _parse_return_multiple(d.pop("return_multiple", UNSET))
 
-
         _position_counts = d.pop("position_counts", UNSET)
         position_counts: PortfolioSummaryEnvelopeDataAttributesPositionCounts | Unset
-        if isinstance(_position_counts,  Unset):
+        if isinstance(_position_counts, Unset):
             position_counts = UNSET
         else:
             position_counts = PortfolioSummaryEnvelopeDataAttributesPositionCounts.from_dict(_position_counts)
-
-
-
 
         def _parse_as_of(data: object) -> datetime.datetime | None | Unset:
             if data is None:
@@ -151,15 +136,12 @@ class PortfolioSummaryEnvelopeDataAttributes:
                     raise TypeError()
                 as_of_type_0 = datetime.datetime.fromisoformat(data)
 
-
-
                 return as_of_type_0
             except (TypeError, ValueError, AttributeError, KeyError):
                 pass
             return cast(datetime.datetime | None | Unset, data)
 
         as_of = _parse_as_of(d.pop("as_of", UNSET))
-
 
         portfolio_summary_envelope_data_attributes = cls(
             currency=currency,
@@ -171,7 +153,6 @@ class PortfolioSummaryEnvelopeDataAttributes:
             position_counts=position_counts,
             as_of=as_of,
         )
-
 
         portfolio_summary_envelope_data_attributes.additional_properties = d
         return portfolio_summary_envelope_data_attributes

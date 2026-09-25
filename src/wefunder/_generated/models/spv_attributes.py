@@ -1,49 +1,42 @@
 from __future__ import annotations
 
+import datetime
 from collections.abc import Mapping
-from typing import Any, TypeVar, BinaryIO, TextIO, TYPE_CHECKING, Generator
+from typing import TYPE_CHECKING, Any, TypeVar, cast
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
-from ..types import UNSET, Unset
-
 from ..models.spv_attributes_status import SpvAttributesStatus
 from ..types import UNSET, Unset
-from typing import cast
-import datetime
 
 if TYPE_CHECKING:
-  from ..models.spv_attributes_metadata import SpvAttributesMetadata
-  from ..models.spv_attributes_target_company import SpvAttributesTargetCompany
-  from ..models.spv_metrics import SpvMetrics
-  from ..models.spv_terms import SpvTerms
-
-
-
+    from ..models.spv_attributes_metadata import SpvAttributesMetadata
+    from ..models.spv_attributes_target_company import SpvAttributesTargetCompany
+    from ..models.spv_metrics import SpvMetrics
+    from ..models.spv_terms import SpvTerms
 
 
 T = TypeVar("T", bound="SpvAttributes")
 
 
-
 @_attrs_define
 class SpvAttributes:
-    """ 
-        Attributes:
-            name (str | Unset):  Example: Acme Series A SPV.
-            status (SpvAttributesStatus | Unset):  Example: open.
-            series_name (str | Unset):  Example: Acme Series A SPV, a series of Wefunder LLC.
-            invest_url (None | str | Unset):  Example: https://wefunder.com/invest/spv_abc123.
-            target_company (SpvAttributesTargetCompany | Unset):
-            terms (SpvTerms | Unset): Investment terms for an SPV.
-            metrics (SpvMetrics | Unset):
-            metadata (SpvAttributesMetadata | Unset):
-            created_at (datetime.datetime | Unset):  Example: 2025-01-15T10:00:00Z.
-            opened_at (datetime.datetime | None | Unset):
-            closing_at (datetime.datetime | None | Unset):
-            closed_at (datetime.datetime | None | Unset):
-     """
+    """
+    Attributes:
+        name (str | Unset):  Example: Acme Series A SPV.
+        status (SpvAttributesStatus | Unset):  Example: open.
+        series_name (str | Unset):  Example: Acme Series A SPV, a series of Wefunder LLC.
+        invest_url (None | str | Unset):  Example: https://wefunder.com/invest/spv_abc123.
+        target_company (SpvAttributesTargetCompany | Unset):
+        terms (SpvTerms | Unset): Investment terms for an SPV.
+        metrics (SpvMetrics | Unset):
+        metadata (SpvAttributesMetadata | Unset):
+        created_at (datetime.datetime | Unset):  Example: 2025-01-15T10:00:00Z.
+        opened_at (datetime.datetime | None | Unset):
+        closing_at (datetime.datetime | None | Unset):
+        closed_at (datetime.datetime | None | Unset):
+    """
 
     name: str | Unset = UNSET
     status: SpvAttributesStatus | Unset = UNSET
@@ -59,21 +52,12 @@ class SpvAttributes:
     closed_at: datetime.datetime | None | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
-
-
-
-
     def to_dict(self) -> dict[str, Any]:
-        from ..models.spv_attributes_metadata import SpvAttributesMetadata # noqa: PLC0415
-        from ..models.spv_attributes_target_company import SpvAttributesTargetCompany # noqa: PLC0415
-        from ..models.spv_metrics import SpvMetrics # noqa: PLC0415
-        from ..models.spv_terms import SpvTerms # noqa: PLC0415
         name = self.name
 
         status: str | Unset = UNSET
         if not isinstance(self.status, Unset):
             status = self.status.value
-
 
         series_name = self.series_name
 
@@ -127,11 +111,9 @@ class SpvAttributes:
         else:
             closed_at = self.closed_at
 
-
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({
-        })
+        field_dict.update({})
         if name is not UNSET:
             field_dict["name"] = name
         if status is not UNSET:
@@ -159,26 +141,22 @@ class SpvAttributes:
 
         return field_dict
 
-
-
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
-        from ..models.spv_attributes_metadata import SpvAttributesMetadata # noqa: PLC0415
-        from ..models.spv_attributes_target_company import SpvAttributesTargetCompany # noqa: PLC0415
-        from ..models.spv_metrics import SpvMetrics # noqa: PLC0415
-        from ..models.spv_terms import SpvTerms # noqa: PLC0415
+        from ..models.spv_attributes_metadata import SpvAttributesMetadata  # noqa: PLC0415
+        from ..models.spv_attributes_target_company import SpvAttributesTargetCompany  # noqa: PLC0415
+        from ..models.spv_metrics import SpvMetrics  # noqa: PLC0415
+        from ..models.spv_terms import SpvTerms  # noqa: PLC0415
+
         d = dict(src_dict)
         name = d.pop("name", UNSET)
 
         _status = d.pop("status", UNSET)
         status: SpvAttributesStatus | Unset
-        if isinstance(_status,  Unset):
+        if isinstance(_status, Unset):
             status = UNSET
         else:
             status = SpvAttributesStatus(_status)
-
-
-
 
         series_name = d.pop("series_name", UNSET)
 
@@ -191,56 +169,40 @@ class SpvAttributes:
 
         invest_url = _parse_invest_url(d.pop("invest_url", UNSET))
 
-
         _target_company = d.pop("target_company", UNSET)
         target_company: SpvAttributesTargetCompany | Unset
-        if isinstance(_target_company,  Unset):
+        if isinstance(_target_company, Unset):
             target_company = UNSET
         else:
             target_company = SpvAttributesTargetCompany.from_dict(_target_company)
 
-
-
-
         _terms = d.pop("terms", UNSET)
         terms: SpvTerms | Unset
-        if isinstance(_terms,  Unset):
+        if isinstance(_terms, Unset):
             terms = UNSET
         else:
             terms = SpvTerms.from_dict(_terms)
 
-
-
-
         _metrics = d.pop("metrics", UNSET)
         metrics: SpvMetrics | Unset
-        if isinstance(_metrics,  Unset):
+        if isinstance(_metrics, Unset):
             metrics = UNSET
         else:
             metrics = SpvMetrics.from_dict(_metrics)
 
-
-
-
         _metadata = d.pop("metadata", UNSET)
         metadata: SpvAttributesMetadata | Unset
-        if isinstance(_metadata,  Unset):
+        if isinstance(_metadata, Unset):
             metadata = UNSET
         else:
             metadata = SpvAttributesMetadata.from_dict(_metadata)
 
-
-
-
         _created_at = d.pop("created_at", UNSET)
         created_at: datetime.datetime | Unset
-        if isinstance(_created_at,  Unset):
+        if isinstance(_created_at, Unset):
             created_at = UNSET
         else:
             created_at = datetime.datetime.fromisoformat(_created_at)
-
-
-
 
         def _parse_opened_at(data: object) -> datetime.datetime | None | Unset:
             if data is None:
@@ -252,15 +214,12 @@ class SpvAttributes:
                     raise TypeError()
                 opened_at_type_0 = datetime.datetime.fromisoformat(data)
 
-
-
                 return opened_at_type_0
             except (TypeError, ValueError, AttributeError, KeyError):
                 pass
             return cast(datetime.datetime | None | Unset, data)
 
         opened_at = _parse_opened_at(d.pop("opened_at", UNSET))
-
 
         def _parse_closing_at(data: object) -> datetime.datetime | None | Unset:
             if data is None:
@@ -272,15 +231,12 @@ class SpvAttributes:
                     raise TypeError()
                 closing_at_type_0 = datetime.datetime.fromisoformat(data)
 
-
-
                 return closing_at_type_0
             except (TypeError, ValueError, AttributeError, KeyError):
                 pass
             return cast(datetime.datetime | None | Unset, data)
 
         closing_at = _parse_closing_at(d.pop("closing_at", UNSET))
-
 
         def _parse_closed_at(data: object) -> datetime.datetime | None | Unset:
             if data is None:
@@ -292,15 +248,12 @@ class SpvAttributes:
                     raise TypeError()
                 closed_at_type_0 = datetime.datetime.fromisoformat(data)
 
-
-
                 return closed_at_type_0
             except (TypeError, ValueError, AttributeError, KeyError):
                 pass
             return cast(datetime.datetime | None | Unset, data)
 
         closed_at = _parse_closed_at(d.pop("closed_at", UNSET))
-
 
         spv_attributes = cls(
             name=name,
@@ -316,7 +269,6 @@ class SpvAttributes:
             closing_at=closing_at,
             closed_at=closed_at,
         )
-
 
         spv_attributes.additional_properties = d
         return spv_attributes

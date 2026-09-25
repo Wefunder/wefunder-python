@@ -1,5 +1,6 @@
 from enum import StrEnum
 
+
 class SpvStatusAttributesStatus(StrEnum):
     CANCELED = "canceled"
     CLOSED = "closed"

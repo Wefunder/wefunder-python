@@ -1,5 +1,6 @@
 from enum import StrEnum
 
+
 class CommentProposalEnvelopeProposalTargetType(StrEnum):
     COMMENT = "comment"
     COMPANY = "company"

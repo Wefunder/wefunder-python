@@ -1,49 +1,37 @@
 from __future__ import annotations
 
 from collections.abc import Mapping
-from typing import Any, TypeVar, BinaryIO, TextIO, TYPE_CHECKING, Generator
+from typing import TYPE_CHECKING, Any, TypeVar
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
 from ..types import UNSET, Unset
 
-from ..types import UNSET, Unset
-from typing import cast
-
 if TYPE_CHECKING:
-  from ..models.partner_investor_attributes import PartnerInvestorAttributes
-
-
-
+    from ..models.partner_investor_attributes import PartnerInvestorAttributes
 
 
 T = TypeVar("T", bound="PartnerInvestor")
 
 
-
 @_attrs_define
 class PartnerInvestor:
-    """ An investor in an SPV, aggregated across all their investments in it.
+    """An investor in an SPV, aggregated across all their investments in it.
     `full_name` and `email` are null unless the token holds `read:investors:pii`.
 
         Attributes:
             id (str | Unset):  Example: usr_abc123.
             type_ (str | Unset):  Example: investor.
             attributes (PartnerInvestorAttributes | Unset):
-     """
+    """
 
     id: str | Unset = UNSET
     type_: str | Unset = UNSET
     attributes: PartnerInvestorAttributes | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
-
-
-
-
     def to_dict(self) -> dict[str, Any]:
-        from ..models.partner_investor_attributes import PartnerInvestorAttributes # noqa: PLC0415
         id = self.id
 
         type_ = self.type_
@@ -52,11 +40,9 @@ class PartnerInvestor:
         if not isinstance(self.attributes, Unset):
             attributes = self.attributes.to_dict()
 
-
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({
-        })
+        field_dict.update({})
         if id is not UNSET:
             field_dict["id"] = id
         if type_ is not UNSET:
@@ -66,11 +52,10 @@ class PartnerInvestor:
 
         return field_dict
 
-
-
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
-        from ..models.partner_investor_attributes import PartnerInvestorAttributes # noqa: PLC0415
+        from ..models.partner_investor_attributes import PartnerInvestorAttributes  # noqa: PLC0415
+
         d = dict(src_dict)
         id = d.pop("id", UNSET)
 
@@ -78,20 +63,16 @@ class PartnerInvestor:
 
         _attributes = d.pop("attributes", UNSET)
         attributes: PartnerInvestorAttributes | Unset
-        if isinstance(_attributes,  Unset):
+        if isinstance(_attributes, Unset):
             attributes = UNSET
         else:
             attributes = PartnerInvestorAttributes.from_dict(_attributes)
-
-
-
 
         partner_investor = cls(
             id=id,
             type_=type_,
             attributes=attributes,
         )
-
 
         partner_investor.additional_properties = d
         return partner_investor

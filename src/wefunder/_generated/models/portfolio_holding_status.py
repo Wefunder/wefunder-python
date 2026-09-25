@@ -1,5 +1,6 @@
 from enum import StrEnum
 
+
 class PortfolioHoldingStatus(StrEnum):
     ACTIVE = "active"
     EXITED = "exited"

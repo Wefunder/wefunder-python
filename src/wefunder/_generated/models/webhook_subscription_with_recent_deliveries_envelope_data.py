@@ -1,43 +1,36 @@
 from __future__ import annotations
 
+import datetime
 from collections.abc import Mapping
-from typing import Any, TypeVar, BinaryIO, TextIO, TYPE_CHECKING, Generator
+from typing import TYPE_CHECKING, Any, TypeVar
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
-from ..types import UNSET, Unset
-
 from ..models.webhook_subscription_events_item import WebhookSubscriptionEventsItem
 from ..types import UNSET, Unset
-from typing import cast
-import datetime
 
 if TYPE_CHECKING:
-  from ..models.webhook_delivery import WebhookDelivery
-
-
-
+    from ..models.webhook_delivery import WebhookDelivery
 
 
 T = TypeVar("T", bound="WebhookSubscriptionWithRecentDeliveriesEnvelopeData")
 
 
-
 @_attrs_define
 class WebhookSubscriptionWithRecentDeliveriesEnvelopeData:
-    """ 
-        Attributes:
-            id (int | Unset):  Example: 123.
-            campaign_id (int | Unset):  Example: 789.
-            target_url (str | Unset):  Example: https://yourapp.com/webhooks/wefunder.
-            events (list[WebhookSubscriptionEventsItem] | Unset):  Example: ['investment.applied', 'investment.confirmed'].
-            active (bool | Unset): Whether the subscription is active Example: True.
-            consecutive_failures (int | Unset): Number of consecutive delivery failures (resets on success) Example: 0.
-            created_at (datetime.datetime | Unset):  Example: 2025-03-15T10:30:00Z.
-            updated_at (datetime.datetime | Unset):  Example: 2025-03-15T10:30:00Z.
-            recent_deliveries (list[WebhookDelivery] | Unset): Last 10 delivery attempts
-     """
+    """
+    Attributes:
+        id (int | Unset):  Example: 123.
+        campaign_id (int | Unset):  Example: 789.
+        target_url (str | Unset):  Example: https://yourapp.com/webhooks/wefunder.
+        events (list[WebhookSubscriptionEventsItem] | Unset):  Example: ['investment.applied', 'investment.confirmed'].
+        active (bool | Unset): Whether the subscription is active Example: True.
+        consecutive_failures (int | Unset): Number of consecutive delivery failures (resets on success) Example: 0.
+        created_at (datetime.datetime | Unset):  Example: 2025-03-15T10:30:00Z.
+        updated_at (datetime.datetime | Unset):  Example: 2025-03-15T10:30:00Z.
+        recent_deliveries (list[WebhookDelivery] | Unset): Last 10 delivery attempts
+    """
 
     id: int | Unset = UNSET
     campaign_id: int | Unset = UNSET
@@ -50,12 +43,7 @@ class WebhookSubscriptionWithRecentDeliveriesEnvelopeData:
     recent_deliveries: list[WebhookDelivery] | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
-
-
-
-
     def to_dict(self) -> dict[str, Any]:
-        from ..models.webhook_delivery import WebhookDelivery # noqa: PLC0415
         id = self.id
 
         campaign_id = self.campaign_id
@@ -68,8 +56,6 @@ class WebhookSubscriptionWithRecentDeliveriesEnvelopeData:
             for events_item_data in self.events:
                 events_item = events_item_data.value
                 events.append(events_item)
-
-
 
         active = self.active
 
@@ -90,13 +76,9 @@ class WebhookSubscriptionWithRecentDeliveriesEnvelopeData:
                 recent_deliveries_item = recent_deliveries_item_data.to_dict()
                 recent_deliveries.append(recent_deliveries_item)
 
-
-
-
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({
-        })
+        field_dict.update({})
         if id is not UNSET:
             field_dict["id"] = id
         if campaign_id is not UNSET:
@@ -118,11 +100,10 @@ class WebhookSubscriptionWithRecentDeliveriesEnvelopeData:
 
         return field_dict
 
-
-
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
-        from ..models.webhook_delivery import WebhookDelivery # noqa: PLC0415
+        from ..models.webhook_delivery import WebhookDelivery  # noqa: PLC0415
+
         d = dict(src_dict)
         id = d.pop("id", UNSET)
 
@@ -137,10 +118,7 @@ class WebhookSubscriptionWithRecentDeliveriesEnvelopeData:
             for events_item_data in _events:
                 events_item = WebhookSubscriptionEventsItem(events_item_data)
 
-
-
                 events.append(events_item)
-
 
         active = d.pop("active", UNSET)
 
@@ -148,23 +126,17 @@ class WebhookSubscriptionWithRecentDeliveriesEnvelopeData:
 
         _created_at = d.pop("created_at", UNSET)
         created_at: datetime.datetime | Unset
-        if isinstance(_created_at,  Unset):
+        if isinstance(_created_at, Unset):
             created_at = UNSET
         else:
             created_at = datetime.datetime.fromisoformat(_created_at)
 
-
-
-
         _updated_at = d.pop("updated_at", UNSET)
         updated_at: datetime.datetime | Unset
-        if isinstance(_updated_at,  Unset):
+        if isinstance(_updated_at, Unset):
             updated_at = UNSET
         else:
             updated_at = datetime.datetime.fromisoformat(_updated_at)
-
-
-
 
         _recent_deliveries = d.pop("recent_deliveries", UNSET)
         recent_deliveries: list[WebhookDelivery] | Unset = UNSET
@@ -173,10 +145,7 @@ class WebhookSubscriptionWithRecentDeliveriesEnvelopeData:
             for recent_deliveries_item_data in _recent_deliveries:
                 recent_deliveries_item = WebhookDelivery.from_dict(recent_deliveries_item_data)
 
-
-
                 recent_deliveries.append(recent_deliveries_item)
-
 
         webhook_subscription_with_recent_deliveries_envelope_data = cls(
             id=id,
@@ -189,7 +158,6 @@ class WebhookSubscriptionWithRecentDeliveriesEnvelopeData:
             updated_at=updated_at,
             recent_deliveries=recent_deliveries,
         )
-
 
         webhook_subscription_with_recent_deliveries_envelope_data.additional_properties = d
         return webhook_subscription_with_recent_deliveries_envelope_data

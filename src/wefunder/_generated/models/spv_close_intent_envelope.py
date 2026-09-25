@@ -1,48 +1,35 @@
 from __future__ import annotations
 
 from collections.abc import Mapping
-from typing import Any, TypeVar, BinaryIO, TextIO, TYPE_CHECKING, Generator
+from typing import TYPE_CHECKING, Any, TypeVar
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
 from ..types import UNSET, Unset
 
-from ..types import UNSET, Unset
-from typing import cast
-
 if TYPE_CHECKING:
-  from ..models.spv import Spv
-  from ..models.spv_close_intent_envelope_meta import SpvCloseIntentEnvelopeMeta
-
-
-
+    from ..models.spv import Spv
+    from ..models.spv_close_intent_envelope_meta import SpvCloseIntentEnvelopeMeta
 
 
 T = TypeVar("T", bound="SpvCloseIntentEnvelope")
 
 
-
 @_attrs_define
 class SpvCloseIntentEnvelope:
-    """ The SPV plus the pending disburse_funds intent an advisor approves to finalize the close.
+    """The SPV plus the pending disburse_funds intent an advisor approves to finalize the close.
 
-        Attributes:
-            data (Spv | Unset):
-            meta (SpvCloseIntentEnvelopeMeta | Unset):
-     """
+    Attributes:
+        data (Spv | Unset):
+        meta (SpvCloseIntentEnvelopeMeta | Unset):
+    """
 
     data: Spv | Unset = UNSET
     meta: SpvCloseIntentEnvelopeMeta | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
-
-
-
-
     def to_dict(self) -> dict[str, Any]:
-        from ..models.spv import Spv # noqa: PLC0415
-        from ..models.spv_close_intent_envelope_meta import SpvCloseIntentEnvelopeMeta # noqa: PLC0415
         data: dict[str, Any] | Unset = UNSET
         if not isinstance(self.data, Unset):
             data = self.data.to_dict()
@@ -51,11 +38,9 @@ class SpvCloseIntentEnvelope:
         if not isinstance(self.meta, Unset):
             meta = self.meta.to_dict()
 
-
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({
-        })
+        field_dict.update({})
         if data is not UNSET:
             field_dict["data"] = data
         if meta is not UNSET:
@@ -63,38 +48,30 @@ class SpvCloseIntentEnvelope:
 
         return field_dict
 
-
-
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
-        from ..models.spv import Spv # noqa: PLC0415
-        from ..models.spv_close_intent_envelope_meta import SpvCloseIntentEnvelopeMeta # noqa: PLC0415
+        from ..models.spv import Spv  # noqa: PLC0415
+        from ..models.spv_close_intent_envelope_meta import SpvCloseIntentEnvelopeMeta  # noqa: PLC0415
+
         d = dict(src_dict)
         _data = d.pop("data", UNSET)
         data: Spv | Unset
-        if isinstance(_data,  Unset):
+        if isinstance(_data, Unset):
             data = UNSET
         else:
             data = Spv.from_dict(_data)
 
-
-
-
         _meta = d.pop("meta", UNSET)
         meta: SpvCloseIntentEnvelopeMeta | Unset
-        if isinstance(_meta,  Unset):
+        if isinstance(_meta, Unset):
             meta = UNSET
         else:
             meta = SpvCloseIntentEnvelopeMeta.from_dict(_meta)
-
-
-
 
         spv_close_intent_envelope = cls(
             data=data,
             meta=meta,
         )
-
 
         spv_close_intent_envelope.additional_properties = d
         return spv_close_intent_envelope

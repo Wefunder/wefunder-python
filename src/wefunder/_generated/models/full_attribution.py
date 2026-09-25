@@ -1,33 +1,26 @@
 from __future__ import annotations
 
+import datetime
 from collections.abc import Mapping
-from typing import Any, TypeVar, BinaryIO, TextIO, TYPE_CHECKING, Generator
+from typing import TYPE_CHECKING, Any, TypeVar
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
 from ..types import UNSET, Unset
 
-from ..types import UNSET, Unset
-from typing import cast
-import datetime
-
 if TYPE_CHECKING:
-  from ..models.full_attribution_attribution import FullAttributionAttribution
-  from ..models.full_attribution_investor import FullAttributionInvestor
-  from ..models.full_attribution_status import FullAttributionStatus
-
-
-
+    from ..models.full_attribution_attribution import FullAttributionAttribution
+    from ..models.full_attribution_investor import FullAttributionInvestor
+    from ..models.full_attribution_status import FullAttributionStatus
 
 
 T = TypeVar("T", bound="FullAttribution")
 
 
-
 @_attrs_define
 class FullAttribution:
-    """ Full attribution data with investor PII (Tier 2 - founders only).
+    """Full attribution data with investor PII (Tier 2 - founders only).
     Returned when detail_level=full is requested by an authorized founder.
 
         Attributes:
@@ -39,7 +32,7 @@ class FullAttribution:
             invested_at (datetime.datetime | Unset):  Example: 2025-02-15T14:30:00Z.
             status (FullAttributionStatus | Unset):
             attribution (FullAttributionAttribution | Unset): UTM attribution data (same as anonymized)
-     """
+    """
 
     investment_id: int | Unset = UNSET
     investment_token: str | Unset = UNSET
@@ -50,14 +43,7 @@ class FullAttribution:
     attribution: FullAttributionAttribution | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
-
-
-
-
     def to_dict(self) -> dict[str, Any]:
-        from ..models.full_attribution_attribution import FullAttributionAttribution # noqa: PLC0415
-        from ..models.full_attribution_investor import FullAttributionInvestor # noqa: PLC0415
-        from ..models.full_attribution_status import FullAttributionStatus # noqa: PLC0415
         investment_id = self.investment_id
 
         investment_token = self.investment_token
@@ -80,11 +66,9 @@ class FullAttribution:
         if not isinstance(self.attribution, Unset):
             attribution = self.attribution.to_dict()
 
-
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({
-        })
+        field_dict.update({})
         if investment_id is not UNSET:
             field_dict["investment_id"] = investment_id
         if investment_token is not UNSET:
@@ -102,13 +86,12 @@ class FullAttribution:
 
         return field_dict
 
-
-
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
-        from ..models.full_attribution_attribution import FullAttributionAttribution # noqa: PLC0415
-        from ..models.full_attribution_investor import FullAttributionInvestor # noqa: PLC0415
-        from ..models.full_attribution_status import FullAttributionStatus # noqa: PLC0415
+        from ..models.full_attribution_attribution import FullAttributionAttribution  # noqa: PLC0415
+        from ..models.full_attribution_investor import FullAttributionInvestor  # noqa: PLC0415
+        from ..models.full_attribution_status import FullAttributionStatus  # noqa: PLC0415
+
         d = dict(src_dict)
         investment_id = d.pop("investment_id", UNSET)
 
@@ -116,45 +99,33 @@ class FullAttribution:
 
         _investor = d.pop("investor", UNSET)
         investor: FullAttributionInvestor | Unset
-        if isinstance(_investor,  Unset):
+        if isinstance(_investor, Unset):
             investor = UNSET
         else:
             investor = FullAttributionInvestor.from_dict(_investor)
-
-
-
 
         amount = d.pop("amount", UNSET)
 
         _invested_at = d.pop("invested_at", UNSET)
         invested_at: datetime.datetime | Unset
-        if isinstance(_invested_at,  Unset):
+        if isinstance(_invested_at, Unset):
             invested_at = UNSET
         else:
             invested_at = datetime.datetime.fromisoformat(_invested_at)
 
-
-
-
         _status = d.pop("status", UNSET)
         status: FullAttributionStatus | Unset
-        if isinstance(_status,  Unset):
+        if isinstance(_status, Unset):
             status = UNSET
         else:
             status = FullAttributionStatus.from_dict(_status)
 
-
-
-
         _attribution = d.pop("attribution", UNSET)
         attribution: FullAttributionAttribution | Unset
-        if isinstance(_attribution,  Unset):
+        if isinstance(_attribution, Unset):
             attribution = UNSET
         else:
             attribution = FullAttributionAttribution.from_dict(_attribution)
-
-
-
 
         full_attribution = cls(
             investment_id=investment_id,
@@ -165,7 +136,6 @@ class FullAttribution:
             status=status,
             attribution=attribution,
         )
-
 
         full_attribution.additional_properties = d
         return full_attribution

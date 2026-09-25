@@ -1,46 +1,33 @@
 from __future__ import annotations
 
 from collections.abc import Mapping
-from typing import Any, TypeVar, BinaryIO, TextIO, TYPE_CHECKING, Generator
+from typing import Any, TypeVar, cast
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
 from ..types import UNSET, Unset
 
-from ..types import UNSET, Unset
-from typing import cast
-
-
-
-
-
-
 T = TypeVar("T", bound="PaginationMeta")
-
 
 
 @_attrs_define
 class PaginationMeta:
-    """ 
-        Attributes:
-            count (int | Unset):  Example: 25.
-            has_more (bool | Unset):  Example: True.
-            next_cursor (int | None | str | Unset): Opaque cursor — pass back as `cursor` for the next page. An integer id
-                for
-                id-paginated lists, an ISO 8601 timestamp for timestamp-paginated ones
-                (`/activity`). Absent or null on the last page.
-                 Example: 12345.
-     """
+    """
+    Attributes:
+        count (int | Unset):  Example: 25.
+        has_more (bool | Unset):  Example: True.
+        next_cursor (int | None | str | Unset): Opaque cursor — pass back as `cursor` for the next page. An integer id
+            for
+            id-paginated lists, an ISO 8601 timestamp for timestamp-paginated ones
+            (`/activity`). Absent or null on the last page.
+             Example: 12345.
+    """
 
     count: int | Unset = UNSET
     has_more: bool | Unset = UNSET
     next_cursor: int | None | str | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
-
-
-
-
 
     def to_dict(self) -> dict[str, Any]:
         count = self.count
@@ -53,11 +40,9 @@ class PaginationMeta:
         else:
             next_cursor = self.next_cursor
 
-
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({
-        })
+        field_dict.update({})
         if count is not UNSET:
             field_dict["count"] = count
         if has_more is not UNSET:
@@ -66,8 +51,6 @@ class PaginationMeta:
             field_dict["next_cursor"] = next_cursor
 
         return field_dict
-
-
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
@@ -85,13 +68,11 @@ class PaginationMeta:
 
         next_cursor = _parse_next_cursor(d.pop("next_cursor", UNSET))
 
-
         pagination_meta = cls(
             count=count,
             has_more=has_more,
             next_cursor=next_cursor,
         )
-
 
         pagination_meta.additional_properties = d
         return pagination_meta

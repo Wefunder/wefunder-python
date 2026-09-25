@@ -1,19 +1,15 @@
 from http import HTTPStatus
-from typing import Any, cast
+from typing import Any
 from urllib.parse import quote
 
 import httpx
 
-from ...client import AuthenticatedClient, Client
-from ...types import Response, UNSET
 from ... import errors
-
+from ...client import AuthenticatedClient, Client
 from ...models.error import Error
 from ...models.list_syndicate_portfolio_positions_status import ListSyndicatePortfolioPositionsStatus
 from ...models.portfolio_position_list_envelope import PortfolioPositionListEnvelope
-from ...types import UNSET, Unset
-from typing import cast
-
+from ...types import UNSET, Response, Unset
 
 
 def _get_kwargs(
@@ -23,11 +19,7 @@ def _get_kwargs(
     per_page: int | Unset = 25,
     status: ListSyndicatePortfolioPositionsStatus | Unset = UNSET,
     company: str | Unset = UNSET,
-
 ) -> dict[str, Any]:
-    
-
-    
 
     params: dict[str, Any] = {}
 
@@ -43,54 +35,44 @@ def _get_kwargs(
 
     params["company"] = company
 
-
     params = {k: v for k, v in params.items() if v is not UNSET and v is not None}
-
 
     _kwargs: dict[str, Any] = {
         "method": "get",
-        "url": "/syndicates/{syndicate_id}/portfolio/positions".format(syndicate_id=quote(str(syndicate_id), safe=""),),
+        "url": "/syndicates/{syndicate_id}/portfolio/positions".format(
+            syndicate_id=quote(str(syndicate_id), safe=""),
+        ),
         "params": params,
     }
-
 
     return _kwargs
 
 
-
-def _parse_response(*, client: AuthenticatedClient | Client, response: httpx.Response) -> Error | PortfolioPositionListEnvelope | None:
+def _parse_response(
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Error | PortfolioPositionListEnvelope | None:
     if response.status_code == 200:
         response_200 = PortfolioPositionListEnvelope.from_dict(response.json())
-
-
 
         return response_200
 
     if response.status_code == 400:
         response_400 = Error.from_dict(response.json())
 
-
-
         return response_400
 
     if response.status_code == 401:
         response_401 = Error.from_dict(response.json())
-
-
 
         return response_401
 
     if response.status_code == 403:
         response_403 = Error.from_dict(response.json())
 
-
-
         return response_403
 
     if response.status_code == 404:
         response_404 = Error.from_dict(response.json())
-
-
 
         return response_404
 
@@ -100,7 +82,9 @@ def _parse_response(*, client: AuthenticatedClient | Client, response: httpx.Res
         return None
 
 
-def _build_response(*, client: AuthenticatedClient | Client, response: httpx.Response) -> Response[Error | PortfolioPositionListEnvelope]:
+def _build_response(
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Response[Error | PortfolioPositionListEnvelope]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -117,9 +101,8 @@ def sync_detailed(
     per_page: int | Unset = 25,
     status: ListSyndicatePortfolioPositionsStatus | Unset = UNSET,
     company: str | Unset = UNSET,
-
 ) -> Response[Error | PortfolioPositionListEnvelope]:
-    """ List syndicate portfolio positions
+    """List syndicate portfolio positions
 
      Returns the syndicate's portfolio one deal at a time, newest first. Each
     position is one fundraise ("offering"), aggregated across everyone holding
@@ -145,16 +128,14 @@ def sync_detailed(
 
     Returns:
         Response[Error | PortfolioPositionListEnvelope]
-     """
-
+    """
 
     kwargs = _get_kwargs(
         syndicate_id=syndicate_id,
-cursor=cursor,
-per_page=per_page,
-status=status,
-company=company,
-
+        cursor=cursor,
+        per_page=per_page,
+        status=status,
+        company=company,
     )
 
     response = client.get_httpx_client().request(
@@ -162,6 +143,7 @@ company=company,
     )
 
     return _build_response(client=client, response=response)
+
 
 def sync(
     syndicate_id: str,
@@ -171,9 +153,8 @@ def sync(
     per_page: int | Unset = 25,
     status: ListSyndicatePortfolioPositionsStatus | Unset = UNSET,
     company: str | Unset = UNSET,
-
 ) -> Error | PortfolioPositionListEnvelope | None:
-    """ List syndicate portfolio positions
+    """List syndicate portfolio positions
 
      Returns the syndicate's portfolio one deal at a time, newest first. Each
     position is one fundraise ("offering"), aggregated across everyone holding
@@ -199,18 +180,17 @@ def sync(
 
     Returns:
         Error | PortfolioPositionListEnvelope
-     """
-
+    """
 
     return sync_detailed(
         syndicate_id=syndicate_id,
-client=client,
-cursor=cursor,
-per_page=per_page,
-status=status,
-company=company,
-
+        client=client,
+        cursor=cursor,
+        per_page=per_page,
+        status=status,
+        company=company,
     ).parsed
+
 
 async def asyncio_detailed(
     syndicate_id: str,
@@ -220,9 +200,8 @@ async def asyncio_detailed(
     per_page: int | Unset = 25,
     status: ListSyndicatePortfolioPositionsStatus | Unset = UNSET,
     company: str | Unset = UNSET,
-
 ) -> Response[Error | PortfolioPositionListEnvelope]:
-    """ List syndicate portfolio positions
+    """List syndicate portfolio positions
 
      Returns the syndicate's portfolio one deal at a time, newest first. Each
     position is one fundraise ("offering"), aggregated across everyone holding
@@ -248,23 +227,20 @@ async def asyncio_detailed(
 
     Returns:
         Response[Error | PortfolioPositionListEnvelope]
-     """
-
+    """
 
     kwargs = _get_kwargs(
         syndicate_id=syndicate_id,
-cursor=cursor,
-per_page=per_page,
-status=status,
-company=company,
-
+        cursor=cursor,
+        per_page=per_page,
+        status=status,
+        company=company,
     )
 
-    response = await client.get_async_httpx_client().request(
-        **kwargs
-    )
+    response = await client.get_async_httpx_client().request(**kwargs)
 
     return _build_response(client=client, response=response)
+
 
 async def asyncio(
     syndicate_id: str,
@@ -274,9 +250,8 @@ async def asyncio(
     per_page: int | Unset = 25,
     status: ListSyndicatePortfolioPositionsStatus | Unset = UNSET,
     company: str | Unset = UNSET,
-
 ) -> Error | PortfolioPositionListEnvelope | None:
-    """ List syndicate portfolio positions
+    """List syndicate portfolio positions
 
      Returns the syndicate's portfolio one deal at a time, newest first. Each
     position is one fundraise ("offering"), aggregated across everyone holding
@@ -302,15 +277,15 @@ async def asyncio(
 
     Returns:
         Error | PortfolioPositionListEnvelope
-     """
+    """
 
-
-    return (await asyncio_detailed(
-        syndicate_id=syndicate_id,
-client=client,
-cursor=cursor,
-per_page=per_page,
-status=status,
-company=company,
-
-    )).parsed
+    return (
+        await asyncio_detailed(
+            syndicate_id=syndicate_id,
+            client=client,
+            cursor=cursor,
+            per_page=per_page,
+            status=status,
+            company=company,
+        )
+    ).parsed

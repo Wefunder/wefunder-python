@@ -1,5 +1,6 @@
 from enum import StrEnum
 
+
 class SafeSecurityType(StrEnum):
     SAFE = "safe"
 

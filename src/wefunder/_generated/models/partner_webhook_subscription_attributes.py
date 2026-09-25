@@ -1,45 +1,32 @@
 from __future__ import annotations
 
+import datetime
 from collections.abc import Mapping
-from typing import Any, TypeVar, BinaryIO, TextIO, TYPE_CHECKING, Generator
+from typing import Any, TypeVar, cast
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
 from ..types import UNSET, Unset
 
-from ..types import UNSET, Unset
-from typing import cast
-import datetime
-
-
-
-
-
-
 T = TypeVar("T", bound="PartnerWebhookSubscriptionAttributes")
-
 
 
 @_attrs_define
 class PartnerWebhookSubscriptionAttributes:
-    """ 
-        Attributes:
-            url (str | Unset):  Example: https://partner.com/webhooks/wefunder.
-            events (list[str] | Unset):  Example: ['spv.opened', 'spv.closed'].
-            active (bool | Unset):  Example: True.
-            created_at (datetime.datetime | Unset):  Example: 2025-01-15T10:00:00Z.
-     """
+    """
+    Attributes:
+        url (str | Unset):  Example: https://partner.com/webhooks/wefunder.
+        events (list[str] | Unset):  Example: ['spv.opened', 'spv.closed'].
+        active (bool | Unset):  Example: True.
+        created_at (datetime.datetime | Unset):  Example: 2025-01-15T10:00:00Z.
+    """
 
     url: str | Unset = UNSET
     events: list[str] | Unset = UNSET
     active: bool | Unset = UNSET
     created_at: datetime.datetime | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
-
-
-
-
 
     def to_dict(self) -> dict[str, Any]:
         url = self.url
@@ -48,19 +35,15 @@ class PartnerWebhookSubscriptionAttributes:
         if not isinstance(self.events, Unset):
             events = self.events
 
-
-
         active = self.active
 
         created_at: str | Unset = UNSET
         if not isinstance(self.created_at, Unset):
             created_at = self.created_at.isoformat()
 
-
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({
-        })
+        field_dict.update({})
         if url is not UNSET:
             field_dict["url"] = url
         if events is not UNSET:
@@ -72,8 +55,6 @@ class PartnerWebhookSubscriptionAttributes:
 
         return field_dict
 
-
-
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
@@ -81,18 +62,14 @@ class PartnerWebhookSubscriptionAttributes:
 
         events = cast(list[str], d.pop("events", UNSET))
 
-
         active = d.pop("active", UNSET)
 
         _created_at = d.pop("created_at", UNSET)
         created_at: datetime.datetime | Unset
-        if isinstance(_created_at,  Unset):
+        if isinstance(_created_at, Unset):
             created_at = UNSET
         else:
             created_at = datetime.datetime.fromisoformat(_created_at)
-
-
-
 
         partner_webhook_subscription_attributes = cls(
             url=url,
@@ -100,7 +77,6 @@ class PartnerWebhookSubscriptionAttributes:
             active=active,
             created_at=created_at,
         )
-
 
         partner_webhook_subscription_attributes.additional_properties = d
         return partner_webhook_subscription_attributes

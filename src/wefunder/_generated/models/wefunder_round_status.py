@@ -1,5 +1,6 @@
 from enum import StrEnum
 
+
 class WefunderRoundStatus(StrEnum):
     CLOSED = "closed"
     OPEN = "open"

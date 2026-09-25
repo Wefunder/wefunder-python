@@ -1,37 +1,28 @@
 from __future__ import annotations
 
 from collections.abc import Mapping
-from typing import Any, TypeVar, BinaryIO, TextIO, TYPE_CHECKING, Generator
+from typing import Any, TypeVar, cast
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
-from ..types import UNSET, Unset
-
 from ..models.comment_proposal_envelope_proposal_target_type import CommentProposalEnvelopeProposalTargetType
 from ..types import UNSET, Unset
-from typing import cast
-
-
-
-
-
 
 T = TypeVar("T", bound="CommentProposalEnvelopeProposal")
 
 
-
 @_attrs_define
 class CommentProposalEnvelopeProposal:
-    """ The arguments, as normalized, to pass to write_comment_intent once the user confirms.
+    """The arguments, as normalized, to pass to write_comment_intent once the user confirms.
 
-        Attributes:
-            company_id (str | Unset):
-            target_type (CommentProposalEnvelopeProposalTargetType | Unset):
-            target (str | Unset):
-            body (str | Unset):
-            disclosure_key (None | str | Unset):
-     """
+    Attributes:
+        company_id (str | Unset):
+        target_type (CommentProposalEnvelopeProposalTargetType | Unset):
+        target (str | Unset):
+        body (str | Unset):
+        disclosure_key (None | str | Unset):
+    """
 
     company_id: str | Unset = UNSET
     target_type: CommentProposalEnvelopeProposalTargetType | Unset = UNSET
@@ -40,17 +31,12 @@ class CommentProposalEnvelopeProposal:
     disclosure_key: None | str | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
-
-
-
-
     def to_dict(self) -> dict[str, Any]:
         company_id = self.company_id
 
         target_type: str | Unset = UNSET
         if not isinstance(self.target_type, Unset):
             target_type = self.target_type.value
-
 
         target = self.target
 
@@ -62,11 +48,9 @@ class CommentProposalEnvelopeProposal:
         else:
             disclosure_key = self.disclosure_key
 
-
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({
-        })
+        field_dict.update({})
         if company_id is not UNSET:
             field_dict["company_id"] = company_id
         if target_type is not UNSET:
@@ -80,8 +64,6 @@ class CommentProposalEnvelopeProposal:
 
         return field_dict
 
-
-
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
@@ -89,13 +71,10 @@ class CommentProposalEnvelopeProposal:
 
         _target_type = d.pop("target_type", UNSET)
         target_type: CommentProposalEnvelopeProposalTargetType | Unset
-        if isinstance(_target_type,  Unset):
+        if isinstance(_target_type, Unset):
             target_type = UNSET
         else:
             target_type = CommentProposalEnvelopeProposalTargetType(_target_type)
-
-
-
 
         target = d.pop("target", UNSET)
 
@@ -110,7 +89,6 @@ class CommentProposalEnvelopeProposal:
 
         disclosure_key = _parse_disclosure_key(d.pop("disclosure_key", UNSET))
 
-
         comment_proposal_envelope_proposal = cls(
             company_id=company_id,
             target_type=target_type,
@@ -118,7 +96,6 @@ class CommentProposalEnvelopeProposal:
             body=body,
             disclosure_key=disclosure_key,
         )
-
 
         comment_proposal_envelope_proposal.additional_properties = d
         return comment_proposal_envelope_proposal

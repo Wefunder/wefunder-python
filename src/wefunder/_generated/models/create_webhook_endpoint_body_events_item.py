@@ -1,5 +1,6 @@
 from enum import StrEnum
 
+
 class CreateWebhookEndpointBodyEventsItem(StrEnum):
     INVESTMENT_AMOUNT_CHANGED = "investment.amount_changed"
     INVESTMENT_CANCELED = "investment.canceled"

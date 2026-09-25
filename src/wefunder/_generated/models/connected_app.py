@@ -1,48 +1,36 @@
 from __future__ import annotations
 
 from collections.abc import Mapping
-from typing import Any, TypeVar, BinaryIO, TextIO, TYPE_CHECKING, Generator
+from typing import TYPE_CHECKING, Any, TypeVar
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
 from ..types import UNSET, Unset
 
-from ..types import UNSET, Unset
-from typing import cast
-
 if TYPE_CHECKING:
-  from ..models.connected_app_attributes import ConnectedAppAttributes
-
-
-
+    from ..models.connected_app_attributes import ConnectedAppAttributes
 
 
 T = TypeVar("T", bound="ConnectedApp")
 
 
-
 @_attrs_define
 class ConnectedApp:
-    """ An OAuth application authorized by the user
+    """An OAuth application authorized by the user
 
-        Attributes:
-            id (int | Unset):  Example: 123.
-            type_ (str | Unset):  Example: connected_app.
-            attributes (ConnectedAppAttributes | Unset):
-     """
+    Attributes:
+        id (int | Unset):  Example: 123.
+        type_ (str | Unset):  Example: connected_app.
+        attributes (ConnectedAppAttributes | Unset):
+    """
 
     id: int | Unset = UNSET
     type_: str | Unset = UNSET
     attributes: ConnectedAppAttributes | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
-
-
-
-
     def to_dict(self) -> dict[str, Any]:
-        from ..models.connected_app_attributes import ConnectedAppAttributes # noqa: PLC0415
         id = self.id
 
         type_ = self.type_
@@ -51,11 +39,9 @@ class ConnectedApp:
         if not isinstance(self.attributes, Unset):
             attributes = self.attributes.to_dict()
 
-
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({
-        })
+        field_dict.update({})
         if id is not UNSET:
             field_dict["id"] = id
         if type_ is not UNSET:
@@ -65,11 +51,10 @@ class ConnectedApp:
 
         return field_dict
 
-
-
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
-        from ..models.connected_app_attributes import ConnectedAppAttributes # noqa: PLC0415
+        from ..models.connected_app_attributes import ConnectedAppAttributes  # noqa: PLC0415
+
         d = dict(src_dict)
         id = d.pop("id", UNSET)
 
@@ -77,20 +62,16 @@ class ConnectedApp:
 
         _attributes = d.pop("attributes", UNSET)
         attributes: ConnectedAppAttributes | Unset
-        if isinstance(_attributes,  Unset):
+        if isinstance(_attributes, Unset):
             attributes = UNSET
         else:
             attributes = ConnectedAppAttributes.from_dict(_attributes)
-
-
-
 
         connected_app = cls(
             id=id,
             type_=type_,
             attributes=attributes,
         )
-
 
         connected_app.additional_properties = d
         return connected_app

@@ -1,5 +1,6 @@
 from enum import StrEnum
 
+
 class ListActivityStatus(StrEnum):
     DENIED = "denied"
     FAILURE = "failure"

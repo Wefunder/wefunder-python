@@ -1,78 +1,59 @@
 from __future__ import annotations
 
 from collections.abc import Mapping
-from typing import Any, TypeVar, BinaryIO, TextIO, TYPE_CHECKING, Generator
+from typing import TYPE_CHECKING, Any, TypeVar
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
 from ..types import UNSET, Unset
 
-from ..types import UNSET, Unset
-from typing import cast
-
 if TYPE_CHECKING:
-  from ..models.company_disclosures import CompanyDisclosures
-
-
-
+    from ..models.company_disclosures import CompanyDisclosures
 
 
 T = TypeVar("T", bound="CompanyDisclosuresEnvelope")
 
 
-
 @_attrs_define
 class CompanyDisclosuresEnvelope:
-    """ 
-        Attributes:
-            data (CompanyDisclosures | Unset): The company's public Form C disclosures (the site's Details tab), one section
-                per key. A section is null when the company hides it on the site.
-     """
+    """
+    Attributes:
+        data (CompanyDisclosures | Unset): The company's public Form C disclosures (the site's Details tab), one section
+            per key. A section is null when the company hides it on the site.
+    """
 
     data: CompanyDisclosures | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
-
-
-
-
     def to_dict(self) -> dict[str, Any]:
-        from ..models.company_disclosures import CompanyDisclosures # noqa: PLC0415
         data: dict[str, Any] | Unset = UNSET
         if not isinstance(self.data, Unset):
             data = self.data.to_dict()
 
-
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({
-        })
+        field_dict.update({})
         if data is not UNSET:
             field_dict["data"] = data
 
         return field_dict
 
-
-
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
-        from ..models.company_disclosures import CompanyDisclosures # noqa: PLC0415
+        from ..models.company_disclosures import CompanyDisclosures  # noqa: PLC0415
+
         d = dict(src_dict)
         _data = d.pop("data", UNSET)
         data: CompanyDisclosures | Unset
-        if isinstance(_data,  Unset):
+        if isinstance(_data, Unset):
             data = UNSET
         else:
             data = CompanyDisclosures.from_dict(_data)
 
-
-
-
         company_disclosures_envelope = cls(
             data=data,
         )
-
 
         company_disclosures_envelope.additional_properties = d
         return company_disclosures_envelope

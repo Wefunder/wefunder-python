@@ -1,40 +1,31 @@
 from __future__ import annotations
 
+import datetime
 from collections.abc import Mapping
-from typing import Any, TypeVar, BinaryIO, TextIO, TYPE_CHECKING, Generator
+from typing import Any, TypeVar, cast
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
-from ..types import UNSET, Unset
-
 from ..models.spv_status_attributes_status import SpvStatusAttributesStatus
 from ..types import UNSET, Unset
-from typing import cast
-import datetime
-
-
-
-
-
 
 T = TypeVar("T", bound="SpvStatusAttributes")
 
 
-
 @_attrs_define
 class SpvStatusAttributes:
-    """ 
-        Attributes:
-            status (SpvStatusAttributesStatus | Unset):  Example: closing.
-            requires_ops_review (bool | Unset): The offering is awaiting Wefunder review before it can open. Example: False.
-            disbursement_scheduled (bool | Unset): A disbursement is queued for this SPV but funds have not moved yet.
-                Example: True.
-            expected_disbursement_at (datetime.datetime | None | Unset): Estimated date funds will be disbursed — 3 business
-                days from when the close executed and the SPV entered the disbursement queue. Present only while `status` is
-                `closing` (awaiting disbursement); null before close and once funds have moved. Example: 2026-07-28T00:00:00Z.
-            finalized_investor_list (bool | Unset): The investor roster has been finalized. Example: False.
-     """
+    """
+    Attributes:
+        status (SpvStatusAttributesStatus | Unset):  Example: closing.
+        requires_ops_review (bool | Unset): The offering is awaiting Wefunder review before it can open. Example: False.
+        disbursement_scheduled (bool | Unset): A disbursement is queued for this SPV but funds have not moved yet.
+            Example: True.
+        expected_disbursement_at (datetime.datetime | None | Unset): Estimated date funds will be disbursed — 3 business
+            days from when the close executed and the SPV entered the disbursement queue. Present only while `status` is
+            `closing` (awaiting disbursement); null before close and once funds have moved. Example: 2026-07-28T00:00:00Z.
+        finalized_investor_list (bool | Unset): The investor roster has been finalized. Example: False.
+    """
 
     status: SpvStatusAttributesStatus | Unset = UNSET
     requires_ops_review: bool | Unset = UNSET
@@ -43,15 +34,10 @@ class SpvStatusAttributes:
     finalized_investor_list: bool | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
-
-
-
-
     def to_dict(self) -> dict[str, Any]:
         status: str | Unset = UNSET
         if not isinstance(self.status, Unset):
             status = self.status.value
-
 
         requires_ops_review = self.requires_ops_review
 
@@ -67,11 +53,9 @@ class SpvStatusAttributes:
 
         finalized_investor_list = self.finalized_investor_list
 
-
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({
-        })
+        field_dict.update({})
         if status is not UNSET:
             field_dict["status"] = status
         if requires_ops_review is not UNSET:
@@ -85,20 +69,15 @@ class SpvStatusAttributes:
 
         return field_dict
 
-
-
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
         _status = d.pop("status", UNSET)
         status: SpvStatusAttributesStatus | Unset
-        if isinstance(_status,  Unset):
+        if isinstance(_status, Unset):
             status = UNSET
         else:
             status = SpvStatusAttributesStatus(_status)
-
-
-
 
         requires_ops_review = d.pop("requires_ops_review", UNSET)
 
@@ -114,15 +93,12 @@ class SpvStatusAttributes:
                     raise TypeError()
                 expected_disbursement_at_type_0 = datetime.datetime.fromisoformat(data)
 
-
-
                 return expected_disbursement_at_type_0
             except (TypeError, ValueError, AttributeError, KeyError):
                 pass
             return cast(datetime.datetime | None | Unset, data)
 
         expected_disbursement_at = _parse_expected_disbursement_at(d.pop("expected_disbursement_at", UNSET))
-
 
         finalized_investor_list = d.pop("finalized_investor_list", UNSET)
 
@@ -133,7 +109,6 @@ class SpvStatusAttributes:
             expected_disbursement_at=expected_disbursement_at,
             finalized_investor_list=finalized_investor_list,
         )
-
 
         spv_status_attributes.additional_properties = d
         return spv_status_attributes

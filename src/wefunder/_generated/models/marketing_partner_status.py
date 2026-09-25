@@ -1,5 +1,6 @@
 from enum import StrEnum
 
+
 class MarketingPartnerStatus(StrEnum):
     APPROVED = "approved"
     PENDING = "pending"

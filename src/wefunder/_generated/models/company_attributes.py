@@ -1,52 +1,45 @@
 from __future__ import annotations
 
 from collections.abc import Mapping
-from typing import Any, TypeVar, BinaryIO, TextIO, TYPE_CHECKING, Generator
+from typing import TYPE_CHECKING, Any, TypeVar, cast
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
 from ..types import UNSET, Unset
 
-from ..types import UNSET, Unset
-from typing import cast
-
 if TYPE_CHECKING:
-  from ..models.company_attributes_location import CompanyAttributesLocation
-  from ..models.company_totals import CompanyTotals
-  from ..models.current_raise import CurrentRaise
-  from ..models.past_round import PastRound
-  from ..models.wefunder_round import WefunderRound
-
-
-
+    from ..models.company_attributes_location import CompanyAttributesLocation
+    from ..models.company_totals import CompanyTotals
+    from ..models.current_raise import CurrentRaise
+    from ..models.past_round import PastRound
+    from ..models.wefunder_round import WefunderRound
 
 
 T = TypeVar("T", bound="CompanyAttributes")
 
 
-
 @_attrs_define
 class CompanyAttributes:
-    """ 
-        Attributes:
-            name (str | Unset):
-            tagline (None | str | Unset):
-            url (None | str | Unset): The company's Wefunder page.
-            logo_url (None | str | Unset):
-            card_image_url (None | str | Unset):
-            location (CompanyAttributesLocation | Unset):
-            raising (bool | Unset): True when the round the page shows this viewer is live (accepting investments or
-                reservations). False for a funded company, or one with no round the viewer may see.
-            current_raise (CurrentRaise | None | Unset): The live round the page shows, or null when `raising` is false. A
-                funded company still has its history in `wefunder_rounds` and the page's ticker in `totals`.
-            past_rounds (list[PastRound] | Unset): The prior rounds the company page's ticker folds in (its own accounting;
-                see `totals.profile_*`). Not the company's full Wefunder history — that is `wefunder_rounds`.
-            wefunder_rounds (list[WefunderRound] | Unset): Every round this company has run on Wefunder that the viewer may
-                see, live and closed, newest first, each with its own metric. Independent of what the page's ticker chooses to
-                include.
-            totals (CompanyTotals | Unset):
-     """
+    """
+    Attributes:
+        name (str | Unset):
+        tagline (None | str | Unset):
+        url (None | str | Unset): The company's Wefunder page.
+        logo_url (None | str | Unset):
+        card_image_url (None | str | Unset):
+        location (CompanyAttributesLocation | Unset):
+        raising (bool | Unset): True when the round the page shows this viewer is live (accepting investments or
+            reservations). False for a funded company, or one with no round the viewer may see.
+        current_raise (CurrentRaise | None | Unset): The live round the page shows, or null when `raising` is false. A
+            funded company still has its history in `wefunder_rounds` and the page's ticker in `totals`.
+        past_rounds (list[PastRound] | Unset): The prior rounds the company page's ticker folds in (its own accounting;
+            see `totals.profile_*`). Not the company's full Wefunder history — that is `wefunder_rounds`.
+        wefunder_rounds (list[WefunderRound] | Unset): Every round this company has run on Wefunder that the viewer may
+            see, live and closed, newest first, each with its own metric. Independent of what the page's ticker chooses to
+            include.
+        totals (CompanyTotals | Unset):
+    """
 
     name: str | Unset = UNSET
     tagline: None | str | Unset = UNSET
@@ -61,16 +54,9 @@ class CompanyAttributes:
     totals: CompanyTotals | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
-
-
-
-
     def to_dict(self) -> dict[str, Any]:
-        from ..models.company_attributes_location import CompanyAttributesLocation # noqa: PLC0415
-        from ..models.company_totals import CompanyTotals # noqa: PLC0415
-        from ..models.current_raise import CurrentRaise # noqa: PLC0415
-        from ..models.past_round import PastRound # noqa: PLC0415
-        from ..models.wefunder_round import WefunderRound # noqa: PLC0415
+        from ..models.current_raise import CurrentRaise  # noqa: PLC0415
+
         name = self.name
 
         tagline: None | str | Unset
@@ -118,8 +104,6 @@ class CompanyAttributes:
                 past_rounds_item = past_rounds_item_data.to_dict()
                 past_rounds.append(past_rounds_item)
 
-
-
         wefunder_rounds: list[dict[str, Any]] | Unset = UNSET
         if not isinstance(self.wefunder_rounds, Unset):
             wefunder_rounds = []
@@ -127,17 +111,13 @@ class CompanyAttributes:
                 wefunder_rounds_item = wefunder_rounds_item_data.to_dict()
                 wefunder_rounds.append(wefunder_rounds_item)
 
-
-
         totals: dict[str, Any] | Unset = UNSET
         if not isinstance(self.totals, Unset):
             totals = self.totals.to_dict()
 
-
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({
-        })
+        field_dict.update({})
         if name is not UNSET:
             field_dict["name"] = name
         if tagline is not UNSET:
@@ -163,15 +143,14 @@ class CompanyAttributes:
 
         return field_dict
 
-
-
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
-        from ..models.company_attributes_location import CompanyAttributesLocation # noqa: PLC0415
-        from ..models.company_totals import CompanyTotals # noqa: PLC0415
-        from ..models.current_raise import CurrentRaise # noqa: PLC0415
-        from ..models.past_round import PastRound # noqa: PLC0415
-        from ..models.wefunder_round import WefunderRound # noqa: PLC0415
+        from ..models.company_attributes_location import CompanyAttributesLocation  # noqa: PLC0415
+        from ..models.company_totals import CompanyTotals  # noqa: PLC0415
+        from ..models.current_raise import CurrentRaise  # noqa: PLC0415
+        from ..models.past_round import PastRound  # noqa: PLC0415
+        from ..models.wefunder_round import WefunderRound  # noqa: PLC0415
+
         d = dict(src_dict)
         name = d.pop("name", UNSET)
 
@@ -184,7 +163,6 @@ class CompanyAttributes:
 
         tagline = _parse_tagline(d.pop("tagline", UNSET))
 
-
         def _parse_url(data: object) -> None | str | Unset:
             if data is None:
                 return data
@@ -193,7 +171,6 @@ class CompanyAttributes:
             return cast(None | str | Unset, data)
 
         url = _parse_url(d.pop("url", UNSET))
-
 
         def _parse_logo_url(data: object) -> None | str | Unset:
             if data is None:
@@ -204,7 +181,6 @@ class CompanyAttributes:
 
         logo_url = _parse_logo_url(d.pop("logo_url", UNSET))
 
-
         def _parse_card_image_url(data: object) -> None | str | Unset:
             if data is None:
                 return data
@@ -214,16 +190,12 @@ class CompanyAttributes:
 
         card_image_url = _parse_card_image_url(d.pop("card_image_url", UNSET))
 
-
         _location = d.pop("location", UNSET)
         location: CompanyAttributesLocation | Unset
-        if isinstance(_location,  Unset):
+        if isinstance(_location, Unset):
             location = UNSET
         else:
             location = CompanyAttributesLocation.from_dict(_location)
-
-
-
 
         raising = d.pop("raising", UNSET)
 
@@ -237,15 +209,12 @@ class CompanyAttributes:
                     raise TypeError()
                 current_raise_type_1 = CurrentRaise.from_dict(data)
 
-
-
                 return current_raise_type_1
             except (TypeError, ValueError, AttributeError, KeyError):
                 pass
             return cast(CurrentRaise | None | Unset, data)
 
         current_raise = _parse_current_raise(d.pop("current_raise", UNSET))
-
 
         _past_rounds = d.pop("past_rounds", UNSET)
         past_rounds: list[PastRound] | Unset = UNSET
@@ -254,10 +223,7 @@ class CompanyAttributes:
             for past_rounds_item_data in _past_rounds:
                 past_rounds_item = PastRound.from_dict(past_rounds_item_data)
 
-
-
                 past_rounds.append(past_rounds_item)
-
 
         _wefunder_rounds = d.pop("wefunder_rounds", UNSET)
         wefunder_rounds: list[WefunderRound] | Unset = UNSET
@@ -266,20 +232,14 @@ class CompanyAttributes:
             for wefunder_rounds_item_data in _wefunder_rounds:
                 wefunder_rounds_item = WefunderRound.from_dict(wefunder_rounds_item_data)
 
-
-
                 wefunder_rounds.append(wefunder_rounds_item)
-
 
         _totals = d.pop("totals", UNSET)
         totals: CompanyTotals | Unset
-        if isinstance(_totals,  Unset):
+        if isinstance(_totals, Unset):
             totals = UNSET
         else:
             totals = CompanyTotals.from_dict(_totals)
-
-
-
 
         company_attributes = cls(
             name=name,
@@ -294,7 +254,6 @@ class CompanyAttributes:
             wefunder_rounds=wefunder_rounds,
             totals=totals,
         )
-
 
         company_attributes.additional_properties = d
         return company_attributes

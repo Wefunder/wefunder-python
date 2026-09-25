@@ -1,28 +1,19 @@
 from __future__ import annotations
 
 from collections.abc import Mapping
-from typing import Any, TypeVar, BinaryIO, TextIO, TYPE_CHECKING, Generator
+from typing import Any, TypeVar, cast
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
 from ..types import UNSET, Unset
 
-from ..types import UNSET, Unset
-from typing import cast
-
-
-
-
-
-
 T = TypeVar("T", bound="InviteLinkCreateInput")
-
 
 
 @_attrs_define
 class InviteLinkCreateInput:
-    """ All fields optional. With no `email`/`wefunder_user_id` the link is
+    """All fields optional. With no `email`/`wefunder_user_id` the link is
     **reusable**; with either it becomes a **per-person** invite. `email` and
     `wefunder_user_id` are mutually exclusive. `max_uses` is rejected for
     per-person invites; `send_email` is rejected without a recipient.
@@ -43,7 +34,7 @@ class InviteLinkCreateInput:
                 to have you in this deal!.
             send_email (bool | Unset): Whether to email the invite (per-person only). Rejected on a reusable create.
                 Default: True.
-     """
+    """
 
     allocation_cents: int | None | Unset = UNSET
     max_uses: int | None | Unset = UNSET
@@ -54,10 +45,6 @@ class InviteLinkCreateInput:
     message: None | str | Unset = UNSET
     send_email: bool | Unset = True
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
-
-
-
-
 
     def to_dict(self) -> dict[str, Any]:
         allocation_cents: int | None | Unset
@@ -104,11 +91,9 @@ class InviteLinkCreateInput:
 
         send_email = self.send_email
 
-
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({
-        })
+        field_dict.update({})
         if allocation_cents is not UNSET:
             field_dict["allocation_cents"] = allocation_cents
         if max_uses is not UNSET:
@@ -128,11 +113,10 @@ class InviteLinkCreateInput:
 
         return field_dict
 
-
-
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
+
         def _parse_allocation_cents(data: object) -> int | None | Unset:
             if data is None:
                 return data
@@ -141,7 +125,6 @@ class InviteLinkCreateInput:
             return cast(int | None | Unset, data)
 
         allocation_cents = _parse_allocation_cents(d.pop("allocation_cents", UNSET))
-
 
         def _parse_max_uses(data: object) -> int | None | Unset:
             if data is None:
@@ -152,7 +135,6 @@ class InviteLinkCreateInput:
 
         max_uses = _parse_max_uses(d.pop("max_uses", UNSET))
 
-
         def _parse_email(data: object) -> None | str | Unset:
             if data is None:
                 return data
@@ -161,7 +143,6 @@ class InviteLinkCreateInput:
             return cast(None | str | Unset, data)
 
         email = _parse_email(d.pop("email", UNSET))
-
 
         def _parse_wefunder_user_id(data: object) -> None | str | Unset:
             if data is None:
@@ -172,7 +153,6 @@ class InviteLinkCreateInput:
 
         wefunder_user_id = _parse_wefunder_user_id(d.pop("wefunder_user_id", UNSET))
 
-
         def _parse_first_name(data: object) -> None | str | Unset:
             if data is None:
                 return data
@@ -181,7 +161,6 @@ class InviteLinkCreateInput:
             return cast(None | str | Unset, data)
 
         first_name = _parse_first_name(d.pop("first_name", UNSET))
-
 
         def _parse_last_name(data: object) -> None | str | Unset:
             if data is None:
@@ -192,7 +171,6 @@ class InviteLinkCreateInput:
 
         last_name = _parse_last_name(d.pop("last_name", UNSET))
 
-
         def _parse_message(data: object) -> None | str | Unset:
             if data is None:
                 return data
@@ -201,7 +179,6 @@ class InviteLinkCreateInput:
             return cast(None | str | Unset, data)
 
         message = _parse_message(d.pop("message", UNSET))
-
 
         send_email = d.pop("send_email", UNSET)
 
@@ -215,7 +192,6 @@ class InviteLinkCreateInput:
             message=message,
             send_email=send_email,
         )
-
 
         invite_link_create_input.additional_properties = d
         return invite_link_create_input

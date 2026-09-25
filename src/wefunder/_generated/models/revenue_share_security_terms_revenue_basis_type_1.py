@@ -1,5 +1,6 @@
 from enum import StrEnum
 
+
 class RevenueShareSecurityTermsRevenueBasisType1(StrEnum):
     GROSS = "gross"
     NET = "net"

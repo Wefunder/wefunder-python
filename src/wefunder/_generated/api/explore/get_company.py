@@ -4,48 +4,37 @@ from urllib.parse import quote
 
 import httpx
 
-from ...client import AuthenticatedClient, Client
-from ...types import Response, UNSET
 from ... import errors
-
+from ...client import AuthenticatedClient, Client
 from ...models.company_envelope import CompanyEnvelope
 from ...models.error import Error
-from typing import cast
-
+from ...types import Response
 
 
 def _get_kwargs(
     id: str,
-
 ) -> dict[str, Any]:
-    
-
-    
-
-    
 
     _kwargs: dict[str, Any] = {
         "method": "get",
-        "url": "/companies/{id}".format(id=quote(str(id), safe=""),),
+        "url": "/companies/{id}".format(
+            id=quote(str(id), safe=""),
+        ),
     }
-
 
     return _kwargs
 
 
-
-def _parse_response(*, client: AuthenticatedClient | Client, response: httpx.Response) -> Any | CompanyEnvelope | Error | None:
+def _parse_response(
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Any | CompanyEnvelope | Error | None:
     if response.status_code == 200:
         response_200 = CompanyEnvelope.from_dict(response.json())
-
-
 
         return response_200
 
     if response.status_code == 401:
         response_401 = Error.from_dict(response.json())
-
-
 
         return response_401
 
@@ -56,8 +45,6 @@ def _parse_response(*, client: AuthenticatedClient | Client, response: httpx.Res
     if response.status_code == 429:
         response_429 = Error.from_dict(response.json())
 
-
-
         return response_429
 
     if client.raise_on_unexpected_status:
@@ -66,7 +53,9 @@ def _parse_response(*, client: AuthenticatedClient | Client, response: httpx.Res
         return None
 
 
-def _build_response(*, client: AuthenticatedClient | Client, response: httpx.Response) -> Response[Any | CompanyEnvelope | Error]:
+def _build_response(
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Response[Any | CompanyEnvelope | Error]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -79,9 +68,8 @@ def sync_detailed(
     id: str,
     *,
     client: AuthenticatedClient,
-
 ) -> Response[Any | CompanyEnvelope | Error]:
-    """ Get a company page
+    """Get a company page
 
      The company page behind an offering, as structured data — the "click a company" step after
     `/explore`. Addressed by the `co_...` id every offering carries in `company.id`.
@@ -111,12 +99,10 @@ def sync_detailed(
 
     Returns:
         Response[Any | CompanyEnvelope | Error]
-     """
-
+    """
 
     kwargs = _get_kwargs(
         id=id,
-
     )
 
     response = client.get_httpx_client().request(
@@ -125,13 +111,13 @@ def sync_detailed(
 
     return _build_response(client=client, response=response)
 
+
 def sync(
     id: str,
     *,
     client: AuthenticatedClient,
-
 ) -> Any | CompanyEnvelope | Error | None:
-    """ Get a company page
+    """Get a company page
 
      The company page behind an offering, as structured data — the "click a company" step after
     `/explore`. Addressed by the `co_...` id every offering carries in `company.id`.
@@ -161,22 +147,20 @@ def sync(
 
     Returns:
         Any | CompanyEnvelope | Error
-     """
-
+    """
 
     return sync_detailed(
         id=id,
-client=client,
-
+        client=client,
     ).parsed
+
 
 async def asyncio_detailed(
     id: str,
     *,
     client: AuthenticatedClient,
-
 ) -> Response[Any | CompanyEnvelope | Error]:
-    """ Get a company page
+    """Get a company page
 
      The company page behind an offering, as structured data — the "click a company" step after
     `/explore`. Addressed by the `co_...` id every offering carries in `company.id`.
@@ -206,27 +190,23 @@ async def asyncio_detailed(
 
     Returns:
         Response[Any | CompanyEnvelope | Error]
-     """
-
+    """
 
     kwargs = _get_kwargs(
         id=id,
-
     )
 
-    response = await client.get_async_httpx_client().request(
-        **kwargs
-    )
+    response = await client.get_async_httpx_client().request(**kwargs)
 
     return _build_response(client=client, response=response)
+
 
 async def asyncio(
     id: str,
     *,
     client: AuthenticatedClient,
-
 ) -> Any | CompanyEnvelope | Error | None:
-    """ Get a company page
+    """Get a company page
 
      The company page behind an offering, as structured data — the "click a company" step after
     `/explore`. Addressed by the `co_...` id every offering carries in `company.id`.
@@ -256,11 +236,11 @@ async def asyncio(
 
     Returns:
         Any | CompanyEnvelope | Error
-     """
+    """
 
-
-    return (await asyncio_detailed(
-        id=id,
-client=client,
-
-    )).parsed
+    return (
+        await asyncio_detailed(
+            id=id,
+            client=client,
+        )
+    ).parsed

@@ -1,42 +1,37 @@
 from __future__ import annotations
 
+import datetime
 from collections.abc import Mapping
-from typing import Any, TypeVar, BinaryIO, TextIO, TYPE_CHECKING, Generator
+from typing import TYPE_CHECKING, Any, TypeVar, cast
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
 from ..types import UNSET, Unset
 
-from ..types import UNSET, Unset
-from typing import cast
-import datetime
-
 if TYPE_CHECKING:
-  from ..models.syndicate_portfolio_summary_envelope_data_attributes_deal_counts import SyndicatePortfolioSummaryEnvelopeDataAttributesDealCounts
-
-
-
+    from ..models.syndicate_portfolio_summary_envelope_data_attributes_deal_counts import (
+        SyndicatePortfolioSummaryEnvelopeDataAttributesDealCounts,
+    )
 
 
 T = TypeVar("T", bound="SyndicatePortfolioSummaryEnvelopeDataAttributes")
 
 
-
 @_attrs_define
 class SyndicatePortfolioSummaryEnvelopeDataAttributes:
-    """ 
-        Attributes:
-            currency (str | Unset):  Example: usd.
-            total_cost_basis_cents (int | Unset):
-            total_current_value_cents (int | Unset):
-            total_unrealized_gain_cents (int | Unset):
-            total_realized_gain_cents (int | Unset):
-            return_multiple (None | str | Unset):
-            deal_counts (SyndicatePortfolioSummaryEnvelopeDataAttributesDealCounts | Unset): Distinct deals per status.
-            investor_count (int | Unset): Distinct investors across the syndicate's funded deals.
-            as_of (datetime.datetime | None | Unset):
-     """
+    """
+    Attributes:
+        currency (str | Unset):  Example: usd.
+        total_cost_basis_cents (int | Unset):
+        total_current_value_cents (int | Unset):
+        total_unrealized_gain_cents (int | Unset):
+        total_realized_gain_cents (int | Unset):
+        return_multiple (None | str | Unset):
+        deal_counts (SyndicatePortfolioSummaryEnvelopeDataAttributesDealCounts | Unset): Distinct deals per status.
+        investor_count (int | Unset): Distinct investors across the syndicate's funded deals.
+        as_of (datetime.datetime | None | Unset):
+    """
 
     currency: str | Unset = UNSET
     total_cost_basis_cents: int | Unset = UNSET
@@ -49,12 +44,7 @@ class SyndicatePortfolioSummaryEnvelopeDataAttributes:
     as_of: datetime.datetime | None | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
-
-
-
-
     def to_dict(self) -> dict[str, Any]:
-        from ..models.syndicate_portfolio_summary_envelope_data_attributes_deal_counts import SyndicatePortfolioSummaryEnvelopeDataAttributesDealCounts # noqa: PLC0415
         currency = self.currency
 
         total_cost_basis_cents = self.total_cost_basis_cents
@@ -85,11 +75,9 @@ class SyndicatePortfolioSummaryEnvelopeDataAttributes:
         else:
             as_of = self.as_of
 
-
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({
-        })
+        field_dict.update({})
         if currency is not UNSET:
             field_dict["currency"] = currency
         if total_cost_basis_cents is not UNSET:
@@ -111,11 +99,12 @@ class SyndicatePortfolioSummaryEnvelopeDataAttributes:
 
         return field_dict
 
-
-
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
-        from ..models.syndicate_portfolio_summary_envelope_data_attributes_deal_counts import SyndicatePortfolioSummaryEnvelopeDataAttributesDealCounts # noqa: PLC0415
+        from ..models.syndicate_portfolio_summary_envelope_data_attributes_deal_counts import (
+            SyndicatePortfolioSummaryEnvelopeDataAttributesDealCounts,  # noqa: PLC0415
+        )
+
         d = dict(src_dict)
         currency = d.pop("currency", UNSET)
 
@@ -136,16 +125,12 @@ class SyndicatePortfolioSummaryEnvelopeDataAttributes:
 
         return_multiple = _parse_return_multiple(d.pop("return_multiple", UNSET))
 
-
         _deal_counts = d.pop("deal_counts", UNSET)
         deal_counts: SyndicatePortfolioSummaryEnvelopeDataAttributesDealCounts | Unset
-        if isinstance(_deal_counts,  Unset):
+        if isinstance(_deal_counts, Unset):
             deal_counts = UNSET
         else:
             deal_counts = SyndicatePortfolioSummaryEnvelopeDataAttributesDealCounts.from_dict(_deal_counts)
-
-
-
 
         investor_count = d.pop("investor_count", UNSET)
 
@@ -159,15 +144,12 @@ class SyndicatePortfolioSummaryEnvelopeDataAttributes:
                     raise TypeError()
                 as_of_type_0 = datetime.datetime.fromisoformat(data)
 
-
-
                 return as_of_type_0
             except (TypeError, ValueError, AttributeError, KeyError):
                 pass
             return cast(datetime.datetime | None | Unset, data)
 
         as_of = _parse_as_of(d.pop("as_of", UNSET))
-
 
         syndicate_portfolio_summary_envelope_data_attributes = cls(
             currency=currency,
@@ -180,7 +162,6 @@ class SyndicatePortfolioSummaryEnvelopeDataAttributes:
             investor_count=investor_count,
             as_of=as_of,
         )
-
 
         syndicate_portfolio_summary_envelope_data_attributes.additional_properties = d
         return syndicate_portfolio_summary_envelope_data_attributes

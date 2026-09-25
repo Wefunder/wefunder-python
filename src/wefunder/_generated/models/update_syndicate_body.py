@@ -1,68 +1,51 @@
 from __future__ import annotations
 
 from collections.abc import Mapping
-from typing import Any, TypeVar, BinaryIO, TextIO, TYPE_CHECKING, Generator
+from typing import TYPE_CHECKING, Any, TypeVar
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
-from ..types import UNSET, Unset
-
-from typing import cast
-
 if TYPE_CHECKING:
-  from ..models.update_syndicate_body_syndicate import UpdateSyndicateBodySyndicate
-
-
-
+    from ..models.update_syndicate_body_syndicate import UpdateSyndicateBodySyndicate
 
 
 T = TypeVar("T", bound="UpdateSyndicateBody")
 
 
-
 @_attrs_define
 class UpdateSyndicateBody:
-    """ 
-        Attributes:
-            syndicate (UpdateSyndicateBodySyndicate):
-     """
+    """
+    Attributes:
+        syndicate (UpdateSyndicateBodySyndicate):
+    """
 
     syndicate: UpdateSyndicateBodySyndicate
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
-
-
-
-
     def to_dict(self) -> dict[str, Any]:
-        from ..models.update_syndicate_body_syndicate import UpdateSyndicateBodySyndicate # noqa: PLC0415
         syndicate = self.syndicate.to_dict()
-
 
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({
-            "syndicate": syndicate,
-        })
+        field_dict.update(
+            {
+                "syndicate": syndicate,
+            }
+        )
 
         return field_dict
 
-
-
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
-        from ..models.update_syndicate_body_syndicate import UpdateSyndicateBodySyndicate # noqa: PLC0415
+        from ..models.update_syndicate_body_syndicate import UpdateSyndicateBodySyndicate  # noqa: PLC0415
+
         d = dict(src_dict)
         syndicate = UpdateSyndicateBodySyndicate.from_dict(d.pop("syndicate"))
-
-
-
 
         update_syndicate_body = cls(
             syndicate=syndicate,
         )
-
 
         update_syndicate_body.additional_properties = d
         return update_syndicate_body

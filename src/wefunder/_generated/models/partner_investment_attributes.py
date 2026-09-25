@@ -1,41 +1,36 @@
 from __future__ import annotations
 
+import datetime
 from collections.abc import Mapping
-from typing import Any, TypeVar, BinaryIO, TextIO, TYPE_CHECKING, Generator
+from typing import TYPE_CHECKING, Any, TypeVar, cast
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
-from ..types import UNSET, Unset
-
 from ..models.partner_investment_attributes_status import PartnerInvestmentAttributesStatus
 from ..types import UNSET, Unset
-from typing import cast
-import datetime
 
 if TYPE_CHECKING:
-  from ..models.partner_investment_attributes_accreditation_type_0 import PartnerInvestmentAttributesAccreditationType0
-
-
-
+    from ..models.partner_investment_attributes_accreditation_type_0 import (
+        PartnerInvestmentAttributesAccreditationType0,
+    )
 
 
 T = TypeVar("T", bound="PartnerInvestmentAttributes")
 
 
-
 @_attrs_define
 class PartnerInvestmentAttributes:
-    """ 
-        Attributes:
-            amount_cents (int | Unset):  Example: 2500000.
-            status (PartnerInvestmentAttributesStatus | Unset):  Example: confirmed.
-            spv_id (str | Unset):  Example: spv_abc123.
-            investor_id (None | str | Unset):  Example: investor_usr456.
-            accreditation (None | PartnerInvestmentAttributesAccreditationType0 | Unset):
-            confirmed_at (datetime.datetime | None | Unset):
-            created_at (datetime.datetime | Unset):  Example: 2025-01-15T10:00:00Z.
-     """
+    """
+    Attributes:
+        amount_cents (int | Unset):  Example: 2500000.
+        status (PartnerInvestmentAttributesStatus | Unset):  Example: confirmed.
+        spv_id (str | Unset):  Example: spv_abc123.
+        investor_id (None | str | Unset):  Example: investor_usr456.
+        accreditation (None | PartnerInvestmentAttributesAccreditationType0 | Unset):
+        confirmed_at (datetime.datetime | None | Unset):
+        created_at (datetime.datetime | Unset):  Example: 2025-01-15T10:00:00Z.
+    """
 
     amount_cents: int | Unset = UNSET
     status: PartnerInvestmentAttributesStatus | Unset = UNSET
@@ -46,18 +41,16 @@ class PartnerInvestmentAttributes:
     created_at: datetime.datetime | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
-
-
-
-
     def to_dict(self) -> dict[str, Any]:
-        from ..models.partner_investment_attributes_accreditation_type_0 import PartnerInvestmentAttributesAccreditationType0 # noqa: PLC0415
+        from ..models.partner_investment_attributes_accreditation_type_0 import (
+            PartnerInvestmentAttributesAccreditationType0,  # noqa: PLC0415
+        )
+
         amount_cents = self.amount_cents
 
         status: str | Unset = UNSET
         if not isinstance(self.status, Unset):
             status = self.status.value
-
 
         spv_id = self.spv_id
 
@@ -87,11 +80,9 @@ class PartnerInvestmentAttributes:
         if not isinstance(self.created_at, Unset):
             created_at = self.created_at.isoformat()
 
-
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({
-        })
+        field_dict.update({})
         if amount_cents is not UNSET:
             field_dict["amount_cents"] = amount_cents
         if status is not UNSET:
@@ -109,23 +100,21 @@ class PartnerInvestmentAttributes:
 
         return field_dict
 
-
-
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
-        from ..models.partner_investment_attributes_accreditation_type_0 import PartnerInvestmentAttributesAccreditationType0 # noqa: PLC0415
+        from ..models.partner_investment_attributes_accreditation_type_0 import (
+            PartnerInvestmentAttributesAccreditationType0,  # noqa: PLC0415
+        )
+
         d = dict(src_dict)
         amount_cents = d.pop("amount_cents", UNSET)
 
         _status = d.pop("status", UNSET)
         status: PartnerInvestmentAttributesStatus | Unset
-        if isinstance(_status,  Unset):
+        if isinstance(_status, Unset):
             status = UNSET
         else:
             status = PartnerInvestmentAttributesStatus(_status)
-
-
-
 
         spv_id = d.pop("spv_id", UNSET)
 
@@ -138,7 +127,6 @@ class PartnerInvestmentAttributes:
 
         investor_id = _parse_investor_id(d.pop("investor_id", UNSET))
 
-
         def _parse_accreditation(data: object) -> None | PartnerInvestmentAttributesAccreditationType0 | Unset:
             if data is None:
                 return data
@@ -149,15 +137,12 @@ class PartnerInvestmentAttributes:
                     raise TypeError()
                 accreditation_type_0 = PartnerInvestmentAttributesAccreditationType0.from_dict(data)
 
-
-
                 return accreditation_type_0
             except (TypeError, ValueError, AttributeError, KeyError):
                 pass
             return cast(None | PartnerInvestmentAttributesAccreditationType0 | Unset, data)
 
         accreditation = _parse_accreditation(d.pop("accreditation", UNSET))
-
 
         def _parse_confirmed_at(data: object) -> datetime.datetime | None | Unset:
             if data is None:
@@ -169,8 +154,6 @@ class PartnerInvestmentAttributes:
                     raise TypeError()
                 confirmed_at_type_0 = datetime.datetime.fromisoformat(data)
 
-
-
                 return confirmed_at_type_0
             except (TypeError, ValueError, AttributeError, KeyError):
                 pass
@@ -178,16 +161,12 @@ class PartnerInvestmentAttributes:
 
         confirmed_at = _parse_confirmed_at(d.pop("confirmed_at", UNSET))
 
-
         _created_at = d.pop("created_at", UNSET)
         created_at: datetime.datetime | Unset
-        if isinstance(_created_at,  Unset):
+        if isinstance(_created_at, Unset):
             created_at = UNSET
         else:
             created_at = datetime.datetime.fromisoformat(_created_at)
-
-
-
 
         partner_investment_attributes = cls(
             amount_cents=amount_cents,
@@ -198,7 +177,6 @@ class PartnerInvestmentAttributes:
             confirmed_at=confirmed_at,
             created_at=created_at,
         )
-
 
         partner_investment_attributes.additional_properties = d
         return partner_investment_attributes

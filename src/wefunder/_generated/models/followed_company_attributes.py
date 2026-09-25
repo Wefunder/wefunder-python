@@ -1,38 +1,29 @@
 from __future__ import annotations
 
+import datetime
 from collections.abc import Mapping
-from typing import Any, TypeVar, BinaryIO, TextIO, TYPE_CHECKING, Generator
+from typing import Any, TypeVar, cast
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
 from ..types import UNSET, Unset
 
-from ..types import UNSET, Unset
-from typing import cast
-import datetime
-
-
-
-
-
-
 T = TypeVar("T", bound="FollowedCompanyAttributes")
-
 
 
 @_attrs_define
 class FollowedCompanyAttributes:
-    """ 
-        Attributes:
-            name (None | str | Unset):
-            tagline (None | str | Unset):
-            url (None | str | Unset):
-            logo_url (None | str | Unset):
-            raising (bool | Unset): True when the company has a round accepting investments right now.
-            profile_available (bool | Unset): Whether `GET /companies/{id}` will serve this company to this user.
-            followed_at (datetime.datetime | None | Unset):
-     """
+    """
+    Attributes:
+        name (None | str | Unset):
+        tagline (None | str | Unset):
+        url (None | str | Unset):
+        logo_url (None | str | Unset):
+        raising (bool | Unset): True when the company has a round accepting investments right now.
+        profile_available (bool | Unset): Whether `GET /companies/{id}` will serve this company to this user.
+        followed_at (datetime.datetime | None | Unset):
+    """
 
     name: None | str | Unset = UNSET
     tagline: None | str | Unset = UNSET
@@ -42,10 +33,6 @@ class FollowedCompanyAttributes:
     profile_available: bool | Unset = UNSET
     followed_at: datetime.datetime | None | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
-
-
-
-
 
     def to_dict(self) -> dict[str, Any]:
         name: None | str | Unset
@@ -84,11 +71,9 @@ class FollowedCompanyAttributes:
         else:
             followed_at = self.followed_at
 
-
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({
-        })
+        field_dict.update({})
         if name is not UNSET:
             field_dict["name"] = name
         if tagline is not UNSET:
@@ -106,11 +91,10 @@ class FollowedCompanyAttributes:
 
         return field_dict
 
-
-
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
+
         def _parse_name(data: object) -> None | str | Unset:
             if data is None:
                 return data
@@ -119,7 +103,6 @@ class FollowedCompanyAttributes:
             return cast(None | str | Unset, data)
 
         name = _parse_name(d.pop("name", UNSET))
-
 
         def _parse_tagline(data: object) -> None | str | Unset:
             if data is None:
@@ -130,7 +113,6 @@ class FollowedCompanyAttributes:
 
         tagline = _parse_tagline(d.pop("tagline", UNSET))
 
-
         def _parse_url(data: object) -> None | str | Unset:
             if data is None:
                 return data
@@ -140,7 +122,6 @@ class FollowedCompanyAttributes:
 
         url = _parse_url(d.pop("url", UNSET))
 
-
         def _parse_logo_url(data: object) -> None | str | Unset:
             if data is None:
                 return data
@@ -149,7 +130,6 @@ class FollowedCompanyAttributes:
             return cast(None | str | Unset, data)
 
         logo_url = _parse_logo_url(d.pop("logo_url", UNSET))
-
 
         raising = d.pop("raising", UNSET)
 
@@ -165,15 +145,12 @@ class FollowedCompanyAttributes:
                     raise TypeError()
                 followed_at_type_0 = datetime.datetime.fromisoformat(data)
 
-
-
                 return followed_at_type_0
             except (TypeError, ValueError, AttributeError, KeyError):
                 pass
             return cast(datetime.datetime | None | Unset, data)
 
         followed_at = _parse_followed_at(d.pop("followed_at", UNSET))
-
 
         followed_company_attributes = cls(
             name=name,
@@ -184,7 +161,6 @@ class FollowedCompanyAttributes:
             profile_available=profile_available,
             followed_at=followed_at,
         )
-
 
         followed_company_attributes.additional_properties = d
         return followed_company_attributes

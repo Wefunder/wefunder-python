@@ -1,5 +1,6 @@
 from enum import StrEnum
 
+
 class SpvTermsStructure(StrEnum):
     CONVERTIBLE_NOTE = "convertible_note"
     EQUITY = "equity"

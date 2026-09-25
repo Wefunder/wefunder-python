@@ -1,5 +1,6 @@
 from enum import StrEnum
 
+
 class InvestmentDeltaRecordReason(StrEnum):
     CHANGED = "changed"
     INVESTOR_DEACTIVATED = "investor_deactivated"

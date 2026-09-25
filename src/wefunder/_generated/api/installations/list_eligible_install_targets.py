@@ -1,29 +1,20 @@
 from http import HTTPStatus
-from typing import Any, cast
-from urllib.parse import quote
+from typing import Any
 
 import httpx
 
-from ...client import AuthenticatedClient, Client
-from ...types import Response, UNSET
 from ... import errors
-
+from ...client import AuthenticatedClient, Client
 from ...models.eligible_target_list_envelope import EligibleTargetListEnvelope
 from ...models.error import Error
 from ...models.list_eligible_install_targets_target_type import ListEligibleInstallTargetsTargetType
-from ...types import UNSET, Unset
-from typing import cast
-
+from ...types import UNSET, Response, Unset
 
 
 def _get_kwargs(
     *,
     target_type: ListEligibleInstallTargetsTargetType | Unset = UNSET,
-
 ) -> dict[str, Any]:
-    
-
-    
 
     params: dict[str, Any] = {}
 
@@ -33,9 +24,7 @@ def _get_kwargs(
 
     params["target_type"] = json_target_type
 
-
     params = {k: v for k, v in params.items() if v is not UNSET and v is not None}
-
 
     _kwargs: dict[str, Any] = {
         "method": "get",
@@ -43,30 +32,24 @@ def _get_kwargs(
         "params": params,
     }
 
-
     return _kwargs
 
 
-
-def _parse_response(*, client: AuthenticatedClient | Client, response: httpx.Response) -> EligibleTargetListEnvelope | Error | None:
+def _parse_response(
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> EligibleTargetListEnvelope | Error | None:
     if response.status_code == 200:
         response_200 = EligibleTargetListEnvelope.from_dict(response.json())
-
-
 
         return response_200
 
     if response.status_code == 401:
         response_401 = Error.from_dict(response.json())
 
-
-
         return response_401
 
     if response.status_code == 403:
         response_403 = Error.from_dict(response.json())
-
-
 
         return response_403
 
@@ -76,7 +59,9 @@ def _parse_response(*, client: AuthenticatedClient | Client, response: httpx.Res
         return None
 
 
-def _build_response(*, client: AuthenticatedClient | Client, response: httpx.Response) -> Response[EligibleTargetListEnvelope | Error]:
+def _build_response(
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Response[EligibleTargetListEnvelope | Error]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -89,9 +74,8 @@ def sync_detailed(
     *,
     client: AuthenticatedClient,
     target_type: ListEligibleInstallTargetsTargetType | Unset = UNSET,
-
 ) -> Response[EligibleTargetListEnvelope | Error]:
-    """ List where you can install your app
+    """List where you can install your app
 
      Companies the token's user can edit and syndicates they manage, with the tier an install would
     be granted at and the current install if one exists. Requires a token authorized by a user.
@@ -105,12 +89,10 @@ def sync_detailed(
 
     Returns:
         Response[EligibleTargetListEnvelope | Error]
-     """
-
+    """
 
     kwargs = _get_kwargs(
         target_type=target_type,
-
     )
 
     response = client.get_httpx_client().request(
@@ -119,13 +101,13 @@ def sync_detailed(
 
     return _build_response(client=client, response=response)
 
+
 def sync(
     *,
     client: AuthenticatedClient,
     target_type: ListEligibleInstallTargetsTargetType | Unset = UNSET,
-
 ) -> EligibleTargetListEnvelope | Error | None:
-    """ List where you can install your app
+    """List where you can install your app
 
      Companies the token's user can edit and syndicates they manage, with the tier an install would
     be granted at and the current install if one exists. Requires a token authorized by a user.
@@ -139,22 +121,20 @@ def sync(
 
     Returns:
         EligibleTargetListEnvelope | Error
-     """
-
+    """
 
     return sync_detailed(
         client=client,
-target_type=target_type,
-
+        target_type=target_type,
     ).parsed
+
 
 async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
     target_type: ListEligibleInstallTargetsTargetType | Unset = UNSET,
-
 ) -> Response[EligibleTargetListEnvelope | Error]:
-    """ List where you can install your app
+    """List where you can install your app
 
      Companies the token's user can edit and syndicates they manage, with the tier an install would
     be granted at and the current install if one exists. Requires a token authorized by a user.
@@ -168,27 +148,23 @@ async def asyncio_detailed(
 
     Returns:
         Response[EligibleTargetListEnvelope | Error]
-     """
-
+    """
 
     kwargs = _get_kwargs(
         target_type=target_type,
-
     )
 
-    response = await client.get_async_httpx_client().request(
-        **kwargs
-    )
+    response = await client.get_async_httpx_client().request(**kwargs)
 
     return _build_response(client=client, response=response)
+
 
 async def asyncio(
     *,
     client: AuthenticatedClient,
     target_type: ListEligibleInstallTargetsTargetType | Unset = UNSET,
-
 ) -> EligibleTargetListEnvelope | Error | None:
-    """ List where you can install your app
+    """List where you can install your app
 
      Companies the token's user can edit and syndicates they manage, with the tier an install would
     be granted at and the current install if one exists. Requires a token authorized by a user.
@@ -202,11 +178,11 @@ async def asyncio(
 
     Returns:
         EligibleTargetListEnvelope | Error
-     """
+    """
 
-
-    return (await asyncio_detailed(
-        client=client,
-target_type=target_type,
-
-    )).parsed
+    return (
+        await asyncio_detailed(
+            client=client,
+            target_type=target_type,
+        )
+    ).parsed

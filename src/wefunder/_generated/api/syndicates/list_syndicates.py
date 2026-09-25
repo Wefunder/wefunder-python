@@ -1,29 +1,20 @@
 from http import HTTPStatus
-from typing import Any, cast
-from urllib.parse import quote
+from typing import Any
 
 import httpx
 
-from ...client import AuthenticatedClient, Client
-from ...types import Response, UNSET
 from ... import errors
-
+from ...client import AuthenticatedClient, Client
 from ...models.error import Error
 from ...models.syndicate_list_envelope import SyndicateListEnvelope
-from ...types import UNSET, Unset
-from typing import cast
-
+from ...types import UNSET, Response, Unset
 
 
 def _get_kwargs(
     *,
     cursor: str | Unset = UNSET,
     limit: int | Unset = 25,
-
 ) -> dict[str, Any]:
-    
-
-    
 
     params: dict[str, Any] = {}
 
@@ -31,9 +22,7 @@ def _get_kwargs(
 
     params["limit"] = limit
 
-
     params = {k: v for k, v in params.items() if v is not UNSET and v is not None}
-
 
     _kwargs: dict[str, Any] = {
         "method": "get",
@@ -41,30 +30,24 @@ def _get_kwargs(
         "params": params,
     }
 
-
     return _kwargs
 
 
-
-def _parse_response(*, client: AuthenticatedClient | Client, response: httpx.Response) -> Error | SyndicateListEnvelope | None:
+def _parse_response(
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Error | SyndicateListEnvelope | None:
     if response.status_code == 200:
         response_200 = SyndicateListEnvelope.from_dict(response.json())
-
-
 
         return response_200
 
     if response.status_code == 401:
         response_401 = Error.from_dict(response.json())
 
-
-
         return response_401
 
     if response.status_code == 429:
         response_429 = Error.from_dict(response.json())
-
-
 
         return response_429
 
@@ -74,7 +57,9 @@ def _parse_response(*, client: AuthenticatedClient | Client, response: httpx.Res
         return None
 
 
-def _build_response(*, client: AuthenticatedClient | Client, response: httpx.Response) -> Response[Error | SyndicateListEnvelope]:
+def _build_response(
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Response[Error | SyndicateListEnvelope]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -88,9 +73,8 @@ def sync_detailed(
     client: AuthenticatedClient,
     cursor: str | Unset = UNSET,
     limit: int | Unset = 25,
-
 ) -> Response[Error | SyndicateListEnvelope]:
-    """ List syndicates
+    """List syndicates
 
      Returns syndicates the authenticated user can manage, based on their roles.
     Results can be filtered by status and sorted by name or creation date.
@@ -105,13 +89,11 @@ def sync_detailed(
 
     Returns:
         Response[Error | SyndicateListEnvelope]
-     """
-
+    """
 
     kwargs = _get_kwargs(
         cursor=cursor,
-limit=limit,
-
+        limit=limit,
     )
 
     response = client.get_httpx_client().request(
@@ -120,14 +102,14 @@ limit=limit,
 
     return _build_response(client=client, response=response)
 
+
 def sync(
     *,
     client: AuthenticatedClient,
     cursor: str | Unset = UNSET,
     limit: int | Unset = 25,
-
 ) -> Error | SyndicateListEnvelope | None:
-    """ List syndicates
+    """List syndicates
 
      Returns syndicates the authenticated user can manage, based on their roles.
     Results can be filtered by status and sorted by name or creation date.
@@ -142,24 +124,22 @@ def sync(
 
     Returns:
         Error | SyndicateListEnvelope
-     """
-
+    """
 
     return sync_detailed(
         client=client,
-cursor=cursor,
-limit=limit,
-
+        cursor=cursor,
+        limit=limit,
     ).parsed
+
 
 async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
     cursor: str | Unset = UNSET,
     limit: int | Unset = 25,
-
 ) -> Response[Error | SyndicateListEnvelope]:
-    """ List syndicates
+    """List syndicates
 
      Returns syndicates the authenticated user can manage, based on their roles.
     Results can be filtered by status and sorted by name or creation date.
@@ -174,29 +154,25 @@ async def asyncio_detailed(
 
     Returns:
         Response[Error | SyndicateListEnvelope]
-     """
-
+    """
 
     kwargs = _get_kwargs(
         cursor=cursor,
-limit=limit,
-
+        limit=limit,
     )
 
-    response = await client.get_async_httpx_client().request(
-        **kwargs
-    )
+    response = await client.get_async_httpx_client().request(**kwargs)
 
     return _build_response(client=client, response=response)
+
 
 async def asyncio(
     *,
     client: AuthenticatedClient,
     cursor: str | Unset = UNSET,
     limit: int | Unset = 25,
-
 ) -> Error | SyndicateListEnvelope | None:
-    """ List syndicates
+    """List syndicates
 
      Returns syndicates the authenticated user can manage, based on their roles.
     Results can be filtered by status and sorted by name or creation date.
@@ -211,12 +187,12 @@ async def asyncio(
 
     Returns:
         Error | SyndicateListEnvelope
-     """
+    """
 
-
-    return (await asyncio_detailed(
-        client=client,
-cursor=cursor,
-limit=limit,
-
-    )).parsed
+    return (
+        await asyncio_detailed(
+            client=client,
+            cursor=cursor,
+            limit=limit,
+        )
+    ).parsed

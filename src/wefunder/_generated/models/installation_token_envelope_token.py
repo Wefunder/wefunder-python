@@ -1,27 +1,19 @@
 from __future__ import annotations
 
 from collections.abc import Mapping
-from typing import Any, TypeVar, BinaryIO, TextIO, TYPE_CHECKING, Generator
+from typing import Any, TypeVar
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
 from ..types import UNSET, Unset
 
-from ..types import UNSET, Unset
-
-
-
-
-
-
 T = TypeVar("T", bound="InstallationTokenEnvelopeToken")
-
 
 
 @_attrs_define
 class InstallationTokenEnvelopeToken:
-    """ Shown once. Owned by the installed-on company or syndicate, scoped to the install, no expiry; revoking the install
+    """Shown once. Owned by the installed-on company or syndicate, scoped to the install, no expiry; revoking the install
     revokes it.
 
         Attributes:
@@ -30,7 +22,7 @@ class InstallationTokenEnvelopeToken:
             scope (str | Unset):
             installation (str | Unset): `inst_…`
             created_at (int | Unset):
-     """
+    """
 
     access_token: str | Unset = UNSET
     token_type: str | Unset = UNSET
@@ -38,10 +30,6 @@ class InstallationTokenEnvelopeToken:
     installation: str | Unset = UNSET
     created_at: int | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
-
-
-
-
 
     def to_dict(self) -> dict[str, Any]:
         access_token = self.access_token
@@ -54,11 +42,9 @@ class InstallationTokenEnvelopeToken:
 
         created_at = self.created_at
 
-
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({
-        })
+        field_dict.update({})
         if access_token is not UNSET:
             field_dict["access_token"] = access_token
         if token_type is not UNSET:
@@ -71,8 +57,6 @@ class InstallationTokenEnvelopeToken:
             field_dict["created_at"] = created_at
 
         return field_dict
-
-
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
@@ -94,7 +78,6 @@ class InstallationTokenEnvelopeToken:
             installation=installation,
             created_at=created_at,
         )
-
 
         installation_token_envelope_token.additional_properties = d
         return installation_token_envelope_token

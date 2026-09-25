@@ -1,35 +1,26 @@
 from __future__ import annotations
 
 from collections.abc import Mapping
-from typing import Any, TypeVar, BinaryIO, TextIO, TYPE_CHECKING, Generator
+from typing import Any, TypeVar, cast
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
 from ..types import UNSET, Unset
 
-from ..types import UNSET, Unset
-from typing import cast
-
-
-
-
-
-
 T = TypeVar("T", bound="DisclosurePerson")
-
 
 
 @_attrs_define
 class DisclosurePerson:
-    """ 
-        Attributes:
-            name (None | str | Unset):
-            titles (None | str | Unset):
-            since (int | None | Unset): Year joined.
-            director (bool | Unset):
-            officer (bool | Unset):
-     """
+    """
+    Attributes:
+        name (None | str | Unset):
+        titles (None | str | Unset):
+        since (int | None | Unset): Year joined.
+        director (bool | Unset):
+        officer (bool | Unset):
+    """
 
     name: None | str | Unset = UNSET
     titles: None | str | Unset = UNSET
@@ -37,10 +28,6 @@ class DisclosurePerson:
     director: bool | Unset = UNSET
     officer: bool | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
-
-
-
-
 
     def to_dict(self) -> dict[str, Any]:
         name: None | str | Unset
@@ -65,11 +52,9 @@ class DisclosurePerson:
 
         officer = self.officer
 
-
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({
-        })
+        field_dict.update({})
         if name is not UNSET:
             field_dict["name"] = name
         if titles is not UNSET:
@@ -83,11 +68,10 @@ class DisclosurePerson:
 
         return field_dict
 
-
-
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
+
         def _parse_name(data: object) -> None | str | Unset:
             if data is None:
                 return data
@@ -96,7 +80,6 @@ class DisclosurePerson:
             return cast(None | str | Unset, data)
 
         name = _parse_name(d.pop("name", UNSET))
-
 
         def _parse_titles(data: object) -> None | str | Unset:
             if data is None:
@@ -107,7 +90,6 @@ class DisclosurePerson:
 
         titles = _parse_titles(d.pop("titles", UNSET))
 
-
         def _parse_since(data: object) -> int | None | Unset:
             if data is None:
                 return data
@@ -116,7 +98,6 @@ class DisclosurePerson:
             return cast(int | None | Unset, data)
 
         since = _parse_since(d.pop("since", UNSET))
-
 
         director = d.pop("director", UNSET)
 
@@ -129,7 +110,6 @@ class DisclosurePerson:
             director=director,
             officer=officer,
         )
-
 
         disclosure_person.additional_properties = d
         return disclosure_person

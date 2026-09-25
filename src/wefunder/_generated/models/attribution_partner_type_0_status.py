@@ -1,5 +1,6 @@
 from enum import StrEnum
 
+
 class AttributionPartnerType0Status(StrEnum):
     APPROVED = "approved"
     PENDING = "pending"

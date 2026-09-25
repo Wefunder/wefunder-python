@@ -1,5 +1,6 @@
 from enum import StrEnum
 
+
 class GetCompanyPitchSectionsItem(StrEnum):
     PERKS = "perks"
     STORY = "story"

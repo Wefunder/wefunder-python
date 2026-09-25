@@ -1,45 +1,35 @@
 from __future__ import annotations
 
 from collections.abc import Mapping
-from typing import Any, TypeVar, BinaryIO, TextIO, TYPE_CHECKING, Generator
+from typing import TYPE_CHECKING, Any, TypeVar, cast
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
 from ..types import UNSET, Unset
 
-from ..types import UNSET, Unset
-from typing import cast
-
 if TYPE_CHECKING:
-  from ..models.company_disclosures_attributes_related_parties_type_0_parties_item import CompanyDisclosuresAttributesRelatedPartiesType0PartiesItem
-
-
-
+    from ..models.company_disclosures_attributes_related_parties_type_0_parties_item import (
+        CompanyDisclosuresAttributesRelatedPartiesType0PartiesItem,
+    )
 
 
 T = TypeVar("T", bound="CompanyDisclosuresAttributesRelatedPartiesType0")
 
 
-
 @_attrs_define
 class CompanyDisclosuresAttributesRelatedPartiesType0:
-    """ 
-        Attributes:
-            description (None | str | Unset):
-            parties (list[CompanyDisclosuresAttributesRelatedPartiesType0PartiesItem] | Unset):
-     """
+    """
+    Attributes:
+        description (None | str | Unset):
+        parties (list[CompanyDisclosuresAttributesRelatedPartiesType0PartiesItem] | Unset):
+    """
 
     description: None | str | Unset = UNSET
     parties: list[CompanyDisclosuresAttributesRelatedPartiesType0PartiesItem] | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
-
-
-
-
     def to_dict(self) -> dict[str, Any]:
-        from ..models.company_disclosures_attributes_related_parties_type_0_parties_item import CompanyDisclosuresAttributesRelatedPartiesType0PartiesItem # noqa: PLC0415
         description: None | str | Unset
         if isinstance(self.description, Unset):
             description = UNSET
@@ -53,13 +43,9 @@ class CompanyDisclosuresAttributesRelatedPartiesType0:
                 parties_item = parties_item_data.to_dict()
                 parties.append(parties_item)
 
-
-
-
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({
-        })
+        field_dict.update({})
         if description is not UNSET:
             field_dict["description"] = description
         if parties is not UNSET:
@@ -67,12 +53,14 @@ class CompanyDisclosuresAttributesRelatedPartiesType0:
 
         return field_dict
 
-
-
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
-        from ..models.company_disclosures_attributes_related_parties_type_0_parties_item import CompanyDisclosuresAttributesRelatedPartiesType0PartiesItem # noqa: PLC0415
+        from ..models.company_disclosures_attributes_related_parties_type_0_parties_item import (
+            CompanyDisclosuresAttributesRelatedPartiesType0PartiesItem,  # noqa: PLC0415
+        )
+
         d = dict(src_dict)
+
         def _parse_description(data: object) -> None | str | Unset:
             if data is None:
                 return data
@@ -82,7 +70,6 @@ class CompanyDisclosuresAttributesRelatedPartiesType0:
 
         description = _parse_description(d.pop("description", UNSET))
 
-
         _parties = d.pop("parties", UNSET)
         parties: list[CompanyDisclosuresAttributesRelatedPartiesType0PartiesItem] | Unset = UNSET
         if _parties is not UNSET:
@@ -90,16 +77,12 @@ class CompanyDisclosuresAttributesRelatedPartiesType0:
             for parties_item_data in _parties:
                 parties_item = CompanyDisclosuresAttributesRelatedPartiesType0PartiesItem.from_dict(parties_item_data)
 
-
-
                 parties.append(parties_item)
-
 
         company_disclosures_attributes_related_parties_type_0 = cls(
             description=description,
             parties=parties,
         )
-
 
         company_disclosures_attributes_related_parties_type_0.additional_properties = d
         return company_disclosures_attributes_related_parties_type_0

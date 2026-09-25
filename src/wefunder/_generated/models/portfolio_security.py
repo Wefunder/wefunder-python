@@ -1,33 +1,26 @@
 from __future__ import annotations
 
+import datetime
 from collections.abc import Mapping
-from typing import Any, TypeVar, BinaryIO, TextIO, TYPE_CHECKING, Generator
+from typing import TYPE_CHECKING, Any, TypeVar, cast
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
 from ..types import UNSET, Unset
 
-from ..types import UNSET, Unset
-from typing import cast
-import datetime
-
 if TYPE_CHECKING:
-  from ..models.portfolio_security_owner_type_0 import PortfolioSecurityOwnerType0
-  from ..models.portfolio_security_terms import PortfolioSecurityTerms
-  from ..models.security_summary import SecuritySummary
-
-
-
+    from ..models.portfolio_security_owner_type_0 import PortfolioSecurityOwnerType0
+    from ..models.portfolio_security_terms import PortfolioSecurityTerms
+    from ..models.security_summary import SecuritySummary
 
 
 T = TypeVar("T", bound="PortfolioSecurity")
 
 
-
 @_attrs_define
 class PortfolioSecurity:
-    """ One security offering within the position's fundraise, such as an early bird
+    """One security offering within the position's fundraise, such as an early bird
     tier or the regular terms. Most positions have a single entry. A position has
     several when the round sold multiple tiers, or (investor endpoint) when the
     investor holds the same offering through more than one legal owner. Entries
@@ -55,7 +48,7 @@ class PortfolioSecurity:
                 investor endpoint only.
             investor_count (int | Unset): The number of distinct investors aggregated into this entry. Present on the
                 syndicate endpoint only.
-     """
+    """
 
     security: None | SecuritySummary | Unset = UNSET
     early_bird: bool | Unset = UNSET
@@ -71,14 +64,10 @@ class PortfolioSecurity:
     investor_count: int | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
-
-
-
-
     def to_dict(self) -> dict[str, Any]:
-        from ..models.portfolio_security_owner_type_0 import PortfolioSecurityOwnerType0 # noqa: PLC0415
-        from ..models.portfolio_security_terms import PortfolioSecurityTerms # noqa: PLC0415
-        from ..models.security_summary import SecuritySummary # noqa: PLC0415
+        from ..models.portfolio_security_owner_type_0 import PortfolioSecurityOwnerType0  # noqa: PLC0415
+        from ..models.security_summary import SecuritySummary  # noqa: PLC0415
+
         security: dict[str, Any] | None | Unset
         if isinstance(self.security, Unset):
             security = UNSET
@@ -131,11 +120,9 @@ class PortfolioSecurity:
 
         investor_count = self.investor_count
 
-
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({
-        })
+        field_dict.update({})
         if security is not UNSET:
             field_dict["security"] = security
         if early_bird is not UNSET:
@@ -163,14 +150,14 @@ class PortfolioSecurity:
 
         return field_dict
 
-
-
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
-        from ..models.portfolio_security_owner_type_0 import PortfolioSecurityOwnerType0 # noqa: PLC0415
-        from ..models.portfolio_security_terms import PortfolioSecurityTerms # noqa: PLC0415
-        from ..models.security_summary import SecuritySummary # noqa: PLC0415
+        from ..models.portfolio_security_owner_type_0 import PortfolioSecurityOwnerType0  # noqa: PLC0415
+        from ..models.portfolio_security_terms import PortfolioSecurityTerms  # noqa: PLC0415
+        from ..models.security_summary import SecuritySummary  # noqa: PLC0415
+
         d = dict(src_dict)
+
         def _parse_security(data: object) -> None | SecuritySummary | Unset:
             if data is None:
                 return data
@@ -181,8 +168,6 @@ class PortfolioSecurity:
                     raise TypeError()
                 security_type_1 = SecuritySummary.from_dict(data)
 
-
-
                 return security_type_1
             except (TypeError, ValueError, AttributeError, KeyError):
                 pass
@@ -190,18 +175,14 @@ class PortfolioSecurity:
 
         security = _parse_security(d.pop("security", UNSET))
 
-
         early_bird = d.pop("early_bird", UNSET)
 
         _terms = d.pop("terms", UNSET)
         terms: PortfolioSecurityTerms | Unset
-        if isinstance(_terms,  Unset):
+        if isinstance(_terms, Unset):
             terms = UNSET
         else:
             terms = PortfolioSecurityTerms.from_dict(_terms)
-
-
-
 
         cost_basis_cents = d.pop("cost_basis_cents", UNSET)
 
@@ -220,7 +201,6 @@ class PortfolioSecurity:
 
         shares_held = _parse_shares_held(d.pop("shares_held", UNSET))
 
-
         def _parse_current_share_price(data: object) -> None | str | Unset:
             if data is None:
                 return data
@@ -229,7 +209,6 @@ class PortfolioSecurity:
             return cast(None | str | Unset, data)
 
         current_share_price = _parse_current_share_price(d.pop("current_share_price", UNSET))
-
 
         def _parse_invested_at(data: object) -> datetime.datetime | None | Unset:
             if data is None:
@@ -241,15 +220,12 @@ class PortfolioSecurity:
                     raise TypeError()
                 invested_at_type_0 = datetime.datetime.fromisoformat(data)
 
-
-
                 return invested_at_type_0
             except (TypeError, ValueError, AttributeError, KeyError):
                 pass
             return cast(datetime.datetime | None | Unset, data)
 
         invested_at = _parse_invested_at(d.pop("invested_at", UNSET))
-
 
         def _parse_owner(data: object) -> None | PortfolioSecurityOwnerType0 | Unset:
             if data is None:
@@ -261,15 +237,12 @@ class PortfolioSecurity:
                     raise TypeError()
                 owner_type_0 = PortfolioSecurityOwnerType0.from_dict(data)
 
-
-
                 return owner_type_0
             except (TypeError, ValueError, AttributeError, KeyError):
                 pass
             return cast(None | PortfolioSecurityOwnerType0 | Unset, data)
 
         owner = _parse_owner(d.pop("owner", UNSET))
-
 
         investor_count = d.pop("investor_count", UNSET)
 
@@ -287,7 +260,6 @@ class PortfolioSecurity:
             owner=owner,
             investor_count=investor_count,
         )
-
 
         portfolio_security.additional_properties = d
         return portfolio_security

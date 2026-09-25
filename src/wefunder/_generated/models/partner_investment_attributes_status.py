@@ -1,5 +1,6 @@
 from enum import StrEnum
 
+
 class PartnerInvestmentAttributesStatus(StrEnum):
     AWAITING_PAYMENT = "awaiting_payment"
     CANCELED = "canceled"

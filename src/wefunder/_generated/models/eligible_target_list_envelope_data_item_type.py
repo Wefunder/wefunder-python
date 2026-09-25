@@ -1,5 +1,6 @@
 from enum import StrEnum
 
+
 class EligibleTargetListEnvelopeDataItemType(StrEnum):
     COMPANY = "company"
     SYNDICATE = "syndicate"

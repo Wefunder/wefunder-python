@@ -1,42 +1,30 @@
 from __future__ import annotations
 
 from collections.abc import Mapping
-from typing import Any, TypeVar, BinaryIO, TextIO, TYPE_CHECKING, Generator
+from typing import Any, TypeVar
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
 from ..types import UNSET, Unset
 
-from ..types import UNSET, Unset
-
-
-
-
-
-
 T = TypeVar("T", bound="OfferingStatsEnvelopeDataTotal")
-
 
 
 @_attrs_define
 class OfferingStatsEnvelopeDataTotal:
-    """ 
-        Attributes:
-            count (int | Unset):
-            committed_cents (int | Unset):
-            raised_cents (int | Unset): The offering's public raised figure rebuilt from the records'
-                `amounts.raised_cents`. The campaign ticker may add sibling Reg D rounds under its roll-in policy.
-     """
+    """
+    Attributes:
+        count (int | Unset):
+        committed_cents (int | Unset):
+        raised_cents (int | Unset): The offering's public raised figure rebuilt from the records'
+            `amounts.raised_cents`. The campaign ticker may add sibling Reg D rounds under its roll-in policy.
+    """
 
     count: int | Unset = UNSET
     committed_cents: int | Unset = UNSET
     raised_cents: int | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
-
-
-
-
 
     def to_dict(self) -> dict[str, Any]:
         count = self.count
@@ -45,11 +33,9 @@ class OfferingStatsEnvelopeDataTotal:
 
         raised_cents = self.raised_cents
 
-
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({
-        })
+        field_dict.update({})
         if count is not UNSET:
             field_dict["count"] = count
         if committed_cents is not UNSET:
@@ -58,8 +44,6 @@ class OfferingStatsEnvelopeDataTotal:
             field_dict["raised_cents"] = raised_cents
 
         return field_dict
-
-
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
@@ -75,7 +59,6 @@ class OfferingStatsEnvelopeDataTotal:
             committed_cents=committed_cents,
             raised_cents=raised_cents,
         )
-
 
         offering_stats_envelope_data_total.additional_properties = d
         return offering_stats_envelope_data_total

@@ -4,3 +4,7 @@
 package_name_override: _generated
 project_name_override: wefunder-generated
 use_path_prefixes_for_title_model_names: false
+
+# No PATH-dependent post hooks: scripts/generate.py runs ruff itself via the pinned venv
+# interpreter, so local and CI output are byte-identical.
+post_hooks: []

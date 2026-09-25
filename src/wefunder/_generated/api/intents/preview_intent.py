@@ -1,31 +1,21 @@
 from http import HTTPStatus
-from typing import Any, cast
-from urllib.parse import quote
+from typing import Any
 
 import httpx
 
-from ...client import AuthenticatedClient, Client
-from ...types import Response, UNSET
 from ... import errors
-
+from ...client import AuthenticatedClient, Client
 from ...models.error import Error
 from ...models.intent_preview_envelope import IntentPreviewEnvelope
 from ...models.preview_intent_body import PreviewIntentBody
-from typing import cast
-
+from ...types import Response
 
 
 def _get_kwargs(
     *,
     body: PreviewIntentBody,
-
 ) -> dict[str, Any]:
     headers: dict[str, Any] = {}
-
-
-    
-
-    
 
     _kwargs: dict[str, Any] = {
         "method": "post",
@@ -40,33 +30,26 @@ def _get_kwargs(
     return _kwargs
 
 
-
-def _parse_response(*, client: AuthenticatedClient | Client, response: httpx.Response) -> Error | IntentPreviewEnvelope | None:
+def _parse_response(
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Error | IntentPreviewEnvelope | None:
     if response.status_code == 200:
         response_200 = IntentPreviewEnvelope.from_dict(response.json())
-
-
 
         return response_200
 
     if response.status_code == 401:
         response_401 = Error.from_dict(response.json())
 
-
-
         return response_401
 
     if response.status_code == 403:
         response_403 = Error.from_dict(response.json())
 
-
-
         return response_403
 
     if response.status_code == 422:
         response_422 = Error.from_dict(response.json())
-
-
 
         return response_422
 
@@ -76,7 +59,9 @@ def _parse_response(*, client: AuthenticatedClient | Client, response: httpx.Res
         return None
 
 
-def _build_response(*, client: AuthenticatedClient | Client, response: httpx.Response) -> Response[Error | IntentPreviewEnvelope]:
+def _build_response(
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Response[Error | IntentPreviewEnvelope]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -89,9 +74,8 @@ def sync_detailed(
     *,
     client: AuthenticatedClient,
     body: PreviewIntentBody,
-
 ) -> Response[Error | IntentPreviewEnvelope]:
-    """ Preview an intent without proposing it
+    """Preview an intent without proposing it
 
      Runs every check `POST /intents` runs — the action's feature flag, resource type and id,
     token binding, who may propose, and the handler's own validation — and returns what the
@@ -109,12 +93,10 @@ def sync_detailed(
 
     Returns:
         Response[Error | IntentPreviewEnvelope]
-     """
-
+    """
 
     kwargs = _get_kwargs(
         body=body,
-
     )
 
     response = client.get_httpx_client().request(
@@ -123,13 +105,13 @@ def sync_detailed(
 
     return _build_response(client=client, response=response)
 
+
 def sync(
     *,
     client: AuthenticatedClient,
     body: PreviewIntentBody,
-
 ) -> Error | IntentPreviewEnvelope | None:
-    """ Preview an intent without proposing it
+    """Preview an intent without proposing it
 
      Runs every check `POST /intents` runs — the action's feature flag, resource type and id,
     token binding, who may propose, and the handler's own validation — and returns what the
@@ -147,22 +129,20 @@ def sync(
 
     Returns:
         Error | IntentPreviewEnvelope
-     """
-
+    """
 
     return sync_detailed(
         client=client,
-body=body,
-
+        body=body,
     ).parsed
+
 
 async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
     body: PreviewIntentBody,
-
 ) -> Response[Error | IntentPreviewEnvelope]:
-    """ Preview an intent without proposing it
+    """Preview an intent without proposing it
 
      Runs every check `POST /intents` runs — the action's feature flag, resource type and id,
     token binding, who may propose, and the handler's own validation — and returns what the
@@ -180,27 +160,23 @@ async def asyncio_detailed(
 
     Returns:
         Response[Error | IntentPreviewEnvelope]
-     """
-
+    """
 
     kwargs = _get_kwargs(
         body=body,
-
     )
 
-    response = await client.get_async_httpx_client().request(
-        **kwargs
-    )
+    response = await client.get_async_httpx_client().request(**kwargs)
 
     return _build_response(client=client, response=response)
+
 
 async def asyncio(
     *,
     client: AuthenticatedClient,
     body: PreviewIntentBody,
-
 ) -> Error | IntentPreviewEnvelope | None:
-    """ Preview an intent without proposing it
+    """Preview an intent without proposing it
 
      Runs every check `POST /intents` runs — the action's feature flag, resource type and id,
     token binding, who may propose, and the handler's own validation — and returns what the
@@ -218,11 +194,11 @@ async def asyncio(
 
     Returns:
         Error | IntentPreviewEnvelope
-     """
+    """
 
-
-    return (await asyncio_detailed(
-        client=client,
-body=body,
-
-    )).parsed
+    return (
+        await asyncio_detailed(
+            client=client,
+            body=body,
+        )
+    ).parsed

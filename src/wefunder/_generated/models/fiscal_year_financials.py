@@ -1,40 +1,31 @@
 from __future__ import annotations
 
 from collections.abc import Mapping
-from typing import Any, TypeVar, BinaryIO, TextIO, TYPE_CHECKING, Generator
+from typing import Any, TypeVar, cast
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
 from ..types import UNSET, Unset
 
-from ..types import UNSET, Unset
-from typing import cast
-
-
-
-
-
-
 T = TypeVar("T", bound="FiscalYearFinancials")
-
 
 
 @_attrs_define
 class FiscalYearFinancials:
-    """ One fiscal year's figures from the Form C, USD decimal strings (null where not reported).
+    """One fiscal year's figures from the Form C, USD decimal strings (null where not reported).
 
-        Attributes:
-            total_assets (None | str | Unset):
-            cash_and_equivalents (None | str | Unset):
-            accounts_receivable (None | str | Unset):
-            short_term_debt (None | str | Unset):
-            long_term_debt (None | str | Unset):
-            revenue (None | str | Unset):
-            cost_of_goods_sold (None | str | Unset):
-            taxes_paid (None | str | Unset):
-            net_income (None | str | Unset):
-     """
+    Attributes:
+        total_assets (None | str | Unset):
+        cash_and_equivalents (None | str | Unset):
+        accounts_receivable (None | str | Unset):
+        short_term_debt (None | str | Unset):
+        long_term_debt (None | str | Unset):
+        revenue (None | str | Unset):
+        cost_of_goods_sold (None | str | Unset):
+        taxes_paid (None | str | Unset):
+        net_income (None | str | Unset):
+    """
 
     total_assets: None | str | Unset = UNSET
     cash_and_equivalents: None | str | Unset = UNSET
@@ -46,10 +37,6 @@ class FiscalYearFinancials:
     taxes_paid: None | str | Unset = UNSET
     net_income: None | str | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
-
-
-
-
 
     def to_dict(self) -> dict[str, Any]:
         total_assets: None | str | Unset
@@ -106,11 +93,9 @@ class FiscalYearFinancials:
         else:
             net_income = self.net_income
 
-
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({
-        })
+        field_dict.update({})
         if total_assets is not UNSET:
             field_dict["total_assets"] = total_assets
         if cash_and_equivalents is not UNSET:
@@ -132,11 +117,10 @@ class FiscalYearFinancials:
 
         return field_dict
 
-
-
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
+
         def _parse_total_assets(data: object) -> None | str | Unset:
             if data is None:
                 return data
@@ -145,7 +129,6 @@ class FiscalYearFinancials:
             return cast(None | str | Unset, data)
 
         total_assets = _parse_total_assets(d.pop("total_assets", UNSET))
-
 
         def _parse_cash_and_equivalents(data: object) -> None | str | Unset:
             if data is None:
@@ -156,7 +139,6 @@ class FiscalYearFinancials:
 
         cash_and_equivalents = _parse_cash_and_equivalents(d.pop("cash_and_equivalents", UNSET))
 
-
         def _parse_accounts_receivable(data: object) -> None | str | Unset:
             if data is None:
                 return data
@@ -165,7 +147,6 @@ class FiscalYearFinancials:
             return cast(None | str | Unset, data)
 
         accounts_receivable = _parse_accounts_receivable(d.pop("accounts_receivable", UNSET))
-
 
         def _parse_short_term_debt(data: object) -> None | str | Unset:
             if data is None:
@@ -176,7 +157,6 @@ class FiscalYearFinancials:
 
         short_term_debt = _parse_short_term_debt(d.pop("short_term_debt", UNSET))
 
-
         def _parse_long_term_debt(data: object) -> None | str | Unset:
             if data is None:
                 return data
@@ -185,7 +165,6 @@ class FiscalYearFinancials:
             return cast(None | str | Unset, data)
 
         long_term_debt = _parse_long_term_debt(d.pop("long_term_debt", UNSET))
-
 
         def _parse_revenue(data: object) -> None | str | Unset:
             if data is None:
@@ -196,7 +175,6 @@ class FiscalYearFinancials:
 
         revenue = _parse_revenue(d.pop("revenue", UNSET))
 
-
         def _parse_cost_of_goods_sold(data: object) -> None | str | Unset:
             if data is None:
                 return data
@@ -205,7 +183,6 @@ class FiscalYearFinancials:
             return cast(None | str | Unset, data)
 
         cost_of_goods_sold = _parse_cost_of_goods_sold(d.pop("cost_of_goods_sold", UNSET))
-
 
         def _parse_taxes_paid(data: object) -> None | str | Unset:
             if data is None:
@@ -216,7 +193,6 @@ class FiscalYearFinancials:
 
         taxes_paid = _parse_taxes_paid(d.pop("taxes_paid", UNSET))
 
-
         def _parse_net_income(data: object) -> None | str | Unset:
             if data is None:
                 return data
@@ -225,7 +201,6 @@ class FiscalYearFinancials:
             return cast(None | str | Unset, data)
 
         net_income = _parse_net_income(d.pop("net_income", UNSET))
-
 
         fiscal_year_financials = cls(
             total_assets=total_assets,
@@ -238,7 +213,6 @@ class FiscalYearFinancials:
             taxes_paid=taxes_paid,
             net_income=net_income,
         )
-
 
         fiscal_year_financials.additional_properties = d
         return fiscal_year_financials

@@ -1,52 +1,38 @@
 from __future__ import annotations
 
 from collections.abc import Mapping
-from typing import Any, TypeVar, BinaryIO, TextIO, TYPE_CHECKING, Generator
+from typing import TYPE_CHECKING, Any, TypeVar
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
 from ..types import UNSET, Unset
 
-from ..types import UNSET, Unset
-from typing import cast
-
 if TYPE_CHECKING:
-  from ..models.installation import Installation
-  from ..models.installation_token_envelope_meta import InstallationTokenEnvelopeMeta
-  from ..models.installation_token_envelope_token import InstallationTokenEnvelopeToken
-
-
-
+    from ..models.installation import Installation
+    from ..models.installation_token_envelope_meta import InstallationTokenEnvelopeMeta
+    from ..models.installation_token_envelope_token import InstallationTokenEnvelopeToken
 
 
 T = TypeVar("T", bound="InstallationTokenEnvelope")
 
 
-
 @_attrs_define
 class InstallationTokenEnvelope:
-    """ 
-        Attributes:
-            data (Installation | Unset):
-            token (InstallationTokenEnvelopeToken | Unset): Shown once. Owned by the installed-on company or syndicate,
-                scoped to the install, no expiry; revoking the install revokes it.
-            meta (InstallationTokenEnvelopeMeta | Unset):
-     """
+    """
+    Attributes:
+        data (Installation | Unset):
+        token (InstallationTokenEnvelopeToken | Unset): Shown once. Owned by the installed-on company or syndicate,
+            scoped to the install, no expiry; revoking the install revokes it.
+        meta (InstallationTokenEnvelopeMeta | Unset):
+    """
 
     data: Installation | Unset = UNSET
     token: InstallationTokenEnvelopeToken | Unset = UNSET
     meta: InstallationTokenEnvelopeMeta | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
-
-
-
-
     def to_dict(self) -> dict[str, Any]:
-        from ..models.installation import Installation # noqa: PLC0415
-        from ..models.installation_token_envelope_meta import InstallationTokenEnvelopeMeta # noqa: PLC0415
-        from ..models.installation_token_envelope_token import InstallationTokenEnvelopeToken # noqa: PLC0415
         data: dict[str, Any] | Unset = UNSET
         if not isinstance(self.data, Unset):
             data = self.data.to_dict()
@@ -59,11 +45,9 @@ class InstallationTokenEnvelope:
         if not isinstance(self.meta, Unset):
             meta = self.meta.to_dict()
 
-
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({
-        })
+        field_dict.update({})
         if data is not UNSET:
             field_dict["data"] = data
         if token is not UNSET:
@@ -73,50 +57,39 @@ class InstallationTokenEnvelope:
 
         return field_dict
 
-
-
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
-        from ..models.installation import Installation # noqa: PLC0415
-        from ..models.installation_token_envelope_meta import InstallationTokenEnvelopeMeta # noqa: PLC0415
-        from ..models.installation_token_envelope_token import InstallationTokenEnvelopeToken # noqa: PLC0415
+        from ..models.installation import Installation  # noqa: PLC0415
+        from ..models.installation_token_envelope_meta import InstallationTokenEnvelopeMeta  # noqa: PLC0415
+        from ..models.installation_token_envelope_token import InstallationTokenEnvelopeToken  # noqa: PLC0415
+
         d = dict(src_dict)
         _data = d.pop("data", UNSET)
         data: Installation | Unset
-        if isinstance(_data,  Unset):
+        if isinstance(_data, Unset):
             data = UNSET
         else:
             data = Installation.from_dict(_data)
 
-
-
-
         _token = d.pop("token", UNSET)
         token: InstallationTokenEnvelopeToken | Unset
-        if isinstance(_token,  Unset):
+        if isinstance(_token, Unset):
             token = UNSET
         else:
             token = InstallationTokenEnvelopeToken.from_dict(_token)
 
-
-
-
         _meta = d.pop("meta", UNSET)
         meta: InstallationTokenEnvelopeMeta | Unset
-        if isinstance(_meta,  Unset):
+        if isinstance(_meta, Unset):
             meta = UNSET
         else:
             meta = InstallationTokenEnvelopeMeta.from_dict(_meta)
-
-
-
 
         installation_token_envelope = cls(
             data=data,
             token=token,
             meta=meta,
         )
-
 
         installation_token_envelope.additional_properties = d
         return installation_token_envelope

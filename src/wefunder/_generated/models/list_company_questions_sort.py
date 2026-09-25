@@ -1,5 +1,6 @@
 from enum import StrEnum
 
+
 class ListCompanyQuestionsSort(StrEnum):
     RECENT = "recent"
     RELEVANCE = "relevance"

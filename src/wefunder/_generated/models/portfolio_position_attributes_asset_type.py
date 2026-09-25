@@ -1,5 +1,6 @@
 from enum import StrEnum
 
+
 class PortfolioPositionAttributesAssetType(StrEnum):
     COMPANY = "company"
     FUND = "fund"

@@ -1,57 +1,40 @@
 from http import HTTPStatus
-from typing import Any, cast
-from urllib.parse import quote
+from typing import Any
 
 import httpx
 
-from ...client import AuthenticatedClient, Client
-from ...types import Response, UNSET
 from ... import errors
-
+from ...client import AuthenticatedClient, Client
 from ...models.error import Error
 from ...models.installation_list_envelope import InstallationListEnvelope
-from typing import cast
+from ...types import Response
 
 
-
-def _get_kwargs(
-    
-) -> dict[str, Any]:
-    
-
-    
-
-    
+def _get_kwargs() -> dict[str, Any]:
 
     _kwargs: dict[str, Any] = {
         "method": "get",
         "url": "/installations",
     }
 
-
     return _kwargs
 
 
-
-def _parse_response(*, client: AuthenticatedClient | Client, response: httpx.Response) -> Error | InstallationListEnvelope | None:
+def _parse_response(
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Error | InstallationListEnvelope | None:
     if response.status_code == 200:
         response_200 = InstallationListEnvelope.from_dict(response.json())
-
-
 
         return response_200
 
     if response.status_code == 401:
         response_401 = Error.from_dict(response.json())
 
-
-
         return response_401
 
     if response.status_code == 403:
         response_403 = Error.from_dict(response.json())
-
-
 
         return response_403
 
@@ -61,7 +44,9 @@ def _parse_response(*, client: AuthenticatedClient | Client, response: httpx.Res
         return None
 
 
-def _build_response(*, client: AuthenticatedClient | Client, response: httpx.Response) -> Response[Error | InstallationListEnvelope]:
+def _build_response(
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Response[Error | InstallationListEnvelope]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -73,9 +58,8 @@ def _build_response(*, client: AuthenticatedClient | Client, response: httpx.Res
 def sync_detailed(
     *,
     client: AuthenticatedClient,
-
 ) -> Response[Error | InstallationListEnvelope]:
-    """ List installations of your app
+    """List installations of your app
 
      Where the calling application is installed. Someone who manages the app's organization sees
     every install; anyone else sees the installs they made or could revoke. Revoked installs stay
@@ -87,12 +71,9 @@ def sync_detailed(
 
     Returns:
         Response[Error | InstallationListEnvelope]
-     """
+    """
 
-
-    kwargs = _get_kwargs(
-        
-    )
+    kwargs = _get_kwargs()
 
     response = client.get_httpx_client().request(
         **kwargs,
@@ -100,12 +81,12 @@ def sync_detailed(
 
     return _build_response(client=client, response=response)
 
+
 def sync(
     *,
     client: AuthenticatedClient,
-
 ) -> Error | InstallationListEnvelope | None:
-    """ List installations of your app
+    """List installations of your app
 
      Where the calling application is installed. Someone who manages the app's organization sees
     every install; anyone else sees the installs they made or could revoke. Revoked installs stay
@@ -117,20 +98,18 @@ def sync(
 
     Returns:
         Error | InstallationListEnvelope
-     """
-
+    """
 
     return sync_detailed(
         client=client,
-
     ).parsed
+
 
 async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
-
 ) -> Response[Error | InstallationListEnvelope]:
-    """ List installations of your app
+    """List installations of your app
 
      Where the calling application is installed. Someone who manages the app's organization sees
     every install; anyone else sees the installs they made or could revoke. Revoked installs stay
@@ -142,25 +121,20 @@ async def asyncio_detailed(
 
     Returns:
         Response[Error | InstallationListEnvelope]
-     """
+    """
 
+    kwargs = _get_kwargs()
 
-    kwargs = _get_kwargs(
-        
-    )
-
-    response = await client.get_async_httpx_client().request(
-        **kwargs
-    )
+    response = await client.get_async_httpx_client().request(**kwargs)
 
     return _build_response(client=client, response=response)
+
 
 async def asyncio(
     *,
     client: AuthenticatedClient,
-
 ) -> Error | InstallationListEnvelope | None:
-    """ List installations of your app
+    """List installations of your app
 
      Where the calling application is installed. Someone who manages the app's organization sees
     every install; anyone else sees the installs they made or could revoke. Revoked installs stay
@@ -172,10 +146,10 @@ async def asyncio(
 
     Returns:
         Error | InstallationListEnvelope
-     """
+    """
 
-
-    return (await asyncio_detailed(
-        client=client,
-
-    )).parsed
+    return (
+        await asyncio_detailed(
+            client=client,
+        )
+    ).parsed

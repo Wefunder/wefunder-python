@@ -1,5 +1,6 @@
 from enum import StrEnum
 
+
 class AuditEventAttributesStatus(StrEnum):
     DENIED = "denied"
     FAILURE = "failure"

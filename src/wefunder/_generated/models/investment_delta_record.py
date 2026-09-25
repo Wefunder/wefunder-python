@@ -1,36 +1,29 @@
 from __future__ import annotations
 
+import datetime
 from collections.abc import Mapping
-from typing import Any, TypeVar, BinaryIO, TextIO, TYPE_CHECKING, Generator
+from typing import TYPE_CHECKING, Any, TypeVar, cast
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
-from ..types import UNSET, Unset
-
 from ..models.investment_delta_record_reason import InvestmentDeltaRecordReason
 from ..models.investment_delta_record_status import InvestmentDeltaRecordStatus
 from ..types import UNSET, Unset
-from typing import cast
-import datetime
 
 if TYPE_CHECKING:
-  from ..models.investment_delta_record_amounts import InvestmentDeltaRecordAmounts
-  from ..models.investment_delta_record_blockers_item import InvestmentDeltaRecordBlockersItem
-  from ..models.investment_delta_record_contracts_item import InvestmentDeltaRecordContractsItem
-  from ..models.investment_delta_record_investor import InvestmentDeltaRecordInvestor
-
-
-
+    from ..models.investment_delta_record_amounts import InvestmentDeltaRecordAmounts
+    from ..models.investment_delta_record_blockers_item import InvestmentDeltaRecordBlockersItem
+    from ..models.investment_delta_record_contracts_item import InvestmentDeltaRecordContractsItem
+    from ..models.investment_delta_record_investor import InvestmentDeltaRecordInvestor
 
 
 T = TypeVar("T", bound="InvestmentDeltaRecord")
 
 
-
 @_attrs_define
 class InvestmentDeltaRecord:
-    """ The record of one investment, or a tombstone (`visible: false`, only `id`). `visible` is
+    """The record of one investment, or a tombstone (`visible: false`, only `id`). `visible` is
     founder visibility: a user's own canceled investment is a full record with `visible: false`
     and `status: canceled`. Investor PII keys are omitted without `read:investors:pii`, except on
     the user's own records.
@@ -67,7 +60,7 @@ class InvestmentDeltaRecord:
             reason (InvestmentDeltaRecordReason | Unset): Why the ledger row exists. `investor_deactivated` marks the first
                 republish after the investor's
                 account was deactivated (identity fields redacted). Delta pages only.
-     """
+    """
 
     id: str
     visible: bool
@@ -94,15 +87,7 @@ class InvestmentDeltaRecord:
     reason: InvestmentDeltaRecordReason | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
-
-
-
-
     def to_dict(self) -> dict[str, Any]:
-        from ..models.investment_delta_record_amounts import InvestmentDeltaRecordAmounts # noqa: PLC0415
-        from ..models.investment_delta_record_blockers_item import InvestmentDeltaRecordBlockersItem # noqa: PLC0415
-        from ..models.investment_delta_record_contracts_item import InvestmentDeltaRecordContractsItem # noqa: PLC0415
-        from ..models.investment_delta_record_investor import InvestmentDeltaRecordInvestor # noqa: PLC0415
         id = self.id
 
         visible = self.visible
@@ -112,7 +97,6 @@ class InvestmentDeltaRecord:
         status: str | Unset = UNSET
         if not isinstance(self.status, Unset):
             status = self.status.value
-
 
         converted_to: None | str | Unset
         if isinstance(self.converted_to, Unset):
@@ -181,16 +165,12 @@ class InvestmentDeltaRecord:
                 blockers_item = blockers_item_data.to_dict()
                 blockers.append(blockers_item)
 
-
-
         contracts: list[dict[str, Any]] | Unset = UNSET
         if not isinstance(self.contracts, Unset):
             contracts = []
             for contracts_item_data in self.contracts:
                 contracts_item = contracts_item_data.to_dict()
                 contracts.append(contracts_item)
-
-
 
         cursor: None | str | Unset
         if isinstance(self.cursor, Unset):
@@ -202,15 +182,15 @@ class InvestmentDeltaRecord:
         if not isinstance(self.reason, Unset):
             reason = self.reason.value
 
-
-
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({
-            "id": id,
-            "visible": visible,
-            "observed_at": observed_at,
-        })
+        field_dict.update(
+            {
+                "id": id,
+                "visible": visible,
+                "observed_at": observed_at,
+            }
+        )
         if status is not UNSET:
             field_dict["status"] = status
         if converted_to is not UNSET:
@@ -254,14 +234,13 @@ class InvestmentDeltaRecord:
 
         return field_dict
 
-
-
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
-        from ..models.investment_delta_record_amounts import InvestmentDeltaRecordAmounts # noqa: PLC0415
-        from ..models.investment_delta_record_blockers_item import InvestmentDeltaRecordBlockersItem # noqa: PLC0415
-        from ..models.investment_delta_record_contracts_item import InvestmentDeltaRecordContractsItem # noqa: PLC0415
-        from ..models.investment_delta_record_investor import InvestmentDeltaRecordInvestor # noqa: PLC0415
+        from ..models.investment_delta_record_amounts import InvestmentDeltaRecordAmounts  # noqa: PLC0415
+        from ..models.investment_delta_record_blockers_item import InvestmentDeltaRecordBlockersItem  # noqa: PLC0415
+        from ..models.investment_delta_record_contracts_item import InvestmentDeltaRecordContractsItem  # noqa: PLC0415
+        from ..models.investment_delta_record_investor import InvestmentDeltaRecordInvestor  # noqa: PLC0415
+
         d = dict(src_dict)
         id = d.pop("id")
 
@@ -269,18 +248,12 @@ class InvestmentDeltaRecord:
 
         observed_at = datetime.datetime.fromisoformat(d.pop("observed_at"))
 
-
-
-
         _status = d.pop("status", UNSET)
         status: InvestmentDeltaRecordStatus | Unset
-        if isinstance(_status,  Unset):
+        if isinstance(_status, Unset):
             status = UNSET
         else:
             status = InvestmentDeltaRecordStatus(_status)
-
-
-
 
         def _parse_converted_to(data: object) -> None | str | Unset:
             if data is None:
@@ -291,7 +264,6 @@ class InvestmentDeltaRecord:
 
         converted_to = _parse_converted_to(d.pop("converted_to", UNSET))
 
-
         def _parse_converted_from(data: object) -> None | str | Unset:
             if data is None:
                 return data
@@ -300,7 +272,6 @@ class InvestmentDeltaRecord:
             return cast(None | str | Unset, data)
 
         converted_from = _parse_converted_from(d.pop("converted_from", UNSET))
-
 
         offering = d.pop("offering", UNSET)
 
@@ -314,23 +285,17 @@ class InvestmentDeltaRecord:
 
         _applied_at = d.pop("applied_at", UNSET)
         applied_at: datetime.datetime | Unset
-        if isinstance(_applied_at,  Unset):
+        if isinstance(_applied_at, Unset):
             applied_at = UNSET
         else:
             applied_at = datetime.datetime.fromisoformat(_applied_at)
 
-
-
-
         _amounts = d.pop("amounts", UNSET)
         amounts: InvestmentDeltaRecordAmounts | Unset
-        if isinstance(_amounts,  Unset):
+        if isinstance(_amounts, Unset):
             amounts = UNSET
         else:
             amounts = InvestmentDeltaRecordAmounts.from_dict(_amounts)
-
-
-
 
         def _parse_shares(data: object) -> None | str | Unset:
             if data is None:
@@ -341,7 +306,6 @@ class InvestmentDeltaRecord:
 
         shares = _parse_shares(d.pop("shares", UNSET))
 
-
         def _parse_average_share_price(data: object) -> None | str | Unset:
             if data is None:
                 return data
@@ -350,7 +314,6 @@ class InvestmentDeltaRecord:
             return cast(None | str | Unset, data)
 
         average_share_price = _parse_average_share_price(d.pop("average_share_price", UNSET))
-
 
         needs_whitelisting = d.pop("needs_whitelisting", UNSET)
 
@@ -363,7 +326,6 @@ class InvestmentDeltaRecord:
 
         external_username = _parse_external_username(d.pop("external_username", UNSET))
 
-
         def _parse_message(data: object) -> None | str | Unset:
             if data is None:
                 return data
@@ -373,16 +335,12 @@ class InvestmentDeltaRecord:
 
         message = _parse_message(d.pop("message", UNSET))
 
-
         _investor = d.pop("investor", UNSET)
         investor: InvestmentDeltaRecordInvestor | Unset
-        if isinstance(_investor,  Unset):
+        if isinstance(_investor, Unset):
             investor = UNSET
         else:
             investor = InvestmentDeltaRecordInvestor.from_dict(_investor)
-
-
-
 
         _blockers = d.pop("blockers", UNSET)
         blockers: list[InvestmentDeltaRecordBlockersItem] | Unset = UNSET
@@ -391,10 +349,7 @@ class InvestmentDeltaRecord:
             for blockers_item_data in _blockers:
                 blockers_item = InvestmentDeltaRecordBlockersItem.from_dict(blockers_item_data)
 
-
-
                 blockers.append(blockers_item)
-
 
         _contracts = d.pop("contracts", UNSET)
         contracts: list[InvestmentDeltaRecordContractsItem] | Unset = UNSET
@@ -403,10 +358,7 @@ class InvestmentDeltaRecord:
             for contracts_item_data in _contracts:
                 contracts_item = InvestmentDeltaRecordContractsItem.from_dict(contracts_item_data)
 
-
-
                 contracts.append(contracts_item)
-
 
         def _parse_cursor(data: object) -> None | str | Unset:
             if data is None:
@@ -417,16 +369,12 @@ class InvestmentDeltaRecord:
 
         cursor = _parse_cursor(d.pop("cursor", UNSET))
 
-
         _reason = d.pop("reason", UNSET)
         reason: InvestmentDeltaRecordReason | Unset
-        if isinstance(_reason,  Unset):
+        if isinstance(_reason, Unset):
             reason = UNSET
         else:
             reason = InvestmentDeltaRecordReason(_reason)
-
-
-
 
         investment_delta_record = cls(
             id=id,
@@ -453,7 +401,6 @@ class InvestmentDeltaRecord:
             cursor=cursor,
             reason=reason,
         )
-
 
         investment_delta_record.additional_properties = d
         return investment_delta_record

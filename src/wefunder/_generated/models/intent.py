@@ -1,49 +1,37 @@
 from __future__ import annotations
 
 from collections.abc import Mapping
-from typing import Any, TypeVar, BinaryIO, TextIO, TYPE_CHECKING, Generator
+from typing import TYPE_CHECKING, Any, TypeVar
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
 from ..types import UNSET, Unset
 
-from ..types import UNSET, Unset
-from typing import cast
-
 if TYPE_CHECKING:
-  from ..models.intent_attributes import IntentAttributes
-
-
-
+    from ..models.intent_attributes import IntentAttributes
 
 
 T = TypeVar("T", bound="Intent")
 
 
-
 @_attrs_define
 class Intent:
-    """ JSON:API resource representing an intent (proposed dangerous action)
+    """JSON:API resource representing an intent (proposed dangerous action)
 
-        Attributes:
-            id (str | Unset): The intent's id (`int_...`). The `review_url` embeds the separate web (UUID) id. Example:
-                int_aB3xQ9k2vF8mNp1zT5wY7Qc4.
-            type_ (str | Unset):  Example: intent.
-            attributes (IntentAttributes | Unset):
-     """
+    Attributes:
+        id (str | Unset): The intent's id (`int_...`). The `review_url` embeds the separate web (UUID) id. Example:
+            int_aB3xQ9k2vF8mNp1zT5wY7Qc4.
+        type_ (str | Unset):  Example: intent.
+        attributes (IntentAttributes | Unset):
+    """
 
     id: str | Unset = UNSET
     type_: str | Unset = UNSET
     attributes: IntentAttributes | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
-
-
-
-
     def to_dict(self) -> dict[str, Any]:
-        from ..models.intent_attributes import IntentAttributes # noqa: PLC0415
         id = self.id
 
         type_ = self.type_
@@ -52,11 +40,9 @@ class Intent:
         if not isinstance(self.attributes, Unset):
             attributes = self.attributes.to_dict()
 
-
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({
-        })
+        field_dict.update({})
         if id is not UNSET:
             field_dict["id"] = id
         if type_ is not UNSET:
@@ -66,11 +52,10 @@ class Intent:
 
         return field_dict
 
-
-
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
-        from ..models.intent_attributes import IntentAttributes # noqa: PLC0415
+        from ..models.intent_attributes import IntentAttributes  # noqa: PLC0415
+
         d = dict(src_dict)
         id = d.pop("id", UNSET)
 
@@ -78,20 +63,16 @@ class Intent:
 
         _attributes = d.pop("attributes", UNSET)
         attributes: IntentAttributes | Unset
-        if isinstance(_attributes,  Unset):
+        if isinstance(_attributes, Unset):
             attributes = UNSET
         else:
             attributes = IntentAttributes.from_dict(_attributes)
-
-
-
 
         intent = cls(
             id=id,
             type_=type_,
             attributes=attributes,
         )
-
 
         intent.additional_properties = d
         return intent

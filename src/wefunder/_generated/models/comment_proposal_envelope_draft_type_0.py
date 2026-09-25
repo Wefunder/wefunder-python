@@ -1,39 +1,32 @@
 from __future__ import annotations
 
 from collections.abc import Mapping
-from typing import Any, TypeVar, BinaryIO, TextIO, TYPE_CHECKING, Generator
+from typing import TYPE_CHECKING, Any, TypeVar
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
 from ..types import UNSET, Unset
 
-from ..types import UNSET, Unset
-from typing import cast
-
 if TYPE_CHECKING:
-  from ..models.comment_proposal_envelope_draft_type_0_params import CommentProposalEnvelopeDraftType0Params
-
-
-
+    from ..models.comment_proposal_envelope_draft_type_0_params import CommentProposalEnvelopeDraftType0Params
 
 
 T = TypeVar("T", bound="CommentProposalEnvelopeDraftType0")
 
 
-
 @_attrs_define
 class CommentProposalEnvelopeDraftType0:
-    """ The dry run (null when `allowed` is false). Same shape as IntentPreviewEnvelope's attributes.
+    """The dry run (null when `allowed` is false). Same shape as IntentPreviewEnvelope's attributes.
 
-        Attributes:
-            action (str | Unset):
-            resource_type (str | Unset):
-            resource_id (str | Unset):
-            params (CommentProposalEnvelopeDraftType0Params | Unset):
-            impact_summary (str | Unset):
-            scope (str | Unset):
-     """
+    Attributes:
+        action (str | Unset):
+        resource_type (str | Unset):
+        resource_id (str | Unset):
+        params (CommentProposalEnvelopeDraftType0Params | Unset):
+        impact_summary (str | Unset):
+        scope (str | Unset):
+    """
 
     action: str | Unset = UNSET
     resource_type: str | Unset = UNSET
@@ -43,12 +36,7 @@ class CommentProposalEnvelopeDraftType0:
     scope: str | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
-
-
-
-
     def to_dict(self) -> dict[str, Any]:
-        from ..models.comment_proposal_envelope_draft_type_0_params import CommentProposalEnvelopeDraftType0Params # noqa: PLC0415
         action = self.action
 
         resource_type = self.resource_type
@@ -63,11 +51,9 @@ class CommentProposalEnvelopeDraftType0:
 
         scope = self.scope
 
-
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({
-        })
+        field_dict.update({})
         if action is not UNSET:
             field_dict["action"] = action
         if resource_type is not UNSET:
@@ -83,11 +69,12 @@ class CommentProposalEnvelopeDraftType0:
 
         return field_dict
 
-
-
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
-        from ..models.comment_proposal_envelope_draft_type_0_params import CommentProposalEnvelopeDraftType0Params # noqa: PLC0415
+        from ..models.comment_proposal_envelope_draft_type_0_params import (
+            CommentProposalEnvelopeDraftType0Params,  # noqa: PLC0415
+        )
+
         d = dict(src_dict)
         action = d.pop("action", UNSET)
 
@@ -97,13 +84,10 @@ class CommentProposalEnvelopeDraftType0:
 
         _params = d.pop("params", UNSET)
         params: CommentProposalEnvelopeDraftType0Params | Unset
-        if isinstance(_params,  Unset):
+        if isinstance(_params, Unset):
             params = UNSET
         else:
             params = CommentProposalEnvelopeDraftType0Params.from_dict(_params)
-
-
-
 
         impact_summary = d.pop("impact_summary", UNSET)
 
@@ -117,7 +101,6 @@ class CommentProposalEnvelopeDraftType0:
             impact_summary=impact_summary,
             scope=scope,
         )
-
 
         comment_proposal_envelope_draft_type_0.additional_properties = d
         return comment_proposal_envelope_draft_type_0

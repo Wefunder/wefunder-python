@@ -1,36 +1,27 @@
 from __future__ import annotations
 
+import datetime
 from collections.abc import Mapping
-from typing import Any, TypeVar, BinaryIO, TextIO, TYPE_CHECKING, Generator
+from typing import Any, TypeVar, cast
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
 from ..types import UNSET, Unset
 
-from ..types import UNSET, Unset
-from typing import cast
-import datetime
-
-
-
-
-
-
 T = TypeVar("T", bound="CompanyDisclosuresAttributesBusiness")
-
 
 
 @_attrs_define
 class CompanyDisclosuresAttributesBusiness:
-    """ 
-        Attributes:
-            legal_name (None | str | Unset):
-            legal_form (None | str | Unset):
-            jurisdiction (None | str | Unset):
-            incorporated_on (datetime.date | None | Unset):
-            employees (int | None | Unset):
-     """
+    """
+    Attributes:
+        legal_name (None | str | Unset):
+        legal_form (None | str | Unset):
+        jurisdiction (None | str | Unset):
+        incorporated_on (datetime.date | None | Unset):
+        employees (int | None | Unset):
+    """
 
     legal_name: None | str | Unset = UNSET
     legal_form: None | str | Unset = UNSET
@@ -38,10 +29,6 @@ class CompanyDisclosuresAttributesBusiness:
     incorporated_on: datetime.date | None | Unset = UNSET
     employees: int | None | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
-
-
-
-
 
     def to_dict(self) -> dict[str, Any]:
         legal_name: None | str | Unset
@@ -76,11 +63,9 @@ class CompanyDisclosuresAttributesBusiness:
         else:
             employees = self.employees
 
-
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({
-        })
+        field_dict.update({})
         if legal_name is not UNSET:
             field_dict["legal_name"] = legal_name
         if legal_form is not UNSET:
@@ -94,11 +79,10 @@ class CompanyDisclosuresAttributesBusiness:
 
         return field_dict
 
-
-
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
+
         def _parse_legal_name(data: object) -> None | str | Unset:
             if data is None:
                 return data
@@ -107,7 +91,6 @@ class CompanyDisclosuresAttributesBusiness:
             return cast(None | str | Unset, data)
 
         legal_name = _parse_legal_name(d.pop("legal_name", UNSET))
-
 
         def _parse_legal_form(data: object) -> None | str | Unset:
             if data is None:
@@ -118,7 +101,6 @@ class CompanyDisclosuresAttributesBusiness:
 
         legal_form = _parse_legal_form(d.pop("legal_form", UNSET))
 
-
         def _parse_jurisdiction(data: object) -> None | str | Unset:
             if data is None:
                 return data
@@ -127,7 +109,6 @@ class CompanyDisclosuresAttributesBusiness:
             return cast(None | str | Unset, data)
 
         jurisdiction = _parse_jurisdiction(d.pop("jurisdiction", UNSET))
-
 
         def _parse_incorporated_on(data: object) -> datetime.date | None | Unset:
             if data is None:
@@ -139,15 +120,12 @@ class CompanyDisclosuresAttributesBusiness:
                     raise TypeError()
                 incorporated_on_type_0 = datetime.date.fromisoformat(data)
 
-
-
                 return incorporated_on_type_0
             except (TypeError, ValueError, AttributeError, KeyError):
                 pass
             return cast(datetime.date | None | Unset, data)
 
         incorporated_on = _parse_incorporated_on(d.pop("incorporated_on", UNSET))
-
 
         def _parse_employees(data: object) -> int | None | Unset:
             if data is None:
@@ -158,7 +136,6 @@ class CompanyDisclosuresAttributesBusiness:
 
         employees = _parse_employees(d.pop("employees", UNSET))
 
-
         company_disclosures_attributes_business = cls(
             legal_name=legal_name,
             legal_form=legal_form,
@@ -166,7 +143,6 @@ class CompanyDisclosuresAttributesBusiness:
             incorporated_on=incorporated_on,
             employees=employees,
         )
-
 
         company_disclosures_attributes_business.additional_properties = d
         return company_disclosures_attributes_business

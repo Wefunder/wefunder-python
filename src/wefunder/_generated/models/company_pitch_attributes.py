@@ -1,46 +1,39 @@
 from __future__ import annotations
 
 from collections.abc import Mapping
-from typing import Any, TypeVar, BinaryIO, TextIO, TYPE_CHECKING, Generator
+from typing import TYPE_CHECKING, Any, TypeVar, cast
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
-from ..types import UNSET, Unset
-
 from ..models.company_pitch_attributes_authored_by import CompanyPitchAttributesAuthoredBy
 from ..types import UNSET, Unset
-from typing import cast
 
 if TYPE_CHECKING:
-  from ..models.company_pitch_attributes_perks_type_0 import CompanyPitchAttributesPerksType0
-  from ..models.company_pitch_attributes_story import CompanyPitchAttributesStory
-
-
-
+    from ..models.company_pitch_attributes_perks_type_0 import CompanyPitchAttributesPerksType0
+    from ..models.company_pitch_attributes_story import CompanyPitchAttributesStory
 
 
 T = TypeVar("T", bound="CompanyPitchAttributes")
 
 
-
 @_attrs_define
 class CompanyPitchAttributes:
-    """ 
-        Attributes:
-            offering_id (None | str | Unset): The round the page shows this viewer (`ofr_...`), whose perks these are; null
-                when the viewer may see none.
-            title (str | Unset): The heading the page puts over the story (the founder's own, or the default).
-            url (None | str | Unset): The company's page on wefunder.com.
-            authored_by (CompanyPitchAttributesAuthoredBy | Unset): `company`: the founder wrote the story. `wefunder`: a
-                Wefunder-prepared deal memo the company did not participate in.
-            disclaimer (None | str | Unset): The page's notice on a Wefunder-prepared deal memo; null when the company
-                authored the story.
-            story (CompanyPitchAttributesStory | Unset): The story in document order, as the page renders it. Empty `blocks`
-                when the company has no story.
-            perks (CompanyPitchAttributesPerksType0 | None | Unset): The perk tiers the page shows; null when the viewer may
-                see no round.
-     """
+    """
+    Attributes:
+        offering_id (None | str | Unset): The round the page shows this viewer (`ofr_...`), whose perks these are; null
+            when the viewer may see none.
+        title (str | Unset): The heading the page puts over the story (the founder's own, or the default).
+        url (None | str | Unset): The company's page on wefunder.com.
+        authored_by (CompanyPitchAttributesAuthoredBy | Unset): `company`: the founder wrote the story. `wefunder`: a
+            Wefunder-prepared deal memo the company did not participate in.
+        disclaimer (None | str | Unset): The page's notice on a Wefunder-prepared deal memo; null when the company
+            authored the story.
+        story (CompanyPitchAttributesStory | Unset): The story in document order, as the page renders it. Empty `blocks`
+            when the company has no story.
+        perks (CompanyPitchAttributesPerksType0 | None | Unset): The perk tiers the page shows; null when the viewer may
+            see no round.
+    """
 
     offering_id: None | str | Unset = UNSET
     title: str | Unset = UNSET
@@ -51,13 +44,9 @@ class CompanyPitchAttributes:
     perks: CompanyPitchAttributesPerksType0 | None | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
-
-
-
-
     def to_dict(self) -> dict[str, Any]:
-        from ..models.company_pitch_attributes_perks_type_0 import CompanyPitchAttributesPerksType0 # noqa: PLC0415
-        from ..models.company_pitch_attributes_story import CompanyPitchAttributesStory # noqa: PLC0415
+        from ..models.company_pitch_attributes_perks_type_0 import CompanyPitchAttributesPerksType0  # noqa: PLC0415
+
         offering_id: None | str | Unset
         if isinstance(self.offering_id, Unset):
             offering_id = UNSET
@@ -75,7 +64,6 @@ class CompanyPitchAttributes:
         authored_by: str | Unset = UNSET
         if not isinstance(self.authored_by, Unset):
             authored_by = self.authored_by.value
-
 
         disclaimer: None | str | Unset
         if isinstance(self.disclaimer, Unset):
@@ -95,11 +83,9 @@ class CompanyPitchAttributes:
         else:
             perks = self.perks
 
-
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({
-        })
+        field_dict.update({})
         if offering_id is not UNSET:
             field_dict["offering_id"] = offering_id
         if title is not UNSET:
@@ -117,13 +103,13 @@ class CompanyPitchAttributes:
 
         return field_dict
 
-
-
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
-        from ..models.company_pitch_attributes_perks_type_0 import CompanyPitchAttributesPerksType0 # noqa: PLC0415
-        from ..models.company_pitch_attributes_story import CompanyPitchAttributesStory # noqa: PLC0415
+        from ..models.company_pitch_attributes_perks_type_0 import CompanyPitchAttributesPerksType0  # noqa: PLC0415
+        from ..models.company_pitch_attributes_story import CompanyPitchAttributesStory  # noqa: PLC0415
+
         d = dict(src_dict)
+
         def _parse_offering_id(data: object) -> None | str | Unset:
             if data is None:
                 return data
@@ -132,7 +118,6 @@ class CompanyPitchAttributes:
             return cast(None | str | Unset, data)
 
         offering_id = _parse_offering_id(d.pop("offering_id", UNSET))
-
 
         title = d.pop("title", UNSET)
 
@@ -145,16 +130,12 @@ class CompanyPitchAttributes:
 
         url = _parse_url(d.pop("url", UNSET))
 
-
         _authored_by = d.pop("authored_by", UNSET)
         authored_by: CompanyPitchAttributesAuthoredBy | Unset
-        if isinstance(_authored_by,  Unset):
+        if isinstance(_authored_by, Unset):
             authored_by = UNSET
         else:
             authored_by = CompanyPitchAttributesAuthoredBy(_authored_by)
-
-
-
 
         def _parse_disclaimer(data: object) -> None | str | Unset:
             if data is None:
@@ -165,16 +146,12 @@ class CompanyPitchAttributes:
 
         disclaimer = _parse_disclaimer(d.pop("disclaimer", UNSET))
 
-
         _story = d.pop("story", UNSET)
         story: CompanyPitchAttributesStory | Unset
-        if isinstance(_story,  Unset):
+        if isinstance(_story, Unset):
             story = UNSET
         else:
             story = CompanyPitchAttributesStory.from_dict(_story)
-
-
-
 
         def _parse_perks(data: object) -> CompanyPitchAttributesPerksType0 | None | Unset:
             if data is None:
@@ -186,15 +163,12 @@ class CompanyPitchAttributes:
                     raise TypeError()
                 perks_type_0 = CompanyPitchAttributesPerksType0.from_dict(data)
 
-
-
                 return perks_type_0
             except (TypeError, ValueError, AttributeError, KeyError):
                 pass
             return cast(CompanyPitchAttributesPerksType0 | None | Unset, data)
 
         perks = _parse_perks(d.pop("perks", UNSET))
-
 
         company_pitch_attributes = cls(
             offering_id=offering_id,
@@ -205,7 +179,6 @@ class CompanyPitchAttributes:
             story=story,
             perks=perks,
         )
-
 
         company_pitch_attributes.additional_properties = d
         return company_pitch_attributes

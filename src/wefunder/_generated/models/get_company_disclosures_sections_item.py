@@ -1,5 +1,6 @@
 from enum import StrEnum
 
+
 class GetCompanyDisclosuresSectionsItem(StrEnum):
     BUSINESS = "business"
     CAPITAL_STRUCTURE = "capital_structure"

@@ -1,41 +1,32 @@
 from __future__ import annotations
 
+import datetime
 from collections.abc import Mapping
-from typing import Any, TypeVar, BinaryIO, TextIO, TYPE_CHECKING, Generator
+from typing import Any, TypeVar, cast
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
 from ..types import UNSET, Unset
 
-from ..types import UNSET, Unset
-from typing import cast
-import datetime
-
-
-
-
-
-
 T = TypeVar("T", bound="UserAttributes")
-
 
 
 @_attrs_define
 class UserAttributes:
-    """ 
-        Attributes:
-            email (str | Unset):  Example: user@example.com.
-            username (str | Unset):  Example: john_doe.
-            name (str | Unset):  Example: John.
-            full_name (str | Unset):  Example: John Doe.
-            bio (None | str | Unset):  Example: Entrepreneur and investor.
-            city (None | str | Unset):  Example: San Francisco.
-            country (None | str | Unset):  Example: USA.
-            avatar_url (None | str | Unset):  Example: https://example.com/avatar.jpg.
-            created_at (datetime.datetime | Unset):  Example: 2023-01-15T10:30:00Z.
-            certified_at (datetime.datetime | None | Unset):  Example: 2023-02-01T14:20:00Z.
-     """
+    """
+    Attributes:
+        email (str | Unset):  Example: user@example.com.
+        username (str | Unset):  Example: john_doe.
+        name (str | Unset):  Example: John.
+        full_name (str | Unset):  Example: John Doe.
+        bio (None | str | Unset):  Example: Entrepreneur and investor.
+        city (None | str | Unset):  Example: San Francisco.
+        country (None | str | Unset):  Example: USA.
+        avatar_url (None | str | Unset):  Example: https://example.com/avatar.jpg.
+        created_at (datetime.datetime | Unset):  Example: 2023-01-15T10:30:00Z.
+        certified_at (datetime.datetime | None | Unset):  Example: 2023-02-01T14:20:00Z.
+    """
 
     email: str | Unset = UNSET
     username: str | Unset = UNSET
@@ -48,10 +39,6 @@ class UserAttributes:
     created_at: datetime.datetime | Unset = UNSET
     certified_at: datetime.datetime | None | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
-
-
-
-
 
     def to_dict(self) -> dict[str, Any]:
         email = self.email
@@ -98,11 +85,9 @@ class UserAttributes:
         else:
             certified_at = self.certified_at
 
-
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({
-        })
+        field_dict.update({})
         if email is not UNSET:
             field_dict["email"] = email
         if username is not UNSET:
@@ -126,8 +111,6 @@ class UserAttributes:
 
         return field_dict
 
-
-
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
@@ -148,7 +131,6 @@ class UserAttributes:
 
         bio = _parse_bio(d.pop("bio", UNSET))
 
-
         def _parse_city(data: object) -> None | str | Unset:
             if data is None:
                 return data
@@ -157,7 +139,6 @@ class UserAttributes:
             return cast(None | str | Unset, data)
 
         city = _parse_city(d.pop("city", UNSET))
-
 
         def _parse_country(data: object) -> None | str | Unset:
             if data is None:
@@ -168,7 +149,6 @@ class UserAttributes:
 
         country = _parse_country(d.pop("country", UNSET))
 
-
         def _parse_avatar_url(data: object) -> None | str | Unset:
             if data is None:
                 return data
@@ -178,16 +158,12 @@ class UserAttributes:
 
         avatar_url = _parse_avatar_url(d.pop("avatar_url", UNSET))
 
-
         _created_at = d.pop("created_at", UNSET)
         created_at: datetime.datetime | Unset
-        if isinstance(_created_at,  Unset):
+        if isinstance(_created_at, Unset):
             created_at = UNSET
         else:
             created_at = datetime.datetime.fromisoformat(_created_at)
-
-
-
 
         def _parse_certified_at(data: object) -> datetime.datetime | None | Unset:
             if data is None:
@@ -199,15 +175,12 @@ class UserAttributes:
                     raise TypeError()
                 certified_at_type_0 = datetime.datetime.fromisoformat(data)
 
-
-
                 return certified_at_type_0
             except (TypeError, ValueError, AttributeError, KeyError):
                 pass
             return cast(datetime.datetime | None | Unset, data)
 
         certified_at = _parse_certified_at(d.pop("certified_at", UNSET))
-
 
         user_attributes = cls(
             email=email,
@@ -221,7 +194,6 @@ class UserAttributes:
             created_at=created_at,
             certified_at=certified_at,
         )
-
 
         user_attributes.additional_properties = d
         return user_attributes

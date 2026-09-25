@@ -1,43 +1,31 @@
 from __future__ import annotations
 
 from collections.abc import Mapping
-from typing import Any, TypeVar, BinaryIO, TextIO, TYPE_CHECKING, Generator
+from typing import Any, TypeVar
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
 from ..types import UNSET, Unset
 
-from ..types import UNSET, Unset
-
-
-
-
-
-
 T = TypeVar("T", bound="AttributionStatsTotals")
-
 
 
 @_attrs_define
 class AttributionStatsTotals:
-    """ 
-        Attributes:
-            investment_count (int | Unset): Total number of attributed investments Example: 142.
-            total_amount (float | Unset): Total dollar amount of attributed investments Example: 425000.
-            unique_investors (int | Unset): Count of unique investors Example: 138.
-            conversion_rate (float | Unset): UTM clicks to investments (percentage) Example: 3.08.
-     """
+    """
+    Attributes:
+        investment_count (int | Unset): Total number of attributed investments Example: 142.
+        total_amount (float | Unset): Total dollar amount of attributed investments Example: 425000.
+        unique_investors (int | Unset): Count of unique investors Example: 138.
+        conversion_rate (float | Unset): UTM clicks to investments (percentage) Example: 3.08.
+    """
 
     investment_count: int | Unset = UNSET
     total_amount: float | Unset = UNSET
     unique_investors: int | Unset = UNSET
     conversion_rate: float | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
-
-
-
-
 
     def to_dict(self) -> dict[str, Any]:
         investment_count = self.investment_count
@@ -48,11 +36,9 @@ class AttributionStatsTotals:
 
         conversion_rate = self.conversion_rate
 
-
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({
-        })
+        field_dict.update({})
         if investment_count is not UNSET:
             field_dict["investment_count"] = investment_count
         if total_amount is not UNSET:
@@ -63,8 +49,6 @@ class AttributionStatsTotals:
             field_dict["conversion_rate"] = conversion_rate
 
         return field_dict
-
-
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
@@ -83,7 +67,6 @@ class AttributionStatsTotals:
             unique_investors=unique_investors,
             conversion_rate=conversion_rate,
         )
-
 
         attribution_stats_totals.additional_properties = d
         return attribution_stats_totals
