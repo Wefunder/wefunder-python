@@ -13,7 +13,9 @@ T = TypeVar("T", bound="ReorderSyndicateMembersBody")
 class ReorderSyndicateMembersBody:
     """
     Attributes:
-        member_ids (list[str]):  Example: ['cr_123', 'cr_456', 'cr_789'].
+        member_ids (list[str]): Member ids as returned by the list endpoint (`mem_…`), in the desired display order.
+            Unknown ids return 404 and change nothing. Example: ['mem_8Kd0aB3xQ9k2', 'mem_vF8mNp1zT5wY',
+            'mem_2Lq7cR4sX0bE'].
     """
 
     member_ids: list[str]

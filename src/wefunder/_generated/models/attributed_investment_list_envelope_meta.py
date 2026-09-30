@@ -18,7 +18,7 @@ T = TypeVar("T", bound="AttributedInvestmentListEnvelopeMeta")
 class AttributedInvestmentListEnvelopeMeta:
     """
     Attributes:
-        count (int | Unset):  Example: 25.
+        page_count (int | Unset): Number of records on this page. Example: 25.
         has_more (bool | Unset):  Example: True.
         next_cursor (int | None | str | Unset): Opaque cursor — pass back as `cursor` for the next page. An integer id
             for
@@ -30,7 +30,7 @@ class AttributedInvestmentListEnvelopeMeta:
         can_view_full (bool | Unset): Whether the user can request full details Example: False.
     """
 
-    count: int | Unset = UNSET
+    page_count: int | Unset = UNSET
     has_more: bool | Unset = UNSET
     next_cursor: int | None | str | Unset = UNSET
     detail_level: AttributedInvestmentListEnvelopeMetaDetailLevel | Unset = UNSET
@@ -38,7 +38,7 @@ class AttributedInvestmentListEnvelopeMeta:
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        count = self.count
+        page_count = self.page_count
 
         has_more = self.has_more
 
@@ -57,8 +57,8 @@ class AttributedInvestmentListEnvelopeMeta:
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update({})
-        if count is not UNSET:
-            field_dict["count"] = count
+        if page_count is not UNSET:
+            field_dict["page_count"] = page_count
         if has_more is not UNSET:
             field_dict["has_more"] = has_more
         if next_cursor is not UNSET:
@@ -73,7 +73,7 @@ class AttributedInvestmentListEnvelopeMeta:
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
-        count = d.pop("count", UNSET)
+        page_count = d.pop("page_count", UNSET)
 
         has_more = d.pop("has_more", UNSET)
 
@@ -96,7 +96,7 @@ class AttributedInvestmentListEnvelopeMeta:
         can_view_full = d.pop("can_view_full", UNSET)
 
         attributed_investment_list_envelope_meta = cls(
-            count=count,
+            page_count=page_count,
             has_more=has_more,
             next_cursor=next_cursor,
             detail_level=detail_level,

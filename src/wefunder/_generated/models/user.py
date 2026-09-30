@@ -19,12 +19,12 @@ T = TypeVar("T", bound="User")
 class User:
     """
     Attributes:
-        id (int | Unset):  Example: 123.
+        id (str | Unset): Partner-facing user id (`usr_…`). Example: usr_8Kd0aB3xQ9k2vF8mNp1zT5wY.
         type_ (str | Unset):  Example: user.
         attributes (UserAttributes | Unset):
     """
 
-    id: int | Unset = UNSET
+    id: str | Unset = UNSET
     type_: str | Unset = UNSET
     attributes: UserAttributes | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)

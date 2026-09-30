@@ -2,12 +2,17 @@ from __future__ import annotations
 
 import datetime
 from collections.abc import Mapping
-from typing import Any, TypeVar, cast
+from typing import TYPE_CHECKING, Any, TypeVar, cast
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
 from ..types import UNSET, Unset
+
+if TYPE_CHECKING:
+    from ..models.syndicate_attributes_annual_subscription import SyndicateAttributesAnnualSubscription
+    from ..models.syndicate_attributes_traditional_fund import SyndicateAttributesTraditionalFund
+
 
 T = TypeVar("T", bound="SyndicateAttributes")
 
@@ -27,8 +32,18 @@ class SyndicateAttributes:
         launched (bool | Unset):  Example: True.
         membership_open (bool | Unset): Whether the syndicate is accepting new members (nil defaults to true) Example:
             True.
+        syndicate_type (None | str | Unset): How the syndicate invests (e.g. `annual_subscription`, `traditional_fund`);
+            null for deal-by-deal syndicates.
+        auto_accept_accredited_members (bool | Unset): Whether accredited applicants are approved automatically.
+            Example: False.
+        fund_required (bool | Unset): Whether members must invest through the syndicate's fund. Example: False.
+        annual_subscription (SyndicateAttributesAnnualSubscription | Unset): Present only when `syndicate_type` is
+            `annual_subscription`.
+        traditional_fund (SyndicateAttributesTraditionalFund | Unset): Present only when `syndicate_type` is
+            `traditional_fund`.
         member_count (int | Unset):  Example: 47.
-        deal_count (int | Unset): Number of linked deals (fundraises) in this syndicate Example: 3.
+        deal_count (int | Unset): Number of live deals (the same set `GET /syndicates/{syndicate_id}/deals` returns)
+            Example: 3.
         primary_fund_company_id (int | None | Unset): Internal integer id. Deprecated — use `primary_fund_company`
             (`co_...`) instead. Example: 4242.
         primary_fund_company (None | str | Unset): The primary fund company's id (`co_...`), when the syndicate has one.
@@ -48,6 +63,11 @@ class SyndicateAttributes:
     published: bool | Unset = UNSET
     launched: bool | Unset = UNSET
     membership_open: bool | Unset = UNSET
+    syndicate_type: None | str | Unset = UNSET
+    auto_accept_accredited_members: bool | Unset = UNSET
+    fund_required: bool | Unset = UNSET
+    annual_subscription: SyndicateAttributesAnnualSubscription | Unset = UNSET
+    traditional_fund: SyndicateAttributesTraditionalFund | Unset = UNSET
     member_count: int | Unset = UNSET
     deal_count: int | Unset = UNSET
     primary_fund_company_id: int | None | Unset = UNSET
@@ -86,6 +106,24 @@ class SyndicateAttributes:
         launched = self.launched
 
         membership_open = self.membership_open
+
+        syndicate_type: None | str | Unset
+        if isinstance(self.syndicate_type, Unset):
+            syndicate_type = UNSET
+        else:
+            syndicate_type = self.syndicate_type
+
+        auto_accept_accredited_members = self.auto_accept_accredited_members
+
+        fund_required = self.fund_required
+
+        annual_subscription: dict[str, Any] | Unset = UNSET
+        if not isinstance(self.annual_subscription, Unset):
+            annual_subscription = self.annual_subscription.to_dict()
+
+        traditional_fund: dict[str, Any] | Unset = UNSET
+        if not isinstance(self.traditional_fund, Unset):
+            traditional_fund = self.traditional_fund.to_dict()
 
         member_count = self.member_count
 
@@ -138,6 +176,16 @@ class SyndicateAttributes:
             field_dict["launched"] = launched
         if membership_open is not UNSET:
             field_dict["membership_open"] = membership_open
+        if syndicate_type is not UNSET:
+            field_dict["syndicate_type"] = syndicate_type
+        if auto_accept_accredited_members is not UNSET:
+            field_dict["auto_accept_accredited_members"] = auto_accept_accredited_members
+        if fund_required is not UNSET:
+            field_dict["fund_required"] = fund_required
+        if annual_subscription is not UNSET:
+            field_dict["annual_subscription"] = annual_subscription
+        if traditional_fund is not UNSET:
+            field_dict["traditional_fund"] = traditional_fund
         if member_count is not UNSET:
             field_dict["member_count"] = member_count
         if deal_count is not UNSET:
@@ -159,6 +207,11 @@ class SyndicateAttributes:
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
+        from ..models.syndicate_attributes_annual_subscription import (
+            SyndicateAttributesAnnualSubscription,  # noqa: PLC0415
+        )
+        from ..models.syndicate_attributes_traditional_fund import SyndicateAttributesTraditionalFund  # noqa: PLC0415
+
         d = dict(src_dict)
         name = d.pop("name", UNSET)
 
@@ -196,6 +249,33 @@ class SyndicateAttributes:
         launched = d.pop("launched", UNSET)
 
         membership_open = d.pop("membership_open", UNSET)
+
+        def _parse_syndicate_type(data: object) -> None | str | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            return cast(None | str | Unset, data)
+
+        syndicate_type = _parse_syndicate_type(d.pop("syndicate_type", UNSET))
+
+        auto_accept_accredited_members = d.pop("auto_accept_accredited_members", UNSET)
+
+        fund_required = d.pop("fund_required", UNSET)
+
+        _annual_subscription = d.pop("annual_subscription", UNSET)
+        annual_subscription: SyndicateAttributesAnnualSubscription | Unset
+        if isinstance(_annual_subscription, Unset):
+            annual_subscription = UNSET
+        else:
+            annual_subscription = SyndicateAttributesAnnualSubscription.from_dict(_annual_subscription)
+
+        _traditional_fund = d.pop("traditional_fund", UNSET)
+        traditional_fund: SyndicateAttributesTraditionalFund | Unset
+        if isinstance(_traditional_fund, Unset):
+            traditional_fund = UNSET
+        else:
+            traditional_fund = SyndicateAttributesTraditionalFund.from_dict(_traditional_fund)
 
         member_count = d.pop("member_count", UNSET)
 
@@ -253,6 +333,11 @@ class SyndicateAttributes:
             published=published,
             launched=launched,
             membership_open=membership_open,
+            syndicate_type=syndicate_type,
+            auto_accept_accredited_members=auto_accept_accredited_members,
+            fund_required=fund_required,
+            annual_subscription=annual_subscription,
+            traditional_fund=traditional_fund,
             member_count=member_count,
             deal_count=deal_count,
             primary_fund_company_id=primary_fund_company_id,

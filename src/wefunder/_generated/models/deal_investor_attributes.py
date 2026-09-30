@@ -25,8 +25,7 @@ class DealInvestorAttributes:
              Example: user@example.com.
         avatar_url (None | str | Unset): Investor's profile photo URL Example:
             https://uploads.wefunder.com/uploads/user/avatar/456/large_photo.jpg.
-        amount (str | Unset): Investment amount in cents, as a string to avoid floating-point precision issues Example:
-            500000.
+        amount (str | Unset): Total invested in this deal, in whole dollars, as a string Example: 5000.
         status (DealInvestorAttributesStatus | Unset): The investor's most advanced commitment in this deal —
             `confirmed` is final, `pending` is committed but not yet final. Example: confirmed.
         invested_at (datetime.datetime | Unset): ISO 8601 timestamp when the investment was created Example:

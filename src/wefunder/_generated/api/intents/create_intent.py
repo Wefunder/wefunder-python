@@ -108,6 +108,9 @@ def sync_detailed(
     existing intent (200) while that intent is pending, approved, executing, or executed;
     reusing it for a different action, resource, or params is a 409 `idempotency_conflict`.
 
+    An action still rolling out per account returns 403 `feature_disabled` for a user who is
+    not yet enabled. `POST /intents/preview` runs the same checks without minting.
+
     See [Intents documentation](/concepts/intents) for the full pattern.
 
     Args:
@@ -162,6 +165,9 @@ def sync(
     existing intent (200) while that intent is pending, approved, executing, or executed;
     reusing it for a different action, resource, or params is a 409 `idempotency_conflict`.
 
+    An action still rolling out per account returns 403 `feature_disabled` for a user who is
+    not yet enabled. `POST /intents/preview` runs the same checks without minting.
+
     See [Intents documentation](/concepts/intents) for the full pattern.
 
     Args:
@@ -210,6 +216,9 @@ async def asyncio_detailed(
     An `idempotency_key` names one operation. Reusing it for the same operation returns the
     existing intent (200) while that intent is pending, approved, executing, or executed;
     reusing it for a different action, resource, or params is a 409 `idempotency_conflict`.
+
+    An action still rolling out per account returns 403 `feature_disabled` for a user who is
+    not yet enabled. `POST /intents/preview` runs the same checks without minting.
 
     See [Intents documentation](/concepts/intents) for the full pattern.
 
@@ -262,6 +271,9 @@ async def asyncio(
     An `idempotency_key` names one operation. Reusing it for the same operation returns the
     existing intent (200) while that intent is pending, approved, executing, or executed;
     reusing it for a different action, resource, or params is a 409 `idempotency_conflict`.
+
+    An action still rolling out per account returns 403 `feature_disabled` for a user who is
+    not yet enabled. `POST /intents/preview` runs the same checks without minting.
 
     See [Intents documentation](/concepts/intents) for the full pattern.
 

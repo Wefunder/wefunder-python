@@ -22,8 +22,7 @@ class MemberInvestmentAttributes:
         offering (None | str | Unset): The deal's id (`ofr_...`), accepted by the deal endpoints. Example:
             ofr_8Kd0aB3xQ9k2vF8mNp1zT5wY.
         company_name (None | str | Unset): Name of the company the deal is for Example: Substack.
-        amount (str | Unset): Investment amount in cents, as a string to avoid floating-point precision issues Example:
-            500000.
+        amount (str | Unset): Investment amount in whole dollars, as a string Example: 5000.
         status (MemberInvestmentAttributesStatus | Unset): `confirmed` is final; `pending` is committed but not yet
             final. Example: confirmed.
         created_at (datetime.datetime | Unset): ISO 8601 timestamp when the investment was created Example:

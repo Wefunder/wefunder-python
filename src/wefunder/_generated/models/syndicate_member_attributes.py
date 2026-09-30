@@ -33,6 +33,19 @@ class SyndicateMemberAttributes:
         title (None | str | Unset): Custom title for the member Example: Example title.
         sort_order (int | None | Unset): Display order position Example: 5.
         carry_percentage_override (int | None | Unset): Override carry percentage for this member Example: 20.
+        carry_discount_percentage (float | None | Unset): Carry discount granted to this member, in percent.
+        management_fee_discount_percentage (float | None | Unset): Management fee discount granted to this member, in
+            percent.
+        public_on_syndicate_profile (bool | Unset): Whether the member is listed on the public syndicate page. Example:
+            True.
+        interests (list[str] | Unset): Investor interest tags from the user's profile. Empty for invitees.
+        stage_preferences (list[str] | Unset): Investment stage preference tags. Empty for invitees.
+        looking_for (list[str] | Unset): 'Looking for' tags from the user's profile. Empty for invitees.
+        linkedin_url (None | str | Unset):
+        twitter_url (None | str | Unset):
+        website (None | str | Unset):
+        state (None | str | Unset): User's state or region. Omitted, with city and country, when the user hides their
+            location.
         avatar_url (None | str | Unset): User profile photo URL (null for invitees without a user account) Example:
             https://uploads.wefunder.com/uploads/user/avatar/456/large_photo.jpg.
         bio (None | str | Unset): User bio with fallback chain (bio -> thesis -> about). Null for invitees without a
@@ -46,8 +59,8 @@ class SyndicateMemberAttributes:
         tags (list[str] | Unset): 'Can help with' tags from the user's investor profile. Empty array for invitees.
             Example: ['Fundraising', 'Product Strategy'].
         joined_at (datetime.datetime | Unset): ISO 8601 join date (alias for created_at) Example: 2025-03-01T12:00:00Z.
-        investment_total (None | str | Unset): Total amount invested in syndicate deals, in cents. String to avoid
-            floating-point precision issues. Example: 500000.
+        investment_total (None | str | Unset): **Moderator-only.** Total invested in syndicate deals, in whole dollars,
+            as a string. Example: 5000.
         deal_count (int | None | Unset): Number of syndicate deals the member has invested in Example: 2.
         accredited (bool | Unset): **Moderator-only.** Whether the user is an accredited investor.
             Only included when the requesting user is a manager/operator.
@@ -75,6 +88,16 @@ class SyndicateMemberAttributes:
     title: None | str | Unset = UNSET
     sort_order: int | None | Unset = UNSET
     carry_percentage_override: int | None | Unset = UNSET
+    carry_discount_percentage: float | None | Unset = UNSET
+    management_fee_discount_percentage: float | None | Unset = UNSET
+    public_on_syndicate_profile: bool | Unset = UNSET
+    interests: list[str] | Unset = UNSET
+    stage_preferences: list[str] | Unset = UNSET
+    looking_for: list[str] | Unset = UNSET
+    linkedin_url: None | str | Unset = UNSET
+    twitter_url: None | str | Unset = UNSET
+    website: None | str | Unset = UNSET
+    state: None | str | Unset = UNSET
     avatar_url: None | str | Unset = UNSET
     bio: None | str | Unset = UNSET
     city: None | str | Unset = UNSET
@@ -147,6 +170,56 @@ class SyndicateMemberAttributes:
             carry_percentage_override = UNSET
         else:
             carry_percentage_override = self.carry_percentage_override
+
+        carry_discount_percentage: float | None | Unset
+        if isinstance(self.carry_discount_percentage, Unset):
+            carry_discount_percentage = UNSET
+        else:
+            carry_discount_percentage = self.carry_discount_percentage
+
+        management_fee_discount_percentage: float | None | Unset
+        if isinstance(self.management_fee_discount_percentage, Unset):
+            management_fee_discount_percentage = UNSET
+        else:
+            management_fee_discount_percentage = self.management_fee_discount_percentage
+
+        public_on_syndicate_profile = self.public_on_syndicate_profile
+
+        interests: list[str] | Unset = UNSET
+        if not isinstance(self.interests, Unset):
+            interests = self.interests
+
+        stage_preferences: list[str] | Unset = UNSET
+        if not isinstance(self.stage_preferences, Unset):
+            stage_preferences = self.stage_preferences
+
+        looking_for: list[str] | Unset = UNSET
+        if not isinstance(self.looking_for, Unset):
+            looking_for = self.looking_for
+
+        linkedin_url: None | str | Unset
+        if isinstance(self.linkedin_url, Unset):
+            linkedin_url = UNSET
+        else:
+            linkedin_url = self.linkedin_url
+
+        twitter_url: None | str | Unset
+        if isinstance(self.twitter_url, Unset):
+            twitter_url = UNSET
+        else:
+            twitter_url = self.twitter_url
+
+        website: None | str | Unset
+        if isinstance(self.website, Unset):
+            website = UNSET
+        else:
+            website = self.website
+
+        state: None | str | Unset
+        if isinstance(self.state, Unset):
+            state = UNSET
+        else:
+            state = self.state
 
         avatar_url: None | str | Unset
         if isinstance(self.avatar_url, Unset):
@@ -251,6 +324,26 @@ class SyndicateMemberAttributes:
             field_dict["sort_order"] = sort_order
         if carry_percentage_override is not UNSET:
             field_dict["carry_percentage_override"] = carry_percentage_override
+        if carry_discount_percentage is not UNSET:
+            field_dict["carry_discount_percentage"] = carry_discount_percentage
+        if management_fee_discount_percentage is not UNSET:
+            field_dict["management_fee_discount_percentage"] = management_fee_discount_percentage
+        if public_on_syndicate_profile is not UNSET:
+            field_dict["public_on_syndicate_profile"] = public_on_syndicate_profile
+        if interests is not UNSET:
+            field_dict["interests"] = interests
+        if stage_preferences is not UNSET:
+            field_dict["stage_preferences"] = stage_preferences
+        if looking_for is not UNSET:
+            field_dict["looking_for"] = looking_for
+        if linkedin_url is not UNSET:
+            field_dict["linkedin_url"] = linkedin_url
+        if twitter_url is not UNSET:
+            field_dict["twitter_url"] = twitter_url
+        if website is not UNSET:
+            field_dict["website"] = website
+        if state is not UNSET:
+            field_dict["state"] = state
         if avatar_url is not UNSET:
             field_dict["avatar_url"] = avatar_url
         if bio is not UNSET:
@@ -370,6 +463,70 @@ class SyndicateMemberAttributes:
             return cast(int | None | Unset, data)
 
         carry_percentage_override = _parse_carry_percentage_override(d.pop("carry_percentage_override", UNSET))
+
+        def _parse_carry_discount_percentage(data: object) -> float | None | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            return cast(float | None | Unset, data)
+
+        carry_discount_percentage = _parse_carry_discount_percentage(d.pop("carry_discount_percentage", UNSET))
+
+        def _parse_management_fee_discount_percentage(data: object) -> float | None | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            return cast(float | None | Unset, data)
+
+        management_fee_discount_percentage = _parse_management_fee_discount_percentage(
+            d.pop("management_fee_discount_percentage", UNSET)
+        )
+
+        public_on_syndicate_profile = d.pop("public_on_syndicate_profile", UNSET)
+
+        interests = cast(list[str], d.pop("interests", UNSET))
+
+        stage_preferences = cast(list[str], d.pop("stage_preferences", UNSET))
+
+        looking_for = cast(list[str], d.pop("looking_for", UNSET))
+
+        def _parse_linkedin_url(data: object) -> None | str | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            return cast(None | str | Unset, data)
+
+        linkedin_url = _parse_linkedin_url(d.pop("linkedin_url", UNSET))
+
+        def _parse_twitter_url(data: object) -> None | str | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            return cast(None | str | Unset, data)
+
+        twitter_url = _parse_twitter_url(d.pop("twitter_url", UNSET))
+
+        def _parse_website(data: object) -> None | str | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            return cast(None | str | Unset, data)
+
+        website = _parse_website(d.pop("website", UNSET))
+
+        def _parse_state(data: object) -> None | str | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            return cast(None | str | Unset, data)
+
+        state = _parse_state(d.pop("state", UNSET))
 
         def _parse_avatar_url(data: object) -> None | str | Unset:
             if data is None:
@@ -500,6 +657,16 @@ class SyndicateMemberAttributes:
             title=title,
             sort_order=sort_order,
             carry_percentage_override=carry_percentage_override,
+            carry_discount_percentage=carry_discount_percentage,
+            management_fee_discount_percentage=management_fee_discount_percentage,
+            public_on_syndicate_profile=public_on_syndicate_profile,
+            interests=interests,
+            stage_preferences=stage_preferences,
+            looking_for=looking_for,
+            linkedin_url=linkedin_url,
+            twitter_url=twitter_url,
+            website=website,
+            state=state,
             avatar_url=avatar_url,
             bio=bio,
             city=city,

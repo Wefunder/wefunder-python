@@ -402,6 +402,8 @@ from .spv_with_meta_envelope import SpvWithMetaEnvelope
 from .spv_with_meta_envelope_meta import SpvWithMetaEnvelopeMeta
 from .syndicate import Syndicate
 from .syndicate_attributes import SyndicateAttributes
+from .syndicate_attributes_annual_subscription import SyndicateAttributesAnnualSubscription
+from .syndicate_attributes_traditional_fund import SyndicateAttributesTraditionalFund
 from .syndicate_deal import SyndicateDeal
 from .syndicate_deal_attributes import SyndicateDealAttributes
 from .syndicate_deal_attributes_status import SyndicateDealAttributesStatus
@@ -412,7 +414,6 @@ from .syndicate_deal_envelope import SyndicateDealEnvelope
 from .syndicate_deal_finalize_intent_envelope import SyndicateDealFinalizeIntentEnvelope
 from .syndicate_deal_finalize_intent_envelope_meta import SyndicateDealFinalizeIntentEnvelopeMeta
 from .syndicate_deal_list_envelope import SyndicateDealListEnvelope
-from .syndicate_deal_list_envelope_meta import SyndicateDealListEnvelopeMeta
 from .syndicate_detail_envelope import SyndicateDetailEnvelope
 from .syndicate_list_envelope import SyndicateListEnvelope
 from .syndicate_member import SyndicateMember
@@ -872,6 +873,8 @@ __all__ = (
     "SpvWithMetaEnvelopeMeta",
     "Syndicate",
     "SyndicateAttributes",
+    "SyndicateAttributesAnnualSubscription",
+    "SyndicateAttributesTraditionalFund",
     "SyndicateDeal",
     "SyndicateDealAttributes",
     "SyndicateDealAttributesStatus",
@@ -882,7 +885,6 @@ __all__ = (
     "SyndicateDealFinalizeIntentEnvelope",
     "SyndicateDealFinalizeIntentEnvelopeMeta",
     "SyndicateDealListEnvelope",
-    "SyndicateDealListEnvelopeMeta",
     "SyndicateDetailEnvelope",
     "SyndicateListEnvelope",
     "SyndicateMember",

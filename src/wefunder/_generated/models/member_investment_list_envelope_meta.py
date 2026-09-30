@@ -16,7 +16,7 @@ class MemberInvestmentListEnvelopeMeta:
     """
     Attributes:
         count (int | Unset): Number of investments
-        total_amount (str | Unset): Sum of all investment amounts in cents, as a string Example: 800000.
+        total_amount (str | Unset): Sum of all investment amounts in whole dollars, as a string Example: 8000.
     """
 
     count: int | Unset = UNSET

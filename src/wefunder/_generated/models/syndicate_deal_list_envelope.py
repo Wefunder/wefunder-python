@@ -9,8 +9,8 @@ from attrs import field as _attrs_field
 from ..types import UNSET, Unset
 
 if TYPE_CHECKING:
+    from ..models.pagination_meta import PaginationMeta
     from ..models.syndicate_deal import SyndicateDeal
-    from ..models.syndicate_deal_list_envelope_meta import SyndicateDealListEnvelopeMeta
 
 
 T = TypeVar("T", bound="SyndicateDealListEnvelope")
@@ -21,11 +21,11 @@ class SyndicateDealListEnvelope:
     """
     Attributes:
         data (list[SyndicateDeal] | Unset):
-        meta (SyndicateDealListEnvelopeMeta | Unset):
+        meta (PaginationMeta | Unset):
     """
 
     data: list[SyndicateDeal] | Unset = UNSET
-    meta: SyndicateDealListEnvelopeMeta | Unset = UNSET
+    meta: PaginationMeta | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
@@ -52,8 +52,8 @@ class SyndicateDealListEnvelope:
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
+        from ..models.pagination_meta import PaginationMeta  # noqa: PLC0415
         from ..models.syndicate_deal import SyndicateDeal  # noqa: PLC0415
-        from ..models.syndicate_deal_list_envelope_meta import SyndicateDealListEnvelopeMeta  # noqa: PLC0415
 
         d = dict(src_dict)
         _data = d.pop("data", UNSET)
@@ -66,11 +66,11 @@ class SyndicateDealListEnvelope:
                 data.append(data_item)
 
         _meta = d.pop("meta", UNSET)
-        meta: SyndicateDealListEnvelopeMeta | Unset
+        meta: PaginationMeta | Unset
         if isinstance(_meta, Unset):
             meta = UNSET
         else:
-            meta = SyndicateDealListEnvelopeMeta.from_dict(_meta)
+            meta = PaginationMeta.from_dict(_meta)
 
         syndicate_deal_list_envelope = cls(
             data=data,

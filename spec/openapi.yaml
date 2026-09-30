@@ -28,19 +28,14 @@ info:
 
     ## Base URL
 
-    All API requests should be made to: `https://api.wefunder.com/api/v2`
+    All API requests should be made to: `https://api.wefunder.com` (no version in the path).
   version: '2.0'
   contact:
     name: Wefunder API Support
     email: api@wefunder.com
 servers:
-  - url: https://{environment}.wefunder.com/api/v2
-    variables:
-      environment:
-        default: api
-        enum:
-          - api
-          - staging
+  - url: https://api.wefunder.com
+    description: One host for live and sandbox; the credential prefix (pk_live_ / pk_test_) selects the environment. There is currently one API version and no version appears in the path.
 paths:
   /explore:
     get:
@@ -1197,6 +1192,83 @@ paths:
               wf.raw.getOfferingStats({ path: { offering_id: "ofr_QfmTyP8qjfYAvkEgREyL3kLf" } }),
             );
             console.log(stats);
+  /companies/{company_id}/investments/changes:
+    get:
+      tags:
+        - Investment Delta
+      summary: Bootstrap or page investment changes for a company
+      description: |
+        The Investment Delta API: keep a copy of a company's investment records in sync by
+        polling. Call without `cursor` to **bootstrap** (list every current record for the
+        company); every response carries `meta.next_cursor`; call again with that cursor to
+        receive only the records whose published state changed since. Records are the same
+        shape in both modes.
+
+        - Records are **published state**, not live rows: Wefunder publishes a record when the
+          investment's founder-visible state changes, and serves exactly what was published.
+        - `visible: false` records are **tombstones**: the investment is no longer visible to the
+          company (canceled, converted to another round, hidden, or deleted). Delete your copy.
+        - Apply records in `cursor` order. `observed_at` is when the payload was observed, not a
+          version; a record you read late carries the *current* published state.
+        - **410 Gone** means your cursor predates the 90-day retention window. Bootstrap again and
+          **replace** your dataset for the company from the result (records absent from the
+          bootstrap are deleted).
+        - Investor identity fields (`investor.name`, `investor.legal_name`, `investor.email`,
+          `investor.address`, `investor.bio`, `message`, `external_username`) are **omitted**
+          unless the token carries `read:investors:pii`.
+        - Money is integer minor units plus `amounts.currency` (`committed_cents`,
+          `investment_size_cents`, `in_escrow_cents`, `contracts[].override_amount_cents`).
+          `shares` and `average_share_price` are decimal strings, `null` on rounds without shares.
+          `amounts.raised_cents` is the row's contribution to the public raised figure (0 while
+          `needs_whitelisting`); sum it, not `committed_cents`, to match the deal page.
+      operationId: listCompanyInvestmentChanges
+      security:
+        - bearerAuth:
+            - read:investments
+        - bearerAuth:
+            - read:companies
+      parameters:
+        - name: company_id
+          in: path
+          required: true
+          description: The company's external id (`co_…`).
+          schema:
+            type: string
+        - name: cursor
+          in: query
+          required: false
+          description: |
+            Opaque cursor from a previous response's `meta.next_cursor`. Omit to bootstrap.
+          schema:
+            type: string
+        - name: per_page
+          in: query
+          required: false
+          description: Records per page, 1–100 (default 25). Delta pages count distinct investments.
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 25
+      responses:
+        '200':
+          description: A page of records.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvestmentChangeListEnvelope'
+        '400':
+          description: Malformed cursor.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          description: Token lacks both `read:investments` and `read:companies`, or the user cannot edit this company.
+        '410':
+          description: |
+            The cursor is older than the retention window. Bootstrap again (no cursor) and replace
+            your stored records for this company.
+        '429':
+          $ref: '#/components/responses/RateLimitExceeded'
   /portfolio:
     get:
       tags:
@@ -1410,14 +1482,14 @@ paths:
           in: query
           schema:
             type: string
-          description: Pagination cursor from previous response
-        - name: limit
+          description: Opaque cursor from the previous response's `meta.next_cursor`.
+        - name: per_page
           in: query
           schema:
             type: integer
             default: 25
             maximum: 100
-          description: Results per page
+          description: Results per page, 1-100. Defaults to 25.
       responses:
         '200':
           description: Successful response
@@ -1558,12 +1630,14 @@ paths:
           schema:
             type: string
             enum:
-              - relevance
               - newest
               - oldest
               - alphabetical
               - last_activity
-          description: Sort order for results
+              - investment_amount
+          description: |
+            Sort order. `investment_amount` (highest total invested first) is **moderator-only**;
+            non-moderators requesting it get the default order. Unknown values fall back to the default.
         - name: has_invested
           in: query
           schema:
@@ -1578,12 +1652,30 @@ paths:
             type: string
             enum:
               - 'true'
-          description: Filter to accredited members only
+              - 'false'
+          description: '**Moderator-only.** Filter by accreditation status; ignored for non-moderators.'
         - name: tag
           in: query
           schema:
             type: string
           description: Filter by 'can help with' tag (ILIKE match)
+        - name: location
+          in: query
+          schema:
+            type: string
+          description: Match on city, state, or country (public location data only).
+        - name: cursor
+          in: query
+          schema:
+            type: string
+          description: Opaque cursor from the previous response's `meta.next_cursor`.
+        - name: per_page
+          in: query
+          schema:
+            type: integer
+            default: 25
+            maximum: 100
+          description: Results per page, 1-100. Defaults to 25.
       responses:
         '200':
           description: Successful response
@@ -1676,8 +1768,10 @@ paths:
                       type: string
                       example: Lead Investor
                     carry_percentage_override:
-                      type: string
-                      example: '20.0'
+                      type: integer
+                      minimum: 1
+                      maximum: 100
+                      example: 20
       responses:
         '200':
           description: Member updated
@@ -1696,7 +1790,7 @@ paths:
       description: |
         Removing a member is irreversible and requires human approval through the Intent system.
         This endpoint always returns 422 with a `use_intents` error directing you to
-        `POST /v2/intents` with action `syndicates.remove_member`.
+        `POST /intents` with action `syndicates.remove_member`.
       operationId: removeSyndicateMember
       security:
         - bearerAuth:
@@ -1875,10 +1969,11 @@ paths:
                   type: array
                   items:
                     type: string
+                  description: Member ids as returned by the list endpoint (`mem_…`), in the desired display order. Unknown ids return 404 and change nothing.
                   example:
-                    - cr_123
-                    - cr_456
-                    - cr_789
+                    - mem_8Kd0aB3xQ9k2
+                    - mem_vF8mNp1zT5wY
+                    - mem_2Lq7cR4sX0bE
       responses:
         '200':
           description: Order updated
@@ -1916,13 +2011,28 @@ paths:
       tags:
         - Syndicate Deals
       summary: List deals
-      description: Returns all deals (fundraises) within a syndicate with status, terms, and metrics.
+      description: |
+        Returns the syndicate's **live** deals (open, oversubscribed, or closing) with status,
+        terms, and metrics. Closed and upcoming rounds are not listed; `statistics.total_deals`
+        counts all linked rounds.
       operationId: listSyndicateDeals
       security:
         - bearerAuth:
             - read:syndicates
       parameters:
         - $ref: '#/components/parameters/syndicate_id'
+        - name: cursor
+          in: query
+          schema:
+            type: string
+          description: Opaque cursor from the previous response's `meta.next_cursor`.
+        - name: per_page
+          in: query
+          schema:
+            type: integer
+            default: 25
+            maximum: 100
+          description: Results per page, 1-100. Defaults to 25.
       responses:
         '200':
           description: Successful response
@@ -1976,7 +2086,10 @@ paths:
         The `user_email` field is **moderator-only** — it returns null for non-moderator
         callers (i.e., users who are not a manager/operator of the syndicate).
 
-        All monetary values are strings representing cents to avoid floating-point precision issues.
+        `amount` is whole dollars as a string (e.g. `"5000"` is $5,000).
+
+        Offset-paginated: pass `offset` and `per_page`; `meta` carries `total_count`,
+        `offset`, `per_page`, and `has_more`. Without `per_page` the full list is returned.
       operationId: listSyndicateDealInvestors
       security:
         - bearerAuth:
@@ -1984,18 +2097,18 @@ paths:
       parameters:
         - $ref: '#/components/parameters/syndicate_id'
         - $ref: '#/components/parameters/fundraise_id'
-        - name: cursor
-          in: query
-          schema:
-            type: string
-          description: Pagination cursor from previous response
-        - name: limit
+        - name: offset
           in: query
           schema:
             type: integer
-            default: 25
-            maximum: 100
-          description: Results per page
+            default: 0
+          description: Number of investors to skip.
+        - name: per_page
+          in: query
+          schema:
+            type: integer
+            maximum: 200
+          description: Results per page, 1-200. Omit to return every investor.
       responses:
         '200':
           description: Successful response
@@ -2020,9 +2133,9 @@ paths:
       summary: List member investments
       description: |
         Returns this member's investments in syndicate deals. Scoped to the syndicate's
-        selected deals (one per company, matching directory semantics).
+        selected deals (one per company, matching directory semantics). **Moderator-only.**
 
-        All monetary values are strings representing cents to avoid floating-point precision issues.
+        `amount` and `meta.total_amount` are whole dollars as strings.
       operationId: listSyndicateMemberInvestments
       security:
         - bearerAuth:
@@ -2059,7 +2172,7 @@ paths:
         `total_raised` and `total_investors` are computed from directory-selected deals
         (one per company). `total_deals` and `live_deals` use all linked deals.
 
-        All monetary values are strings representing cents to avoid floating-point precision issues.
+        `total_raised` is whole dollars as a string.
       operationId: getSyndicateStatistics
       security:
         - bearerAuth:
@@ -2417,11 +2530,16 @@ paths:
         existing intent (200) while that intent is pending, approved, executing, or executed;
         reusing it for a different action, resource, or params is a 409 `idempotency_conflict`.
 
+        An action still rolling out per account returns 403 `feature_disabled` for a user who is
+        not yet enabled. `POST /intents/preview` runs the same checks without minting.
+
         See [Intents documentation](/concepts/intents) for the full pattern.
       operationId: createIntent
       security:
         - bearerAuth:
             - write:syndicates
+        - bearerAuth:
+            - write:comments
       requestBody:
         required: true
         content:
@@ -2547,11 +2665,13 @@ paths:
           in: query
           schema:
             type: string
-        - name: limit
+          description: Opaque cursor from the previous response's `meta.next_cursor`.
+        - name: per_page
           in: query
           schema:
             type: integer
             default: 25
+            maximum: 100
       responses:
         '200':
           description: Successful response
@@ -2668,7 +2788,8 @@ paths:
           in: query
           schema:
             type: string
-        - name: limit
+          description: Opaque cursor from the previous response's `meta.next_cursor`.
+        - name: per_page
           in: query
           schema:
             type: integer
@@ -4887,11 +5008,18 @@ components:
         meta:
           type: object
           properties:
-            has_more:
-              type: boolean
             count:
               type: integer
               description: Number of investors on this page
+            total_count:
+              type: integer
+              description: Total investors in the deal
+            offset:
+              type: integer
+            per_page:
+              type: integer
+            has_more:
+              type: boolean
     MemberInvestmentListEnvelope:
       type: object
       properties:
@@ -4907,8 +5035,8 @@ components:
               description: Number of investments
             total_amount:
               type: string
-              description: Sum of all investment amounts in cents, as a string
-              example: '800000'
+              description: Sum of all investment amounts in whole dollars, as a string
+              example: '8000'
     OfferingListEnvelope:
       type: object
       properties:
@@ -4978,10 +5106,7 @@ components:
           items:
             $ref: '#/components/schemas/SyndicateDeal'
         meta:
-          type: object
-          properties:
-            count:
-              type: integer
+          $ref: '#/components/schemas/PaginationMeta'
     WebhookSubscriptionListEnvelope:
       type: object
       properties:
@@ -7107,8 +7232,9 @@ components:
       type: object
       properties:
         id:
-          type: integer
-          example: 123
+          type: string
+          description: Partner-facing user id (`usr_…`).
+          example: usr_8Kd0aB3xQ9k2vF8mNp1zT5wY
         type:
           type: string
           example: user
@@ -7208,8 +7334,9 @@ components:
     PaginationMeta:
       type: object
       properties:
-        count:
+        page_count:
           type: integer
+          description: Number of records on this page.
           example: 25
         has_more:
           type: boolean
@@ -7734,12 +7861,46 @@ components:
               type: boolean
               description: Whether the syndicate is accepting new members (nil defaults to true)
               example: true
+            syndicate_type:
+              type: string
+              nullable: true
+              description: How the syndicate invests (e.g. `annual_subscription`, `traditional_fund`); null for deal-by-deal syndicates.
+            auto_accept_accredited_members:
+              type: boolean
+              description: Whether accredited applicants are approved automatically.
+              example: false
+            fund_required:
+              type: boolean
+              description: Whether members must invest through the syndicate's fund.
+              example: false
+            annual_subscription:
+              type: object
+              description: Present only when `syndicate_type` is `annual_subscription`.
+              properties:
+                fund_investment_amount:
+                  type: string
+                  nullable: true
+                deals_per_year:
+                  type: integer
+                  nullable: true
+                amount_per_deal:
+                  type: string
+                  nullable: true
+            traditional_fund:
+              type: object
+              description: Present only when `syndicate_type` is `traditional_fund`.
+              properties:
+                require_minimum_investment:
+                  type: boolean
+                minimum_investment_amount:
+                  type: string
+                  nullable: true
             member_count:
               type: integer
               example: 47
             deal_count:
               type: integer
-              description: Number of linked deals (fundraises) in this syndicate
+              description: Number of live deals (the same set `GET /syndicates/{syndicate_id}/deals` returns)
               example: 3
             primary_fund_company_id:
               type: integer
@@ -7835,8 +7996,50 @@ components:
             carry_percentage_override:
               type: integer
               nullable: true
+              minimum: 1
+              maximum: 100
               example: 20
               description: Override carry percentage for this member
+            carry_discount_percentage:
+              type: number
+              nullable: true
+              description: Carry discount granted to this member, in percent.
+            management_fee_discount_percentage:
+              type: number
+              nullable: true
+              description: Management fee discount granted to this member, in percent.
+            public_on_syndicate_profile:
+              type: boolean
+              description: Whether the member is listed on the public syndicate page.
+              example: true
+            interests:
+              type: array
+              items:
+                type: string
+              description: Investor interest tags from the user's profile. Empty for invitees.
+            stage_preferences:
+              type: array
+              items:
+                type: string
+              description: Investment stage preference tags. Empty for invitees.
+            looking_for:
+              type: array
+              items:
+                type: string
+              description: '''Looking for'' tags from the user''s profile. Empty for invitees.'
+            linkedin_url:
+              type: string
+              nullable: true
+            twitter_url:
+              type: string
+              nullable: true
+            website:
+              type: string
+              nullable: true
+            state:
+              type: string
+              nullable: true
+              description: User's state or region. Omitted, with city and country, when the user hides their location.
             avatar_url:
               type: string
               nullable: true
@@ -7884,8 +8087,8 @@ components:
             investment_total:
               type: string
               nullable: true
-              description: Total amount invested in syndicate deals, in cents. String to avoid floating-point precision issues.
-              example: '500000'
+              description: '**Moderator-only.** Total invested in syndicate deals, in whole dollars, as a string.'
+              example: '5000'
             deal_count:
               type: integer
               nullable: true
@@ -7980,8 +8183,8 @@ components:
             amount_raised:
               type: string
               nullable: true
-              description: Amount in escrow in cents, as a string to avoid floating-point precision issues
-              example: '23000000'
+              description: Amount raised in whole dollars, as a string
+              example: '230000'
             investor_count:
               type: integer
               description: Count of distinct active investors
@@ -7989,7 +8192,7 @@ components:
             funding_target:
               type: string
               nullable: true
-              description: Target funding amount in cents, as a string
+              description: Target funding amount in **cents**, as a string (the one cents field on this object)
               example: '50000000'
             exemption:
               oneOf:
@@ -8004,13 +8207,13 @@ components:
             min_investment:
               type: string
               nullable: true
-              description: Minimum investment amount in cents, as a string
-              example: '10000'
+              description: Minimum investment in whole dollars, as a string
+              example: '100'
             max_investment:
               type: string
               nullable: true
-              description: Maximum investment amount in cents, as a string
-              example: '5000000'
+              description: Maximum investment in whole dollars, as a string
+              example: '50000'
             description:
               type: string
               nullable: true
@@ -8393,8 +8596,8 @@ components:
               example: https://uploads.wefunder.com/uploads/user/avatar/456/large_photo.jpg
             amount:
               type: string
-              description: Investment amount in cents, as a string to avoid floating-point precision issues
-              example: '500000'
+              description: Total invested in this deal, in whole dollars, as a string
+              example: '5000'
             status:
               type: string
               enum:
@@ -8440,8 +8643,8 @@ components:
               example: Substack
             amount:
               type: string
-              description: Investment amount in cents, as a string to avoid floating-point precision issues
-              example: '500000'
+              description: Investment amount in whole dollars, as a string
+              example: '5000'
             status:
               type: string
               enum:
@@ -8490,9 +8693,8 @@ components:
             total_raised:
               type: string
               description: |
-                Total amount raised across directory-selected deals (one per company), in cents.
-                String to avoid floating-point precision issues.
-              example: '10780000'
+                Total amount raised across directory-selected deals (one per company), in whole dollars, as a string.
+              example: '107800'
             total_investors:
               type: integer
               description: Count of distinct investors across directory-selected deals (one per company)
