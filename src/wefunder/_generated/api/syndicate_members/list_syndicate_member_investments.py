@@ -76,9 +76,9 @@ def sync_detailed(
     """List member investments
 
      Returns this member's investments in syndicate deals. Scoped to the syndicate's
-    selected deals (one per company, matching directory semantics).
+    selected deals (one per company, matching directory semantics). **Moderator-only.**
 
-    All monetary values are strings representing cents to avoid floating-point precision issues.
+    `amount` and `meta.total_amount` are whole dollars as strings.
 
     Args:
         syndicate_id (str):
@@ -113,9 +113,9 @@ def sync(
     """List member investments
 
      Returns this member's investments in syndicate deals. Scoped to the syndicate's
-    selected deals (one per company, matching directory semantics).
+    selected deals (one per company, matching directory semantics). **Moderator-only.**
 
-    All monetary values are strings representing cents to avoid floating-point precision issues.
+    `amount` and `meta.total_amount` are whole dollars as strings.
 
     Args:
         syndicate_id (str):
@@ -145,9 +145,9 @@ async def asyncio_detailed(
     """List member investments
 
      Returns this member's investments in syndicate deals. Scoped to the syndicate's
-    selected deals (one per company, matching directory semantics).
+    selected deals (one per company, matching directory semantics). **Moderator-only.**
 
-    All monetary values are strings representing cents to avoid floating-point precision issues.
+    `amount` and `meta.total_amount` are whole dollars as strings.
 
     Args:
         syndicate_id (str):
@@ -180,9 +180,9 @@ async def asyncio(
     """List member investments
 
      Returns this member's investments in syndicate deals. Scoped to the syndicate's
-    selected deals (one per company, matching directory semantics).
+    selected deals (one per company, matching directory semantics). **Moderator-only.**
 
-    All monetary values are strings representing cents to avoid floating-point precision issues.
+    `amount` and `meta.total_amount` are whole dollars as strings.
 
     Args:
         syndicate_id (str):

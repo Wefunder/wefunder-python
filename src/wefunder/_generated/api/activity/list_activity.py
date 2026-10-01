@@ -22,7 +22,7 @@ def _get_kwargs(
     since: datetime.datetime | Unset = UNSET,
     until: datetime.datetime | Unset = UNSET,
     cursor: str | Unset = UNSET,
-    limit: int | Unset = 25,
+    per_page: int | Unset = 25,
 ) -> dict[str, Any]:
 
     params: dict[str, Any] = {}
@@ -53,7 +53,7 @@ def _get_kwargs(
 
     params["cursor"] = cursor
 
-    params["limit"] = limit
+    params["per_page"] = per_page
 
     params = {k: v for k, v in params.items() if v is not UNSET and v is not None}
 
@@ -107,7 +107,7 @@ def sync_detailed(
     since: datetime.datetime | Unset = UNSET,
     until: datetime.datetime | Unset = UNSET,
     cursor: str | Unset = UNSET,
-    limit: int | Unset = 25,
+    per_page: int | Unset = 25,
 ) -> Response[AuditEventListEnvelope | Error]:
     """List activity events
 
@@ -123,7 +123,7 @@ def sync_detailed(
         since (datetime.datetime | Unset):
         until (datetime.datetime | Unset):
         cursor (str | Unset):
-        limit (int | Unset):  Default: 25.
+        per_page (int | Unset):  Default: 25.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -142,7 +142,7 @@ def sync_detailed(
         since=since,
         until=until,
         cursor=cursor,
-        limit=limit,
+        per_page=per_page,
     )
 
     response = client.get_httpx_client().request(
@@ -163,7 +163,7 @@ def sync(
     since: datetime.datetime | Unset = UNSET,
     until: datetime.datetime | Unset = UNSET,
     cursor: str | Unset = UNSET,
-    limit: int | Unset = 25,
+    per_page: int | Unset = 25,
 ) -> AuditEventListEnvelope | Error | None:
     """List activity events
 
@@ -179,7 +179,7 @@ def sync(
         since (datetime.datetime | Unset):
         until (datetime.datetime | Unset):
         cursor (str | Unset):
-        limit (int | Unset):  Default: 25.
+        per_page (int | Unset):  Default: 25.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -199,7 +199,7 @@ def sync(
         since=since,
         until=until,
         cursor=cursor,
-        limit=limit,
+        per_page=per_page,
     ).parsed
 
 
@@ -214,7 +214,7 @@ async def asyncio_detailed(
     since: datetime.datetime | Unset = UNSET,
     until: datetime.datetime | Unset = UNSET,
     cursor: str | Unset = UNSET,
-    limit: int | Unset = 25,
+    per_page: int | Unset = 25,
 ) -> Response[AuditEventListEnvelope | Error]:
     """List activity events
 
@@ -230,7 +230,7 @@ async def asyncio_detailed(
         since (datetime.datetime | Unset):
         until (datetime.datetime | Unset):
         cursor (str | Unset):
-        limit (int | Unset):  Default: 25.
+        per_page (int | Unset):  Default: 25.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -249,7 +249,7 @@ async def asyncio_detailed(
         since=since,
         until=until,
         cursor=cursor,
-        limit=limit,
+        per_page=per_page,
     )
 
     response = await client.get_async_httpx_client().request(**kwargs)
@@ -268,7 +268,7 @@ async def asyncio(
     since: datetime.datetime | Unset = UNSET,
     until: datetime.datetime | Unset = UNSET,
     cursor: str | Unset = UNSET,
-    limit: int | Unset = 25,
+    per_page: int | Unset = 25,
 ) -> AuditEventListEnvelope | Error | None:
     """List activity events
 
@@ -284,7 +284,7 @@ async def asyncio(
         since (datetime.datetime | Unset):
         until (datetime.datetime | Unset):
         cursor (str | Unset):
-        limit (int | Unset):  Default: 25.
+        per_page (int | Unset):  Default: 25.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -305,6 +305,6 @@ async def asyncio(
             since=since,
             until=until,
             cursor=cursor,
-            limit=limit,
+            per_page=per_page,
         )
     ).parsed

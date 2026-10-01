@@ -57,7 +57,7 @@ def sync_detailed(
 
      Removing a member is irreversible and requires human approval through the Intent system.
     This endpoint always returns 422 with a `use_intents` error directing you to
-    `POST /v2/intents` with action `syndicates.remove_member`.
+    `POST /intents` with action `syndicates.remove_member`.
 
     Args:
         syndicate_id (str):
@@ -93,7 +93,7 @@ def sync(
 
      Removing a member is irreversible and requires human approval through the Intent system.
     This endpoint always returns 422 with a `use_intents` error directing you to
-    `POST /v2/intents` with action `syndicates.remove_member`.
+    `POST /intents` with action `syndicates.remove_member`.
 
     Args:
         syndicate_id (str):
@@ -124,7 +124,7 @@ async def asyncio_detailed(
 
      Removing a member is irreversible and requires human approval through the Intent system.
     This endpoint always returns 422 with a `use_intents` error directing you to
-    `POST /v2/intents` with action `syndicates.remove_member`.
+    `POST /intents` with action `syndicates.remove_member`.
 
     Args:
         syndicate_id (str):
@@ -158,7 +158,7 @@ async def asyncio(
 
      Removing a member is irreversible and requires human approval through the Intent system.
     This endpoint always returns 422 with a `use_intents` error directing you to
-    `POST /v2/intents` with action `syndicates.remove_member`.
+    `POST /intents` with action `syndicates.remove_member`.
 
     Args:
         syndicate_id (str):

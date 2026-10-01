@@ -70,7 +70,7 @@ ignore = ["E731"]
 pythonVersion = "3.11"
 include = ["src/wefunder", "tests", "examples", "scripts"]
 exclude = ["src/wefunder/_generated"]
-extraPaths = ["scripts"]
+extraPaths = ["scripts", "examples"]
 typeCheckingMode = "standard"
 reportMissingModuleSource = false
 

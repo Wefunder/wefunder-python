@@ -16,11 +16,11 @@ class UpdateSyndicateMemberBodyMember:
     """
     Attributes:
         title (str | Unset):  Example: Lead Investor.
-        carry_percentage_override (str | Unset):  Example: 20.0.
+        carry_percentage_override (int | Unset):  Example: 20.
     """
 
     title: str | Unset = UNSET
-    carry_percentage_override: str | Unset = UNSET
+    carry_percentage_override: int | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:

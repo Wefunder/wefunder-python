@@ -25,6 +25,9 @@ def _get_kwargs(
     has_invested: ListSyndicateMembersHasInvested | Unset = UNSET,
     accredited: ListSyndicateMembersAccredited | Unset = UNSET,
     tag: str | Unset = UNSET,
+    location: str | Unset = UNSET,
+    cursor: str | Unset = UNSET,
+    per_page: int | Unset = 25,
 ) -> dict[str, Any]:
 
     params: dict[str, Any] = {}
@@ -58,6 +61,12 @@ def _get_kwargs(
     params["accredited"] = json_accredited
 
     params["tag"] = tag
+
+    params["location"] = location
+
+    params["cursor"] = cursor
+
+    params["per_page"] = per_page
 
     params = {k: v for k, v in params.items() if v is not UNSET and v is not None}
 
@@ -118,6 +127,9 @@ def sync_detailed(
     has_invested: ListSyndicateMembersHasInvested | Unset = UNSET,
     accredited: ListSyndicateMembersAccredited | Unset = UNSET,
     tag: str | Unset = UNSET,
+    location: str | Unset = UNSET,
+    cursor: str | Unset = UNSET,
+    per_page: int | Unset = 25,
 ) -> Response[Error | SyndicateMemberListEnvelope]:
     """List members
 
@@ -133,6 +145,9 @@ def sync_detailed(
         has_invested (ListSyndicateMembersHasInvested | Unset):
         accredited (ListSyndicateMembersAccredited | Unset):
         tag (str | Unset):
+        location (str | Unset):
+        cursor (str | Unset):
+        per_page (int | Unset):  Default: 25.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -151,6 +166,9 @@ def sync_detailed(
         has_invested=has_invested,
         accredited=accredited,
         tag=tag,
+        location=location,
+        cursor=cursor,
+        per_page=per_page,
     )
 
     response = client.get_httpx_client().request(
@@ -171,6 +189,9 @@ def sync(
     has_invested: ListSyndicateMembersHasInvested | Unset = UNSET,
     accredited: ListSyndicateMembersAccredited | Unset = UNSET,
     tag: str | Unset = UNSET,
+    location: str | Unset = UNSET,
+    cursor: str | Unset = UNSET,
+    per_page: int | Unset = 25,
 ) -> Error | SyndicateMemberListEnvelope | None:
     """List members
 
@@ -186,6 +207,9 @@ def sync(
         has_invested (ListSyndicateMembersHasInvested | Unset):
         accredited (ListSyndicateMembersAccredited | Unset):
         tag (str | Unset):
+        location (str | Unset):
+        cursor (str | Unset):
+        per_page (int | Unset):  Default: 25.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -205,6 +229,9 @@ def sync(
         has_invested=has_invested,
         accredited=accredited,
         tag=tag,
+        location=location,
+        cursor=cursor,
+        per_page=per_page,
     ).parsed
 
 
@@ -219,6 +246,9 @@ async def asyncio_detailed(
     has_invested: ListSyndicateMembersHasInvested | Unset = UNSET,
     accredited: ListSyndicateMembersAccredited | Unset = UNSET,
     tag: str | Unset = UNSET,
+    location: str | Unset = UNSET,
+    cursor: str | Unset = UNSET,
+    per_page: int | Unset = 25,
 ) -> Response[Error | SyndicateMemberListEnvelope]:
     """List members
 
@@ -234,6 +264,9 @@ async def asyncio_detailed(
         has_invested (ListSyndicateMembersHasInvested | Unset):
         accredited (ListSyndicateMembersAccredited | Unset):
         tag (str | Unset):
+        location (str | Unset):
+        cursor (str | Unset):
+        per_page (int | Unset):  Default: 25.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -252,6 +285,9 @@ async def asyncio_detailed(
         has_invested=has_invested,
         accredited=accredited,
         tag=tag,
+        location=location,
+        cursor=cursor,
+        per_page=per_page,
     )
 
     response = await client.get_async_httpx_client().request(**kwargs)
@@ -270,6 +306,9 @@ async def asyncio(
     has_invested: ListSyndicateMembersHasInvested | Unset = UNSET,
     accredited: ListSyndicateMembersAccredited | Unset = UNSET,
     tag: str | Unset = UNSET,
+    location: str | Unset = UNSET,
+    cursor: str | Unset = UNSET,
+    per_page: int | Unset = 25,
 ) -> Error | SyndicateMemberListEnvelope | None:
     """List members
 
@@ -285,6 +324,9 @@ async def asyncio(
         has_invested (ListSyndicateMembersHasInvested | Unset):
         accredited (ListSyndicateMembersAccredited | Unset):
         tag (str | Unset):
+        location (str | Unset):
+        cursor (str | Unset):
+        per_page (int | Unset):  Default: 25.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -305,5 +347,8 @@ async def asyncio(
             has_invested=has_invested,
             accredited=accredited,
             tag=tag,
+            location=location,
+            cursor=cursor,
+            per_page=per_page,
         )
     ).parsed

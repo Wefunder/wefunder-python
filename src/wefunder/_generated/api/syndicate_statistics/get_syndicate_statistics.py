@@ -78,7 +78,7 @@ def sync_detailed(
     `total_raised` and `total_investors` are computed from directory-selected deals
     (one per company). `total_deals` and `live_deals` use all linked deals.
 
-    All monetary values are strings representing cents to avoid floating-point precision issues.
+    `total_raised` is whole dollars as a string.
 
     Args:
         syndicate_id (str):
@@ -115,7 +115,7 @@ def sync(
     `total_raised` and `total_investors` are computed from directory-selected deals
     (one per company). `total_deals` and `live_deals` use all linked deals.
 
-    All monetary values are strings representing cents to avoid floating-point precision issues.
+    `total_raised` is whole dollars as a string.
 
     Args:
         syndicate_id (str):
@@ -147,7 +147,7 @@ async def asyncio_detailed(
     `total_raised` and `total_investors` are computed from directory-selected deals
     (one per company). `total_deals` and `live_deals` use all linked deals.
 
-    All monetary values are strings representing cents to avoid floating-point precision issues.
+    `total_raised` is whole dollars as a string.
 
     Args:
         syndicate_id (str):
@@ -182,7 +182,7 @@ async def asyncio(
     `total_raised` and `total_investors` are computed from directory-selected deals
     (one per company). `total_deals` and `live_deals` use all linked deals.
 
-    All monetary values are strings representing cents to avoid floating-point precision issues.
+    `total_raised` is whole dollars as a string.
 
     Args:
         syndicate_id (str):

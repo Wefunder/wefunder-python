@@ -25,9 +25,9 @@ class SyndicateStatisticsAttributes:
             {'manager': 3, 'member': 35, 'invitee': 5, 'creator': 1, 'applicant': 1}.
         total_deals (int | Unset): Total number of linked deals (all linked fundraises) Example: 3.
         live_deals (int | Unset): Number of currently live deals (open/oversubscribed/closing states) Example: 1.
-        total_raised (str | Unset): Total amount raised across directory-selected deals (one per company), in cents.
-            String to avoid floating-point precision issues.
-             Example: 10780000.
+        total_raised (str | Unset): Total amount raised across directory-selected deals (one per company), in whole
+            dollars, as a string.
+             Example: 107800.
         total_investors (int | Unset): Count of distinct investors across directory-selected deals (one per company)
             Example: 6527.
         recent_activity_count (int | Unset): Count of audit events in the last 30 days for this syndicate Example: 4.

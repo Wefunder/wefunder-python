@@ -37,16 +37,16 @@ class SyndicateDealAttributes:
         company_url (None | str | Unset): Company slug/URL path Example: acme-corp.
         company_logo_url (None | str | Unset): Company logo URL Example:
             https://uploads.wefunder.com/uploads/company/logo/1234/large_logo.png.
-        amount_raised (None | str | Unset): Amount in escrow in cents, as a string to avoid floating-point precision
-            issues Example: 23000000.
+        amount_raised (None | str | Unset): Amount raised in whole dollars, as a string Example: 230000.
         investor_count (int | Unset): Count of distinct active investors Example: 47.
-        funding_target (None | str | Unset): Target funding amount in cents, as a string Example: 50000000.
+        funding_target (None | str | Unset): Target funding amount in **cents**, as a string (the one cents field on
+            this object) Example: 50000000.
         exemption (Exemption | None | Unset): The SEC exemption the deal is offered under, in market vocabulary.
         security (ConvertibleNoteSecurity | DebtSecurity | EquitySecurity | FundSecurity | None | OtherSecurity |
             RevenueShareSecurity | SafeSecurity | Unset): What the deal issues, as a discriminated union on `type` (see
             `Security`).
-        min_investment (None | str | Unset): Minimum investment amount in cents, as a string Example: 10000.
-        max_investment (None | str | Unset): Maximum investment amount in cents, as a string Example: 5000000.
+        min_investment (None | str | Unset): Minimum investment in whole dollars, as a string Example: 100.
+        max_investment (None | str | Unset): Maximum investment in whole dollars, as a string Example: 50000.
         description (None | str | Unset): Deal funding purpose / description Example: Example text.
         created_at (datetime.datetime | Unset):  Example: 2025-03-01T12:00:00Z.
         updated_at (datetime.datetime | Unset):  Example: 2025-03-01T12:00:00Z.
