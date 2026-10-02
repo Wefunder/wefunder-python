@@ -226,7 +226,7 @@ def exchange_code(
     clients omit ``client_secret``; confidential clients pass it."""
     base = resolve_token_base(token_base_url=token_base_url, oauth_base_url=oauth_base_url)
     return _post_token(
-        base, _exchange_params(client_id, client_secret, code, redirect_uri, code_verifier), transport, now
+        base, _exchange_params(client_id, client_secret, code, redirect_uri, code_verifier), transport, now, timeout
     )
 
 
@@ -279,7 +279,7 @@ async def async_exchange_code(
     """Async :func:`exchange_code`."""
     base = resolve_token_base(token_base_url=token_base_url, oauth_base_url=oauth_base_url)
     return await _apost_token(
-        base, _exchange_params(client_id, client_secret, code, redirect_uri, code_verifier), transport, now
+        base, _exchange_params(client_id, client_secret, code, redirect_uri, code_verifier), transport, now, timeout
     )
 
 

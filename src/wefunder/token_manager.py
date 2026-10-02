@@ -57,6 +57,10 @@ async def _maybe_await(value: Any) -> Any:
     return value
 
 
+def _same_token_set(a: TokenSet, b: TokenSet) -> bool:
+    return a.access_token == b.access_token and a.refresh_token == b.refresh_token
+
+
 class _TokenManagerBase:
     def __init__(
         self,
@@ -144,15 +148,16 @@ class TokenManager(_TokenManagerBase):
             self.refresh(stale_token=self._tokens.access_token)
         return self._tokens.access_token
 
-    def mark_persisted(self) -> TokenSet:
-        """Tell the manager you persisted ``pending_tokens`` yourself; publishes it."""
+    def mark_persisted(self, tokens: TokenSet) -> bool:
+        """Tell the manager you persisted ``tokens`` (the set from a
+        :class:`WefunderTokenPersistenceError`) yourself. Publishes it only if it is still the
+        pending set; a stale acknowledgment (the manager has since rotated again) is a no-op and
+        returns ``False``, so an older save can never publish a newer, unsaved set."""
         with self._lock:
-            if self._pending is None:
-                return self._tokens
+            if self._pending is None or not _same_token_set(self._pending, tokens):
+                return False
             self._tokens, self._pending = self._pending, None
-            if self._on_token_refresh is not None:
-                self._on_token_refresh(self._tokens)
-            return self._tokens
+            return True
 
     def _publish_pending(self) -> TokenSet:
         # Persist BEFORE publishing (caller holds the lock): no thread may use the rotated token
@@ -164,12 +169,14 @@ class TokenManager(_TokenManagerBase):
         try:
             if self._store is not None:
                 self._store.save(tokens)
+            # on_token_refresh is a persistence path too, so it runs BEFORE publication and a
+            # failure keeps the set pending exactly like a store failure.
+            if self._on_token_refresh is not None:
+                self._on_token_refresh(tokens)
         except Exception as exc:
             raise WefunderTokenPersistenceError(tokens, exc) from exc
         self._pending = None
         self._tokens = tokens
-        if self._on_token_refresh is not None:
-            self._on_token_refresh(tokens)
         return tokens
 
     def refresh(self, *, stale_token: str | None = None) -> TokenSet:
@@ -239,15 +246,13 @@ class AsyncTokenManager(_TokenManagerBase):
             await self.refresh(stale_token=self._tokens.access_token)
         return self._tokens.access_token
 
-    async def mark_persisted(self) -> TokenSet:
-        """Tell the manager you persisted ``pending_tokens`` yourself; publishes it."""
+    async def mark_persisted(self, tokens: TokenSet) -> bool:
+        """Async :meth:`TokenManager.mark_persisted`."""
         async with self._get_lock():
-            if self._pending is None:
-                return self._tokens
+            if self._pending is None or not _same_token_set(self._pending, tokens):
+                return False
             self._tokens, self._pending = self._pending, None
-            if self._on_token_refresh is not None:
-                await _maybe_await(self._on_token_refresh(self._tokens))
-            return self._tokens
+            return True
 
     async def _publish_pending(self) -> TokenSet:
         tokens = self._pending
@@ -255,12 +260,12 @@ class AsyncTokenManager(_TokenManagerBase):
         try:
             if self._store is not None:
                 await _maybe_await(self._store.save(tokens))
+            if self._on_token_refresh is not None:
+                await _maybe_await(self._on_token_refresh(tokens))
         except Exception as exc:
             raise WefunderTokenPersistenceError(tokens, exc) from exc
         self._pending = None
         self._tokens = tokens
-        if self._on_token_refresh is not None:
-            await _maybe_await(self._on_token_refresh(tokens))
         return tokens
 
     async def refresh(self, *, stale_token: str | None = None) -> TokenSet:

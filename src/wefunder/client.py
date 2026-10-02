@@ -201,6 +201,7 @@ class Wefunder(_Base):
                 token_base_url=token_base,
                 transport=transport,
                 now=now,
+                timeout=timeout,
             )
         self._tm = TokenManager(
             self._initial_tokens,
@@ -212,6 +213,7 @@ class Wefunder(_Base):
             transport=transport,
             now=now,
             token_base_url=token_base,
+            timeout=timeout,
         )
         now_ms = (lambda: now() * 1000) if now else None
         self._http = httpx.Client(
@@ -529,6 +531,7 @@ class AsyncWefunder(_Base):
                 token_base_url=token_base,
                 transport=transport,
                 now=now,
+                timeout=timeout,
             )
         self._tm = AsyncTokenManager(
             self._initial_tokens,
@@ -540,6 +543,7 @@ class AsyncWefunder(_Base):
             transport=transport,
             now=now,
             token_base_url=token_base,
+            timeout=timeout,
         )
         now_ms = (lambda: now() * 1000) if now else None
         self._http = httpx.AsyncClient(

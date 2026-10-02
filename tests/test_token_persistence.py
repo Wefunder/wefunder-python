@@ -1,16 +1,27 @@
-"""Rotated tokens must be durable BEFORE any caller can use them (wefunder-ruby#1, applied to every SDK)."""
+"""Rotated tokens must be durable BEFORE any caller can use them (wefunder-ruby#1, applied to every SDK).
+Every configured persistence path (store.save AND on_token_refresh) must succeed before publication."""
 
 from __future__ import annotations
 
+import asyncio
 import threading
 import time
+from typing import Any
 
 import httpx
 import pytest
 
-from wefunder import AsyncTokenManager, TokenManager, TokenSet, WefunderTokenPersistenceError
+from wefunder import (
+    AsyncTokenManager,
+    AsyncWefunder,
+    TokenManager,
+    TokenSet,
+    Wefunder,
+    WefunderTokenPersistenceError,
+    async_exchange_code,
+    exchange_code,
+)
 from wefunder._retry import RetryTransport
-from wefunder.client import Wefunder
 
 OAUTH = httpx.MockTransport(lambda r: httpx.Response(200, json={"access_token": "at_live_NEW", "refresh_token": "r2"}))
 
@@ -19,39 +30,34 @@ def tokens() -> TokenSet:
     return TokenSet("at_live_OLD", "r1")
 
 
-class Store:
-    def __init__(self, fail_first: bool = False) -> None:
-        self.observed: list[tuple[str, str | None]] = []
-        self.attempts = 0
-        self.fail_first = fail_first
-        self.manager: TokenManager | None = None
-
-    def save(self, s: TokenSet) -> None:
-        self.attempts += 1
-        self.observed.append((s.access_token, self.manager.current.access_token if self.manager else None))
-        if self.fail_first and self.attempts == 1:
-            raise OSError("disk full")
+def manager(path: str, persist: Any) -> TokenManager:
+    if path == "store":
+        store = type("Store", (), {"save": staticmethod(persist)})()
+        return TokenManager(tokens(), client_id="c", transport=OAUTH, store=store)
+    return TokenManager(tokens(), client_id="c", transport=OAUTH, on_token_refresh=persist)
 
 
 def test_store_sees_old_token_current_while_saving() -> None:
-    store = Store()
-    tm = TokenManager(tokens(), client_id="c", transport=OAUTH, store=store)
-    store.manager = tm
-    tm.refresh()
-    assert store.observed == [("at_live_NEW", "at_live_OLD")]
-    assert tm.current.access_token == "at_live_NEW"
+    observed: list[tuple[str, str]] = []
+    holder: dict[str, TokenManager] = {}
+
+    def save(s: TokenSet) -> None:
+        observed.append((s.access_token, holder["tm"].current.access_token))
+
+    holder["tm"] = manager("store", save)
+    holder["tm"].refresh()
+    assert observed == [("at_live_NEW", "at_live_OLD")]
 
 
-def test_barrier_concurrent_reader_never_sees_undurable_token() -> None:
-    entered = threading.Event()
-    release = threading.Event()
+@pytest.mark.parametrize("path", ["store", "callback"])
+def test_barrier_reader_never_sees_undurable_token(path: str) -> None:
+    entered, release = threading.Event(), threading.Event()
 
-    class Blocking:
-        def save(self, s: TokenSet) -> None:
-            entered.set()
-            release.wait(5)
+    def persist(_s: TokenSet) -> None:
+        entered.set()
+        release.wait(5)
 
-    tm = TokenManager(tokens(), client_id="c", transport=OAUTH, store=Blocking())
+    tm = manager(path, persist)
     results: dict[str, str] = {}
     refresher = threading.Thread(target=lambda: results.__setitem__("refresh", tm.refresh().access_token))
     refresher.start()
@@ -59,7 +65,7 @@ def test_barrier_concurrent_reader_never_sees_undurable_token() -> None:
     reader = threading.Thread(target=lambda: results.__setitem__("read", tm.get_access_token()))
     reader.start()
     time.sleep(0.05)
-    assert reader.is_alive()  # waits on the lock instead of reading the pending set
+    assert reader.is_alive()
     assert tm.current.access_token == "at_live_OLD"
     release.set()
     refresher.join(5)
@@ -67,80 +73,198 @@ def test_barrier_concurrent_reader_never_sees_undurable_token() -> None:
     assert results == {"refresh": "at_live_NEW", "read": "at_live_NEW"}
 
 
-def test_failing_store_keeps_set_pending_and_retries_on_next_call() -> None:
-    store = Store(fail_first=True)
-    tm = TokenManager(tokens(), client_id="c", transport=OAUTH, store=store)
+@pytest.mark.parametrize("path", ["store", "callback"])
+def test_failing_path_keeps_set_pending_and_retries(path: str) -> None:
+    attempts = {"n": 0}
+
+    def persist(_s: TokenSet) -> None:
+        attempts["n"] += 1
+        if attempts["n"] == 1:
+            raise OSError("disk full")
+
+    tm = manager(path, persist)
     with pytest.raises(WefunderTokenPersistenceError) as info:
         tm.refresh()
     assert info.value.tokens.refresh_token == "r2"
     assert "disk full" in str(info.value)
-    assert tm.current.access_token == "at_live_OLD"  # not published
+    assert tm.current.access_token == "at_live_OLD"
     assert tm.pending_tokens is not None and tm.pending_tokens.access_token == "at_live_NEW"
-    assert tm.get_access_token() == "at_live_NEW"  # save retried, no second rotation
-    assert store.attempts == 2
+    assert tm.get_access_token() == "at_live_NEW"
+    assert attempts["n"] == 2
     assert tm.pending_tokens is None
 
 
-def test_mark_persisted_publishes_out_of_band_save() -> None:
-    class Failing:
-        def save(self, s: TokenSet) -> None:
-            raise OSError("disk full")
+def test_callback_runs_before_publication_after_store() -> None:
+    order: list[str] = []
+    holder: dict[str, TokenManager] = {}
+    store = type(
+        "Store", (), {"save": staticmethod(lambda s: order.append(f"save current={holder['tm'].current.access_token}"))}
+    )()
+    holder["tm"] = TokenManager(
+        tokens(),
+        client_id="c",
+        transport=OAUTH,
+        store=store,
+        on_token_refresh=lambda s: order.append(f"callback current={holder['tm'].current.access_token}"),
+    )
+    holder["tm"].refresh()
+    assert order == ["save current=at_live_OLD", "callback current=at_live_OLD"]
 
-    tm = TokenManager(tokens(), client_id="c", transport=OAUTH, store=Failing())
-    with pytest.raises(WefunderTokenPersistenceError):
+
+def test_mark_persisted_bound_to_saved_set_stale_ack_cannot_publish_r3() -> None:
+    mint = {"n": 0}
+
+    def oauth(_r: httpx.Request) -> httpx.Response:
+        mint["n"] += 1
+        return httpx.Response(
+            200, json={"access_token": f"at_live_{mint['n'] + 1}", "refresh_token": f"r{mint['n'] + 1}"}
+        )
+
+    fail = {"next": True}
+
+    def save(_s: TokenSet) -> None:
+        if fail["next"]:
+            fail["next"] = False
+            raise OSError("down")
+
+    store = type("Store", (), {"save": staticmethod(save)})()
+    tm = TokenManager(tokens(), client_id="c", transport=httpx.MockTransport(oauth), store=store)
+    with pytest.raises(WefunderTokenPersistenceError) as err_a:  # r1 -> r2, save fails; A holds r2
         tm.refresh()
-    tm.mark_persisted()
-    assert tm.current.access_token == "at_live_NEW"
-    assert tm.pending_tokens is None
+    assert err_a.value.tokens.refresh_token == "r2"
+    assert tm.get_access_token() == "at_live_2"  # B retries persistence and publishes r2
+    fail["next"] = True
+    with pytest.raises(WefunderTokenPersistenceError) as err_b:  # r2 -> r3, save fails
+        tm.refresh()
+    assert err_b.value.tokens.refresh_token == "r3"
+    assert tm.mark_persisted(err_a.value.tokens) is False  # stale r2 ack must not publish r3
+    assert tm.pending_tokens is not None and tm.pending_tokens.refresh_token == "r3"
+    assert tm.current.refresh_token == "r2"
+    assert tm.mark_persisted(err_b.value.tokens) is True
+    assert tm.current.refresh_token == "r3" and tm.pending_tokens is None
 
 
-def test_transport_surfaces_persistence_error_instead_of_using_pending_token() -> None:
-    class Failing:
-        def save(self, s: TokenSet) -> None:
-            raise OSError("disk full")
-
+def test_transport_never_sends_undurable_token() -> None:
     api_calls: list[str | None] = []
 
     def api(request: httpx.Request) -> httpx.Response:
         api_calls.append(request.headers.get("authorization"))
         return httpx.Response(401, content=b"{}")
 
-    tm = TokenManager(tokens(), client_id="c", transport=OAUTH, store=Failing())
+    store = type("Store", (), {"save": staticmethod(lambda s: (_ for _ in ()).throw(OSError("disk full")))})()
+    tm = TokenManager(tokens(), client_id="c", transport=OAUTH, store=store)
     transport = RetryTransport(httpx.MockTransport(api), token_manager=tm)
     with pytest.raises(WefunderTokenPersistenceError):
         transport.handle_request(httpx.Request("GET", "https://api.test/x"))
-    assert api_calls == ["Bearer at_live_OLD"]  # the undurable token was never sent
+    assert api_calls == ["Bearer at_live_OLD"]
 
 
-async def test_async_manager_gates_publication_on_persistence() -> None:
-    attempts = 0
+def test_public_client_surfaces_persistence_error_and_mark_persisted_recovers() -> None:
+    fail = {"on": True}
 
-    class Store:
-        async def save(self, s: TokenSet) -> None:
-            nonlocal attempts
-            attempts += 1
-            if attempts == 1:
-                raise OSError("disk full")
+    def handler(request: httpx.Request) -> httpx.Response:
+        if request.url.path.endswith("/oauth/token"):
+            return httpx.Response(200, json={"access_token": "at_live_NEW", "refresh_token": "r2"})
+        if request.headers.get("authorization") == "Bearer at_live_OLD":
+            return httpx.Response(401, content=b"{}")
+        return httpx.Response(200, json={"data": {"id": "usr_1", "type": "user"}})
 
-    tm = AsyncTokenManager(tokens(), client_id="c", transport=OAUTH, store=Store())
+    store = type(
+        "Store", (), {"save": staticmethod(lambda s: (_ for _ in ()).throw(OSError("db down")) if fail["on"] else None)}
+    )()
+    wf = Wefunder(
+        tokens=TokenSet("at_live_OLD", "r1", 1e10), client_id="c", store=store, transport=httpx.MockTransport(handler)
+    )
+    with pytest.raises(WefunderTokenPersistenceError) as info:
+        wf.users.me()
+    assert wf.token_manager.mark_persisted(info.value.tokens) is True
+    fail["on"] = False
+    assert wf.users.me().id == "usr_1"
+
+
+@pytest.mark.parametrize("path", ["store", "callback"])
+async def test_async_manager_callback_and_store_gate_publication(path: str) -> None:
+    attempts = {"n": 0}
+
+    async def persist(_s: TokenSet) -> None:
+        attempts["n"] += 1
+        if attempts["n"] == 1:
+            raise OSError("disk full")
+
+    kwargs: dict[str, Any] = (
+        {"store": type("Store", (), {"save": staticmethod(persist)})()}
+        if path == "store"
+        else {"on_token_refresh": persist}
+    )
+    tm = AsyncTokenManager(tokens(), client_id="c", transport=OAUTH, **kwargs)
     with pytest.raises(WefunderTokenPersistenceError):
         await tm.refresh()
     assert tm.current.access_token == "at_live_OLD"
     assert await tm.get_access_token() == "at_live_NEW"
-    assert attempts == 2
+    assert attempts["n"] == 2
 
 
-def test_client_timeout_reaches_oauth_round_trips() -> None:
+async def test_async_barrier_reader_waits_for_in_flight_save() -> None:
+    entered, release = asyncio.Event(), asyncio.Event()
+
+    async def save(_s: TokenSet) -> None:
+        entered.set()
+        await release.wait()
+
+    tm = AsyncTokenManager(
+        tokens(), client_id="c", transport=OAUTH, store=type("Store", (), {"save": staticmethod(save)})()
+    )
+    refreshing = asyncio.create_task(tm.refresh())
+    await entered.wait()
+    reader = asyncio.create_task(tm.get_access_token())
+    await asyncio.sleep(0.02)
+    assert not reader.done()
+    assert tm.current.access_token == "at_live_OLD"
+    release.set()
+    assert (await refreshing).access_token == "at_live_NEW"
+    assert await reader == "at_live_NEW"
+
+
+# ---- timeout propagation (sync + async): refresh, 401 re-mint, code exchange, initial mint
+
+
+def recorder() -> tuple[list[httpx.Request], httpx.MockTransport]:
     seen: list[httpx.Request] = []
 
     def handler(request: httpx.Request) -> httpx.Response:
         seen.append(request)
         if request.url.path.endswith("/oauth/token"):
-            return httpx.Response(200, json={"access_token": "at_test_x", "expires_in": 7200})
+            return httpx.Response(200, json={"access_token": "at_live_NEW", "refresh_token": "r2", "expires_in": 7200})
+        if request.headers.get("authorization") in ("Bearer at_live_OLD", "Bearer at_test_OLD"):
+            return httpx.Response(401, content=b"{}")
         return httpx.Response(200, json={"data": [], "meta": {}})
 
-    wf = Wefunder.from_client_credentials(
-        client_id="c", client_secret="s", transport=httpx.MockTransport(handler), timeout=11.0
+    return seen, httpx.MockTransport(handler)
+
+
+def connect_timeouts(seen: list[httpx.Request]) -> list[float | None]:
+    return [r.extensions["timeout"]["connect"] for r in seen if r.url.path.endswith("/oauth/token")]
+
+
+def test_timeout_reaches_refresh_remint_exchange_and_initial_mint_sync() -> None:
+    seen, transport = recorder()
+    wf = Wefunder(
+        tokens=TokenSet("at_live_OLD", "r1", 1e10), client_id="c", client_secret="s", transport=transport, timeout=11.0
     )
-    wf.offerings.list()
-    assert [r.extensions["timeout"]["connect"] for r in seen] == [11.0, 11.0]
+    wf.offerings.list()  # 401 -> refresh
+    cc = Wefunder.from_client_credentials(client_id="c", client_secret="s", transport=transport, timeout=7.0)
+    cc.offerings.list()  # initial mint (at_live_NEW accepted) -> no re-mint needed; force one:
+    exchange_code(
+        client_id="c", code="x", redirect_uri="https://a/cb", code_verifier="v", transport=transport, timeout=3.0
+    )
+    assert connect_timeouts(seen) == [11.0, 7.0, 3.0]
+
+
+async def test_timeout_reaches_refresh_and_exchange_async() -> None:
+    seen, transport = recorder()
+    wf = AsyncWefunder(tokens=TokenSet("at_live_OLD", "r1", 1e10), client_id="c", transport=transport, timeout=11.0)
+    await wf.offerings.list()
+    await async_exchange_code(
+        client_id="c", code="x", redirect_uri="https://a/cb", code_verifier="v", transport=transport, timeout=3.0
+    )
+    assert connect_timeouts(seen) == [11.0, 3.0]
