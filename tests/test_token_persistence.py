@@ -169,11 +169,16 @@ def test_public_client_surfaces_persistence_error_and_mark_persisted_recovers() 
             return httpx.Response(401, content=b"{}")
         return httpx.Response(200, json={"data": {"id": "usr_1", "type": "user"}})
 
-    store = type(
-        "Store", (), {"save": staticmethod(lambda s: (_ for _ in ()).throw(OSError("db down")) if fail["on"] else None)}
-    )()
+    class FlakyStore:
+        def save(self, s: TokenSet) -> None:
+            if fail["on"]:
+                raise OSError("db down")
+
     wf = Wefunder(
-        tokens=TokenSet("at_live_OLD", "r1", 1e10), client_id="c", store=store, transport=httpx.MockTransport(handler)
+        tokens=TokenSet("at_live_OLD", "r1", 1e10),
+        client_id="c",
+        store=FlakyStore(),
+        transport=httpx.MockTransport(handler),
     )
     with pytest.raises(WefunderTokenPersistenceError) as info:
         wf.users.me()
