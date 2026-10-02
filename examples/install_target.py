@@ -15,6 +15,7 @@ from wefunder._generated.api.installations import (
 )
 from wefunder._generated.api.syndicate_deals import list_syndicate_deals
 from wefunder._generated.models.create_installation_body import CreateInstallationBody
+from wefunder._generated.models.create_installation_token_body import CreateInstallationTokenBody
 
 
 def example(wf: Wefunder, syndicate_id: str = "syn_abc123Example") -> Any:
@@ -41,7 +42,8 @@ def example(wf: Wefunder, syndicate_id: str = "syn_abc123Example") -> Any:
         existing_id = err.details.get("installation")
         if not existing_id:
             raise
-        minted = wf.call(create_installation_token, external_id=existing_id)
+        mint = CreateInstallationTokenBody.from_dict({"scopes": ["read:syndicates"]})  # same scopes as above
+        minted = wf.call(create_installation_token, external_id=existing_id, body=mint)
         installation_token = minted.token.access_token  # shown once — store it
 
     # 3. First request AS the installation.

@@ -155,19 +155,27 @@ def _parse_token_response(response: httpx.Response, now: float) -> TokenSet:
 
 
 def _post_token(
-    base: str, params: Mapping[str, str], transport: httpx.BaseTransport | None, now: Now | None
+    base: str,
+    params: Mapping[str, str],
+    transport: httpx.BaseTransport | None,
+    now: Now | None,
+    timeout: httpx.Timeout | float | None = 30.0,
 ) -> TokenSet:
     url, headers, data = _token_request(base, params)
-    with httpx.Client(transport=transport) as http:
+    with httpx.Client(transport=transport, timeout=timeout) as http:
         response = http.post(url, headers=headers, data=data)
     return _parse_token_response(response, (now or time.time)())
 
 
 async def _apost_token(
-    base: str, params: Mapping[str, str], transport: httpx.AsyncBaseTransport | None, now: Now | None
+    base: str,
+    params: Mapping[str, str],
+    transport: httpx.AsyncBaseTransport | None,
+    now: Now | None,
+    timeout: httpx.Timeout | float | None = 30.0,
 ) -> TokenSet:
     url, headers, data = _token_request(base, params)
-    async with httpx.AsyncClient(transport=transport) as http:
+    async with httpx.AsyncClient(transport=transport, timeout=timeout) as http:
         response = await http.post(url, headers=headers, data=data)
     return _parse_token_response(response, (now or time.time)())
 
@@ -212,12 +220,13 @@ def exchange_code(
     oauth_base_url: str | None = None,
     transport: httpx.BaseTransport | None = None,
     now: Now | None = None,
+    timeout: httpx.Timeout | float | None = 30.0,
 ) -> TokenSet:
     """Exchange an authorization code (+ PKCE verifier) for a token set. Public (PKCE)
     clients omit ``client_secret``; confidential clients pass it."""
     base = resolve_token_base(token_base_url=token_base_url, oauth_base_url=oauth_base_url)
     return _post_token(
-        base, _exchange_params(client_id, client_secret, code, redirect_uri, code_verifier), transport, now
+        base, _exchange_params(client_id, client_secret, code, redirect_uri, code_verifier), transport, now, timeout
     )
 
 
@@ -230,10 +239,11 @@ def client_credentials_grant(
     oauth_base_url: str | None = None,
     transport: httpx.BaseTransport | None = None,
     now: Now | None = None,
+    timeout: httpx.Timeout | float | None = 30.0,
 ) -> TokenSet:
     """Mint an application token (server-to-server). cc tokens carry no refresh token."""
     base = resolve_token_base(token_base_url=token_base_url, oauth_base_url=oauth_base_url)
-    return _post_token(base, _cc_params(client_id, client_secret, scopes), transport, now)
+    return _post_token(base, _cc_params(client_id, client_secret, scopes), transport, now, timeout)
 
 
 def refresh_token(
@@ -245,11 +255,12 @@ def refresh_token(
     oauth_base_url: str | None = None,
     transport: httpx.BaseTransport | None = None,
     now: Now | None = None,
+    timeout: httpx.Timeout | float | None = 30.0,
 ) -> TokenSet:
     """Refresh an access token. CRITICAL: the result carries a NEW refresh token
     (rotation) — persist it. Reusing the old one after rotation is a permanent 401."""
     base = resolve_token_base(token_base_url=token_base_url, oauth_base_url=oauth_base_url)
-    return _post_token(base, _refresh_params(client_id, client_secret, refresh_token), transport, now)
+    return _post_token(base, _refresh_params(client_id, client_secret, refresh_token), transport, now, timeout)
 
 
 async def async_exchange_code(
@@ -263,11 +274,12 @@ async def async_exchange_code(
     oauth_base_url: str | None = None,
     transport: httpx.AsyncBaseTransport | None = None,
     now: Now | None = None,
+    timeout: httpx.Timeout | float | None = 30.0,
 ) -> TokenSet:
     """Async :func:`exchange_code`."""
     base = resolve_token_base(token_base_url=token_base_url, oauth_base_url=oauth_base_url)
     return await _apost_token(
-        base, _exchange_params(client_id, client_secret, code, redirect_uri, code_verifier), transport, now
+        base, _exchange_params(client_id, client_secret, code, redirect_uri, code_verifier), transport, now, timeout
     )
 
 
@@ -280,10 +292,11 @@ async def async_client_credentials_grant(
     oauth_base_url: str | None = None,
     transport: httpx.AsyncBaseTransport | None = None,
     now: Now | None = None,
+    timeout: httpx.Timeout | float | None = 30.0,
 ) -> TokenSet:
     """Async :func:`client_credentials_grant`."""
     base = resolve_token_base(token_base_url=token_base_url, oauth_base_url=oauth_base_url)
-    return await _apost_token(base, _cc_params(client_id, client_secret, scopes), transport, now)
+    return await _apost_token(base, _cc_params(client_id, client_secret, scopes), transport, now, timeout)
 
 
 async def async_refresh_token(
@@ -295,7 +308,8 @@ async def async_refresh_token(
     oauth_base_url: str | None = None,
     transport: httpx.AsyncBaseTransport | None = None,
     now: Now | None = None,
+    timeout: httpx.Timeout | float | None = 30.0,
 ) -> TokenSet:
     """Async :func:`refresh_token`."""
     base = resolve_token_base(token_base_url=token_base_url, oauth_base_url=oauth_base_url)
-    return await _apost_token(base, _refresh_params(client_id, client_secret, refresh_token), transport, now)
+    return await _apost_token(base, _refresh_params(client_id, client_secret, refresh_token), transport, now, timeout)

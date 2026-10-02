@@ -4,6 +4,7 @@ token for THAT install and continue — not surface the 409. (Review finding on 
 
 from __future__ import annotations
 
+import json
 import sys
 from pathlib import Path
 
@@ -19,10 +20,12 @@ from install_target import example  # noqa: E402
 class Api:
     def __init__(self, create_response: httpx.Response) -> None:
         self.create_response = create_response
+        self.bodies: list[str] = []
         self.seen: list[str] = []
 
     def __call__(self, request: httpx.Request) -> httpx.Response:
         self.seen.append(f"{request.method} {request.url.path} {request.headers.get('authorization')}")
+        self.bodies.append(request.content.decode())
         path = request.url.path
         if path == "/installations/eligible":
             return httpx.Response(
@@ -67,6 +70,8 @@ def test_already_installed_mints_for_the_existing_install_and_continues(monkeypa
         "POST /installations/ins_existing/tokens Bearer at_live_USER",
         "GET /syndicates/syn_1/deals Bearer at_live_INSTALL",  # the deals call runs AS the installation
     ]
+    # The mint for the existing install asks for the SAME read-only scope as the install itself.
+    assert json.loads(api.bodies[2]) == {"scopes": ["read:syndicates"]}
 
 
 def test_other_409_still_raises() -> None:
