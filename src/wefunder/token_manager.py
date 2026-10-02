@@ -29,6 +29,21 @@ from .oauth import Now, TokenSet, async_refresh_token, refresh_token, resolve_to
 DEFAULT_EXPIRY_LEEWAY_SECONDS = 30.0
 
 
+class WefunderTokenPersistenceError(Exception):
+    """The token store failed to save a rotated token set.
+
+    ``tokens`` is the rotated set that is NOT yet durable and NOT yet in use: the manager keeps
+    it pending and retries the save on the next call (or persist it yourself and call
+    ``mark_persisted()``). Until it is saved no request uses it, and the consumed refresh token
+    is never reused either.
+    """
+
+    def __init__(self, tokens: TokenSet, cause: BaseException) -> None:
+        super().__init__(f"Token store failed to save the rotated token set: {cause}")
+        self.tokens = tokens
+        self.__cause__ = cause
+
+
 class TokenStore(Protocol):
     """Pluggable persistence for the rotating token set (DB row, secrets manager, …).
     ``save`` may be sync or async."""
@@ -55,8 +70,11 @@ class _TokenManagerBase:
         expiry_leeway_seconds: float = DEFAULT_EXPIRY_LEEWAY_SECONDS,
         token_base_url: str | None = None,
         oauth_base_url: str | None = None,
+        timeout: Any = 30.0,
     ) -> None:
+        self._timeout = timeout
         self._tokens = tokens
+        self._pending: TokenSet | None = None
         self._client_id = client_id
         self._client_secret = client_secret
         self._on_token_refresh = on_token_refresh
@@ -67,7 +85,13 @@ class _TokenManagerBase:
 
     @property
     def current(self) -> TokenSet:
+        """The durable, in-use token set. A rotated set that could not be persisted sits in ``pending_tokens``."""
         return self._tokens
+
+    @property
+    def pending_tokens(self) -> TokenSet | None:
+        """A rotated set awaiting a successful ``store.save`` (see :class:`WefunderTokenPersistenceError`)."""
+        return self._pending
 
     def _can_rotate(self) -> bool:
         return bool(self._tokens.refresh_token and self._client_id)
@@ -109,16 +133,54 @@ class TokenManager(_TokenManagerBase):
         return self._can_rotate() or self._re_mint is not None
 
     def get_access_token(self) -> str:
-        """A valid access token, refreshing proactively if expired / within the leeway."""
+        """A valid access token, refreshing proactively if expired / within the leeway. If a
+        rotated set is pending persistence, the save is retried first — no request uses an
+        undurable token."""
+        if self._pending is not None:
+            with self._lock:
+                if self._pending is not None:  # re-check under the lock
+                    self._publish_pending()
         if self._near_expiry() and self.can_refresh:
             self.refresh(stale_token=self._tokens.access_token)
         return self._tokens.access_token
+
+    def mark_persisted(self) -> TokenSet:
+        """Tell the manager you persisted ``pending_tokens`` yourself; publishes it."""
+        with self._lock:
+            if self._pending is None:
+                return self._tokens
+            self._tokens, self._pending = self._pending, None
+            if self._on_token_refresh is not None:
+                self._on_token_refresh(self._tokens)
+            return self._tokens
+
+    def _publish_pending(self) -> TokenSet:
+        # Persist BEFORE publishing (caller holds the lock): no thread may use the rotated token
+        # until it is durable, and a failed save must not leave the process working in memory but
+        # unable to reconnect after a restart. On failure the set stays pending and
+        # WefunderTokenPersistenceError is raised; the next call retries the save.
+        tokens = self._pending
+        assert tokens is not None
+        try:
+            if self._store is not None:
+                self._store.save(tokens)
+        except Exception as exc:
+            raise WefunderTokenPersistenceError(tokens, exc) from exc
+        self._pending = None
+        self._tokens = tokens
+        if self._on_token_refresh is not None:
+            self._on_token_refresh(tokens)
+        return tokens
 
     def refresh(self, *, stale_token: str | None = None) -> TokenSet:
         """Recover the token (after a 401 or proactively). Coalesces concurrent callers:
         if ``stale_token`` is no longer the current token, someone else already recovered
         and the current set is returned without a network round-trip."""
         with self._lock:
+            # A rotated set awaiting persistence: retry the save rather than rotating again (the
+            # old refresh token was consumed by that rotation).
+            if self._pending is not None:
+                return self._publish_pending()
             if stale_token is not None and self._tokens.access_token != stale_token:
                 return self._tokens
             previous_refresh = self._tokens.refresh_token
@@ -130,18 +192,15 @@ class TokenManager(_TokenManagerBase):
                     token_base_url=self._token_base_url,
                     transport=self._transport,
                     now=self._now,
+                    timeout=self._timeout,
                 )
                 nxt = self._keep_refresh_token(nxt, previous_refresh)
             elif self._re_mint is not None:
                 nxt = self._re_mint()
             else:
                 raise self._no_recovery()
-            self._tokens = nxt
-            if self._store is not None:
-                self._store.save(nxt)
-            if self._on_token_refresh is not None:
-                self._on_token_refresh(nxt)
-            return nxt
+            self._pending = nxt
+            return self._publish_pending()
 
 
 class AsyncTokenManager(_TokenManagerBase):
@@ -172,12 +231,42 @@ class AsyncTokenManager(_TokenManagerBase):
         return self._can_rotate() or self._re_mint is not None
 
     async def get_access_token(self) -> str:
+        if self._pending is not None:
+            async with self._get_lock():
+                if self._pending is not None:  # re-check under the lock
+                    await self._publish_pending()
         if self._near_expiry() and self.can_refresh:
             await self.refresh(stale_token=self._tokens.access_token)
         return self._tokens.access_token
 
+    async def mark_persisted(self) -> TokenSet:
+        """Tell the manager you persisted ``pending_tokens`` yourself; publishes it."""
+        async with self._get_lock():
+            if self._pending is None:
+                return self._tokens
+            self._tokens, self._pending = self._pending, None
+            if self._on_token_refresh is not None:
+                await _maybe_await(self._on_token_refresh(self._tokens))
+            return self._tokens
+
+    async def _publish_pending(self) -> TokenSet:
+        tokens = self._pending
+        assert tokens is not None
+        try:
+            if self._store is not None:
+                await _maybe_await(self._store.save(tokens))
+        except Exception as exc:
+            raise WefunderTokenPersistenceError(tokens, exc) from exc
+        self._pending = None
+        self._tokens = tokens
+        if self._on_token_refresh is not None:
+            await _maybe_await(self._on_token_refresh(tokens))
+        return tokens
+
     async def refresh(self, *, stale_token: str | None = None) -> TokenSet:
         async with self._get_lock():
+            if self._pending is not None:
+                return await self._publish_pending()
             if stale_token is not None and self._tokens.access_token != stale_token:
                 return self._tokens
             previous_refresh = self._tokens.refresh_token
@@ -189,15 +278,12 @@ class AsyncTokenManager(_TokenManagerBase):
                     token_base_url=self._token_base_url,
                     transport=self._transport,
                     now=self._now,
+                    timeout=self._timeout,
                 )
                 nxt = self._keep_refresh_token(nxt, previous_refresh)
             elif self._re_mint is not None:
                 nxt = await _maybe_await(self._re_mint())
             else:
                 raise self._no_recovery()
-            self._tokens = nxt
-            if self._store is not None:
-                await _maybe_await(self._store.save(nxt))
-            if self._on_token_refresh is not None:
-                await _maybe_await(self._on_token_refresh(nxt))
-            return nxt
+            self._pending = nxt
+            return await self._publish_pending()

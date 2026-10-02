@@ -37,7 +37,7 @@ from .oauth import (
     refresh_token,
 )
 from .pagination import acollect, apaginate, collect, paginate
-from .token_manager import AsyncTokenManager, TokenManager, TokenStore
+from .token_manager import AsyncTokenManager, TokenManager, TokenStore, WefunderTokenPersistenceError
 from .webhooks import (
     DEFAULT_TOLERANCE_SECONDS,
     SIGNATURE_HEADER,
@@ -79,6 +79,7 @@ __all__ = [
     "Wefunder",
     "WefunderAuthError",
     "WefunderError",
+    "WefunderTokenPersistenceError",
     "__version__",
     "acollect",
     "apaginate",

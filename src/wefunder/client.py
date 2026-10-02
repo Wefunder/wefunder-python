@@ -253,6 +253,7 @@ class Wefunder(_Base):
             oauth_base_url=kwargs.get("oauth_base_url"),
             transport=kwargs.get("transport"),
             now=kwargs.get("now"),
+            timeout=kwargs.get("timeout", 30.0),
         )
         return cls(
             tokens=tokens,
@@ -268,6 +269,11 @@ class Wefunder(_Base):
     def tokens(self) -> TokenSet:
         """The current token set (rotated refresh token included)."""
         return self._tm.current
+
+    @property
+    def token_manager(self) -> TokenManager:
+        """The :class:`TokenManager` (for ``mark_persisted()`` after a :class:`WefunderTokenPersistenceError`)."""
+        return self._tm
 
     @property
     def raw(self) -> AuthenticatedClient:
@@ -569,6 +575,7 @@ class AsyncWefunder(_Base):
             oauth_base_url=kwargs.get("oauth_base_url"),
             transport=kwargs.get("transport"),
             now=kwargs.get("now"),
+            timeout=kwargs.get("timeout", 30.0),
         )
         return cls(
             tokens=tokens,
