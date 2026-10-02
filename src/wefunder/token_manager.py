@@ -48,7 +48,9 @@ class TokenStore(Protocol):
     """Pluggable persistence for the rotating token set (DB row, secrets manager, …).
     ``save`` may be sync or async."""
 
-    def save(self, tokens: TokenSet) -> Any: ...
+    # Positional-only so an implementation may name the parameter anything (pyright matches
+    # protocol parameter NAMES otherwise, and `def save(self, s)` would be rejected).
+    def save(self, tokens: TokenSet, /) -> Any: ...
 
 
 async def _maybe_await(value: Any) -> Any:

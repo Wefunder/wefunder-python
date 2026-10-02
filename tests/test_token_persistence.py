@@ -30,9 +30,19 @@ def tokens() -> TokenSet:
     return TokenSet("at_live_OLD", "r1")
 
 
+class FnStore:
+    """A TokenStore whose save() is the given callable (typed, so pyright sees the protocol)."""
+
+    def __init__(self, fn: Any) -> None:
+        self.fn = fn
+
+    def save(self, s: TokenSet) -> Any:
+        return self.fn(s)
+
+
 def manager(path: str, persist: Any) -> TokenManager:
     if path == "store":
-        store = type("Store", (), {"save": staticmethod(persist)})()
+        store = FnStore(persist)
         return TokenManager(tokens(), client_id="c", transport=OAUTH, store=store)
     return TokenManager(tokens(), client_id="c", transport=OAUTH, on_token_refresh=persist)
 
@@ -97,9 +107,7 @@ def test_failing_path_keeps_set_pending_and_retries(path: str) -> None:
 def test_callback_runs_before_publication_after_store() -> None:
     order: list[str] = []
     holder: dict[str, TokenManager] = {}
-    store = type(
-        "Store", (), {"save": staticmethod(lambda s: order.append(f"save current={holder['tm'].current.access_token}"))}
-    )()
+    store = FnStore(lambda s: order.append(f"save current={holder['tm'].current.access_token}"))
     holder["tm"] = TokenManager(
         tokens(),
         client_id="c",
@@ -127,7 +135,7 @@ def test_mark_persisted_bound_to_saved_set_stale_ack_cannot_publish_r3() -> None
             fail["next"] = False
             raise OSError("down")
 
-    store = type("Store", (), {"save": staticmethod(save)})()
+    store = FnStore(save)
     tm = TokenManager(tokens(), client_id="c", transport=httpx.MockTransport(oauth), store=store)
     with pytest.raises(WefunderTokenPersistenceError) as err_a:  # r1 -> r2, save fails; A holds r2
         tm.refresh()
@@ -151,7 +159,7 @@ def test_transport_never_sends_undurable_token() -> None:
         api_calls.append(request.headers.get("authorization"))
         return httpx.Response(401, content=b"{}")
 
-    store = type("Store", (), {"save": staticmethod(lambda s: (_ for _ in ()).throw(OSError("disk full")))})()
+    store = FnStore(lambda s: (_ for _ in ()).throw(OSError("disk full")))
     tm = TokenManager(tokens(), client_id="c", transport=OAUTH, store=store)
     transport = RetryTransport(httpx.MockTransport(api), token_manager=tm)
     with pytest.raises(WefunderTokenPersistenceError):
@@ -196,11 +204,7 @@ async def test_async_manager_callback_and_store_gate_publication(path: str) -> N
         if attempts["n"] == 1:
             raise OSError("disk full")
 
-    kwargs: dict[str, Any] = (
-        {"store": type("Store", (), {"save": staticmethod(persist)})()}
-        if path == "store"
-        else {"on_token_refresh": persist}
-    )
+    kwargs: dict[str, Any] = {"store": FnStore(persist)} if path == "store" else {"on_token_refresh": persist}
     tm = AsyncTokenManager(tokens(), client_id="c", transport=OAUTH, **kwargs)
     with pytest.raises(WefunderTokenPersistenceError):
         await tm.refresh()
@@ -216,9 +220,7 @@ async def test_async_barrier_reader_waits_for_in_flight_save() -> None:
         entered.set()
         await release.wait()
 
-    tm = AsyncTokenManager(
-        tokens(), client_id="c", transport=OAUTH, store=type("Store", (), {"save": staticmethod(save)})()
-    )
+    tm = AsyncTokenManager(tokens(), client_id="c", transport=OAUTH, store=FnStore(save))
     refreshing = asyncio.create_task(tm.refresh())
     await entered.wait()
     reader = asyncio.create_task(tm.get_access_token())
