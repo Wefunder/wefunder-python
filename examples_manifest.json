@@ -2,7 +2,7 @@
   "manifestVersion": 1,
   "lang": "Python",
   "label": "wefunder",
-  "sdkVersion": "0.1.0b1",
+  "sdkVersion": "0.1.0b2",
   "apiVersion": "2025-01-15",
   "generatedBy": "scripts/build_examples_manifest.py",
   "samples": {
