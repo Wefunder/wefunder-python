@@ -17,10 +17,10 @@ Requires Python 3.11+.
 ## Install
 
 ```bash
-pip install --pre wefunder
+pip install wefunder
 ```
 
-`--pre` is needed while the SDK is in beta (PEP 440 pre-releases are not selected by default).
+The SDK follows semantic versioning from `1.0.0`: breaking changes only in a new major version, announced in the changelog.
 
 ## Authentication
 
