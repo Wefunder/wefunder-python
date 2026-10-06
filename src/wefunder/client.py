@@ -20,6 +20,14 @@ import httpx
 from ._generated.api.attribution_partners import get_attribution_me
 from ._generated.api.campaigns import list_campaigns
 from ._generated.api.explore import get_offering, list_offerings
+from ._generated.api.installations import (
+    create_installation,
+    create_installation_token,
+    get_installation,
+    list_eligible_install_targets,
+    list_installations,
+    revoke_installation,
+)
 from ._generated.api.intents import create_intent, get_intent, list_intents, preview_intent
 from ._generated.api.investments import get_investment, get_offering_stats, list_investments
 from ._generated.api.portfolio import get_portfolio, list_portfolio_positions
@@ -37,6 +45,8 @@ from ._generated.api.webhook_endpoints import (
     update_webhook_endpoint,
 )
 from ._generated.client import AuthenticatedClient
+from ._generated.models.create_installation_body import CreateInstallationBody
+from ._generated.models.create_installation_token_body import CreateInstallationTokenBody
 from ._generated.models.create_webhook_endpoint_body import CreateWebhookEndpointBody
 from ._generated.models.test_webhook_endpoint_body import TestWebhookEndpointBody
 from ._generated.models.update_webhook_endpoint_body import UpdateWebhookEndpointBody
@@ -234,6 +244,7 @@ class Wefunder(_Base):
         self.syndicates = _Syndicates(self)
         self.intents = _Intents(self)
         self.attribution = _Attribution(self)
+        self.installations = _Installations(self)
         self.webhook_endpoints = _WebhookEndpoints(self)
 
     @classmethod
@@ -451,6 +462,67 @@ class _Attribution(_Namespace):
         return _data_of(self._wf.call(get_attribution_me))
 
 
+def _already_installed_id(err: WefunderError) -> str | None:
+    """The existing install's id from a 409 ``already_installed`` envelope, else ``None``."""
+    if err.type != "already_installed" or not isinstance(err.details, Mapping):
+        return None
+    existing = err.details.get("installation")
+    return existing if isinstance(existing, str) and existing else None
+
+
+def _mint_body(scopes: list[str] | tuple[str, ...] | None) -> CreateInstallationTokenBody | Unset:
+    # No body = the install's ceiling; an explicit [] grants nothing, so only omit on None.
+    return UNSET if scopes is None else CreateInstallationTokenBody.from_dict({"scopes": list(scopes)})
+
+
+class _Installations(_Namespace):
+    """``/installations`` (``read:installations`` / ``write:installations``; write does not imply
+    read). An install lets your app act AS a company or syndicate: ``create`` and ``mint_token``
+    return the envelope whose ``token.access_token`` is a company-owned token (shown once, no
+    expiry, no refresh) — build a second client with it. Installing is also what makes a company
+    or syndicate an audience for your webhooks."""
+
+    def eligible_targets(self, target_type: str | None = None) -> list[Any]:
+        """Companies / syndicates the token's user may install your app on (empty for an investor)."""
+        query = {"target_type": target_type} if target_type else {}
+        return _data_of(self._wf.call(list_eligible_install_targets, **query)) or []
+
+    def list(self) -> Any:
+        """Every install of your app; the envelope (``meta.count``)."""
+        return self._wf.call(list_installations)
+
+    def get(self, installation_id: str) -> Any:
+        return _data_of(self._wf.call(get_installation, external_id=installation_id))
+
+    def create(self, body: Mapping[str, Any]) -> Any:
+        """Install on a target (``target_type``, ``target_id``, optional ``scopes``/``tier``). Returns the
+        envelope: ``data`` is the install, ``token.access_token`` the one-time token. If the app is
+        already installed there the API answers 409 ``already_installed`` with
+        ``details["installation"]`` = the existing id; see :meth:`install_or_mint_token`."""
+        return self._wf.call(create_installation, body=CreateInstallationBody.from_dict(dict(body)))
+
+    def mint_token(self, installation_id: str, scopes: list[str] | tuple[str, ...] | None = None) -> Any:
+        """A fresh company-owned token for an existing install. ``scopes`` narrows within the
+        install's ceiling; omit for the ceiling. An explicit ``[]`` grants nothing."""
+        return self._wf.call(create_installation_token, external_id=installation_id, body=_mint_body(scopes))
+
+    def install_or_mint_token(self, body: Mapping[str, Any]) -> Any:
+        """:meth:`create`, falling back to :meth:`mint_token` for the existing install on 409
+        ``already_installed``. The mint re-requests ``body["scopes"]`` so a retry never widens the
+        grant. Any other error (revoked install, missing scope) still raises."""
+        try:
+            return self.create(body)
+        except WefunderError as err:
+            existing_id = _already_installed_id(err)
+            if existing_id is None:
+                raise
+            return self.mint_token(existing_id, body.get("scopes"))
+
+    def revoke(self, installation_id: str) -> Any:
+        """Revoke an install: its tokens stop working at once. Returns the install, now ``revoked``."""
+        return _data_of(self._wf.call(revoke_installation, external_id=installation_id))
+
+
 class _WebhookEndpoints(_Namespace):
     """Endpoints belong to your application and are managed through the LIVE API
     (``write:webhooks``). The signing secret is returned only on create and rotate."""
@@ -492,7 +564,7 @@ class _WebhookEndpoints(_Namespace):
 class AsyncWefunder(_Base):
     """asyncio client. Same plumbing as :class:`Wefunder` (auth, recovery, retries, typed
     errors, ``raw``/``request``); namespaces cover users, offerings, investments, portfolio,
-    and webhook_endpoints — reach the rest through :meth:`call` / :attr:`raw`."""
+    installations, and webhook_endpoints — reach the rest through :meth:`call` / :attr:`raw`."""
 
     def __init__(
         self,
@@ -560,6 +632,7 @@ class AsyncWefunder(_Base):
         self.offerings = _AsyncOfferings(self)
         self.investments = _AsyncInvestments(self)
         self.portfolio = _AsyncPortfolio(self)
+        self.installations = _AsyncInstallations(self)
         self.webhook_endpoints = _AsyncWebhookEndpoints(self)
 
     @classmethod
@@ -696,6 +769,36 @@ class _AsyncPortfolio(_AsyncNamespace):
 
     async def get(self, **query: Any) -> Any:
         return _data_of(await self._wf.call(get_portfolio, **query))
+
+
+class _AsyncInstallations(_AsyncNamespace):
+    async def eligible_targets(self, target_type: str | None = None) -> list[Any]:
+        query = {"target_type": target_type} if target_type else {}
+        return _data_of(await self._wf.call(list_eligible_install_targets, **query)) or []
+
+    async def list(self) -> Any:
+        return await self._wf.call(list_installations)
+
+    async def get(self, installation_id: str) -> Any:
+        return _data_of(await self._wf.call(get_installation, external_id=installation_id))
+
+    async def create(self, body: Mapping[str, Any]) -> Any:
+        return await self._wf.call(create_installation, body=CreateInstallationBody.from_dict(dict(body)))
+
+    async def mint_token(self, installation_id: str, scopes: list[str] | tuple[str, ...] | None = None) -> Any:
+        return await self._wf.call(create_installation_token, external_id=installation_id, body=_mint_body(scopes))
+
+    async def install_or_mint_token(self, body: Mapping[str, Any]) -> Any:
+        try:
+            return await self.create(body)
+        except WefunderError as err:
+            existing_id = _already_installed_id(err)
+            if existing_id is None:
+                raise
+            return await self.mint_token(existing_id, body.get("scopes"))
+
+    async def revoke(self, installation_id: str) -> Any:
+        return _data_of(await self._wf.call(revoke_installation, external_id=installation_id))
 
 
 class _AsyncWebhookEndpoints(_AsyncNamespace):
