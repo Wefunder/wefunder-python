@@ -9,7 +9,7 @@ from wefunder import Wefunder
 
 def example(wf: Wefunder) -> Any:
     # region getInstallation
-    install = wf.installations.get("ins_9t2xExample")
+    install = wf.installations.get("inst_7hQExampleInstall01")
     print(install.attributes.status, install.attributes.scopes)
     # endregion
     return install
