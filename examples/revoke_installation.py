@@ -10,7 +10,7 @@ from wefunder import Wefunder
 
 def example(wf: Wefunder) -> Any:
     # region revokeInstallation
-    revoked = wf.installations.revoke("ins_9t2xExample")
+    revoked = wf.installations.revoke("inst_7hQExampleInstall01")
     print(revoked.attributes.status)  # "revoked"
     # endregion
     return revoked

@@ -151,7 +151,7 @@ API failures raise `WefunderError`:
 from wefunder import WefunderError
 
 try:
-    wf.syndicates.get("syn_example")
+    wf.syndicates.get("syn_aB3xQ9k2vF8mNp1zT5wY7Qc4")
 except WefunderError as err:
     print(err.status, err.type, err.message, err.request_id, err.remediation)
 ```
@@ -254,7 +254,7 @@ retries, and error handling:
 ```python
 from wefunder._generated.api.syndicate_members import list_syndicate_members
 
-members = wf.call(list_syndicate_members, syndicate_id="syn_example")
+members = wf.call(list_syndicate_members, syndicate_id="syn_aB3xQ9k2vF8mNp1zT5wY7Qc4")
 ```
 
 For a path the generated layer does not know yet, `wf.request(method, path, query=..., body=...,
