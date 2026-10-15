@@ -122,7 +122,8 @@ portfolio = wf.portfolio.get()
 ```
 
 Namespaces: `users`, `offerings`, `investments`, `portfolio`, `campaigns`, `syndicates`, `intents`,
-`installations`, `member_links`, `referral_codes`, and `webhook_endpoints`. `wf.installations` lets your app act as a
+`installations`, `member_links`, `referral_codes`, `join_sessions`, `investment_sessions`, and
+`webhook_endpoints`. `wf.installations` lets your app act as a
 company or syndicate: `eligible_targets()`, `create()`, `mint_token()`, `list()`, `get()`, `revoke()`,
 and `install_or_mint_token()`, which handles the API's 409 `already_installed` answer by minting a
 token for the existing install with the same scopes. Enum-typed query parameters accept plain strings, and
@@ -180,7 +181,7 @@ async with await AsyncWefunder.from_client_credentials(client_id=..., client_sec
 ```
 
 `AsyncWefunder` has the same plumbing (auth, recovery, retries, typed errors, `raw`, `request()`) and
-namespaces for `users`, `offerings`, `investments`, `portfolio`, `installations`, `member_links`, `referral_codes`, and `webhook_endpoints`. Reach every
+namespaces for `users`, `offerings`, `investments`, `portfolio`, `installations`, `member_links`, `referral_codes`, `join_sessions`, `investment_sessions`, and `webhook_endpoints`. Reach every
 other operation with `await wf.call(op, ...)` (see below).
 
 ## Webhooks

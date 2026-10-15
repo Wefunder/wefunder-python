@@ -35,6 +35,13 @@ from ._generated.api.member_links import (
     get_member_link,
     list_offering_member_links,
 )
+from ._generated.api.partner_invites_sessions import (
+    cancel_investment_session,
+    create_offering_investment_session,
+    get_investment_session,
+    list_investment_sessions,
+    list_offering_investment_sessions,
+)
 from ._generated.api.portfolio import get_portfolio, list_portfolio_positions
 from ._generated.api.referral_codes import (
     create_referral_code,
@@ -42,6 +49,11 @@ from ._generated.api.referral_codes import (
     get_referral_code_stats,
     list_referral_codes,
     update_referral_code,
+)
+from ._generated.api.syndicate_members import (
+    create_syndicate_join_session,
+    get_syndicate_join_session,
+    list_syndicate_join_sessions,
 )
 from ._generated.api.syndicate_portfolio import get_syndicate_portfolio, list_syndicate_portfolio_positions
 from ._generated.api.syndicates import get_syndicate, list_syndicates
@@ -59,8 +71,10 @@ from ._generated.api.webhook_endpoints import (
 from ._generated.client import AuthenticatedClient
 from ._generated.models.create_installation_body import CreateInstallationBody
 from ._generated.models.create_installation_token_body import CreateInstallationTokenBody
+from ._generated.models.create_offering_investment_session_body import CreateOfferingInvestmentSessionBody
 from ._generated.models.create_offering_member_link_body import CreateOfferingMemberLinkBody
 from ._generated.models.create_referral_code_body import CreateReferralCodeBody
+from ._generated.models.create_syndicate_join_session_body import CreateSyndicateJoinSessionBody
 from ._generated.models.create_webhook_endpoint_body import CreateWebhookEndpointBody
 from ._generated.models.test_webhook_endpoint_body import TestWebhookEndpointBody
 from ._generated.models.update_referral_code_body import UpdateReferralCodeBody
@@ -141,7 +155,12 @@ def _data_of(envelope: Any) -> Any:
     if isinstance(envelope, Mapping):
         return envelope.get("data")
     data = getattr(envelope, "data", UNSET)
-    return None if isinstance(data, Unset) else data
+    if isinstance(data, Unset):
+        # An operation the spec types as a bare object (join sessions today) parses into a model that
+        # keeps every key in ``additional_properties``; its ``data`` is a plain dict.
+        extra = getattr(envelope, "additional_properties", None)
+        return extra.get("data") if isinstance(extra, Mapping) else None
+    return data
 
 
 def _unwrap(response: Response[Any]) -> Any:
@@ -270,6 +289,8 @@ class Wefunder(_Base):
         self.installations = _Installations(self)
         self.member_links = _MemberLinks(self)
         self.referral_codes = _ReferralCodes(self)
+        self.join_sessions = _JoinSessions(self)
+        self.investment_sessions = _InvestmentSessions(self)
         self.webhook_endpoints = _WebhookEndpoints(self)
 
     @classmethod
@@ -481,6 +502,63 @@ class _Intents(_Namespace):
         return _data_of(self._wf.call(preview_intent, body=PreviewIntentBody.from_dict(dict(body))))
 
 
+class _JoinSessions(_Namespace):
+    """``/syndicates/{id}/join_sessions`` (``write:syndicate_members`` to mint, ``read:syndicates`` to
+    read; beta). Mint a hosted session for an email, send the person to ``attributes["url"]``, and
+    learn the outcome from :meth:`get` or the ``join_session.*`` webhooks. The spec publishes no
+    response schema for these yet, so sessions come back as plain dicts."""
+
+    def list(self, syndicate_id: str, **query: Any) -> Any:
+        return self._wf.call(list_syndicate_join_sessions, syndicate_id=syndicate_id, **query)
+
+    def all(self, syndicate_id: str, **query: Any) -> Iterator[Any]:
+        return paginate(lambda cursor: self.list(syndicate_id, **_with_cursor(query, cursor)))
+
+    def get(self, syndicate_id: str, session_id: str) -> Any:
+        return _data_of(self._wf.call(get_syndicate_join_session, syndicate_id=syndicate_id, id=session_id))
+
+    def create(self, syndicate_id: str, body: Mapping[str, Any]) -> Any:
+        """Mint a session for one person (``email`` required). Needs a manager's user token or the
+        syndicate's own."""
+        wrapped = CreateSyndicateJoinSessionBody.from_dict({"join_session": dict(body)})
+        return _data_of(self._wf.call(create_syndicate_join_session, syndicate_id=syndicate_id, body=wrapped))
+
+
+class _InvestmentSessions(_Namespace):
+    """``/offerings/{id}/investment_sessions`` and ``/investment_sessions`` (``read:investment_sessions``
+    / ``write:investment_sessions``; beta). A session puts a known investor straight into checkout
+    for one offering and tracks that one investment."""
+
+    def list(self, **query: Any) -> Any:
+        """Every session your app created, across offerings; the envelope."""
+        return self._wf.call(list_investment_sessions, **query)
+
+    def all(self, **query: Any) -> Iterator[Any]:
+        return paginate(lambda cursor: self.list(**_with_cursor(query, cursor)))
+
+    def list_for_offering(self, offering_id: str, **query: Any) -> Any:
+        return self._wf.call(list_offering_investment_sessions, id=offering_id, **query)
+
+    def all_for_offering(self, offering_id: str, **query: Any) -> Iterator[Any]:
+        return paginate(lambda cursor: self.list_for_offering(offering_id, **_with_cursor(query, cursor)))
+
+    def get(self, session_id: str) -> Any:
+        return _data_of(self._wf.call(get_investment_session, id=session_id))
+
+    def create(self, offering_id: str, body: Mapping[str, Any], *, idempotency_key: str | None = None) -> Any:
+        """Create a session on an offering; ``idempotency_key`` makes a retry safe."""
+        kwargs: dict[str, Any] = {
+            "body": CreateOfferingInvestmentSessionBody.from_dict({"investment_session": dict(body)})
+        }
+        if idempotency_key:
+            kwargs["idempotency_key"] = idempotency_key
+        return _data_of(self._wf.call(create_offering_investment_session, id=offering_id, **kwargs))
+
+    def cancel(self, session_id: str) -> Any:
+        """Cancel a session the recipient has not completed."""
+        return _data_of(self._wf.call(cancel_investment_session, id=session_id))
+
+
 class _MemberLinks(_Namespace):
     """``/offerings/{id}/member_links`` and ``/member_links/{id}`` (``read:invite_links`` /
     ``write:invite_links``): your app's per-person links that send a member to one deal page and
@@ -644,7 +722,8 @@ class _WebhookEndpoints(_Namespace):
 class AsyncWefunder(_Base):
     """asyncio client. Same plumbing as :class:`Wefunder` (auth, recovery, retries, typed
     errors, ``raw``/``request``); namespaces cover users, offerings, investments, portfolio,
-    installations, member_links, referral_codes, and webhook_endpoints — reach the rest through
+    installations, member_links, referral_codes, join_sessions, investment_sessions, and
+    webhook_endpoints — reach the rest through
     :meth:`call` / :attr:`raw`."""
 
     def __init__(
@@ -716,6 +795,8 @@ class AsyncWefunder(_Base):
         self.installations = _AsyncInstallations(self)
         self.member_links = _AsyncMemberLinks(self)
         self.referral_codes = _AsyncReferralCodes(self)
+        self.join_sessions = _AsyncJoinSessions(self)
+        self.investment_sessions = _AsyncInvestmentSessions(self)
         self.webhook_endpoints = _AsyncWebhookEndpoints(self)
 
     @classmethod
@@ -882,6 +963,49 @@ class _AsyncInstallations(_AsyncNamespace):
 
     async def revoke(self, installation_id: str) -> Any:
         return _data_of(await self._wf.call(revoke_installation, external_id=installation_id))
+
+
+class _AsyncJoinSessions(_AsyncNamespace):
+    async def list(self, syndicate_id: str, **query: Any) -> Any:
+        return await self._wf.call(list_syndicate_join_sessions, syndicate_id=syndicate_id, **query)
+
+    def all(self, syndicate_id: str, **query: Any) -> AsyncIterator[Any]:
+        return self._pages(list_syndicate_join_sessions, syndicate_id=syndicate_id, **query)
+
+    async def get(self, syndicate_id: str, session_id: str) -> Any:
+        return _data_of(await self._wf.call(get_syndicate_join_session, syndicate_id=syndicate_id, id=session_id))
+
+    async def create(self, syndicate_id: str, body: Mapping[str, Any]) -> Any:
+        wrapped = CreateSyndicateJoinSessionBody.from_dict({"join_session": dict(body)})
+        return _data_of(await self._wf.call(create_syndicate_join_session, syndicate_id=syndicate_id, body=wrapped))
+
+
+class _AsyncInvestmentSessions(_AsyncNamespace):
+    async def list(self, **query: Any) -> Any:
+        return await self._wf.call(list_investment_sessions, **query)
+
+    def all(self, **query: Any) -> AsyncIterator[Any]:
+        return self._pages(list_investment_sessions, **query)
+
+    async def list_for_offering(self, offering_id: str, **query: Any) -> Any:
+        return await self._wf.call(list_offering_investment_sessions, id=offering_id, **query)
+
+    def all_for_offering(self, offering_id: str, **query: Any) -> AsyncIterator[Any]:
+        return self._pages(list_offering_investment_sessions, id=offering_id, **query)
+
+    async def get(self, session_id: str) -> Any:
+        return _data_of(await self._wf.call(get_investment_session, id=session_id))
+
+    async def create(self, offering_id: str, body: Mapping[str, Any], *, idempotency_key: str | None = None) -> Any:
+        kwargs: dict[str, Any] = {
+            "body": CreateOfferingInvestmentSessionBody.from_dict({"investment_session": dict(body)})
+        }
+        if idempotency_key:
+            kwargs["idempotency_key"] = idempotency_key
+        return _data_of(await self._wf.call(create_offering_investment_session, id=offering_id, **kwargs))
+
+    async def cancel(self, session_id: str) -> Any:
+        return _data_of(await self._wf.call(cancel_investment_session, id=session_id))
 
 
 class _AsyncMemberLinks(_AsyncNamespace):

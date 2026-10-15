@@ -98,9 +98,15 @@ from .create_installation_token_body import CreateInstallationTokenBody
 from .create_intent_body import CreateIntentBody
 from .create_intent_body_action_name import CreateIntentBodyActionName
 from .create_intent_body_params import CreateIntentBodyParams
+from .create_offering_investment_session_body import CreateOfferingInvestmentSessionBody
 from .create_offering_member_link_body import CreateOfferingMemberLinkBody
 from .create_referral_code_body import CreateReferralCodeBody
 from .create_referral_code_body_metadata import CreateReferralCodeBodyMetadata
+from .create_syndicate_join_session_body import CreateSyndicateJoinSessionBody
+from .create_syndicate_join_session_body_join_session import CreateSyndicateJoinSessionBodyJoinSession
+from .create_syndicate_join_session_body_join_session_display import CreateSyndicateJoinSessionBodyJoinSessionDisplay
+from .create_syndicate_join_session_body_join_session_mode import CreateSyndicateJoinSessionBodyJoinSessionMode
+from .create_syndicate_join_session_response_201 import CreateSyndicateJoinSessionResponse201
 from .create_webhook_endpoint_body import CreateWebhookEndpointBody
 from .create_webhook_endpoint_body_events_item import CreateWebhookEndpointBodyEventsItem
 from .create_webhook_endpoint_body_mode import CreateWebhookEndpointBodyMode
@@ -147,6 +153,7 @@ from .fund_security_type import FundSecurityType
 from .get_company_disclosures_sections_item import GetCompanyDisclosuresSectionsItem
 from .get_company_pitch_sections_item import GetCompanyPitchSectionsItem
 from .get_portfolio_status import GetPortfolioStatus
+from .get_syndicate_join_session_response_200 import GetSyndicateJoinSessionResponse200
 from .get_syndicate_portfolio_status import GetSyndicatePortfolioStatus
 from .installation import Installation
 from .installation_attributes import InstallationAttributes
@@ -233,7 +240,9 @@ from .invite_syndicate_member_body_syndicate_permission import InviteSyndicateMe
 from .list_company_questions_sort import ListCompanyQuestionsSort
 from .list_eligible_install_targets_target_type import ListEligibleInstallTargetsTargetType
 from .list_intents_status import ListIntentsStatus
+from .list_investment_sessions_status import ListInvestmentSessionsStatus
 from .list_investments_status import ListInvestmentsStatus
+from .list_offering_investment_sessions_status import ListOfferingInvestmentSessionsStatus
 from .list_offerings_business_model_item import ListOfferingsBusinessModelItem
 from .list_offerings_exemption import ListOfferingsExemption
 from .list_offerings_industry_item import ListOfferingsIndustryItem
@@ -241,6 +250,7 @@ from .list_offerings_security import ListOfferingsSecurity
 from .list_offerings_sort import ListOfferingsSort
 from .list_offerings_status import ListOfferingsStatus
 from .list_portfolio_positions_status import ListPortfolioPositionsStatus
+from .list_syndicate_join_sessions_response_200 import ListSyndicateJoinSessionsResponse200
 from .list_syndicate_members_accredited import ListSyndicateMembersAccredited
 from .list_syndicate_members_has_invested import ListSyndicateMembersHasInvested
 from .list_syndicate_members_permission import ListSyndicateMembersPermission
@@ -560,9 +570,15 @@ __all__ = (
     "CreateIntentBody",
     "CreateIntentBodyActionName",
     "CreateIntentBodyParams",
+    "CreateOfferingInvestmentSessionBody",
     "CreateOfferingMemberLinkBody",
     "CreateReferralCodeBody",
     "CreateReferralCodeBodyMetadata",
+    "CreateSyndicateJoinSessionBody",
+    "CreateSyndicateJoinSessionBodyJoinSession",
+    "CreateSyndicateJoinSessionBodyJoinSessionDisplay",
+    "CreateSyndicateJoinSessionBodyJoinSessionMode",
+    "CreateSyndicateJoinSessionResponse201",
     "CreateWebhookEndpointBody",
     "CreateWebhookEndpointBodyEventsItem",
     "CreateWebhookEndpointBodyMode",
@@ -609,6 +625,7 @@ __all__ = (
     "GetCompanyDisclosuresSectionsItem",
     "GetCompanyPitchSectionsItem",
     "GetPortfolioStatus",
+    "GetSyndicateJoinSessionResponse200",
     "GetSyndicatePortfolioStatus",
     "Installation",
     "InstallationAttributes",
@@ -691,7 +708,9 @@ __all__ = (
     "ListCompanyQuestionsSort",
     "ListEligibleInstallTargetsTargetType",
     "ListIntentsStatus",
+    "ListInvestmentSessionsStatus",
     "ListInvestmentsStatus",
+    "ListOfferingInvestmentSessionsStatus",
     "ListOfferingsBusinessModelItem",
     "ListOfferingsExemption",
     "ListOfferingsIndustryItem",
@@ -699,6 +718,7 @@ __all__ = (
     "ListOfferingsSort",
     "ListOfferingsStatus",
     "ListPortfolioPositionsStatus",
+    "ListSyndicateJoinSessionsResponse200",
     "ListSyndicateMembersAccredited",
     "ListSyndicateMembersHasInvested",
     "ListSyndicateMembersPermission",
