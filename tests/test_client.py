@@ -33,7 +33,7 @@ def test_default_host_version_header_and_bearer() -> None:
     me = wf.users.me()
     req = rec.requests[0]
     assert str(req.url) == "https://api.wefunder.com/users/me"
-    assert req.headers[API_VERSION_HEADER] == "2025-01-15"
+    assert req.headers[API_VERSION_HEADER] == "2026-10-15"
     assert req.headers["authorization"] == "Bearer at_test_x"
     assert wf.mode == "test"
     assert me.id == "usr_1" and me.attributes.name == "A"

@@ -106,8 +106,14 @@ def sync_detailed(
     no details tab on the site and answers `404` with `error.type: no_disclosures` — distinct
     from an unknown or hidden company. A section the company hides on the site is `null`.
 
-    Money is USD as decimal strings; ratios are percentages as decimal strings. Everything here
-    is the issuer's own disclosure, served as filed, not a Wefunder assessment.
+    Money is decimal strings, never USD by assumption: the round's own figures (use of funds,
+    prior offerings, notes, debts, related parties) are in `currency` — `EUR` for an ECSP round —
+    while the Form C financial statements, the ratio derived from them, and the current-position
+    figures (which repeat it as `current_position.currency`) are in `financials_currency`, the
+    currency the issuer declared for its statements (it can differ from
+    the round's: DKK, RON, GBP, or USD statements behind a EUR round). Ratios are percentages as
+    decimal strings. Everything here is the issuer's own disclosure, served as filed, not a
+    Wefunder assessment.
 
     Args:
         id (str):
@@ -154,8 +160,14 @@ def sync(
     no details tab on the site and answers `404` with `error.type: no_disclosures` — distinct
     from an unknown or hidden company. A section the company hides on the site is `null`.
 
-    Money is USD as decimal strings; ratios are percentages as decimal strings. Everything here
-    is the issuer's own disclosure, served as filed, not a Wefunder assessment.
+    Money is decimal strings, never USD by assumption: the round's own figures (use of funds,
+    prior offerings, notes, debts, related parties) are in `currency` — `EUR` for an ECSP round —
+    while the Form C financial statements, the ratio derived from them, and the current-position
+    figures (which repeat it as `current_position.currency`) are in `financials_currency`, the
+    currency the issuer declared for its statements (it can differ from
+    the round's: DKK, RON, GBP, or USD statements behind a EUR round). Ratios are percentages as
+    decimal strings. Everything here is the issuer's own disclosure, served as filed, not a
+    Wefunder assessment.
 
     Args:
         id (str):
@@ -197,8 +209,14 @@ async def asyncio_detailed(
     no details tab on the site and answers `404` with `error.type: no_disclosures` — distinct
     from an unknown or hidden company. A section the company hides on the site is `null`.
 
-    Money is USD as decimal strings; ratios are percentages as decimal strings. Everything here
-    is the issuer's own disclosure, served as filed, not a Wefunder assessment.
+    Money is decimal strings, never USD by assumption: the round's own figures (use of funds,
+    prior offerings, notes, debts, related parties) are in `currency` — `EUR` for an ECSP round —
+    while the Form C financial statements, the ratio derived from them, and the current-position
+    figures (which repeat it as `current_position.currency`) are in `financials_currency`, the
+    currency the issuer declared for its statements (it can differ from
+    the round's: DKK, RON, GBP, or USD statements behind a EUR round). Ratios are percentages as
+    decimal strings. Everything here is the issuer's own disclosure, served as filed, not a
+    Wefunder assessment.
 
     Args:
         id (str):
@@ -243,8 +261,14 @@ async def asyncio(
     no details tab on the site and answers `404` with `error.type: no_disclosures` — distinct
     from an unknown or hidden company. A section the company hides on the site is `null`.
 
-    Money is USD as decimal strings; ratios are percentages as decimal strings. Everything here
-    is the issuer's own disclosure, served as filed, not a Wefunder assessment.
+    Money is decimal strings, never USD by assumption: the round's own figures (use of funds,
+    prior offerings, notes, debts, related parties) are in `currency` — `EUR` for an ECSP round —
+    while the Form C financial statements, the ratio derived from them, and the current-position
+    figures (which repeat it as `current_position.currency`) are in `financials_currency`, the
+    currency the issuer declared for its statements (it can differ from
+    the round's: DKK, RON, GBP, or USD statements behind a EUR round). Ratios are percentages as
+    decimal strings. Everything here is the issuer's own disclosure, served as filed, not a
+    Wefunder assessment.
 
     Args:
         id (str):

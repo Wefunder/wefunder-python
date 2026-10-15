@@ -21,11 +21,19 @@ class CreateWebhookEndpointBody:
             https://yourapp.com/webhooks/wefunder.
         events (list[CreateWebhookEndpointBodyEventsItem]): Event names to subscribe to (from the event catalog). At
             least one. Example: ['offering.opened', 'investment.executed'].
+        installation (str | Unset): Bind the endpoint to one active installation of your app (`inst_…`) instead of
+            creating an app-wide endpoint. An unknown or revoked id is 404. An installation token
+            may omit this (it always binds to its own installation); a user token may bind only to
+            an installation its holder has a role on at or above the installation's granted tier.
+            Bound endpoints are live-only, capped at 5 per installation, idempotent on
+            (installation, url, mode), and their `url` is returned only in this response.
+             Example: inst_7hQExampleInstall01.
         mode (CreateWebhookEndpointBodyMode | Unset):  Default: CreateWebhookEndpointBodyMode.LIVE.
     """
 
     url: str
     events: list[CreateWebhookEndpointBodyEventsItem]
+    installation: str | Unset = UNSET
     mode: CreateWebhookEndpointBodyMode | Unset = CreateWebhookEndpointBodyMode.LIVE
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
@@ -36,6 +44,8 @@ class CreateWebhookEndpointBody:
         for events_item_data in self.events:
             events_item = events_item_data.value
             events.append(events_item)
+
+        installation = self.installation
 
         mode: str | Unset = UNSET
         if not isinstance(self.mode, Unset):
@@ -49,6 +59,8 @@ class CreateWebhookEndpointBody:
                 "events": events,
             }
         )
+        if installation is not UNSET:
+            field_dict["installation"] = installation
         if mode is not UNSET:
             field_dict["mode"] = mode
 
@@ -66,6 +78,8 @@ class CreateWebhookEndpointBody:
 
             events.append(events_item)
 
+        installation = d.pop("installation", UNSET)
+
         _mode = d.pop("mode", UNSET)
         mode: CreateWebhookEndpointBodyMode | Unset
         if isinstance(_mode, Unset):
@@ -76,6 +90,7 @@ class CreateWebhookEndpointBody:
         create_webhook_endpoint_body = cls(
             url=url,
             events=events,
+            installation=installation,
             mode=mode,
         )
 

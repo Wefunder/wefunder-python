@@ -79,7 +79,26 @@ def sync_detailed(
      The authenticated user's watchlist — the companies they follow on wefunder.com (the same
     rows the site's Follow button writes), newest first. Each entry is in the search-result
     shape (`co_` id, name, tagline, URL, logo, `raising`, `profile_available`) plus
-    `followed_at`. The list owner sees every company they follow.
+    `followed_at`.
+
+    Accepts `read:profile` or `write:follows`. Both include `read:profile:follows`, the
+    follows list on its own, which is what this endpoint checks. A token holding only
+    `write:follows` can list its follows here but cannot read the profile (`GET /users/me`).
+
+    Which companies are listed depends on the grant, the same way the follow list on a
+    user's public Wefunder profile does:
+
+    - **`write:follows`, `read:mcp`** (or the retired `read:follows`): the full list, every
+      company the user follows. An app that follows and unfollows for the user, or the user's
+      own AI assistant acting as them, sees what the user sees.
+    - **`read:profile` or `write:profile` without one of those**: the public list. A company that has
+    asked not to be promoted (`promotion_opt_in` false
+      on `GET /companies/{id}`) is left out, exactly as it is left out of the
+      profile's follow list for every visitor but the user. This holds for every user,
+      admins included.
+
+    The filter is applied before paging, so it never shortens a page, and `page_count` counts
+    the rows returned.
 
     Args:
         cursor (str | Unset):
@@ -116,7 +135,26 @@ def sync(
      The authenticated user's watchlist — the companies they follow on wefunder.com (the same
     rows the site's Follow button writes), newest first. Each entry is in the search-result
     shape (`co_` id, name, tagline, URL, logo, `raising`, `profile_available`) plus
-    `followed_at`. The list owner sees every company they follow.
+    `followed_at`.
+
+    Accepts `read:profile` or `write:follows`. Both include `read:profile:follows`, the
+    follows list on its own, which is what this endpoint checks. A token holding only
+    `write:follows` can list its follows here but cannot read the profile (`GET /users/me`).
+
+    Which companies are listed depends on the grant, the same way the follow list on a
+    user's public Wefunder profile does:
+
+    - **`write:follows`, `read:mcp`** (or the retired `read:follows`): the full list, every
+      company the user follows. An app that follows and unfollows for the user, or the user's
+      own AI assistant acting as them, sees what the user sees.
+    - **`read:profile` or `write:profile` without one of those**: the public list. A company that has
+    asked not to be promoted (`promotion_opt_in` false
+      on `GET /companies/{id}`) is left out, exactly as it is left out of the
+      profile's follow list for every visitor but the user. This holds for every user,
+      admins included.
+
+    The filter is applied before paging, so it never shortens a page, and `page_count` counts
+    the rows returned.
 
     Args:
         cursor (str | Unset):
@@ -148,7 +186,26 @@ async def asyncio_detailed(
      The authenticated user's watchlist — the companies they follow on wefunder.com (the same
     rows the site's Follow button writes), newest first. Each entry is in the search-result
     shape (`co_` id, name, tagline, URL, logo, `raising`, `profile_available`) plus
-    `followed_at`. The list owner sees every company they follow.
+    `followed_at`.
+
+    Accepts `read:profile` or `write:follows`. Both include `read:profile:follows`, the
+    follows list on its own, which is what this endpoint checks. A token holding only
+    `write:follows` can list its follows here but cannot read the profile (`GET /users/me`).
+
+    Which companies are listed depends on the grant, the same way the follow list on a
+    user's public Wefunder profile does:
+
+    - **`write:follows`, `read:mcp`** (or the retired `read:follows`): the full list, every
+      company the user follows. An app that follows and unfollows for the user, or the user's
+      own AI assistant acting as them, sees what the user sees.
+    - **`read:profile` or `write:profile` without one of those**: the public list. A company that has
+    asked not to be promoted (`promotion_opt_in` false
+      on `GET /companies/{id}`) is left out, exactly as it is left out of the
+      profile's follow list for every visitor but the user. This holds for every user,
+      admins included.
+
+    The filter is applied before paging, so it never shortens a page, and `page_count` counts
+    the rows returned.
 
     Args:
         cursor (str | Unset):
@@ -183,7 +240,26 @@ async def asyncio(
      The authenticated user's watchlist — the companies they follow on wefunder.com (the same
     rows the site's Follow button writes), newest first. Each entry is in the search-result
     shape (`co_` id, name, tagline, URL, logo, `raising`, `profile_available`) plus
-    `followed_at`. The list owner sees every company they follow.
+    `followed_at`.
+
+    Accepts `read:profile` or `write:follows`. Both include `read:profile:follows`, the
+    follows list on its own, which is what this endpoint checks. A token holding only
+    `write:follows` can list its follows here but cannot read the profile (`GET /users/me`).
+
+    Which companies are listed depends on the grant, the same way the follow list on a
+    user's public Wefunder profile does:
+
+    - **`write:follows`, `read:mcp`** (or the retired `read:follows`): the full list, every
+      company the user follows. An app that follows and unfollows for the user, or the user's
+      own AI assistant acting as them, sees what the user sees.
+    - **`read:profile` or `write:profile` without one of those**: the public list. A company that has
+    asked not to be promoted (`promotion_opt_in` false
+      on `GET /companies/{id}`) is left out, exactly as it is left out of the
+      profile's follow list for every visitor but the user. This holds for every user,
+      admins included.
+
+    The filter is applied before paging, so it never shortens a page, and `page_count` counts
+    the rows returned.
 
     Args:
         cursor (str | Unset):

@@ -83,7 +83,10 @@ def sync_detailed(
 
      Returns the syndicate's **live** deals (open, oversubscribed, or closing) with status,
     terms, and metrics. Closed and upcoming rounds are not listed; `statistics.total_deals`
-    counts all linked rounds.
+    counts the same visible deal set in every state. The visible set is every round of the
+    syndicate's directory companies except invite-only companies' rounds and
+    testing-the-waters rounds; a syndicate with no directory companies falls back to its
+    explicitly linked rounds, excluding invite-only companies' rounds only.
 
     Args:
         syndicate_id (str):
@@ -122,7 +125,10 @@ def sync(
 
      Returns the syndicate's **live** deals (open, oversubscribed, or closing) with status,
     terms, and metrics. Closed and upcoming rounds are not listed; `statistics.total_deals`
-    counts all linked rounds.
+    counts the same visible deal set in every state. The visible set is every round of the
+    syndicate's directory companies except invite-only companies' rounds and
+    testing-the-waters rounds; a syndicate with no directory companies falls back to its
+    explicitly linked rounds, excluding invite-only companies' rounds only.
 
     Args:
         syndicate_id (str):
@@ -156,7 +162,10 @@ async def asyncio_detailed(
 
      Returns the syndicate's **live** deals (open, oversubscribed, or closing) with status,
     terms, and metrics. Closed and upcoming rounds are not listed; `statistics.total_deals`
-    counts all linked rounds.
+    counts the same visible deal set in every state. The visible set is every round of the
+    syndicate's directory companies except invite-only companies' rounds and
+    testing-the-waters rounds; a syndicate with no directory companies falls back to its
+    explicitly linked rounds, excluding invite-only companies' rounds only.
 
     Args:
         syndicate_id (str):
@@ -193,7 +202,10 @@ async def asyncio(
 
      Returns the syndicate's **live** deals (open, oversubscribed, or closing) with status,
     terms, and metrics. Closed and upcoming rounds are not listed; `statistics.total_deals`
-    counts all linked rounds.
+    counts the same visible deal set in every state. The visible set is every round of the
+    syndicate's directory companies except invite-only companies' rounds and
+    testing-the-waters rounds; a syndicate with no directory companies falls back to its
+    explicitly linked rounds, excluding invite-only companies' rounds only.
 
     Args:
         syndicate_id (str):

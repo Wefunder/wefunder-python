@@ -26,7 +26,7 @@ class AuditEventAttributes:
         actor_type (str | Unset): Type of actor (e.g. user, agent, system) Example: example.
         actor_name (None | str | Unset):  Example: ChatGPT via Wefunder MCP.
         action (str | Unset):  Example: syndicates.member.invited.
-        resource_type (str | Unset):  Example: Club.
+        resource_type (None | str | Unset):  Example: Club.
         resource_id (int | None | str | Unset): For Club resources, the syndicate's id (`syn_...`). For every other
             `resource_type` (contract change plans, tranches, applications, ...) the
             resource's integer id, since those models have no external id yet.
@@ -48,7 +48,7 @@ class AuditEventAttributes:
     actor_type: str | Unset = UNSET
     actor_name: None | str | Unset = UNSET
     action: str | Unset = UNSET
-    resource_type: str | Unset = UNSET
+    resource_type: None | str | Unset = UNSET
     resource_id: int | None | str | Unset = UNSET
     resource_label: None | str | Unset = UNSET
     old_values: AuditEventAttributesOldValuesType0 | None | Unset = UNSET
@@ -83,7 +83,11 @@ class AuditEventAttributes:
 
         action = self.action
 
-        resource_type = self.resource_type
+        resource_type: None | str | Unset
+        if isinstance(self.resource_type, Unset):
+            resource_type = UNSET
+        else:
+            resource_type = self.resource_type
 
         resource_id: int | None | str | Unset
         if isinstance(self.resource_id, Unset):
@@ -214,7 +218,14 @@ class AuditEventAttributes:
 
         action = d.pop("action", UNSET)
 
-        resource_type = d.pop("resource_type", UNSET)
+        def _parse_resource_type(data: object) -> None | str | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            return cast(None | str | Unset, data)
+
+        resource_type = _parse_resource_type(d.pop("resource_type", UNSET))
 
         def _parse_resource_id(data: object) -> int | None | str | Unset:
             if data is None:

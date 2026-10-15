@@ -32,8 +32,10 @@ class PortfolioSecurity:
                 below).
                 May be null on legacy offerings — fall back to the position-level `security`.
             early_bird (bool | Unset):
-            terms (PortfolioSecurityTerms | Unset): The offering's issue terms. Fields are null when the term does not apply
-                to the security type.
+            terms (PortfolioSecurityTerms | Unset): The offering's issue terms. A field is null when the term does not apply
+                to the security type, and also when the security has none: an uncapped SAFE or note has a null `note_cap_cents`
+                (with `uncapped: true`), and a security with no discount, including one recorded as zero, has a null
+                `note_discount`.
             cost_basis_cents (int | Unset):
             current_value_cents (int | Unset):
             unrealized_gain_cents (int | Unset):

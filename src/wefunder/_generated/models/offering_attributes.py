@@ -64,6 +64,12 @@ class OfferingAttributes:
             investments. Use "reserve"/"reservation" copy for these, "invest"/"investment" otherwise.
              Example: False.
         funding_target (None | str | Unset): Funding target in USD, as a decimal string. Example: 1000000.
+        max_funding_target (None | str | Unset): The most this round may raise, in USD as a decimal string (the same
+            denomination as
+            `funding_target`). For a Reg CF round, the maximum offering amount on its Form C (the
+            largest funding tier); otherwise the maximum the company set for the round. Null when
+            neither exists. Raising past `funding_target` up to this amount is normal.
+             Example: 1235000.
         min_investment (None | str | Unset): Minimum investment in USD, as a decimal string. Example: 100.
         amount_raised (None | str | Unset): Amount raised so far **by this offering** in USD, as a decimal string
             (hellbanned
@@ -74,8 +80,22 @@ class OfferingAttributes:
             Example: 1203.
         started_at (datetime.datetime | None | Unset):  Example: 2025-03-01T12:00:00Z.
         closes_at (datetime.datetime | None | Unset): When an open round is scheduled to stop accepting investments.
-            Null when no date is set or the round is not open. Example: 2025-04-30T03:59:59Z.
-        closed_at (datetime.datetime | None | Unset):  Example: 2025-03-01T12:00:00Z.
+            Null when no date is set or the round is not open. A round can remain open past this date until it is actually
+            closed, so use `status`, not this date against the clock, to decide whether it accepts investments. Example:
+            2025-04-30T03:59:59Z.
+        closed_at (datetime.datetime | None | Unset): When the round finished raising. Null while the round is upcoming
+            or open (the scheduled close is `closes_at`); set only once `status` is `closed`. Example: 2025-03-01T12:00:00Z.
+        form_c_url (None | str | Unset): The round's latest accepted Form C (or Form C/A amendment) on SEC EDGAR, a
+            public sec.gov
+            URL. Reg CF rounds only; null until the Form C is filed and for every other exemption.
+            For the round a company page shows, the same filing is `filing.sec_filing_url` in
+            `GET /companies/{id}/disclosures`.
+             Example: https://www.sec.gov/Archives/edgar/data/1834121/000167025425000123/0001670254-25-000123-index.htm.
+        spv_legal_name (None | str | Unset): The legal name of the Wefunder SPV (a series LLC that co-issues the round)
+            that investors
+            hold through, e.g. "WF Acme 2025, a series of Wefunder SPV, LLC". Null when investors hold
+            the security directly.
+             Example: WF ZeroBorder 2025, a series of Wefunder SPV, LLC.
         publicly_visible (bool | Unset): **Logged-in view only** (`read:explore`). `false` when a logged-out visitor
             could
             not see this offering — it is in the response only because of who the authorizing
@@ -112,12 +132,15 @@ class OfferingAttributes:
     status: OfferingAttributesStatus | Unset = UNSET
     testing_the_waters: bool | Unset = UNSET
     funding_target: None | str | Unset = UNSET
+    max_funding_target: None | str | Unset = UNSET
     min_investment: None | str | Unset = UNSET
     amount_raised: None | str | Unset = UNSET
     investor_count: int | None | Unset = UNSET
     started_at: datetime.datetime | None | Unset = UNSET
     closes_at: datetime.datetime | None | Unset = UNSET
     closed_at: datetime.datetime | None | Unset = UNSET
+    form_c_url: None | str | Unset = UNSET
+    spv_legal_name: None | str | Unset = UNSET
     publicly_visible: bool | Unset = UNSET
     invested: bool | Unset = UNSET
     followed: bool | Unset = UNSET
@@ -211,6 +234,12 @@ class OfferingAttributes:
         else:
             funding_target = self.funding_target
 
+        max_funding_target: None | str | Unset
+        if isinstance(self.max_funding_target, Unset):
+            max_funding_target = UNSET
+        else:
+            max_funding_target = self.max_funding_target
+
         min_investment: None | str | Unset
         if isinstance(self.min_investment, Unset):
             min_investment = UNSET
@@ -253,6 +282,18 @@ class OfferingAttributes:
         else:
             closed_at = self.closed_at
 
+        form_c_url: None | str | Unset
+        if isinstance(self.form_c_url, Unset):
+            form_c_url = UNSET
+        else:
+            form_c_url = self.form_c_url
+
+        spv_legal_name: None | str | Unset
+        if isinstance(self.spv_legal_name, Unset):
+            spv_legal_name = UNSET
+        else:
+            spv_legal_name = self.spv_legal_name
+
         publicly_visible = self.publicly_visible
 
         invested = self.invested
@@ -288,6 +329,8 @@ class OfferingAttributes:
             field_dict["testing_the_waters"] = testing_the_waters
         if funding_target is not UNSET:
             field_dict["funding_target"] = funding_target
+        if max_funding_target is not UNSET:
+            field_dict["max_funding_target"] = max_funding_target
         if min_investment is not UNSET:
             field_dict["min_investment"] = min_investment
         if amount_raised is not UNSET:
@@ -300,6 +343,10 @@ class OfferingAttributes:
             field_dict["closes_at"] = closes_at
         if closed_at is not UNSET:
             field_dict["closed_at"] = closed_at
+        if form_c_url is not UNSET:
+            field_dict["form_c_url"] = form_c_url
+        if spv_legal_name is not UNSET:
+            field_dict["spv_legal_name"] = spv_legal_name
         if publicly_visible is not UNSET:
             field_dict["publicly_visible"] = publicly_visible
         if invested is not UNSET:
@@ -504,6 +551,15 @@ class OfferingAttributes:
 
         funding_target = _parse_funding_target(d.pop("funding_target", UNSET))
 
+        def _parse_max_funding_target(data: object) -> None | str | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            return cast(None | str | Unset, data)
+
+        max_funding_target = _parse_max_funding_target(d.pop("max_funding_target", UNSET))
+
         def _parse_min_investment(data: object) -> None | str | Unset:
             if data is None:
                 return data
@@ -582,6 +638,24 @@ class OfferingAttributes:
 
         closed_at = _parse_closed_at(d.pop("closed_at", UNSET))
 
+        def _parse_form_c_url(data: object) -> None | str | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            return cast(None | str | Unset, data)
+
+        form_c_url = _parse_form_c_url(d.pop("form_c_url", UNSET))
+
+        def _parse_spv_legal_name(data: object) -> None | str | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            return cast(None | str | Unset, data)
+
+        spv_legal_name = _parse_spv_legal_name(d.pop("spv_legal_name", UNSET))
+
         publicly_visible = d.pop("publicly_visible", UNSET)
 
         invested = d.pop("invested", UNSET)
@@ -602,12 +676,15 @@ class OfferingAttributes:
             status=status,
             testing_the_waters=testing_the_waters,
             funding_target=funding_target,
+            max_funding_target=max_funding_target,
             min_investment=min_investment,
             amount_raised=amount_raised,
             investor_count=investor_count,
             started_at=started_at,
             closes_at=closes_at,
             closed_at=closed_at,
+            form_c_url=form_c_url,
+            spv_legal_name=spv_legal_name,
             publicly_visible=publicly_visible,
             invested=invested,
             followed=followed,

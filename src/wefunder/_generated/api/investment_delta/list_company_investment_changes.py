@@ -91,9 +91,16 @@ def sync_detailed(
     cursor: str | Unset = UNSET,
     per_page: int | Unset = 25,
 ) -> Response[Any | Error | InvestmentChangeListEnvelope]:
-    """Bootstrap or page investment changes for a company
+    """Legacy alias: bootstrap or page investment changes for a company
 
-     The Investment Delta API: keep a copy of a company's investment records in sync by
+     **Compatibility alias.** This path keeps working unchanged for partners already on it,
+    but new integrations should use [List or sync investments](/api-reference/list-investments)
+    (`GET /investments?company_id=…`): same records, interchangeable cursors. The
+    [migration notes](/partner-api/investments/changes#migrating-from-
+    companiescompany_idinvestmentschanges)
+    list the differences.
+
+    The Investment Delta API: keep a copy of a company's investment records in sync by
     polling. Call without `cursor` to **bootstrap** (list every current record for the
     company); every response carries `meta.next_cursor`; call again with that cursor to
     receive only the records whose published state changed since. Records are the same
@@ -150,9 +157,16 @@ def sync(
     cursor: str | Unset = UNSET,
     per_page: int | Unset = 25,
 ) -> Any | Error | InvestmentChangeListEnvelope | None:
-    """Bootstrap or page investment changes for a company
+    """Legacy alias: bootstrap or page investment changes for a company
 
-     The Investment Delta API: keep a copy of a company's investment records in sync by
+     **Compatibility alias.** This path keeps working unchanged for partners already on it,
+    but new integrations should use [List or sync investments](/api-reference/list-investments)
+    (`GET /investments?company_id=…`): same records, interchangeable cursors. The
+    [migration notes](/partner-api/investments/changes#migrating-from-
+    companiescompany_idinvestmentschanges)
+    list the differences.
+
+    The Investment Delta API: keep a copy of a company's investment records in sync by
     polling. Call without `cursor` to **bootstrap** (list every current record for the
     company); every response carries `meta.next_cursor`; call again with that cursor to
     receive only the records whose published state changed since. Records are the same
@@ -204,9 +218,16 @@ async def asyncio_detailed(
     cursor: str | Unset = UNSET,
     per_page: int | Unset = 25,
 ) -> Response[Any | Error | InvestmentChangeListEnvelope]:
-    """Bootstrap or page investment changes for a company
+    """Legacy alias: bootstrap or page investment changes for a company
 
-     The Investment Delta API: keep a copy of a company's investment records in sync by
+     **Compatibility alias.** This path keeps working unchanged for partners already on it,
+    but new integrations should use [List or sync investments](/api-reference/list-investments)
+    (`GET /investments?company_id=…`): same records, interchangeable cursors. The
+    [migration notes](/partner-api/investments/changes#migrating-from-
+    companiescompany_idinvestmentschanges)
+    list the differences.
+
+    The Investment Delta API: keep a copy of a company's investment records in sync by
     polling. Call without `cursor` to **bootstrap** (list every current record for the
     company); every response carries `meta.next_cursor`; call again with that cursor to
     receive only the records whose published state changed since. Records are the same
@@ -261,9 +282,16 @@ async def asyncio(
     cursor: str | Unset = UNSET,
     per_page: int | Unset = 25,
 ) -> Any | Error | InvestmentChangeListEnvelope | None:
-    """Bootstrap or page investment changes for a company
+    """Legacy alias: bootstrap or page investment changes for a company
 
-     The Investment Delta API: keep a copy of a company's investment records in sync by
+     **Compatibility alias.** This path keeps working unchanged for partners already on it,
+    but new integrations should use [List or sync investments](/api-reference/list-investments)
+    (`GET /investments?company_id=…`): same records, interchangeable cursors. The
+    [migration notes](/partner-api/investments/changes#migrating-from-
+    companiescompany_idinvestmentschanges)
+    list the differences.
+
+    The Investment Delta API: keep a copy of a company's investment records in sync by
     polling. Call without `cursor` to **bootstrap** (list every current record for the
     company); every response carries `meta.next_cursor`; call again with that cursor to
     receive only the records whose published state changed since. Records are the same

@@ -111,8 +111,18 @@ def sync_detailed(
     entity-held stakes each appear separately. Fund and SPV positions identify
     the companies the vehicle invested in under `holdings`.
 
-    To compute an average cost per share, divide `cost_basis_cents` by
-    `shares_held`.
+    Mind the units when deriving an average cost per share: `cost_basis_cents`
+    is integer cents, while `shares_held`, `current_share_price` and
+    `terms.share_price` are decimal strings in major units of the position's
+    `currency`. Use decimal arithmetic and divide the cents by 100 first:
+    `cost_basis_cents / 100 / shares_held`. For example, `215000` cents over
+    `"200.0"` shares is 1075 cents per share, or 10.75 USD per share, which is
+    what to compare with a `current_share_price` of `"14.4632"`. Dividing
+    `cost_basis_cents` by `shares_held` without the `/ 100` yields cents per
+    share, 100 times the prices shown. When `shares_held` is `null` or zero (a
+    non-share security, or a valuation that is not per-share) there is no
+    average cost per share: report it as unavailable instead of treating the
+    missing share count as a number.
 
     Requires a user-authorized token, like `GET /portfolio`.
 
@@ -161,8 +171,18 @@ def sync(
     entity-held stakes each appear separately. Fund and SPV positions identify
     the companies the vehicle invested in under `holdings`.
 
-    To compute an average cost per share, divide `cost_basis_cents` by
-    `shares_held`.
+    Mind the units when deriving an average cost per share: `cost_basis_cents`
+    is integer cents, while `shares_held`, `current_share_price` and
+    `terms.share_price` are decimal strings in major units of the position's
+    `currency`. Use decimal arithmetic and divide the cents by 100 first:
+    `cost_basis_cents / 100 / shares_held`. For example, `215000` cents over
+    `"200.0"` shares is 1075 cents per share, or 10.75 USD per share, which is
+    what to compare with a `current_share_price` of `"14.4632"`. Dividing
+    `cost_basis_cents` by `shares_held` without the `/ 100` yields cents per
+    share, 100 times the prices shown. When `shares_held` is `null` or zero (a
+    non-share security, or a valuation that is not per-share) there is no
+    average cost per share: report it as unavailable instead of treating the
+    missing share count as a number.
 
     Requires a user-authorized token, like `GET /portfolio`.
 
@@ -206,8 +226,18 @@ async def asyncio_detailed(
     entity-held stakes each appear separately. Fund and SPV positions identify
     the companies the vehicle invested in under `holdings`.
 
-    To compute an average cost per share, divide `cost_basis_cents` by
-    `shares_held`.
+    Mind the units when deriving an average cost per share: `cost_basis_cents`
+    is integer cents, while `shares_held`, `current_share_price` and
+    `terms.share_price` are decimal strings in major units of the position's
+    `currency`. Use decimal arithmetic and divide the cents by 100 first:
+    `cost_basis_cents / 100 / shares_held`. For example, `215000` cents over
+    `"200.0"` shares is 1075 cents per share, or 10.75 USD per share, which is
+    what to compare with a `current_share_price` of `"14.4632"`. Dividing
+    `cost_basis_cents` by `shares_held` without the `/ 100` yields cents per
+    share, 100 times the prices shown. When `shares_held` is `null` or zero (a
+    non-share security, or a valuation that is not per-share) there is no
+    average cost per share: report it as unavailable instead of treating the
+    missing share count as a number.
 
     Requires a user-authorized token, like `GET /portfolio`.
 
@@ -254,8 +284,18 @@ async def asyncio(
     entity-held stakes each appear separately. Fund and SPV positions identify
     the companies the vehicle invested in under `holdings`.
 
-    To compute an average cost per share, divide `cost_basis_cents` by
-    `shares_held`.
+    Mind the units when deriving an average cost per share: `cost_basis_cents`
+    is integer cents, while `shares_held`, `current_share_price` and
+    `terms.share_price` are decimal strings in major units of the position's
+    `currency`. Use decimal arithmetic and divide the cents by 100 first:
+    `cost_basis_cents / 100 / shares_held`. For example, `215000` cents over
+    `"200.0"` shares is 1075 cents per share, or 10.75 USD per share, which is
+    what to compare with a `current_share_price` of `"14.4632"`. Dividing
+    `cost_basis_cents` by `shares_held` without the `/ 100` yields cents per
+    share, 100 times the prices shown. When `shares_held` is `null` or zero (a
+    non-share security, or a valuation that is not per-share) there is no
+    average cost per share: report it as unavailable instead of treating the
+    missing share count as a number.
 
     Requires a user-authorized token, like `GET /portfolio`.
 

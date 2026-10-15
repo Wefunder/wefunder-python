@@ -14,18 +14,20 @@ T = TypeVar("T", bound="UserAttributes")
 
 @_attrs_define
 class UserAttributes:
-    """
-    Attributes:
-        email (str | Unset):  Example: user@example.com.
-        username (str | Unset):  Example: john_doe.
-        name (str | Unset):  Example: John.
-        full_name (str | Unset):  Example: John Doe.
-        bio (None | str | Unset):  Example: Entrepreneur and investor.
-        city (None | str | Unset):  Example: San Francisco.
-        country (None | str | Unset):  Example: USA.
-        avatar_url (None | str | Unset):  Example: https://example.com/avatar.jpg.
-        created_at (datetime.datetime | Unset):  Example: 2023-01-15T10:30:00Z.
-        certified_at (datetime.datetime | None | Unset):  Example: 2023-02-01T14:20:00Z.
+    """Present only when the token holds `read:profile`. Without it, `GET /users/me`
+    returns just `id` and `type`.
+
+        Attributes:
+            email (str | Unset):  Example: user@example.com.
+            username (str | Unset):  Example: john_doe.
+            name (str | Unset):  Example: John.
+            full_name (str | Unset):  Example: John Doe.
+            bio (None | str | Unset):  Example: Entrepreneur and investor.
+            city (None | str | Unset):  Example: San Francisco.
+            country (None | str | Unset):  Example: USA.
+            avatar_url (None | str | Unset):  Example: https://example.com/avatar.jpg.
+            created_at (datetime.datetime | Unset):  Example: 2023-01-15T10:30:00Z.
+            certified_at (datetime.datetime | None | Unset):  Example: 2023-02-01T14:20:00Z.
     """
 
     email: str | Unset = UNSET

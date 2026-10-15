@@ -21,7 +21,9 @@ class User:
     Attributes:
         id (str | Unset): Partner-facing user id (`usr_…`). Example: usr_8Kd0aB3xQ9k2vF8mNp1zT5wY.
         type_ (str | Unset):  Example: user.
-        attributes (UserAttributes | Unset):
+        attributes (UserAttributes | Unset): Present only when the token holds `read:profile`. Without it, `GET
+            /users/me`
+            returns just `id` and `type`.
     """
 
     id: str | Unset = UNSET

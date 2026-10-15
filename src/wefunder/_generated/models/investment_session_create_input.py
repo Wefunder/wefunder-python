@@ -31,8 +31,25 @@ class InvestmentSessionCreateInput:
                 purchase range. Omit to let the recipient choose an amount within
                 that range.
                  Example: 5000000.
-            success_url (None | str | Unset): Where to send the recipient after they complete the session. Example:
-                https://partner.com/done.
+            success_url (None | str | Unset): Where to send the recipient after they complete the session. An absolute
+                `https`
+                URL on the origin (scheme, host and port) of one of your app's registered OAuth
+                redirect URIs, such as an iOS universal link or Android app link, or a URL in a
+                custom scheme one of those redirect URIs uses (`com.partner.app://checkout/done`).
+                `http` is accepted only on a loopback host one of your redirect URIs uses. Anything
+                else is a `422 validation_error`.
+                See [Investment sessions on mobile](/guides/investment-sessions-mobile).
+                 Example: https://partner.com/done.
+            cancel_url (None | str | Unset): Where to send the recipient when they cancel the session on the hosted page, or
+                open
+                it after it was canceled or expired. Same rules as `success_url`: an `https` URL on
+                a registered redirect URI's origin, or a URL in a registered custom scheme.
+                Wefunder appends `session_id` (the session's `is_` id) and `reason` to the query
+                string, keeping any parameters already on the URL. `reason` is `user_canceled`
+                (the session is now canceled), `user_left` (the investor had already started
+                checkout, so the session stays active until it completes or expires), `canceled`
+                or `expired`.
+                 Example: https://partner.com/deals/abc?canceled=1.
             expires_in_hours (int | None | Unset): Session lifetime in hours (default 720, i.e. 30 days). Example: 72.
             metadata (InvestmentSessionCreateInputMetadataType0 | None | Unset): Free-form key/value pairs stored with the
                 session and echoed back on reads.
@@ -45,6 +62,7 @@ class InvestmentSessionCreateInput:
     wefunder_user_id: None | str | Unset = UNSET
     allocation_cents: int | None | Unset = UNSET
     success_url: None | str | Unset = UNSET
+    cancel_url: None | str | Unset = UNSET
     expires_in_hours: int | None | Unset = UNSET
     metadata: InvestmentSessionCreateInputMetadataType0 | None | Unset = UNSET
     intent_id: None | str | Unset = UNSET
@@ -85,6 +103,12 @@ class InvestmentSessionCreateInput:
         else:
             success_url = self.success_url
 
+        cancel_url: None | str | Unset
+        if isinstance(self.cancel_url, Unset):
+            cancel_url = UNSET
+        else:
+            cancel_url = self.cancel_url
+
         expires_in_hours: int | None | Unset
         if isinstance(self.expires_in_hours, Unset):
             expires_in_hours = UNSET
@@ -118,6 +142,8 @@ class InvestmentSessionCreateInput:
             field_dict["allocation_cents"] = allocation_cents
         if success_url is not UNSET:
             field_dict["success_url"] = success_url
+        if cancel_url is not UNSET:
+            field_dict["cancel_url"] = cancel_url
         if expires_in_hours is not UNSET:
             field_dict["expires_in_hours"] = expires_in_hours
         if metadata is not UNSET:
@@ -180,6 +206,15 @@ class InvestmentSessionCreateInput:
 
         success_url = _parse_success_url(d.pop("success_url", UNSET))
 
+        def _parse_cancel_url(data: object) -> None | str | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            return cast(None | str | Unset, data)
+
+        cancel_url = _parse_cancel_url(d.pop("cancel_url", UNSET))
+
         def _parse_expires_in_hours(data: object) -> int | None | Unset:
             if data is None:
                 return data
@@ -221,6 +256,7 @@ class InvestmentSessionCreateInput:
             wefunder_user_id=wefunder_user_id,
             allocation_cents=allocation_cents,
             success_url=success_url,
+            cancel_url=cancel_url,
             expires_in_hours=expires_in_hours,
             metadata=metadata,
             intent_id=intent_id,

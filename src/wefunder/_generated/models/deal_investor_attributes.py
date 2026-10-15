@@ -20,8 +20,9 @@ class DealInvestorAttributes:
         user_id (int | Unset): Internal integer id. Deprecated — use `user` (`usr_...`) instead. Example: 456.
         user (str | Unset): The investor's id (`usr_...`). Example: usr_aB3xQ9k2vF8mNp1zT5wY7Qc4.
         user_name (None | str | Unset):  Example: Jane Smith.
-        user_email (None | str | Unset): **Moderator-only.** Investor's email address.
-            Returns null for non-moderator callers (users who are not a manager/operator).
+        user_email (None | str | Unset): Investor's email address. Always present: the endpoint itself is
+            manager/operator only (ordinary members get 403), so there is no
+            non-moderator caller to hide it from.
              Example: user@example.com.
         avatar_url (None | str | Unset): Investor's profile photo URL Example:
             https://uploads.wefunder.com/uploads/user/avatar/456/large_photo.jpg.

@@ -17,7 +17,6 @@ from typing import Any, Literal
 
 import httpx
 
-from ._generated.api.attribution_partners import get_attribution_me
 from ._generated.api.campaigns import list_campaigns
 from ._generated.api.explore import get_offering, list_offerings
 from ._generated.api.installations import (
@@ -30,7 +29,20 @@ from ._generated.api.installations import (
 )
 from ._generated.api.intents import create_intent, get_intent, list_intents, preview_intent
 from ._generated.api.investments import get_investment, get_offering_stats, list_investments
+from ._generated.api.member_links import (
+    cancel_member_link,
+    create_offering_member_link,
+    get_member_link,
+    list_offering_member_links,
+)
 from ._generated.api.portfolio import get_portfolio, list_portfolio_positions
+from ._generated.api.referral_codes import (
+    create_referral_code,
+    get_referral_code,
+    get_referral_code_stats,
+    list_referral_codes,
+    update_referral_code,
+)
 from ._generated.api.syndicate_portfolio import get_syndicate_portfolio, list_syndicate_portfolio_positions
 from ._generated.api.syndicates import get_syndicate, list_syndicates
 from ._generated.api.users import get_current_user
@@ -47,8 +59,11 @@ from ._generated.api.webhook_endpoints import (
 from ._generated.client import AuthenticatedClient
 from ._generated.models.create_installation_body import CreateInstallationBody
 from ._generated.models.create_installation_token_body import CreateInstallationTokenBody
+from ._generated.models.create_offering_member_link_body import CreateOfferingMemberLinkBody
+from ._generated.models.create_referral_code_body import CreateReferralCodeBody
 from ._generated.models.create_webhook_endpoint_body import CreateWebhookEndpointBody
 from ._generated.models.test_webhook_endpoint_body import TestWebhookEndpointBody
+from ._generated.models.update_referral_code_body import UpdateReferralCodeBody
 from ._generated.models.update_webhook_endpoint_body import UpdateWebhookEndpointBody
 from ._generated.types import UNSET, Response, Unset
 from ._retry import AsyncRetryTransport, RetryOptions, RetryTransport
@@ -67,7 +82,7 @@ from .token_manager import AsyncTokenManager, TokenManager, TokenStore
 # a working back-compat alias. The API version is pinned via the ``Wefunder-Version``
 # header, not the path.
 DEFAULT_API_BASE_URL = "https://api.wefunder.com"
-DEFAULT_API_VERSION = "2025-01-15"
+DEFAULT_API_VERSION = "2026-10-15"
 API_VERSION_HEADER = "Wefunder-Version"
 
 Mode = Literal["live", "test", "unknown"]
@@ -243,8 +258,9 @@ class Wefunder(_Base):
         self.campaigns = _Campaigns(self)
         self.syndicates = _Syndicates(self)
         self.intents = _Intents(self)
-        self.attribution = _Attribution(self)
         self.installations = _Installations(self)
+        self.member_links = _MemberLinks(self)
+        self.referral_codes = _ReferralCodes(self)
         self.webhook_endpoints = _WebhookEndpoints(self)
 
     @classmethod
@@ -457,9 +473,63 @@ class _Intents(_Namespace):
         return _data_of(self._wf.call(preview_intent, body=PreviewIntentBody.from_dict(dict(body))))
 
 
-class _Attribution(_Namespace):
-    def me(self) -> Any:
-        return _data_of(self._wf.call(get_attribution_me))
+class _MemberLinks(_Namespace):
+    """``/offerings/{id}/member_links`` and ``/member_links/{id}`` (``read:invite_links`` /
+    ``write:invite_links``): your app's per-person links that send a member to one deal page and
+    report what they did. Needs a company- or syndicate-owned token of an app installed on the
+    offering's syndicate or company; a user token gets 404."""
+
+    def list(self, offering_id: str, **query: Any) -> Any:
+        """One page of the offering's links; the envelope."""
+        return self._wf.call(list_offering_member_links, id=offering_id, **query)
+
+    def all(self, offering_id: str) -> Iterator[Any]:
+        return paginate(lambda cursor: self.list(offering_id, **({"cursor": cursor} if cursor is not None else {})))
+
+    def create(
+        self, offering_id: str, body: Mapping[str, Any] | None = None, *, idempotency_key: str | None = None
+    ) -> Any:
+        """Mint a link (``reference``, optional ``wefunder_user_id``). Repeating a ``reference`` returns
+        the live link instead of a second one; ``idempotency_key`` makes a retry safe too."""
+        kwargs: dict[str, Any] = {}
+        if body:
+            kwargs["body"] = CreateOfferingMemberLinkBody.from_dict({"member_link": dict(body)})
+        if idempotency_key:
+            kwargs["idempotency_key"] = idempotency_key
+        return _data_of(self._wf.call(create_offering_member_link, id=offering_id, **kwargs))
+
+    def get(self, link_id: str) -> Any:
+        return _data_of(self._wf.call(get_member_link, id=link_id))
+
+    def cancel(self, link_id: str) -> Any:
+        """Stop an unused link from opening the deal page."""
+        return _data_of(self._wf.call(cancel_member_link, id=link_id))
+
+
+class _ReferralCodes(_Namespace):
+    """``/referral_codes`` (``read:referral_codes`` / ``write:referral_codes``; beta). Mint with your
+    app's server key, add ``?wfr=ref_…`` to any wefunder.com link, and read per-company weekly
+    cohorts from :meth:`stats`. Investors are never identified."""
+
+    def list(self, **query: Any) -> Any:
+        return self._wf.call(list_referral_codes, **query)
+
+    def all(self, **query: Any) -> Iterator[Any]:
+        return paginate(lambda cursor: self.list(**query, **({"cursor": cursor} if cursor is not None else {})))
+
+    def get(self, code_id: str) -> Any:
+        return _data_of(self._wf.call(get_referral_code, id=code_id))
+
+    def create(self, body: Mapping[str, Any]) -> Any:
+        """Not idempotent: a retried create can mint a second code, which you can deactivate."""
+        return _data_of(self._wf.call(create_referral_code, body=CreateReferralCodeBody.from_dict(dict(body))))
+
+    def update(self, code_id: str, **changes: Any) -> Any:
+        return _data_of(self._wf.call(update_referral_code, id=code_id, body=UpdateReferralCodeBody.from_dict(changes)))
+
+    def stats(self, code_id: str, **query: Any) -> Any:
+        """Weekly cohorts per company; the envelope (``meta.next_cursor`` pages the company list)."""
+        return self._wf.call(get_referral_code_stats, id=code_id, **query)
 
 
 def _already_installed_id(err: WefunderError) -> str | None:
@@ -564,7 +634,7 @@ class _WebhookEndpoints(_Namespace):
 class AsyncWefunder(_Base):
     """asyncio client. Same plumbing as :class:`Wefunder` (auth, recovery, retries, typed
     errors, ``raw``/``request``); namespaces cover users, offerings, investments, portfolio,
-    installations, and webhook_endpoints — reach the rest through :meth:`call` / :attr:`raw`."""
+    installations, member_links, referral_codes, and webhook_endpoints — reach the rest through :meth:`call` / :attr:`raw`."""
 
     def __init__(
         self,
@@ -633,6 +703,8 @@ class AsyncWefunder(_Base):
         self.investments = _AsyncInvestments(self)
         self.portfolio = _AsyncPortfolio(self)
         self.installations = _AsyncInstallations(self)
+        self.member_links = _AsyncMemberLinks(self)
+        self.referral_codes = _AsyncReferralCodes(self)
         self.webhook_endpoints = _AsyncWebhookEndpoints(self)
 
     @classmethod
@@ -799,6 +871,52 @@ class _AsyncInstallations(_AsyncNamespace):
 
     async def revoke(self, installation_id: str) -> Any:
         return _data_of(await self._wf.call(revoke_installation, external_id=installation_id))
+
+
+class _AsyncMemberLinks(_AsyncNamespace):
+    async def list(self, offering_id: str, **query: Any) -> Any:
+        return await self._wf.call(list_offering_member_links, id=offering_id, **query)
+
+    def all(self, offering_id: str) -> AsyncIterator[Any]:
+        return self._pages(list_offering_member_links, id=offering_id)
+
+    async def create(
+        self, offering_id: str, body: Mapping[str, Any] | None = None, *, idempotency_key: str | None = None
+    ) -> Any:
+        kwargs: dict[str, Any] = {}
+        if body:
+            kwargs["body"] = CreateOfferingMemberLinkBody.from_dict({"member_link": dict(body)})
+        if idempotency_key:
+            kwargs["idempotency_key"] = idempotency_key
+        return _data_of(await self._wf.call(create_offering_member_link, id=offering_id, **kwargs))
+
+    async def get(self, link_id: str) -> Any:
+        return _data_of(await self._wf.call(get_member_link, id=link_id))
+
+    async def cancel(self, link_id: str) -> Any:
+        return _data_of(await self._wf.call(cancel_member_link, id=link_id))
+
+
+class _AsyncReferralCodes(_AsyncNamespace):
+    async def list(self, **query: Any) -> Any:
+        return await self._wf.call(list_referral_codes, **query)
+
+    def all(self, **query: Any) -> AsyncIterator[Any]:
+        return self._pages(list_referral_codes, **query)
+
+    async def get(self, code_id: str) -> Any:
+        return _data_of(await self._wf.call(get_referral_code, id=code_id))
+
+    async def create(self, body: Mapping[str, Any]) -> Any:
+        return _data_of(await self._wf.call(create_referral_code, body=CreateReferralCodeBody.from_dict(dict(body))))
+
+    async def update(self, code_id: str, **changes: Any) -> Any:
+        return _data_of(
+            await self._wf.call(update_referral_code, id=code_id, body=UpdateReferralCodeBody.from_dict(changes))
+        )
+
+    async def stats(self, code_id: str, **query: Any) -> Any:
+        return await self._wf.call(get_referral_code_stats, id=code_id, **query)
 
 
 class _AsyncWebhookEndpoints(_AsyncNamespace):

@@ -20,14 +20,18 @@ class CompanyDisclosuresAttributesRatiosType0:
             net_margin_percent (None | str | Unset): Net income / revenue × 100.
             gross_margin_percent (None | str | Unset): (Revenue − cost of goods sold) / revenue × 100.
             return_on_assets_percent (None | str | Unset): Net income / total assets × 100.
-            debt_to_assets_percent (None | str | Unset): (Short-term + long-term debt) / total assets × 100.
+            liabilities_to_assets_percent (None | str | Unset): (Current + non-current liabilities) / total assets × 100.
+                Liabilities, not debt — see `current_liabilities`.
+            debt_to_assets_percent (None | str | Unset): Deprecated alias of `liabilities_to_assets_percent` (same value).
+                Will be removed in a future dated version.
             cash_to_assets_percent (None | str | Unset): Cash / total assets × 100.
-            revenue_per_employee (None | str | Unset): USD, decimal string.
+            revenue_per_employee (None | str | Unset): Decimal string in `financials_currency`.
     """
 
     net_margin_percent: None | str | Unset = UNSET
     gross_margin_percent: None | str | Unset = UNSET
     return_on_assets_percent: None | str | Unset = UNSET
+    liabilities_to_assets_percent: None | str | Unset = UNSET
     debt_to_assets_percent: None | str | Unset = UNSET
     cash_to_assets_percent: None | str | Unset = UNSET
     revenue_per_employee: None | str | Unset = UNSET
@@ -51,6 +55,12 @@ class CompanyDisclosuresAttributesRatiosType0:
             return_on_assets_percent = UNSET
         else:
             return_on_assets_percent = self.return_on_assets_percent
+
+        liabilities_to_assets_percent: None | str | Unset
+        if isinstance(self.liabilities_to_assets_percent, Unset):
+            liabilities_to_assets_percent = UNSET
+        else:
+            liabilities_to_assets_percent = self.liabilities_to_assets_percent
 
         debt_to_assets_percent: None | str | Unset
         if isinstance(self.debt_to_assets_percent, Unset):
@@ -79,6 +89,8 @@ class CompanyDisclosuresAttributesRatiosType0:
             field_dict["gross_margin_percent"] = gross_margin_percent
         if return_on_assets_percent is not UNSET:
             field_dict["return_on_assets_percent"] = return_on_assets_percent
+        if liabilities_to_assets_percent is not UNSET:
+            field_dict["liabilities_to_assets_percent"] = liabilities_to_assets_percent
         if debt_to_assets_percent is not UNSET:
             field_dict["debt_to_assets_percent"] = debt_to_assets_percent
         if cash_to_assets_percent is not UNSET:
@@ -119,6 +131,17 @@ class CompanyDisclosuresAttributesRatiosType0:
 
         return_on_assets_percent = _parse_return_on_assets_percent(d.pop("return_on_assets_percent", UNSET))
 
+        def _parse_liabilities_to_assets_percent(data: object) -> None | str | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            return cast(None | str | Unset, data)
+
+        liabilities_to_assets_percent = _parse_liabilities_to_assets_percent(
+            d.pop("liabilities_to_assets_percent", UNSET)
+        )
+
         def _parse_debt_to_assets_percent(data: object) -> None | str | Unset:
             if data is None:
                 return data
@@ -150,6 +173,7 @@ class CompanyDisclosuresAttributesRatiosType0:
             net_margin_percent=net_margin_percent,
             gross_margin_percent=gross_margin_percent,
             return_on_assets_percent=return_on_assets_percent,
+            liabilities_to_assets_percent=liabilities_to_assets_percent,
             debt_to_assets_percent=debt_to_assets_percent,
             cash_to_assets_percent=cash_to_assets_percent,
             revenue_per_employee=revenue_per_employee,

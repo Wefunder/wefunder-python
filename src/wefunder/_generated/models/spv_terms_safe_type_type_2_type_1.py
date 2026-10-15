@@ -1,0 +1,9 @@
+from enum import StrEnum
+
+
+class SpvTermsSafeTypeType2Type1(StrEnum):
+    POST_MONEY = "post_money"
+    PRE_MONEY = "pre_money"
+
+    def __str__(self) -> str:
+        return str(self.value)

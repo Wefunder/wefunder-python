@@ -20,11 +20,13 @@ T = TypeVar("T", bound="InvestmentEnvelope")
 class InvestmentEnvelope:
     """
     Attributes:
-        data (InvestmentDeltaRecord | Unset): The record of one investment, or a tombstone (`visible: false`, only
-            `id`). `visible` is
-            founder visibility: a user's own canceled investment is a full record with `visible: false`
-            and `status: canceled`. Investor PII keys are omitted without `read:investors:pii`, except on
-            the user's own records.
+        data (InvestmentDeltaRecord | Unset): The record of one investment, or a tombstone. A tombstone is `visible:
+            false` with `id` and
+            the sync metadata (`observed_at`, `cursor`, `reason`) and no payload fields: no `status`,
+            `amounts`, `investor`. `visible` is founder visibility: a user's own canceled investment is a
+            full record with `visible: false` and `status: canceled`, so tell the two apart by the
+            presence of `status`, not by `visible`. Investor PII keys are omitted without
+            `read:investors:pii`, except on the user's own records.
         meta (InvestmentEnvelopeMeta | Unset):
     """
 

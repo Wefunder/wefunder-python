@@ -20,15 +20,16 @@ T = TypeVar("T", bound="CreateIntentBody")
 class CreateIntentBody:
     """
     Attributes:
-        action_name (CreateIntentBodyActionName): The action to perform Example: syndicates.close_deal.
+        action_name (CreateIntentBodyActionName): The action to perform Example: syndicates.remove_member.
         resource_type (str): The resource type the action targets, as the action table names it; the example is the
             syndicate type. Example: Club.
         resource_id (str): The resource's id in the API's vocabulary — the syndicate's `syn_...` for a `syndicates.*`
             action. Example: syn_aB3xQ9k2vF8mNp1zT5wY7Qc4.
-        params (CreateIntentBodyParams | Unset): Action-specific parameters Example: {'fundraise_id': 99}.
+        params (CreateIntentBodyParams | Unset): Action-specific parameters Example: {'member_id':
+            'mem_7Hk2mP9qR4sT1uV6wX8yZ3aB'}.
         idempotency_key (str | Unset): Client-provided key naming this one operation. While an intent with this key is
             pending, approved, executing, or executed, the same operation returns it (200); a different operation under the
-            same key is a 409. Example: close-acme-series-a.
+            same key is a 409. Example: remove-mem_7Hk2mP9qR4sT1uV6wX8yZ3aB-2026-10.
         requested_by_agent (str | Unset): Human-readable name of the agent proposing the action Example: Claude via MCP.
     """
 

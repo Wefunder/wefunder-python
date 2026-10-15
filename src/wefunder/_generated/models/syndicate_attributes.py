@@ -36,6 +36,9 @@ class SyndicateAttributes:
             null for deal-by-deal syndicates.
         auto_accept_accredited_members (bool | Unset): Whether accredited applicants are approved automatically.
             Example: False.
+        auto_approve_join_sessions (bool | Unset): Whether an accredited invitee who accepts a join session is admitted
+            immediately. Read it to pick the consent copy ("Join" vs "Request to join") before minting a join session.
+            Example: True.
         fund_required (bool | Unset): Whether members must invest through the syndicate's fund. Example: False.
         annual_subscription (SyndicateAttributesAnnualSubscription | Unset): Present only when `syndicate_type` is
             `annual_subscription`.
@@ -65,6 +68,7 @@ class SyndicateAttributes:
     membership_open: bool | Unset = UNSET
     syndicate_type: None | str | Unset = UNSET
     auto_accept_accredited_members: bool | Unset = UNSET
+    auto_approve_join_sessions: bool | Unset = UNSET
     fund_required: bool | Unset = UNSET
     annual_subscription: SyndicateAttributesAnnualSubscription | Unset = UNSET
     traditional_fund: SyndicateAttributesTraditionalFund | Unset = UNSET
@@ -114,6 +118,8 @@ class SyndicateAttributes:
             syndicate_type = self.syndicate_type
 
         auto_accept_accredited_members = self.auto_accept_accredited_members
+
+        auto_approve_join_sessions = self.auto_approve_join_sessions
 
         fund_required = self.fund_required
 
@@ -180,6 +186,8 @@ class SyndicateAttributes:
             field_dict["syndicate_type"] = syndicate_type
         if auto_accept_accredited_members is not UNSET:
             field_dict["auto_accept_accredited_members"] = auto_accept_accredited_members
+        if auto_approve_join_sessions is not UNSET:
+            field_dict["auto_approve_join_sessions"] = auto_approve_join_sessions
         if fund_required is not UNSET:
             field_dict["fund_required"] = fund_required
         if annual_subscription is not UNSET:
@@ -261,6 +269,8 @@ class SyndicateAttributes:
 
         auto_accept_accredited_members = d.pop("auto_accept_accredited_members", UNSET)
 
+        auto_approve_join_sessions = d.pop("auto_approve_join_sessions", UNSET)
+
         fund_required = d.pop("fund_required", UNSET)
 
         _annual_subscription = d.pop("annual_subscription", UNSET)
@@ -335,6 +345,7 @@ class SyndicateAttributes:
             membership_open=membership_open,
             syndicate_type=syndicate_type,
             auto_accept_accredited_members=auto_accept_accredited_members,
+            auto_approve_join_sessions=auto_approve_join_sessions,
             fund_required=fund_required,
             annual_subscription=annual_subscription,
             traditional_fund=traditional_fund,

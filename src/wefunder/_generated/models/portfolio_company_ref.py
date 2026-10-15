@@ -19,11 +19,16 @@ class PortfolioCompanyRef:
         id (str | Unset): The company's id (`co_...`) Example: co_2bt9eJn6X8C9gnShl63qlzkK.
         name (str | Unset):  Example: Acme Robotics.
         slug (None | str | Unset):  Example: acme-robotics.
+        url (None | str | Unset): The company's page on wefunder.com, absolute. This is the link target the [attribution
+            rule](/resources/acceptable-use#attribution) asks for wherever you show the position; do not link to the
+            investor's Wefunder portfolio instead. Null when the company no longer has a public page. Example:
+            https://wefunder.com/acme-robotics.
     """
 
     id: str | Unset = UNSET
     name: str | Unset = UNSET
     slug: None | str | Unset = UNSET
+    url: None | str | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
@@ -37,6 +42,12 @@ class PortfolioCompanyRef:
         else:
             slug = self.slug
 
+        url: None | str | Unset
+        if isinstance(self.url, Unset):
+            url = UNSET
+        else:
+            url = self.url
+
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update({})
@@ -46,6 +57,8 @@ class PortfolioCompanyRef:
             field_dict["name"] = name
         if slug is not UNSET:
             field_dict["slug"] = slug
+        if url is not UNSET:
+            field_dict["url"] = url
 
         return field_dict
 
@@ -65,10 +78,20 @@ class PortfolioCompanyRef:
 
         slug = _parse_slug(d.pop("slug", UNSET))
 
+        def _parse_url(data: object) -> None | str | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            return cast(None | str | Unset, data)
+
+        url = _parse_url(d.pop("url", UNSET))
+
         portfolio_company_ref = cls(
             id=id,
             name=name,
             slug=slug,
+            url=url,
         )
 
         portfolio_company_ref.additional_properties = d

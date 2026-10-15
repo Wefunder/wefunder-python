@@ -7,8 +7,20 @@ from typing import TYPE_CHECKING, Any, TypeVar, cast
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
-from ..models.investment_session_attributes_funding_status import InvestmentSessionAttributesFundingStatus
-from ..models.investment_session_attributes_kyc_status import InvestmentSessionAttributesKycStatus
+from ..models.investment_session_attributes_funding_status_type_1 import InvestmentSessionAttributesFundingStatusType1
+from ..models.investment_session_attributes_funding_status_type_2_type_1 import (
+    InvestmentSessionAttributesFundingStatusType2Type1,
+)
+from ..models.investment_session_attributes_funding_status_type_3_type_1 import (
+    InvestmentSessionAttributesFundingStatusType3Type1,
+)
+from ..models.investment_session_attributes_kyc_status_type_1 import InvestmentSessionAttributesKycStatusType1
+from ..models.investment_session_attributes_kyc_status_type_2_type_1 import (
+    InvestmentSessionAttributesKycStatusType2Type1,
+)
+from ..models.investment_session_attributes_kyc_status_type_3_type_1 import (
+    InvestmentSessionAttributesKycStatusType3Type1,
+)
 from ..models.investment_session_attributes_status import InvestmentSessionAttributesStatus
 from ..types import UNSET, Unset
 
@@ -28,11 +40,16 @@ class InvestmentSessionAttributes:
         url (str | Unset): The hosted URL the recipient opens to begin the flow. Example:
             https://wefunder.com/invest/session/is_abc123.
         spv_id (str | Unset):  Example: spv_abc123.
-        email (None | str | Unset):  Example: investor@example.com.
+        email (None | str | Unset): The recipient email you supplied. `null` for a session addressed by
+            `wefunder_user_id`, directly or through an invite link addressed that way, which never returns the account's
+            email. Example: investor@example.com.
         allocation_cents (int | None | Unset): The fixed amount the session locks to, in cents; null when the recipient
             chooses their own amount. Example: 5000000.
-        kyc_status (InvestmentSessionAttributesKycStatus | Unset):  Example: pending.
-        funding_status (InvestmentSessionAttributesFundingStatus | Unset):  Example: pending.
+        kyc_status (InvestmentSessionAttributesKycStatusType1 | InvestmentSessionAttributesKycStatusType2Type1 |
+            InvestmentSessionAttributesKycStatusType3Type1 | None | Unset):  Example: pending.
+        funding_status (InvestmentSessionAttributesFundingStatusType1 |
+            InvestmentSessionAttributesFundingStatusType2Type1 | InvestmentSessionAttributesFundingStatusType3Type1 | None |
+            Unset):  Example: pending.
         investment_id (None | str | Unset): Populated once the session completes successfully. Example: invt_def789.
         metadata (InvestmentSessionAttributesMetadata | Unset): The key/value pairs supplied at creation.
         created_at (datetime.datetime | Unset):  Example: 2025-01-15T10:00:00Z.
@@ -46,8 +63,20 @@ class InvestmentSessionAttributes:
     spv_id: str | Unset = UNSET
     email: None | str | Unset = UNSET
     allocation_cents: int | None | Unset = UNSET
-    kyc_status: InvestmentSessionAttributesKycStatus | Unset = UNSET
-    funding_status: InvestmentSessionAttributesFundingStatus | Unset = UNSET
+    kyc_status: (
+        InvestmentSessionAttributesKycStatusType1
+        | InvestmentSessionAttributesKycStatusType2Type1
+        | InvestmentSessionAttributesKycStatusType3Type1
+        | None
+        | Unset
+    ) = UNSET
+    funding_status: (
+        InvestmentSessionAttributesFundingStatusType1
+        | InvestmentSessionAttributesFundingStatusType2Type1
+        | InvestmentSessionAttributesFundingStatusType3Type1
+        | None
+        | Unset
+    ) = UNSET
     investment_id: None | str | Unset = UNSET
     metadata: InvestmentSessionAttributesMetadata | Unset = UNSET
     created_at: datetime.datetime | Unset = UNSET
@@ -76,13 +105,29 @@ class InvestmentSessionAttributes:
         else:
             allocation_cents = self.allocation_cents
 
-        kyc_status: str | Unset = UNSET
-        if not isinstance(self.kyc_status, Unset):
+        kyc_status: None | str | Unset
+        if isinstance(self.kyc_status, Unset):
+            kyc_status = UNSET
+        elif (
+            isinstance(self.kyc_status, InvestmentSessionAttributesKycStatusType1)
+            or isinstance(self.kyc_status, InvestmentSessionAttributesKycStatusType2Type1)
+            or isinstance(self.kyc_status, InvestmentSessionAttributesKycStatusType3Type1)
+        ):
             kyc_status = self.kyc_status.value
+        else:
+            kyc_status = self.kyc_status
 
-        funding_status: str | Unset = UNSET
-        if not isinstance(self.funding_status, Unset):
+        funding_status: None | str | Unset
+        if isinstance(self.funding_status, Unset):
+            funding_status = UNSET
+        elif (
+            isinstance(self.funding_status, InvestmentSessionAttributesFundingStatusType1)
+            or isinstance(self.funding_status, InvestmentSessionAttributesFundingStatusType2Type1)
+            or isinstance(self.funding_status, InvestmentSessionAttributesFundingStatusType3Type1)
+        ):
             funding_status = self.funding_status.value
+        else:
+            funding_status = self.funding_status
 
         investment_id: None | str | Unset
         if isinstance(self.investment_id, Unset):
@@ -180,19 +225,101 @@ class InvestmentSessionAttributes:
 
         allocation_cents = _parse_allocation_cents(d.pop("allocation_cents", UNSET))
 
-        _kyc_status = d.pop("kyc_status", UNSET)
-        kyc_status: InvestmentSessionAttributesKycStatus | Unset
-        if isinstance(_kyc_status, Unset):
-            kyc_status = UNSET
-        else:
-            kyc_status = InvestmentSessionAttributesKycStatus(_kyc_status)
+        def _parse_kyc_status(
+            data: object,
+        ) -> (
+            InvestmentSessionAttributesKycStatusType1
+            | InvestmentSessionAttributesKycStatusType2Type1
+            | InvestmentSessionAttributesKycStatusType3Type1
+            | None
+            | Unset
+        ):
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, str):
+                    raise TypeError()
+                kyc_status_type_1 = InvestmentSessionAttributesKycStatusType1(data)
 
-        _funding_status = d.pop("funding_status", UNSET)
-        funding_status: InvestmentSessionAttributesFundingStatus | Unset
-        if isinstance(_funding_status, Unset):
-            funding_status = UNSET
-        else:
-            funding_status = InvestmentSessionAttributesFundingStatus(_funding_status)
+                return kyc_status_type_1
+            except (TypeError, ValueError, AttributeError, KeyError):
+                pass
+            try:
+                if not isinstance(data, str):
+                    raise TypeError()
+                kyc_status_type_2_type_1 = InvestmentSessionAttributesKycStatusType2Type1(data)
+
+                return kyc_status_type_2_type_1
+            except (TypeError, ValueError, AttributeError, KeyError):
+                pass
+            try:
+                if not isinstance(data, str):
+                    raise TypeError()
+                kyc_status_type_3_type_1 = InvestmentSessionAttributesKycStatusType3Type1(data)
+
+                return kyc_status_type_3_type_1
+            except (TypeError, ValueError, AttributeError, KeyError):
+                pass
+            return cast(
+                InvestmentSessionAttributesKycStatusType1
+                | InvestmentSessionAttributesKycStatusType2Type1
+                | InvestmentSessionAttributesKycStatusType3Type1
+                | None
+                | Unset,
+                data,
+            )
+
+        kyc_status = _parse_kyc_status(d.pop("kyc_status", UNSET))
+
+        def _parse_funding_status(
+            data: object,
+        ) -> (
+            InvestmentSessionAttributesFundingStatusType1
+            | InvestmentSessionAttributesFundingStatusType2Type1
+            | InvestmentSessionAttributesFundingStatusType3Type1
+            | None
+            | Unset
+        ):
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, str):
+                    raise TypeError()
+                funding_status_type_1 = InvestmentSessionAttributesFundingStatusType1(data)
+
+                return funding_status_type_1
+            except (TypeError, ValueError, AttributeError, KeyError):
+                pass
+            try:
+                if not isinstance(data, str):
+                    raise TypeError()
+                funding_status_type_2_type_1 = InvestmentSessionAttributesFundingStatusType2Type1(data)
+
+                return funding_status_type_2_type_1
+            except (TypeError, ValueError, AttributeError, KeyError):
+                pass
+            try:
+                if not isinstance(data, str):
+                    raise TypeError()
+                funding_status_type_3_type_1 = InvestmentSessionAttributesFundingStatusType3Type1(data)
+
+                return funding_status_type_3_type_1
+            except (TypeError, ValueError, AttributeError, KeyError):
+                pass
+            return cast(
+                InvestmentSessionAttributesFundingStatusType1
+                | InvestmentSessionAttributesFundingStatusType2Type1
+                | InvestmentSessionAttributesFundingStatusType3Type1
+                | None
+                | Unset,
+                data,
+            )
+
+        funding_status = _parse_funding_status(d.pop("funding_status", UNSET))
 
         def _parse_investment_id(data: object) -> None | str | Unset:
             if data is None:

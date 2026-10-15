@@ -22,8 +22,7 @@ class SyndicateMemberAttributes:
             usr_8Kd0aB3xQ9k2vF8mNp1zT5wY.
         user_name (None | str | Unset):  Example: Jane Smith.
         user_email (None | str | Unset): **Moderator-only.** User email (or invite_email for pending invitees).
-            Returns null for non-moderator callers. Requires the requesting user
-            to be a manager/operator of the syndicate.
+            Requires the requesting user to be a manager/operator of the syndicate.
              Example: user@example.com.
         role (str | Unset): Current role (creator, manager, member, invitee, applicant, exiled, resigned, etc.) Example:
             member.

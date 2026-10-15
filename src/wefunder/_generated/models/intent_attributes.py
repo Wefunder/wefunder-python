@@ -21,14 +21,15 @@ T = TypeVar("T", bound="IntentAttributes")
 class IntentAttributes:
     """
     Attributes:
-        action (str | Unset):  Example: syndicates.close_deal.
+        action (str | Unset):  Example: syndicates.remove_member.
         status (IntentAttributesStatus | Unset):  Example: pending.
         resource_type (str | Unset):  Example: Club.
         resource_id (int | None | str | Unset): For Club resources, the syndicate's id (`syn_...`). For every other
             `resource_type` (contract change plans, tranches, applications, ...) the
             resource's integer id, since those models have no external id yet.
              Example: syn_aB3xQ9k2vF8mNp1zT5wY7Qc4.
-        impact_summary (str | Unset):  Example: Close the Acme Corp Series A deal. 47 investors have committed $2.3M..
+        impact_summary (None | str | Unset):  Example: Remove Jane Smith from Acme Syndicate. She will lose access to
+            the syndicate's deals..
         review_url (str | Unset): URL where a human can review and approve/reject this intent Example:
             https://wefunder.com/intents/a1b2c3d4-e5f6-7890-abcd-ef1234567890/review.
         requested_by_agent (None | str | Unset): Human-readable name of the agent that proposed this intent Example:
@@ -47,7 +48,7 @@ class IntentAttributes:
     status: IntentAttributesStatus | Unset = UNSET
     resource_type: str | Unset = UNSET
     resource_id: int | None | str | Unset = UNSET
-    impact_summary: str | Unset = UNSET
+    impact_summary: None | str | Unset = UNSET
     review_url: str | Unset = UNSET
     requested_by_agent: None | str | Unset = UNSET
     expires_at: datetime.datetime | None | Unset = UNSET
@@ -78,7 +79,11 @@ class IntentAttributes:
         else:
             resource_id = self.resource_id
 
-        impact_summary = self.impact_summary
+        impact_summary: None | str | Unset
+        if isinstance(self.impact_summary, Unset):
+            impact_summary = UNSET
+        else:
+            impact_summary = self.impact_summary
 
         review_url = self.review_url
 
@@ -195,7 +200,14 @@ class IntentAttributes:
 
         resource_id = _parse_resource_id(d.pop("resource_id", UNSET))
 
-        impact_summary = d.pop("impact_summary", UNSET)
+        def _parse_impact_summary(data: object) -> None | str | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            return cast(None | str | Unset, data)
+
+        impact_summary = _parse_impact_summary(d.pop("impact_summary", UNSET))
 
         review_url = d.pop("review_url", UNSET)
 
