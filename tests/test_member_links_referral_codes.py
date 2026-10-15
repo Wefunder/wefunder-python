@@ -45,9 +45,13 @@ def respond(request: httpx.Request) -> Any:
         return {"data": [LINK], "meta": {"has_more": True, "next_cursor": 7}}
     if path == "/member_links/il_1/cancel":
         return {"data": {**LINK, "attributes": {**LINK["attributes"], "state": "canceled"}}}
+    if path == "/referral_codes" and request.method == "GET" and request.url.params.get("cursor"):
+        c = int(request.url.params["cursor"])
+        nxt = c + 1 if c < 7 else None
+        return {"data": [{**CODE, "id": f"ref_{c}"}], "meta": {"has_more": nxt is not None, "next_cursor": nxt}}
     if path == "/referral_codes" and request.method == "GET":
         return {"data": [CODE], "meta": {"has_more": False, "next_cursor": None, "active_limit": 50}}
-    if path == "/referral_codes/ref_1/stats":
+    if path.startswith("/referral_codes/") and path.endswith("/stats"):
         return {
             "data": {
                 "id": "ref_1",
@@ -80,10 +84,6 @@ def respond(request: httpx.Request) -> Any:
             },
             "meta": {"has_more": False, "next_cursor": None},
         }
-    if path == "/referral_codes" and request.method == "GET" and request.url.params.get("cursor"):
-        c = int(request.url.params["cursor"])
-        nxt = c + 1 if c < 7 else None
-        return {"data": [{**CODE, "id": f"ref_{c}"}], "meta": {"has_more": nxt is not None, "next_cursor": nxt}}
     if path.startswith("/referral_codes"):
         return httpx.Response(201 if request.method == "POST" else 200, json={"data": CODE})
     return {"data": LINK}
