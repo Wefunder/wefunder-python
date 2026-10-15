@@ -634,7 +634,8 @@ class _WebhookEndpoints(_Namespace):
 class AsyncWefunder(_Base):
     """asyncio client. Same plumbing as :class:`Wefunder` (auth, recovery, retries, typed
     errors, ``raw``/``request``); namespaces cover users, offerings, investments, portfolio,
-    installations, member_links, referral_codes, and webhook_endpoints — reach the rest through :meth:`call` / :attr:`raw`."""
+    installations, member_links, referral_codes, and webhook_endpoints — reach the rest through
+    :meth:`call` / :attr:`raw`."""
 
     def __init__(
         self,

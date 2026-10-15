@@ -73,7 +73,7 @@ def test_default_version_is_2026_10_15_and_sent() -> None:
 def test_member_links_paths_bodies_and_idempotency() -> None:
     rec = Recorder(respond)
     wf = Wefunder(access_token="at_live_x", transport=rec.transport)
-    assert [l.id for l in wf.member_links.all("ofr_1")] == ["il_1", "il_2"]
+    assert [link.id for link in wf.member_links.all("ofr_1")] == ["il_1", "il_2"]
     created = wf.member_links.create("ofr_1", {"reference": "member_8812"}, idempotency_key="k1")
     assert created.id == "il_1"
     assert wf.member_links.get("il_1").id == "il_1"
@@ -125,7 +125,7 @@ def test_async_namespaces_mirror_sync() -> None:
     async def run() -> None:
         rec = Recorder(respond)
         async with AsyncWefunder(access_token="at_live_x", transport=rec.transport) as wf:
-            assert [l.id async for l in wf.member_links.all("ofr_1")] == ["il_1", "il_2"]
+            assert [link.id async for link in wf.member_links.all("ofr_1")] == ["il_1", "il_2"]
             created = await wf.member_links.create("ofr_1", {"reference": "m"}, idempotency_key="k")
             assert created.id == "il_1"
             assert (await wf.member_links.cancel("il_1")).attributes.state == "canceled"
