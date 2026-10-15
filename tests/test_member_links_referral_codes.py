@@ -9,6 +9,7 @@ from typing import Any
 import httpx
 
 from wefunder import DEFAULT_API_VERSION, AsyncWefunder, Wefunder
+from wefunder._generated.types import Unset
 
 LINK = {"id": "il_1", "type": "member_link", "attributes": {"reference": "member_8812", "state": "created"}}
 CODE = {
@@ -53,11 +54,36 @@ def respond(request: httpx.Request) -> Any:
                 "type": "referral_code_stats",
                 "attributes": {
                     "label": "October",
-                    "companies": [{"company": "co_1", "level": "anonymized", "weeks": []}],
+                    "companies": [
+                        {
+                            "company": "co_1",
+                            "level": "counts",
+                            "in_scope_since": "2026-W40",
+                            "weeks": [{"week": "2026-W41", "clicks": 3}],
+                        },
+                        {
+                            "company": "co_2",
+                            "level": "anonymized",
+                            "investments": [
+                                {
+                                    "investment": "opq_i",
+                                    "investor": "opq_u",
+                                    "week": "2026-W41",
+                                    "amount_tier": "1k_to_5k",
+                                    "status": "active",
+                                    "time_to_invest": "same_day",
+                                }
+                            ],
+                        },
+                    ],
                 },
             },
             "meta": {"has_more": False, "next_cursor": None},
         }
+    if path == "/referral_codes" and request.method == "GET" and request.url.params.get("cursor"):
+        c = int(request.url.params["cursor"])
+        nxt = c + 1 if c < 7 else None
+        return {"data": [{**CODE, "id": f"ref_{c}"}], "meta": {"has_more": nxt is not None, "next_cursor": nxt}}
     if path.startswith("/referral_codes"):
         return httpx.Response(201 if request.method == "POST" else 200, json={"data": CODE})
     return {"data": LINK}
@@ -105,6 +131,11 @@ def test_referral_codes_paths_bodies_and_stats_envelope() -> None:
     stats = wf.referral_codes.stats("ref_1", company_id="co_1")
     assert stats.data.attributes.companies[0].company == "co_1"
     assert stats.meta.has_more is False
+    # The two shapes a company can take: counts → weeks, anonymized/full → investments (weeks unset).
+    counts, rows = stats.data.attributes.companies
+    assert len(counts.weeks) == 1
+    assert isinstance(rows.weeks, Unset)
+    assert len(rows.investments) == 1
     assert rec.seen == [
         "GET /referral_codes",
         "POST /referral_codes",
@@ -133,5 +164,35 @@ def test_async_namespaces_mirror_sync() -> None:
             assert (await wf.referral_codes.update("ref_1", label="New")).id == "ref_1"
             assert (await wf.referral_codes.stats("ref_1")).meta.has_more is False
         assert json.loads(rec.requests[2].content) == {"member_link": {"reference": "m"}}
+
+    asyncio.run(run())
+
+
+def test_published_stats_example_handles_both_levels() -> None:
+    import sys
+    from pathlib import Path
+
+    sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "examples"))
+    from get_referral_code_stats import example
+
+    rec = Recorder(respond)
+    stats = example(Wefunder(access_token="at_live_x", transport=rec.transport))
+    assert [c.level for c in stats.data.attributes.companies] == ["counts", "anonymized"]
+
+
+def test_all_starting_from_a_supplied_cursor_advances_without_a_duplicate_keyword() -> None:
+    rec = Recorder(respond)
+    wf = Wefunder(access_token="at_live_x", transport=rec.transport)
+    ids = [c.id for c in wf.referral_codes.all(cursor=5, per_page=2)]
+    assert ids == ["ref_5", "ref_6", "ref_7"]  # three pages from the saved cursor
+    assert [r.url.params["cursor"] for r in rec.requests] == ["5", "6", "7"]
+    assert all(r.url.params["per_page"] == "2" for r in rec.requests)
+
+    async def run() -> None:
+        rec2 = Recorder(respond)
+        async with AsyncWefunder(access_token="at_live_x", transport=rec2.transport) as awf:
+            got = [c.id async for c in awf.referral_codes.all(cursor=5, per_page=2)]
+        assert got == ["ref_5", "ref_6", "ref_7"]
+        assert [r.url.params["cursor"] for r in rec2.requests] == ["5", "6", "7"]
 
     asyncio.run(run())

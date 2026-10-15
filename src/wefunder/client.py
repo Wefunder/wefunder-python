@@ -127,6 +127,15 @@ def _coerce_kwargs(fn: Callable[..., Any], kwargs: dict[str, Any]) -> dict[str, 
     return out
 
 
+def _with_cursor(query: Mapping[str, Any], cursor: Cursor | None) -> dict[str, Any]:
+    """``query`` with ``cursor`` replacing any starting cursor the caller passed (a duplicate keyword
+    would raise ``TypeError`` on the second page)."""
+    merged = dict(query)
+    if cursor is not None:
+        merged["cursor"] = cursor
+    return merged
+
+
 def _data_of(envelope: Any) -> Any:
     """Single-resource envelopes are ``{data: Entity}``; return the entity for ergonomics."""
     if isinstance(envelope, Mapping):
@@ -376,7 +385,7 @@ class _Offerings(_Namespace):
 
     def all(self, **query: Any) -> Iterator[Any]:
         """Every offering, lazily, ``query`` preserved across pages."""
-        return paginate(lambda cursor: self.list(**query, **({"cursor": cursor} if cursor is not None else {})))
+        return paginate(lambda cursor: self.list(**_with_cursor(query, cursor)))
 
     def get(self, offering_id: str) -> Any:
         return _data_of(self._wf.call(get_offering, external_id=offering_id))
@@ -393,7 +402,7 @@ class _Investments(_Namespace):
         return self._wf.call(list_investments, **query)
 
     def all(self, **query: Any) -> Iterator[Any]:
-        return paginate(lambda cursor: self.list(**query, **({"cursor": cursor} if cursor is not None else {})))
+        return paginate(lambda cursor: self.list(**_with_cursor(query, cursor)))
 
     def collect(self, **query: Any) -> list[Any]:
         return list(self.all(**query))
@@ -407,7 +416,7 @@ class _PortfolioPositions(_Namespace):
         return self._wf.call(list_portfolio_positions, **query)
 
     def all(self, **query: Any) -> Iterator[Any]:
-        return paginate(lambda cursor: self.list(**query, **({"cursor": cursor} if cursor is not None else {})))
+        return paginate(lambda cursor: self.list(**_with_cursor(query, cursor)))
 
 
 class _Portfolio(_Namespace):
@@ -425,7 +434,7 @@ class _Campaigns(_Namespace):
         return self._wf.call(list_campaigns, **query)
 
     def all(self, **query: Any) -> Iterator[Any]:
-        return paginate(lambda cursor: self.list(**query, **({"cursor": cursor} if cursor is not None else {})))
+        return paginate(lambda cursor: self.list(**_with_cursor(query, cursor)))
 
 
 class _Syndicates(_Namespace):
@@ -433,7 +442,7 @@ class _Syndicates(_Namespace):
         return self._wf.call(list_syndicates, **query)
 
     def all(self, **query: Any) -> Iterator[Any]:
-        return paginate(lambda cursor: self.list(**query, **({"cursor": cursor} if cursor is not None else {})))
+        return paginate(lambda cursor: self.list(**_with_cursor(query, cursor)))
 
     def get(self, syndicate_id: str) -> Any:
         return _data_of(self._wf.call(get_syndicate, syndicate_id=syndicate_id))
@@ -446,8 +455,7 @@ class _Syndicates(_Namespace):
             lambda cursor: self._wf.call(
                 list_syndicate_portfolio_positions,
                 syndicate_id=syndicate_id,
-                **query,
-                **({"cursor": cursor} if cursor is not None else {}),
+                **_with_cursor(query, cursor),
             )
         )
 
@@ -457,7 +465,7 @@ class _Intents(_Namespace):
         return self._wf.call(list_intents, **query)
 
     def all(self, **query: Any) -> Iterator[Any]:
-        return paginate(lambda cursor: self.list(**query, **({"cursor": cursor} if cursor is not None else {})))
+        return paginate(lambda cursor: self.list(**_with_cursor(query, cursor)))
 
     def get(self, intent_id: str) -> Any:
         return _data_of(self._wf.call(get_intent, intent_id=intent_id))
@@ -484,7 +492,7 @@ class _MemberLinks(_Namespace):
         return self._wf.call(list_offering_member_links, id=offering_id, **query)
 
     def all(self, offering_id: str) -> Iterator[Any]:
-        return paginate(lambda cursor: self.list(offering_id, **({"cursor": cursor} if cursor is not None else {})))
+        return paginate(lambda cursor: self.list(offering_id, **_with_cursor({}, cursor)))
 
     def create(
         self, offering_id: str, body: Mapping[str, Any] | None = None, *, idempotency_key: str | None = None
@@ -508,14 +516,16 @@ class _MemberLinks(_Namespace):
 
 class _ReferralCodes(_Namespace):
     """``/referral_codes`` (``read:referral_codes`` / ``write:referral_codes``; beta). Mint with your
-    app's server key, add ``?wfr=ref_…`` to any wefunder.com link, and read per-company weekly
-    cohorts from :meth:`stats`. Investors are never identified."""
+    app's server key, add ``?wfr=ref_…`` to any wefunder.com link, and read :meth:`stats`. What
+    ``stats`` shows per company depends on its ``level``: ``counts`` is weekly cohorts (``weeks``),
+    ``anonymized`` is per-investment rows with opaque tokens (``investments``), and ``full``, for an
+    app installed on the company with a founder-tier grant, carries investor names and emails."""
 
     def list(self, **query: Any) -> Any:
         return self._wf.call(list_referral_codes, **query)
 
     def all(self, **query: Any) -> Iterator[Any]:
-        return paginate(lambda cursor: self.list(**query, **({"cursor": cursor} if cursor is not None else {})))
+        return paginate(lambda cursor: self.list(**_with_cursor(query, cursor)))
 
     def get(self, code_id: str) -> Any:
         return _data_of(self._wf.call(get_referral_code, id=code_id))
@@ -789,7 +799,7 @@ class _AsyncNamespace:
 
     def _pages(self, op: Any, **query: Any) -> AsyncIterator[Any]:
         async def fetch(cursor: Cursor | None) -> Any:
-            return await self._wf.call(op, **query, **({"cursor": cursor} if cursor is not None else {}))
+            return await self._wf.call(op, **_with_cursor(query, cursor))
 
         return apaginate(fetch)
 
