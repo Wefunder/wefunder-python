@@ -17,12 +17,17 @@ class InviteLinkAttributesEventsItem:
     """
     Attributes:
         event (str | Unset):  Example: send.
+        wefunder_user_id (None | str | Unset): The account that acted (`usr_...`): the sender of a `send` or
+            `resend`, or a signed-in visitor's click. Null when anonymous.
+            Never an email.
+             Example: usr_sender456.
         city (None | str | Unset):
         country_code (None | str | Unset):
         created_at (datetime.datetime | Unset):
     """
 
     event: str | Unset = UNSET
+    wefunder_user_id: None | str | Unset = UNSET
     city: None | str | Unset = UNSET
     country_code: None | str | Unset = UNSET
     created_at: datetime.datetime | Unset = UNSET
@@ -30,6 +35,12 @@ class InviteLinkAttributesEventsItem:
 
     def to_dict(self) -> dict[str, Any]:
         event = self.event
+
+        wefunder_user_id: None | str | Unset
+        if isinstance(self.wefunder_user_id, Unset):
+            wefunder_user_id = UNSET
+        else:
+            wefunder_user_id = self.wefunder_user_id
 
         city: None | str | Unset
         if isinstance(self.city, Unset):
@@ -52,6 +63,8 @@ class InviteLinkAttributesEventsItem:
         field_dict.update({})
         if event is not UNSET:
             field_dict["event"] = event
+        if wefunder_user_id is not UNSET:
+            field_dict["wefunder_user_id"] = wefunder_user_id
         if city is not UNSET:
             field_dict["city"] = city
         if country_code is not UNSET:
@@ -65,6 +78,15 @@ class InviteLinkAttributesEventsItem:
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
         event = d.pop("event", UNSET)
+
+        def _parse_wefunder_user_id(data: object) -> None | str | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            return cast(None | str | Unset, data)
+
+        wefunder_user_id = _parse_wefunder_user_id(d.pop("wefunder_user_id", UNSET))
 
         def _parse_city(data: object) -> None | str | Unset:
             if data is None:
@@ -93,6 +115,7 @@ class InviteLinkAttributesEventsItem:
 
         invite_link_attributes_events_item = cls(
             event=event,
+            wefunder_user_id=wefunder_user_id,
             city=city,
             country_code=country_code,
             created_at=created_at,

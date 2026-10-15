@@ -111,6 +111,11 @@ def sync_detailed(
     An action still rolling out per account returns 403 `feature_disabled` for a user who is
     not yet enabled. `POST /intents/preview` runs the same checks without minting.
 
+    `syndicates.close_deal` and `syndicates.finalize_deal` were removed in `2026-10-15`: on this
+    version they answer 400 `bad_request` ("Unknown action") with `details.removed_in_version`.
+    A syndicate's managers close and finalize deals on wefunder.com. Intents minted before
+    still appear in `GET /intents` with those action names.
+
     See [Intents documentation](/concepts/intents) for the full pattern.
 
     Args:
@@ -168,6 +173,11 @@ def sync(
     An action still rolling out per account returns 403 `feature_disabled` for a user who is
     not yet enabled. `POST /intents/preview` runs the same checks without minting.
 
+    `syndicates.close_deal` and `syndicates.finalize_deal` were removed in `2026-10-15`: on this
+    version they answer 400 `bad_request` ("Unknown action") with `details.removed_in_version`.
+    A syndicate's managers close and finalize deals on wefunder.com. Intents minted before
+    still appear in `GET /intents` with those action names.
+
     See [Intents documentation](/concepts/intents) for the full pattern.
 
     Args:
@@ -219,6 +229,11 @@ async def asyncio_detailed(
 
     An action still rolling out per account returns 403 `feature_disabled` for a user who is
     not yet enabled. `POST /intents/preview` runs the same checks without minting.
+
+    `syndicates.close_deal` and `syndicates.finalize_deal` were removed in `2026-10-15`: on this
+    version they answer 400 `bad_request` ("Unknown action") with `details.removed_in_version`.
+    A syndicate's managers close and finalize deals on wefunder.com. Intents minted before
+    still appear in `GET /intents` with those action names.
 
     See [Intents documentation](/concepts/intents) for the full pattern.
 
@@ -274,6 +289,11 @@ async def asyncio(
 
     An action still rolling out per account returns 403 `feature_disabled` for a user who is
     not yet enabled. `POST /intents/preview` runs the same checks without minting.
+
+    `syndicates.close_deal` and `syndicates.finalize_deal` were removed in `2026-10-15`: on this
+    version they answer 400 `bad_request` ("Unknown action") with `details.removed_in_version`.
+    A syndicate's managers close and finalize deals on wefunder.com. Intents minted before
+    still appear in `GET /intents` with those action names.
 
     See [Intents documentation](/concepts/intents) for the full pattern.
 

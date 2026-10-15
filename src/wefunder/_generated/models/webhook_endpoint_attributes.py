@@ -17,11 +17,17 @@ T = TypeVar("T", bound="WebhookEndpointAttributes")
 class WebhookEndpointAttributes:
     """
     Attributes:
-        url (str | Unset):
+        url (str | Unset): The full URL. App-wide endpoints always carry it; an installation-bound endpoint carries
+            it only in the create response that made it, and `url_hint` everywhere else.
+        url_hint (str | Unset): Host plus the last six characters of a bound endpoint's URL, for recognition only.
+            Example: hooks.zapier.com …3kq9Zz.
+        installation (None | str | Unset): The installation this endpoint is bound to (`inst_…`), or null for an app-
+            wide endpoint. Example: inst_7hQExampleInstall01.
         mode (WebhookEndpointAttributesMode | Unset):
         events (list[str] | Unset):
         enabled (bool | Unset):
-        secret (str | Unset): Signing secret. Present only in create and rotate_secret responses.
+        secret (str | Unset): Signing secret. Present only in create and rotate_secret responses. Example:
+            whsec_4Zb7ExampleSigningSecret0000000000.
         failing_since (datetime.datetime | None | Unset):
         last_delivery_at (datetime.datetime | None | Unset):
         last_delivery_status (None | str | Unset): Outcome of the most recent delivery: the HTTP status code as a string
@@ -33,6 +39,8 @@ class WebhookEndpointAttributes:
     """
 
     url: str | Unset = UNSET
+    url_hint: str | Unset = UNSET
+    installation: None | str | Unset = UNSET
     mode: WebhookEndpointAttributesMode | Unset = UNSET
     events: list[str] | Unset = UNSET
     enabled: bool | Unset = UNSET
@@ -45,6 +53,14 @@ class WebhookEndpointAttributes:
 
     def to_dict(self) -> dict[str, Any]:
         url = self.url
+
+        url_hint = self.url_hint
+
+        installation: None | str | Unset
+        if isinstance(self.installation, Unset):
+            installation = UNSET
+        else:
+            installation = self.installation
 
         mode: str | Unset = UNSET
         if not isinstance(self.mode, Unset):
@@ -89,6 +105,10 @@ class WebhookEndpointAttributes:
         field_dict.update({})
         if url is not UNSET:
             field_dict["url"] = url
+        if url_hint is not UNSET:
+            field_dict["url_hint"] = url_hint
+        if installation is not UNSET:
+            field_dict["installation"] = installation
         if mode is not UNSET:
             field_dict["mode"] = mode
         if events is not UNSET:
@@ -112,6 +132,17 @@ class WebhookEndpointAttributes:
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
         url = d.pop("url", UNSET)
+
+        url_hint = d.pop("url_hint", UNSET)
+
+        def _parse_installation(data: object) -> None | str | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            return cast(None | str | Unset, data)
+
+        installation = _parse_installation(d.pop("installation", UNSET))
 
         _mode = d.pop("mode", UNSET)
         mode: WebhookEndpointAttributesMode | Unset
@@ -178,6 +209,8 @@ class WebhookEndpointAttributes:
 
         webhook_endpoint_attributes = cls(
             url=url,
+            url_hint=url_hint,
+            installation=installation,
             mode=mode,
             events=events,
             enabled=enabled,

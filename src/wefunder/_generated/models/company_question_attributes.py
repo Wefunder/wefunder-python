@@ -7,7 +7,9 @@ from typing import TYPE_CHECKING, Any, TypeVar, cast
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
-from ..models.company_question_attributes_match import CompanyQuestionAttributesMatch
+from ..models.company_question_attributes_match_type_1 import CompanyQuestionAttributesMatchType1
+from ..models.company_question_attributes_match_type_2_type_1 import CompanyQuestionAttributesMatchType2Type1
+from ..models.company_question_attributes_match_type_3_type_1 import CompanyQuestionAttributesMatchType3Type1
 from ..types import UNSET, Unset
 
 if TYPE_CHECKING:
@@ -28,8 +30,9 @@ class CompanyQuestionAttributes:
         likes_count (int | Unset):
         highlighted (bool | Unset): The team highlighted this question on the tab.
         answered_by_team (bool | Unset):
-        match (CompanyQuestionAttributesMatch | Unset): In a search (`q`), whether the question's own text or one of its
-            answers matched. Null otherwise.
+        match (CompanyQuestionAttributesMatchType1 | CompanyQuestionAttributesMatchType2Type1 |
+            CompanyQuestionAttributesMatchType3Type1 | None | Unset): In a search (`q`), whether the question's own text or
+            one of its answers matched. Null otherwise.
         answers (list[CompanyQuestionAttributesAnswersItem] | Unset):
         url (None | str | Unset): The company's Ask tab on wefunder.com.
     """
@@ -40,7 +43,13 @@ class CompanyQuestionAttributes:
     likes_count: int | Unset = UNSET
     highlighted: bool | Unset = UNSET
     answered_by_team: bool | Unset = UNSET
-    match: CompanyQuestionAttributesMatch | Unset = UNSET
+    match: (
+        CompanyQuestionAttributesMatchType1
+        | CompanyQuestionAttributesMatchType2Type1
+        | CompanyQuestionAttributesMatchType3Type1
+        | None
+        | Unset
+    ) = UNSET
     answers: list[CompanyQuestionAttributesAnswersItem] | Unset = UNSET
     url: None | str | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
@@ -70,9 +79,17 @@ class CompanyQuestionAttributes:
 
         answered_by_team = self.answered_by_team
 
-        match: str | Unset = UNSET
-        if not isinstance(self.match, Unset):
+        match: None | str | Unset
+        if isinstance(self.match, Unset):
+            match = UNSET
+        elif (
+            isinstance(self.match, CompanyQuestionAttributesMatchType1)
+            or isinstance(self.match, CompanyQuestionAttributesMatchType2Type1)
+            or isinstance(self.match, CompanyQuestionAttributesMatchType3Type1)
+        ):
             match = self.match.value
+        else:
+            match = self.match
 
         answers: list[dict[str, Any]] | Unset = UNSET
         if not isinstance(self.answers, Unset):
@@ -159,12 +176,53 @@ class CompanyQuestionAttributes:
 
         answered_by_team = d.pop("answered_by_team", UNSET)
 
-        _match = d.pop("match", UNSET)
-        match: CompanyQuestionAttributesMatch | Unset
-        if isinstance(_match, Unset):
-            match = UNSET
-        else:
-            match = CompanyQuestionAttributesMatch(_match)
+        def _parse_match(
+            data: object,
+        ) -> (
+            CompanyQuestionAttributesMatchType1
+            | CompanyQuestionAttributesMatchType2Type1
+            | CompanyQuestionAttributesMatchType3Type1
+            | None
+            | Unset
+        ):
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, str):
+                    raise TypeError()
+                match_type_1 = CompanyQuestionAttributesMatchType1(data)
+
+                return match_type_1
+            except (TypeError, ValueError, AttributeError, KeyError):
+                pass
+            try:
+                if not isinstance(data, str):
+                    raise TypeError()
+                match_type_2_type_1 = CompanyQuestionAttributesMatchType2Type1(data)
+
+                return match_type_2_type_1
+            except (TypeError, ValueError, AttributeError, KeyError):
+                pass
+            try:
+                if not isinstance(data, str):
+                    raise TypeError()
+                match_type_3_type_1 = CompanyQuestionAttributesMatchType3Type1(data)
+
+                return match_type_3_type_1
+            except (TypeError, ValueError, AttributeError, KeyError):
+                pass
+            return cast(
+                CompanyQuestionAttributesMatchType1
+                | CompanyQuestionAttributesMatchType2Type1
+                | CompanyQuestionAttributesMatchType3Type1
+                | None
+                | Unset,
+                data,
+            )
+
+        match = _parse_match(d.pop("match", UNSET))
 
         _answers = d.pop("answers", UNSET)
         answers: list[CompanyQuestionAttributesAnswersItem] | Unset = UNSET

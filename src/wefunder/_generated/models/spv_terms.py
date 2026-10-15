@@ -6,7 +6,9 @@ from typing import Any, TypeVar, cast
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
-from ..models.spv_terms_safe_type import SpvTermsSafeType
+from ..models.spv_terms_safe_type_type_1 import SpvTermsSafeTypeType1
+from ..models.spv_terms_safe_type_type_2_type_1 import SpvTermsSafeTypeType2Type1
+from ..models.spv_terms_safe_type_type_3_type_1 import SpvTermsSafeTypeType3Type1
 from ..models.spv_terms_structure import SpvTermsStructure
 from ..types import UNSET, Unset
 
@@ -22,7 +24,8 @@ class SpvTerms:
         valuation_cap_cents (int):  Example: 1000000000.
         minimum_investment_cents (int):  Example: 1000000.
         target_raise_cents (int):  Example: 100000000.
-        safe_type (SpvTermsSafeType | Unset): Required when `structure` is `safe`. Example: post_money.
+        safe_type (None | SpvTermsSafeTypeType1 | SpvTermsSafeTypeType2Type1 | SpvTermsSafeTypeType3Type1 | Unset):
+            Required when `structure` is `safe`. Example: post_money.
         discount_percent (int | None | Unset): Discount percentage (e.g. 20 for 20%).
         max_raise_cents (int | None | Unset):  Example: 200000000.
     """
@@ -31,7 +34,7 @@ class SpvTerms:
     valuation_cap_cents: int
     minimum_investment_cents: int
     target_raise_cents: int
-    safe_type: SpvTermsSafeType | Unset = UNSET
+    safe_type: None | SpvTermsSafeTypeType1 | SpvTermsSafeTypeType2Type1 | SpvTermsSafeTypeType3Type1 | Unset = UNSET
     discount_percent: int | None | Unset = UNSET
     max_raise_cents: int | None | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
@@ -45,9 +48,17 @@ class SpvTerms:
 
         target_raise_cents = self.target_raise_cents
 
-        safe_type: str | Unset = UNSET
-        if not isinstance(self.safe_type, Unset):
+        safe_type: None | str | Unset
+        if isinstance(self.safe_type, Unset):
+            safe_type = UNSET
+        elif (
+            isinstance(self.safe_type, SpvTermsSafeTypeType1)
+            or isinstance(self.safe_type, SpvTermsSafeTypeType2Type1)
+            or isinstance(self.safe_type, SpvTermsSafeTypeType3Type1)
+        ):
             safe_type = self.safe_type.value
+        else:
+            safe_type = self.safe_type
 
         discount_percent: int | None | Unset
         if isinstance(self.discount_percent, Unset):
@@ -91,12 +102,42 @@ class SpvTerms:
 
         target_raise_cents = d.pop("target_raise_cents")
 
-        _safe_type = d.pop("safe_type", UNSET)
-        safe_type: SpvTermsSafeType | Unset
-        if isinstance(_safe_type, Unset):
-            safe_type = UNSET
-        else:
-            safe_type = SpvTermsSafeType(_safe_type)
+        def _parse_safe_type(
+            data: object,
+        ) -> None | SpvTermsSafeTypeType1 | SpvTermsSafeTypeType2Type1 | SpvTermsSafeTypeType3Type1 | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, str):
+                    raise TypeError()
+                safe_type_type_1 = SpvTermsSafeTypeType1(data)
+
+                return safe_type_type_1
+            except (TypeError, ValueError, AttributeError, KeyError):
+                pass
+            try:
+                if not isinstance(data, str):
+                    raise TypeError()
+                safe_type_type_2_type_1 = SpvTermsSafeTypeType2Type1(data)
+
+                return safe_type_type_2_type_1
+            except (TypeError, ValueError, AttributeError, KeyError):
+                pass
+            try:
+                if not isinstance(data, str):
+                    raise TypeError()
+                safe_type_type_3_type_1 = SpvTermsSafeTypeType3Type1(data)
+
+                return safe_type_type_3_type_1
+            except (TypeError, ValueError, AttributeError, KeyError):
+                pass
+            return cast(
+                None | SpvTermsSafeTypeType1 | SpvTermsSafeTypeType2Type1 | SpvTermsSafeTypeType3Type1 | Unset, data
+            )
+
+        safe_type = _parse_safe_type(d.pop("safe_type", UNSET))
 
         def _parse_discount_percent(data: object) -> int | None | Unset:
             if data is None:

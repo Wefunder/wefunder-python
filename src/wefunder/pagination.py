@@ -24,7 +24,12 @@ def _attr_or_key(obj: Any, name: str) -> Any:
         return obj.get(name)
     value = getattr(obj, name, None)
     # openapi-python-client marks absent fields with an ``Unset`` sentinel.
-    return None if type(value).__name__ == "Unset" else value
+    if value is None or type(value).__name__ == "Unset":
+        # An operation the spec types as a bare object parses into a model that keeps every key in
+        # ``additional_properties`` (join sessions today); read the page from there.
+        extra = getattr(obj, "additional_properties", None)
+        return extra.get(name) if isinstance(extra, Mapping) else None
+    return value
 
 
 def page_parts(page: Any) -> tuple[list[Any], bool | None, Cursor | None]:

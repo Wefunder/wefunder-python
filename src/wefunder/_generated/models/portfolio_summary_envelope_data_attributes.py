@@ -22,7 +22,12 @@ T = TypeVar("T", bound="PortfolioSummaryEnvelopeDataAttributes")
 class PortfolioSummaryEnvelopeDataAttributes:
     """
     Attributes:
-        currency (str | Unset):  Example: usd.
+        currency (str | Unset): ISO 4217 code, lower-case, of the four `total_*_cents` figures. Money is summed in one
+            currency only: `usd` when any position is in USD, otherwise the portfolio's only currency (`eur`). Example: usd.
+        other_currencies (list[str] | Unset): Currencies of positions left out of the totals because they are not in
+            `currency` (an investor holding both USD and EUR rounds sees `["eur"]`). Empty for most portfolios. Those
+            positions still count in the status counts and are listed, each with its own `currency`, by the positions
+            endpoint. Example: [].
         total_cost_basis_cents (int | Unset):
         total_current_value_cents (int | Unset):
         total_unrealized_gain_cents (int | Unset):
@@ -33,6 +38,7 @@ class PortfolioSummaryEnvelopeDataAttributes:
     """
 
     currency: str | Unset = UNSET
+    other_currencies: list[str] | Unset = UNSET
     total_cost_basis_cents: int | Unset = UNSET
     total_current_value_cents: int | Unset = UNSET
     total_unrealized_gain_cents: int | Unset = UNSET
@@ -44,6 +50,10 @@ class PortfolioSummaryEnvelopeDataAttributes:
 
     def to_dict(self) -> dict[str, Any]:
         currency = self.currency
+
+        other_currencies: list[str] | Unset = UNSET
+        if not isinstance(self.other_currencies, Unset):
+            other_currencies = self.other_currencies
 
         total_cost_basis_cents = self.total_cost_basis_cents
 
@@ -76,6 +86,8 @@ class PortfolioSummaryEnvelopeDataAttributes:
         field_dict.update({})
         if currency is not UNSET:
             field_dict["currency"] = currency
+        if other_currencies is not UNSET:
+            field_dict["other_currencies"] = other_currencies
         if total_cost_basis_cents is not UNSET:
             field_dict["total_cost_basis_cents"] = total_cost_basis_cents
         if total_current_value_cents is not UNSET:
@@ -101,6 +113,8 @@ class PortfolioSummaryEnvelopeDataAttributes:
 
         d = dict(src_dict)
         currency = d.pop("currency", UNSET)
+
+        other_currencies = cast(list[str], d.pop("other_currencies", UNSET))
 
         total_cost_basis_cents = d.pop("total_cost_basis_cents", UNSET)
 
@@ -145,6 +159,7 @@ class PortfolioSummaryEnvelopeDataAttributes:
 
         portfolio_summary_envelope_data_attributes = cls(
             currency=currency,
+            other_currencies=other_currencies,
             total_cost_basis_cents=total_cost_basis_cents,
             total_current_value_cents=total_current_value_cents,
             total_unrealized_gain_cents=total_unrealized_gain_cents,

@@ -104,6 +104,15 @@ wf = Wefunder(tokens=load_tokens(), client_id=client_id, client_secret=client_se
 Concurrent requests that hit a 401 at the same time share one refresh. If several application
 instances can use the same OAuth connection, serialize refreshes for that connection yourself.
 
+## API version
+
+The SDK sends `Wefunder-Version: 2026-10-15` on every request (`DEFAULT_API_VERSION`); pass
+`api_version=` to pin an older one. 1.1.0 moved the default from the pre-launch `2025-01-15` alias:
+`GET /activity` and the syndicate deal `close` / `finalize` operations (and the
+`syndicates.close_deal` / `finalize_deal` intent actions) are not part of 2026-10-15, so their
+generated modules are gone; the legacy Attribution and attribution-webhook operations, removed
+from the API on 2026-10-14, left with them (`wf.attribution` is gone; use `wf.referral_codes`).
+
 ## Calling the API
 
 ```python
@@ -113,7 +122,8 @@ portfolio = wf.portfolio.get()
 ```
 
 Namespaces: `users`, `offerings`, `investments`, `portfolio`, `campaigns`, `syndicates`, `intents`,
-`attribution`, `installations`, and `webhook_endpoints`. `wf.installations` lets your app act as a
+`installations`, `member_links`, `referral_codes`, `join_sessions`, `investment_sessions`, and
+`webhook_endpoints`. `wf.installations` lets your app act as a
 company or syndicate: `eligible_targets()`, `create()`, `mint_token()`, `list()`, `get()`, `revoke()`,
 and `install_or_mint_token()`, which handles the API's 409 `already_installed` answer by minting a
 token for the existing install with the same scopes. Enum-typed query parameters accept plain strings, and
@@ -171,7 +181,7 @@ async with await AsyncWefunder.from_client_credentials(client_id=..., client_sec
 ```
 
 `AsyncWefunder` has the same plumbing (auth, recovery, retries, typed errors, `raw`, `request()`) and
-namespaces for `users`, `offerings`, `investments`, `portfolio`, `installations`, and `webhook_endpoints`. Reach every
+namespaces for `users`, `offerings`, `investments`, `portfolio`, `installations`, `member_links`, `referral_codes`, `join_sessions`, `investment_sessions`, and `webhook_endpoints`. Reach every
 other operation with `await wf.call(op, ...)` (see below).
 
 ## Webhooks

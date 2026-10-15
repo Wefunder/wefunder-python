@@ -14,7 +14,7 @@ class CreateIntentBodyParams:
     """Action-specific parameters
 
     Example:
-        {'fundraise_id': 99}
+        {'member_id': 'mem_7Hk2mP9qR4sT1uV6wX8yZ3aB'}
 
     """
 

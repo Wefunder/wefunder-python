@@ -70,6 +70,18 @@ def sync_detailed(
     The response includes the user's unique ID which can be used to reference the user in other API
     calls.
 
+    Two shapes, depending on the token:
+
+    - **With `read:profile`** (or `write:profile`): the full profile shown in the example.
+    - **Any other user token**: only the user's id and type,
+      `{"data": {"id": "usr_...", "type": "user"}}`, with no `attributes`. Use it to learn
+      whose token you hold; it never includes the email, name, username or city.
+
+    A token with no user (a server-side `client_credentials` key, or an installation acting
+    as a company or syndicate) gets `403`. Before this change a user token without
+    `read:profile` got `403` here too; code that read `attributes` unconditionally should
+    now check for it.
+
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
@@ -104,6 +116,18 @@ def sync(
     The response includes the user's unique ID which can be used to reference the user in other API
     calls.
 
+    Two shapes, depending on the token:
+
+    - **With `read:profile`** (or `write:profile`): the full profile shown in the example.
+    - **Any other user token**: only the user's id and type,
+      `{"data": {"id": "usr_...", "type": "user"}}`, with no `attributes`. Use it to learn
+      whose token you hold; it never includes the email, name, username or city.
+
+    A token with no user (a server-side `client_credentials` key, or an installation acting
+    as a company or syndicate) gets `403`. Before this change a user token without
+    `read:profile` got `403` here too; code that read `attributes` unconditionally should
+    now check for it.
+
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
@@ -133,6 +157,18 @@ async def asyncio_detailed(
 
     The response includes the user's unique ID which can be used to reference the user in other API
     calls.
+
+    Two shapes, depending on the token:
+
+    - **With `read:profile`** (or `write:profile`): the full profile shown in the example.
+    - **Any other user token**: only the user's id and type,
+      `{"data": {"id": "usr_...", "type": "user"}}`, with no `attributes`. Use it to learn
+      whose token you hold; it never includes the email, name, username or city.
+
+    A token with no user (a server-side `client_credentials` key, or an installation acting
+    as a company or syndicate) gets `403`. Before this change a user token without
+    `read:profile` got `403` here too; code that read `attributes` unconditionally should
+    now check for it.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -165,6 +201,18 @@ async def asyncio(
 
     The response includes the user's unique ID which can be used to reference the user in other API
     calls.
+
+    Two shapes, depending on the token:
+
+    - **With `read:profile`** (or `write:profile`): the full profile shown in the example.
+    - **Any other user token**: only the user's id and type,
+      `{"data": {"id": "usr_...", "type": "user"}}`, with no `attributes`. Use it to learn
+      whose token you hold; it never includes the email, name, username or city.
+
+    A token with no user (a server-side `client_credentials` key, or an installation acting
+    as a company or syndicate) gets `403`. Before this change a user token without
+    `read:profile` got `403` here too; code that read `attributes` unconditionally should
+    now check for it.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.

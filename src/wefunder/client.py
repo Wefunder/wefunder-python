@@ -17,7 +17,6 @@ from typing import Any, Literal
 
 import httpx
 
-from ._generated.api.attribution_partners import get_attribution_me
 from ._generated.api.campaigns import list_campaigns
 from ._generated.api.explore import get_offering, list_offerings
 from ._generated.api.installations import (
@@ -30,7 +29,32 @@ from ._generated.api.installations import (
 )
 from ._generated.api.intents import create_intent, get_intent, list_intents, preview_intent
 from ._generated.api.investments import get_investment, get_offering_stats, list_investments
+from ._generated.api.member_links import (
+    cancel_member_link,
+    create_offering_member_link,
+    get_member_link,
+    list_offering_member_links,
+)
+from ._generated.api.partner_invites_sessions import (
+    cancel_investment_session,
+    create_offering_investment_session,
+    get_investment_session,
+    list_investment_sessions,
+    list_offering_investment_sessions,
+)
 from ._generated.api.portfolio import get_portfolio, list_portfolio_positions
+from ._generated.api.referral_codes import (
+    create_referral_code,
+    get_referral_code,
+    get_referral_code_stats,
+    list_referral_codes,
+    update_referral_code,
+)
+from ._generated.api.syndicate_members import (
+    create_syndicate_join_session,
+    get_syndicate_join_session,
+    list_syndicate_join_sessions,
+)
 from ._generated.api.syndicate_portfolio import get_syndicate_portfolio, list_syndicate_portfolio_positions
 from ._generated.api.syndicates import get_syndicate, list_syndicates
 from ._generated.api.users import get_current_user
@@ -47,8 +71,13 @@ from ._generated.api.webhook_endpoints import (
 from ._generated.client import AuthenticatedClient
 from ._generated.models.create_installation_body import CreateInstallationBody
 from ._generated.models.create_installation_token_body import CreateInstallationTokenBody
+from ._generated.models.create_offering_investment_session_body import CreateOfferingInvestmentSessionBody
+from ._generated.models.create_offering_member_link_body import CreateOfferingMemberLinkBody
+from ._generated.models.create_referral_code_body import CreateReferralCodeBody
+from ._generated.models.create_syndicate_join_session_body import CreateSyndicateJoinSessionBody
 from ._generated.models.create_webhook_endpoint_body import CreateWebhookEndpointBody
 from ._generated.models.test_webhook_endpoint_body import TestWebhookEndpointBody
+from ._generated.models.update_referral_code_body import UpdateReferralCodeBody
 from ._generated.models.update_webhook_endpoint_body import UpdateWebhookEndpointBody
 from ._generated.types import UNSET, Response, Unset
 from ._retry import AsyncRetryTransport, RetryOptions, RetryTransport
@@ -67,7 +96,7 @@ from .token_manager import AsyncTokenManager, TokenManager, TokenStore
 # a working back-compat alias. The API version is pinned via the ``Wefunder-Version``
 # header, not the path.
 DEFAULT_API_BASE_URL = "https://api.wefunder.com"
-DEFAULT_API_VERSION = "2025-01-15"
+DEFAULT_API_VERSION = "2026-10-15"
 API_VERSION_HEADER = "Wefunder-Version"
 
 Mode = Literal["live", "test", "unknown"]
@@ -112,12 +141,26 @@ def _coerce_kwargs(fn: Callable[..., Any], kwargs: dict[str, Any]) -> dict[str, 
     return out
 
 
+def _with_cursor(query: Mapping[str, Any], cursor: Cursor | None) -> dict[str, Any]:
+    """``query`` with ``cursor`` replacing any starting cursor the caller passed (a duplicate keyword
+    would raise ``TypeError`` on the second page)."""
+    merged = dict(query)
+    if cursor is not None:
+        merged["cursor"] = cursor
+    return merged
+
+
 def _data_of(envelope: Any) -> Any:
     """Single-resource envelopes are ``{data: Entity}``; return the entity for ergonomics."""
     if isinstance(envelope, Mapping):
         return envelope.get("data")
     data = getattr(envelope, "data", UNSET)
-    return None if isinstance(data, Unset) else data
+    if isinstance(data, Unset):
+        # An operation the spec types as a bare object (join sessions today) parses into a model that
+        # keeps every key in ``additional_properties``; its ``data`` is a plain dict.
+        extra = getattr(envelope, "additional_properties", None)
+        return extra.get("data") if isinstance(extra, Mapping) else None
+    return data
 
 
 def _unwrap(response: Response[Any]) -> Any:
@@ -243,8 +286,11 @@ class Wefunder(_Base):
         self.campaigns = _Campaigns(self)
         self.syndicates = _Syndicates(self)
         self.intents = _Intents(self)
-        self.attribution = _Attribution(self)
         self.installations = _Installations(self)
+        self.member_links = _MemberLinks(self)
+        self.referral_codes = _ReferralCodes(self)
+        self.join_sessions = _JoinSessions(self)
+        self.investment_sessions = _InvestmentSessions(self)
         self.webhook_endpoints = _WebhookEndpoints(self)
 
     @classmethod
@@ -360,7 +406,7 @@ class _Offerings(_Namespace):
 
     def all(self, **query: Any) -> Iterator[Any]:
         """Every offering, lazily, ``query`` preserved across pages."""
-        return paginate(lambda cursor: self.list(**query, **({"cursor": cursor} if cursor is not None else {})))
+        return paginate(lambda cursor: self.list(**_with_cursor(query, cursor)))
 
     def get(self, offering_id: str) -> Any:
         return _data_of(self._wf.call(get_offering, external_id=offering_id))
@@ -377,7 +423,7 @@ class _Investments(_Namespace):
         return self._wf.call(list_investments, **query)
 
     def all(self, **query: Any) -> Iterator[Any]:
-        return paginate(lambda cursor: self.list(**query, **({"cursor": cursor} if cursor is not None else {})))
+        return paginate(lambda cursor: self.list(**_with_cursor(query, cursor)))
 
     def collect(self, **query: Any) -> list[Any]:
         return list(self.all(**query))
@@ -391,7 +437,7 @@ class _PortfolioPositions(_Namespace):
         return self._wf.call(list_portfolio_positions, **query)
 
     def all(self, **query: Any) -> Iterator[Any]:
-        return paginate(lambda cursor: self.list(**query, **({"cursor": cursor} if cursor is not None else {})))
+        return paginate(lambda cursor: self.list(**_with_cursor(query, cursor)))
 
 
 class _Portfolio(_Namespace):
@@ -409,7 +455,7 @@ class _Campaigns(_Namespace):
         return self._wf.call(list_campaigns, **query)
 
     def all(self, **query: Any) -> Iterator[Any]:
-        return paginate(lambda cursor: self.list(**query, **({"cursor": cursor} if cursor is not None else {})))
+        return paginate(lambda cursor: self.list(**_with_cursor(query, cursor)))
 
 
 class _Syndicates(_Namespace):
@@ -417,7 +463,7 @@ class _Syndicates(_Namespace):
         return self._wf.call(list_syndicates, **query)
 
     def all(self, **query: Any) -> Iterator[Any]:
-        return paginate(lambda cursor: self.list(**query, **({"cursor": cursor} if cursor is not None else {})))
+        return paginate(lambda cursor: self.list(**_with_cursor(query, cursor)))
 
     def get(self, syndicate_id: str) -> Any:
         return _data_of(self._wf.call(get_syndicate, syndicate_id=syndicate_id))
@@ -430,8 +476,7 @@ class _Syndicates(_Namespace):
             lambda cursor: self._wf.call(
                 list_syndicate_portfolio_positions,
                 syndicate_id=syndicate_id,
-                **query,
-                **({"cursor": cursor} if cursor is not None else {}),
+                **_with_cursor(query, cursor),
             )
         )
 
@@ -441,7 +486,7 @@ class _Intents(_Namespace):
         return self._wf.call(list_intents, **query)
 
     def all(self, **query: Any) -> Iterator[Any]:
-        return paginate(lambda cursor: self.list(**query, **({"cursor": cursor} if cursor is not None else {})))
+        return paginate(lambda cursor: self.list(**_with_cursor(query, cursor)))
 
     def get(self, intent_id: str) -> Any:
         return _data_of(self._wf.call(get_intent, intent_id=intent_id))
@@ -457,9 +502,122 @@ class _Intents(_Namespace):
         return _data_of(self._wf.call(preview_intent, body=PreviewIntentBody.from_dict(dict(body))))
 
 
-class _Attribution(_Namespace):
-    def me(self) -> Any:
-        return _data_of(self._wf.call(get_attribution_me))
+class _JoinSessions(_Namespace):
+    """``/syndicates/{id}/join_sessions`` (``write:syndicate_members`` to mint, ``read:syndicates`` to
+    read; beta). Mint a hosted session for an email, send the person to ``attributes["url"]``, and
+    learn the outcome from :meth:`get` or the ``join_session.*`` webhooks. The spec publishes no
+    response schema for these yet, so sessions come back as plain dicts."""
+
+    def list(self, syndicate_id: str, **query: Any) -> Any:
+        return self._wf.call(list_syndicate_join_sessions, syndicate_id=syndicate_id, **query)
+
+    def all(self, syndicate_id: str, **query: Any) -> Iterator[Any]:
+        return paginate(lambda cursor: self.list(syndicate_id, **_with_cursor(query, cursor)))
+
+    def get(self, syndicate_id: str, session_id: str) -> Any:
+        return _data_of(self._wf.call(get_syndicate_join_session, syndicate_id=syndicate_id, id=session_id))
+
+    def create(self, syndicate_id: str, body: Mapping[str, Any]) -> Any:
+        """Mint a session for one person (``email`` required). Needs a manager's user token or the
+        syndicate's own."""
+        wrapped = CreateSyndicateJoinSessionBody.from_dict({"join_session": dict(body)})
+        return _data_of(self._wf.call(create_syndicate_join_session, syndicate_id=syndicate_id, body=wrapped))
+
+
+class _InvestmentSessions(_Namespace):
+    """``/offerings/{id}/investment_sessions`` and ``/investment_sessions`` (``read:investment_sessions``
+    / ``write:investment_sessions``; beta). A session puts a known investor straight into checkout
+    for one offering and tracks that one investment."""
+
+    def list(self, **query: Any) -> Any:
+        """Every session your app created, across offerings; the envelope."""
+        return self._wf.call(list_investment_sessions, **query)
+
+    def all(self, **query: Any) -> Iterator[Any]:
+        return paginate(lambda cursor: self.list(**_with_cursor(query, cursor)))
+
+    def list_for_offering(self, offering_id: str, **query: Any) -> Any:
+        return self._wf.call(list_offering_investment_sessions, id=offering_id, **query)
+
+    def all_for_offering(self, offering_id: str, **query: Any) -> Iterator[Any]:
+        return paginate(lambda cursor: self.list_for_offering(offering_id, **_with_cursor(query, cursor)))
+
+    def get(self, session_id: str) -> Any:
+        return _data_of(self._wf.call(get_investment_session, id=session_id))
+
+    def create(self, offering_id: str, body: Mapping[str, Any], *, idempotency_key: str | None = None) -> Any:
+        """Create a session on an offering; ``idempotency_key`` makes a retry safe."""
+        kwargs: dict[str, Any] = {
+            "body": CreateOfferingInvestmentSessionBody.from_dict({"investment_session": dict(body)})
+        }
+        if idempotency_key:
+            kwargs["idempotency_key"] = idempotency_key
+        return _data_of(self._wf.call(create_offering_investment_session, id=offering_id, **kwargs))
+
+    def cancel(self, session_id: str) -> Any:
+        """Cancel a session the recipient has not completed."""
+        return _data_of(self._wf.call(cancel_investment_session, id=session_id))
+
+
+class _MemberLinks(_Namespace):
+    """``/offerings/{id}/member_links`` and ``/member_links/{id}`` (``read:invite_links`` /
+    ``write:invite_links``): your app's per-person links that send a member to one deal page and
+    report what they did. Needs a company- or syndicate-owned token of an app installed on the
+    offering's syndicate or company; a user token gets 404."""
+
+    def list(self, offering_id: str, **query: Any) -> Any:
+        """One page of the offering's links; the envelope."""
+        return self._wf.call(list_offering_member_links, id=offering_id, **query)
+
+    def all(self, offering_id: str) -> Iterator[Any]:
+        return paginate(lambda cursor: self.list(offering_id, **_with_cursor({}, cursor)))
+
+    def create(
+        self, offering_id: str, body: Mapping[str, Any] | None = None, *, idempotency_key: str | None = None
+    ) -> Any:
+        """Mint a link (``reference``, optional ``wefunder_user_id``). Repeating a ``reference`` returns
+        the live link instead of a second one; ``idempotency_key`` makes a retry safe too."""
+        kwargs: dict[str, Any] = {}
+        if body:
+            kwargs["body"] = CreateOfferingMemberLinkBody.from_dict({"member_link": dict(body)})
+        if idempotency_key:
+            kwargs["idempotency_key"] = idempotency_key
+        return _data_of(self._wf.call(create_offering_member_link, id=offering_id, **kwargs))
+
+    def get(self, link_id: str) -> Any:
+        return _data_of(self._wf.call(get_member_link, id=link_id))
+
+    def cancel(self, link_id: str) -> Any:
+        """Stop an unused link from opening the deal page."""
+        return _data_of(self._wf.call(cancel_member_link, id=link_id))
+
+
+class _ReferralCodes(_Namespace):
+    """``/referral_codes`` (``read:referral_codes`` / ``write:referral_codes``; beta). Mint with your
+    app's server key, add ``?wfr=ref_…`` to any wefunder.com link, and read :meth:`stats`. What
+    ``stats`` shows per company depends on its ``level``: ``counts`` is weekly cohorts (``weeks``),
+    ``anonymized`` is per-investment rows with opaque tokens (``investments``), and ``full``, for an
+    app installed on the company with a founder-tier grant, carries investor names and emails."""
+
+    def list(self, **query: Any) -> Any:
+        return self._wf.call(list_referral_codes, **query)
+
+    def all(self, **query: Any) -> Iterator[Any]:
+        return paginate(lambda cursor: self.list(**_with_cursor(query, cursor)))
+
+    def get(self, code_id: str) -> Any:
+        return _data_of(self._wf.call(get_referral_code, id=code_id))
+
+    def create(self, body: Mapping[str, Any]) -> Any:
+        """Not idempotent: a retried create can mint a second code, which you can deactivate."""
+        return _data_of(self._wf.call(create_referral_code, body=CreateReferralCodeBody.from_dict(dict(body))))
+
+    def update(self, code_id: str, **changes: Any) -> Any:
+        return _data_of(self._wf.call(update_referral_code, id=code_id, body=UpdateReferralCodeBody.from_dict(changes)))
+
+    def stats(self, code_id: str, **query: Any) -> Any:
+        """Weekly cohorts per company; the envelope (``meta.next_cursor`` pages the company list)."""
+        return self._wf.call(get_referral_code_stats, id=code_id, **query)
 
 
 def _already_installed_id(err: WefunderError) -> str | None:
@@ -564,7 +722,9 @@ class _WebhookEndpoints(_Namespace):
 class AsyncWefunder(_Base):
     """asyncio client. Same plumbing as :class:`Wefunder` (auth, recovery, retries, typed
     errors, ``raw``/``request``); namespaces cover users, offerings, investments, portfolio,
-    installations, and webhook_endpoints — reach the rest through :meth:`call` / :attr:`raw`."""
+    installations, member_links, referral_codes, join_sessions, investment_sessions, and
+    webhook_endpoints — reach the rest through
+    :meth:`call` / :attr:`raw`."""
 
     def __init__(
         self,
@@ -633,6 +793,10 @@ class AsyncWefunder(_Base):
         self.investments = _AsyncInvestments(self)
         self.portfolio = _AsyncPortfolio(self)
         self.installations = _AsyncInstallations(self)
+        self.member_links = _AsyncMemberLinks(self)
+        self.referral_codes = _AsyncReferralCodes(self)
+        self.join_sessions = _AsyncJoinSessions(self)
+        self.investment_sessions = _AsyncInvestmentSessions(self)
         self.webhook_endpoints = _AsyncWebhookEndpoints(self)
 
     @classmethod
@@ -716,7 +880,7 @@ class _AsyncNamespace:
 
     def _pages(self, op: Any, **query: Any) -> AsyncIterator[Any]:
         async def fetch(cursor: Cursor | None) -> Any:
-            return await self._wf.call(op, **query, **({"cursor": cursor} if cursor is not None else {}))
+            return await self._wf.call(op, **_with_cursor(query, cursor))
 
         return apaginate(fetch)
 
@@ -799,6 +963,95 @@ class _AsyncInstallations(_AsyncNamespace):
 
     async def revoke(self, installation_id: str) -> Any:
         return _data_of(await self._wf.call(revoke_installation, external_id=installation_id))
+
+
+class _AsyncJoinSessions(_AsyncNamespace):
+    async def list(self, syndicate_id: str, **query: Any) -> Any:
+        return await self._wf.call(list_syndicate_join_sessions, syndicate_id=syndicate_id, **query)
+
+    def all(self, syndicate_id: str, **query: Any) -> AsyncIterator[Any]:
+        return self._pages(list_syndicate_join_sessions, syndicate_id=syndicate_id, **query)
+
+    async def get(self, syndicate_id: str, session_id: str) -> Any:
+        return _data_of(await self._wf.call(get_syndicate_join_session, syndicate_id=syndicate_id, id=session_id))
+
+    async def create(self, syndicate_id: str, body: Mapping[str, Any]) -> Any:
+        wrapped = CreateSyndicateJoinSessionBody.from_dict({"join_session": dict(body)})
+        return _data_of(await self._wf.call(create_syndicate_join_session, syndicate_id=syndicate_id, body=wrapped))
+
+
+class _AsyncInvestmentSessions(_AsyncNamespace):
+    async def list(self, **query: Any) -> Any:
+        return await self._wf.call(list_investment_sessions, **query)
+
+    def all(self, **query: Any) -> AsyncIterator[Any]:
+        return self._pages(list_investment_sessions, **query)
+
+    async def list_for_offering(self, offering_id: str, **query: Any) -> Any:
+        return await self._wf.call(list_offering_investment_sessions, id=offering_id, **query)
+
+    def all_for_offering(self, offering_id: str, **query: Any) -> AsyncIterator[Any]:
+        return self._pages(list_offering_investment_sessions, id=offering_id, **query)
+
+    async def get(self, session_id: str) -> Any:
+        return _data_of(await self._wf.call(get_investment_session, id=session_id))
+
+    async def create(self, offering_id: str, body: Mapping[str, Any], *, idempotency_key: str | None = None) -> Any:
+        kwargs: dict[str, Any] = {
+            "body": CreateOfferingInvestmentSessionBody.from_dict({"investment_session": dict(body)})
+        }
+        if idempotency_key:
+            kwargs["idempotency_key"] = idempotency_key
+        return _data_of(await self._wf.call(create_offering_investment_session, id=offering_id, **kwargs))
+
+    async def cancel(self, session_id: str) -> Any:
+        return _data_of(await self._wf.call(cancel_investment_session, id=session_id))
+
+
+class _AsyncMemberLinks(_AsyncNamespace):
+    async def list(self, offering_id: str, **query: Any) -> Any:
+        return await self._wf.call(list_offering_member_links, id=offering_id, **query)
+
+    def all(self, offering_id: str) -> AsyncIterator[Any]:
+        return self._pages(list_offering_member_links, id=offering_id)
+
+    async def create(
+        self, offering_id: str, body: Mapping[str, Any] | None = None, *, idempotency_key: str | None = None
+    ) -> Any:
+        kwargs: dict[str, Any] = {}
+        if body:
+            kwargs["body"] = CreateOfferingMemberLinkBody.from_dict({"member_link": dict(body)})
+        if idempotency_key:
+            kwargs["idempotency_key"] = idempotency_key
+        return _data_of(await self._wf.call(create_offering_member_link, id=offering_id, **kwargs))
+
+    async def get(self, link_id: str) -> Any:
+        return _data_of(await self._wf.call(get_member_link, id=link_id))
+
+    async def cancel(self, link_id: str) -> Any:
+        return _data_of(await self._wf.call(cancel_member_link, id=link_id))
+
+
+class _AsyncReferralCodes(_AsyncNamespace):
+    async def list(self, **query: Any) -> Any:
+        return await self._wf.call(list_referral_codes, **query)
+
+    def all(self, **query: Any) -> AsyncIterator[Any]:
+        return self._pages(list_referral_codes, **query)
+
+    async def get(self, code_id: str) -> Any:
+        return _data_of(await self._wf.call(get_referral_code, id=code_id))
+
+    async def create(self, body: Mapping[str, Any]) -> Any:
+        return _data_of(await self._wf.call(create_referral_code, body=CreateReferralCodeBody.from_dict(dict(body))))
+
+    async def update(self, code_id: str, **changes: Any) -> Any:
+        return _data_of(
+            await self._wf.call(update_referral_code, id=code_id, body=UpdateReferralCodeBody.from_dict(changes))
+        )
+
+    async def stats(self, code_id: str, **query: Any) -> Any:
+        return await self._wf.call(get_referral_code_stats, id=code_id, **query)
 
 
 class _AsyncWebhookEndpoints(_AsyncNamespace):

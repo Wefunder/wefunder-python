@@ -29,6 +29,30 @@ class CompanyAttributes:
         logo_url (None | str | Unset):
         card_image_url (None | str | Unset):
         location (CompanyAttributesLocation | Unset):
+        legal_name (None | str | Unset): The company's legal name, as the company entered it. The name on a filed Form C
+            is `business.legal_name` in `/disclosures`. Example: Acme Robotics, Inc..
+        legal_form (None | str | Unset): The company's legal form as the company entered it, free text and not
+            normalized (e.g.
+            "Corporation", "Limited Liability Company", "llc"). The form on a filed Form C is
+            `business.legal_form` in `/disclosures`. The EIN is deliberately not served.
+             Example: Corporation.
+        website_url (None | str | Unset): The company's website, as an absolute URL. Null when none is set or the stored
+            value is not a usable link. Example: https://acme.example.
+        twitter_url (None | str | Unset): The company's X (Twitter) profile, as an absolute URL (a stored handle is
+            expanded). Null when none is set. Example: https://twitter.com/acme.
+        linkedin_url (None | str | Unset): The company's LinkedIn page, as an absolute URL. Null when none is set.
+            Example: https://linkedin.com/company/acme-robotics.
+        facebook_url (None | str | Unset): The company's Facebook page, as an absolute URL. Null when none is set.
+            Example: https://facebook.com/acme.
+        instagram_url (None | str | Unset): The company's Instagram profile, as an absolute URL. Null when none is set.
+            Example: https://instagram.com/acme.
+        promotion_opt_in (bool | Unset): The company's answer to "Who should be able to see your campaign?" on
+            wefunder.com: true
+            for "as public as possible" (eligible for the Explore page and Wefunder's marketing),
+            false for "as private as possible". False does not hide the company or its rounds —
+            anything this API returns is visible to the caller — but the company has asked not to be
+            promoted, so an app that redistributes listings should respect it.
+             Example: True.
         raising (bool | Unset): True when the round the page shows this viewer is live (accepting investments or
             reservations). False for a funded company, or one with no round the viewer may see.
         current_raise (CurrentRaise | None | Unset): The live round the page shows, or null when `raising` is false. A
@@ -47,6 +71,14 @@ class CompanyAttributes:
     logo_url: None | str | Unset = UNSET
     card_image_url: None | str | Unset = UNSET
     location: CompanyAttributesLocation | Unset = UNSET
+    legal_name: None | str | Unset = UNSET
+    legal_form: None | str | Unset = UNSET
+    website_url: None | str | Unset = UNSET
+    twitter_url: None | str | Unset = UNSET
+    linkedin_url: None | str | Unset = UNSET
+    facebook_url: None | str | Unset = UNSET
+    instagram_url: None | str | Unset = UNSET
+    promotion_opt_in: bool | Unset = UNSET
     raising: bool | Unset = UNSET
     current_raise: CurrentRaise | None | Unset = UNSET
     past_rounds: list[PastRound] | Unset = UNSET
@@ -86,6 +118,50 @@ class CompanyAttributes:
         location: dict[str, Any] | Unset = UNSET
         if not isinstance(self.location, Unset):
             location = self.location.to_dict()
+
+        legal_name: None | str | Unset
+        if isinstance(self.legal_name, Unset):
+            legal_name = UNSET
+        else:
+            legal_name = self.legal_name
+
+        legal_form: None | str | Unset
+        if isinstance(self.legal_form, Unset):
+            legal_form = UNSET
+        else:
+            legal_form = self.legal_form
+
+        website_url: None | str | Unset
+        if isinstance(self.website_url, Unset):
+            website_url = UNSET
+        else:
+            website_url = self.website_url
+
+        twitter_url: None | str | Unset
+        if isinstance(self.twitter_url, Unset):
+            twitter_url = UNSET
+        else:
+            twitter_url = self.twitter_url
+
+        linkedin_url: None | str | Unset
+        if isinstance(self.linkedin_url, Unset):
+            linkedin_url = UNSET
+        else:
+            linkedin_url = self.linkedin_url
+
+        facebook_url: None | str | Unset
+        if isinstance(self.facebook_url, Unset):
+            facebook_url = UNSET
+        else:
+            facebook_url = self.facebook_url
+
+        instagram_url: None | str | Unset
+        if isinstance(self.instagram_url, Unset):
+            instagram_url = UNSET
+        else:
+            instagram_url = self.instagram_url
+
+        promotion_opt_in = self.promotion_opt_in
 
         raising = self.raising
 
@@ -130,6 +206,22 @@ class CompanyAttributes:
             field_dict["card_image_url"] = card_image_url
         if location is not UNSET:
             field_dict["location"] = location
+        if legal_name is not UNSET:
+            field_dict["legal_name"] = legal_name
+        if legal_form is not UNSET:
+            field_dict["legal_form"] = legal_form
+        if website_url is not UNSET:
+            field_dict["website_url"] = website_url
+        if twitter_url is not UNSET:
+            field_dict["twitter_url"] = twitter_url
+        if linkedin_url is not UNSET:
+            field_dict["linkedin_url"] = linkedin_url
+        if facebook_url is not UNSET:
+            field_dict["facebook_url"] = facebook_url
+        if instagram_url is not UNSET:
+            field_dict["instagram_url"] = instagram_url
+        if promotion_opt_in is not UNSET:
+            field_dict["promotion_opt_in"] = promotion_opt_in
         if raising is not UNSET:
             field_dict["raising"] = raising
         if current_raise is not UNSET:
@@ -197,6 +289,71 @@ class CompanyAttributes:
         else:
             location = CompanyAttributesLocation.from_dict(_location)
 
+        def _parse_legal_name(data: object) -> None | str | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            return cast(None | str | Unset, data)
+
+        legal_name = _parse_legal_name(d.pop("legal_name", UNSET))
+
+        def _parse_legal_form(data: object) -> None | str | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            return cast(None | str | Unset, data)
+
+        legal_form = _parse_legal_form(d.pop("legal_form", UNSET))
+
+        def _parse_website_url(data: object) -> None | str | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            return cast(None | str | Unset, data)
+
+        website_url = _parse_website_url(d.pop("website_url", UNSET))
+
+        def _parse_twitter_url(data: object) -> None | str | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            return cast(None | str | Unset, data)
+
+        twitter_url = _parse_twitter_url(d.pop("twitter_url", UNSET))
+
+        def _parse_linkedin_url(data: object) -> None | str | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            return cast(None | str | Unset, data)
+
+        linkedin_url = _parse_linkedin_url(d.pop("linkedin_url", UNSET))
+
+        def _parse_facebook_url(data: object) -> None | str | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            return cast(None | str | Unset, data)
+
+        facebook_url = _parse_facebook_url(d.pop("facebook_url", UNSET))
+
+        def _parse_instagram_url(data: object) -> None | str | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            return cast(None | str | Unset, data)
+
+        instagram_url = _parse_instagram_url(d.pop("instagram_url", UNSET))
+
+        promotion_opt_in = d.pop("promotion_opt_in", UNSET)
+
         raising = d.pop("raising", UNSET)
 
         def _parse_current_raise(data: object) -> CurrentRaise | None | Unset:
@@ -248,6 +405,14 @@ class CompanyAttributes:
             logo_url=logo_url,
             card_image_url=card_image_url,
             location=location,
+            legal_name=legal_name,
+            legal_form=legal_form,
+            website_url=website_url,
+            twitter_url=twitter_url,
+            linkedin_url=linkedin_url,
+            facebook_url=facebook_url,
+            instagram_url=instagram_url,
+            promotion_opt_in=promotion_opt_in,
             raising=raising,
             current_raise=current_raise,
             past_rounds=past_rounds,

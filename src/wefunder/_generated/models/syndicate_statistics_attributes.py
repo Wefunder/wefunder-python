@@ -23,8 +23,13 @@ class SyndicateStatisticsAttributes:
             hellbanned users) Example: 45.
         members_by_role (SyndicateStatisticsAttributesMembersByRole | Unset): Member count grouped by role Example:
             {'manager': 3, 'member': 35, 'invitee': 5, 'creator': 1, 'applicant': 1}.
-        total_deals (int | Unset): Total number of linked deals (all linked fundraises) Example: 3.
-        live_deals (int | Unset): Number of currently live deals (open/oversubscribed/closing states) Example: 1.
+        total_deals (int | Unset): Rounds in the syndicate's visible deal set, in any state. Excludes invite-only
+            companies' rounds and testing-the-waters rounds of directory companies, so this
+            is not every round the syndicate has been linked to.
+             Example: 3.
+        live_deals (int | Unset): The open, oversubscribed, or closing subset of `total_deals`; the rows
+            `GET /syndicates/{syndicate_id}/deals` lists.
+             Example: 1.
         total_raised (str | Unset): Total amount raised across directory-selected deals (one per company), in whole
             dollars, as a string.
              Example: 107800.

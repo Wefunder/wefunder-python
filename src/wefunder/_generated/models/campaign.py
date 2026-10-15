@@ -19,12 +19,12 @@ T = TypeVar("T", bound="Campaign")
 class Campaign:
     """
     Attributes:
-        id (int | Unset):  Example: 789.
+        id (str | Unset):  Example: ofr_8Kd0aB3xQ9k2vF8mNp1zT5wY.
         type_ (str | Unset):  Example: campaign.
         attributes (CampaignAttributes | Unset):
     """
 
-    id: int | Unset = UNSET
+    id: str | Unset = UNSET
     type_: str | Unset = UNSET
     attributes: CampaignAttributes | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)

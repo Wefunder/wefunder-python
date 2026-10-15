@@ -15,7 +15,7 @@ T = TypeVar("T", bound="CompanyDisclosuresAttributesUseOfFundsType0Item")
 class CompanyDisclosuresAttributesUseOfFundsType0Item:
     """
     Attributes:
-        if_raised (None | str | Unset): USD, decimal string.
+        if_raised (None | str | Unset): Decimal string in `currency`.
         plan (None | str | Unset):
     """
 

@@ -128,8 +128,11 @@ def sync_detailed(
       ordered by investment. Page with `meta.next_cursor` while `meta.has_more`; the final
       page's cursor is a sync cursor positioned at the moment the listing started.
     - **Sync by cursor**: only the records whose published state changed since the cursor,
-      one record per investment, tombstones (`visible: false`, only `id`) included. Apply in
-      `cursor` order; always store `meta.next_cursor`.
+      one record per investment, tombstones included (`visible: false` with `id`, `observed_at`,
+      `cursor` and `reason`, and no payload fields). Apply in `cursor` order; always store
+      `meta.next_cursor`. Filters are not encoded in the cursor: repeat the same `company_id`,
+      `offering_id` or `investor_id` on every sync request, or the sync widens to the whole
+      audience.
     - **Sync by time**: `updated_since=<ISO 8601>` is sugar for a cursor at the ledger position
       just before that time (with a 60 s safety margin). The response is a normal sync page,
       so continue with its `meta.next_cursor`.
@@ -201,8 +204,11 @@ def sync(
       ordered by investment. Page with `meta.next_cursor` while `meta.has_more`; the final
       page's cursor is a sync cursor positioned at the moment the listing started.
     - **Sync by cursor**: only the records whose published state changed since the cursor,
-      one record per investment, tombstones (`visible: false`, only `id`) included. Apply in
-      `cursor` order; always store `meta.next_cursor`.
+      one record per investment, tombstones included (`visible: false` with `id`, `observed_at`,
+      `cursor` and `reason`, and no payload fields). Apply in `cursor` order; always store
+      `meta.next_cursor`. Filters are not encoded in the cursor: repeat the same `company_id`,
+      `offering_id` or `investor_id` on every sync request, or the sync widens to the whole
+      audience.
     - **Sync by time**: `updated_since=<ISO 8601>` is sugar for a cursor at the ledger position
       just before that time (with a 60 s safety margin). The response is a normal sync page,
       so continue with its `meta.next_cursor`.
@@ -269,8 +275,11 @@ async def asyncio_detailed(
       ordered by investment. Page with `meta.next_cursor` while `meta.has_more`; the final
       page's cursor is a sync cursor positioned at the moment the listing started.
     - **Sync by cursor**: only the records whose published state changed since the cursor,
-      one record per investment, tombstones (`visible: false`, only `id`) included. Apply in
-      `cursor` order; always store `meta.next_cursor`.
+      one record per investment, tombstones included (`visible: false` with `id`, `observed_at`,
+      `cursor` and `reason`, and no payload fields). Apply in `cursor` order; always store
+      `meta.next_cursor`. Filters are not encoded in the cursor: repeat the same `company_id`,
+      `offering_id` or `investor_id` on every sync request, or the sync widens to the whole
+      audience.
     - **Sync by time**: `updated_since=<ISO 8601>` is sugar for a cursor at the ledger position
       just before that time (with a 60 s safety margin). The response is a normal sync page,
       so continue with its `meta.next_cursor`.
@@ -340,8 +349,11 @@ async def asyncio(
       ordered by investment. Page with `meta.next_cursor` while `meta.has_more`; the final
       page's cursor is a sync cursor positioned at the moment the listing started.
     - **Sync by cursor**: only the records whose published state changed since the cursor,
-      one record per investment, tombstones (`visible: false`, only `id`) included. Apply in
-      `cursor` order; always store `meta.next_cursor`.
+      one record per investment, tombstones included (`visible: false` with `id`, `observed_at`,
+      `cursor` and `reason`, and no payload fields). Apply in `cursor` order; always store
+      `meta.next_cursor`. Filters are not encoded in the cursor: repeat the same `company_id`,
+      `offering_id` or `investor_id` on every sync request, or the sync widens to the whole
+      audience.
     - **Sync by time**: `updated_since=<ISO 8601>` is sugar for a cursor at the ledger position
       just before that time (with a 60 s safety margin). The response is a normal sync page,
       so continue with its `meta.next_cursor`.

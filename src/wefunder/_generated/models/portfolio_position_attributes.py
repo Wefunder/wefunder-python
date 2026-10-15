@@ -8,7 +8,13 @@ from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
 from ..models.portfolio_position_attributes_asset_type import PortfolioPositionAttributesAssetType
-from ..models.portfolio_position_attributes_exit_reason import PortfolioPositionAttributesExitReason
+from ..models.portfolio_position_attributes_exit_reason_type_1 import PortfolioPositionAttributesExitReasonType1
+from ..models.portfolio_position_attributes_exit_reason_type_2_type_1 import (
+    PortfolioPositionAttributesExitReasonType2Type1,
+)
+from ..models.portfolio_position_attributes_exit_reason_type_3_type_1 import (
+    PortfolioPositionAttributesExitReasonType3Type1,
+)
 from ..models.portfolio_position_attributes_status import PortfolioPositionAttributesStatus
 from ..types import UNSET, Unset
 
@@ -34,17 +40,27 @@ class PortfolioPositionAttributes:
             no security recorded.
         status (PortfolioPositionAttributesStatus | Unset): `sold` means the stake was transferred away (secondary
             sale).
-        exit_reason (PortfolioPositionAttributesExitReason | Unset): Why the position ended. Set only for `exited` and
+        exit_reason (None | PortfolioPositionAttributesExitReasonType1 | PortfolioPositionAttributesExitReasonType2Type1
+            | PortfolioPositionAttributesExitReasonType3Type1 | Unset): Why the position ended. Set only for `exited` and
             `failed`
             positions — a `sold` position ended with the transfer itself, and
             some older positions have no recorded ending. `ipo` means the
             company went public; distributions, if any, appear in
             `realized_gain_cents`.
+        exited_on (datetime.date | None | Unset): The date the position ended (`YYYY-MM-DD`): the effective date of
+            the company's recorded exit. Set only for `exited` and `failed`
+            positions, and null for older exits recorded before Wefunder kept
+            exit dates, even when `exit_reason` is present.
+             Example: 2026-08-15.
         invested_at (datetime.datetime | None | Unset):
-        currency (str | Unset):  Example: usd.
+        currency (str | Unset): ISO 4217 code, lower-case, of the investment amounts on this position and its
+            `securities` (cost basis, values, gains, share price) — the offering's currency: `usd`, or `eur` for an ECSP
+            round. A security's note cap and pre-money valuation carry their own `terms.currency`, which can differ.
+            Example: usd.
         cost_basis_cents (int | Unset):
-        current_value_cents (int | Unset): Estimated current value; based on cost basis when no newer valuation has been
-            recorded.
+        current_value_cents (int | Unset): Estimated current value. It equals `cost_basis_cents` until a later priced
+            round, a recorded valuation mark, or an exit marks the position, so an active position reading at cost is
+            expected, not missing data.
         unrealized_gain_cents (int | Unset): Can be negative.
         realized_gain_cents (int | Unset):
         return_multiple (None | str | Unset): Decimal string. Null when cost basis is zero. Example: 1.6492.
@@ -65,7 +81,14 @@ class PortfolioPositionAttributes:
     asset_type: PortfolioPositionAttributesAssetType | Unset = UNSET
     security: None | SecuritySummary | Unset = UNSET
     status: PortfolioPositionAttributesStatus | Unset = UNSET
-    exit_reason: PortfolioPositionAttributesExitReason | Unset = UNSET
+    exit_reason: (
+        None
+        | PortfolioPositionAttributesExitReasonType1
+        | PortfolioPositionAttributesExitReasonType2Type1
+        | PortfolioPositionAttributesExitReasonType3Type1
+        | Unset
+    ) = UNSET
+    exited_on: datetime.date | None | Unset = UNSET
     invested_at: datetime.datetime | None | Unset = UNSET
     currency: str | Unset = UNSET
     cost_basis_cents: int | Unset = UNSET
@@ -106,9 +129,25 @@ class PortfolioPositionAttributes:
         if not isinstance(self.status, Unset):
             status = self.status.value
 
-        exit_reason: str | Unset = UNSET
-        if not isinstance(self.exit_reason, Unset):
+        exit_reason: None | str | Unset
+        if isinstance(self.exit_reason, Unset):
+            exit_reason = UNSET
+        elif (
+            isinstance(self.exit_reason, PortfolioPositionAttributesExitReasonType1)
+            or isinstance(self.exit_reason, PortfolioPositionAttributesExitReasonType2Type1)
+            or isinstance(self.exit_reason, PortfolioPositionAttributesExitReasonType3Type1)
+        ):
             exit_reason = self.exit_reason.value
+        else:
+            exit_reason = self.exit_reason
+
+        exited_on: None | str | Unset
+        if isinstance(self.exited_on, Unset):
+            exited_on = UNSET
+        elif isinstance(self.exited_on, datetime.date):
+            exited_on = self.exited_on.isoformat()
+        else:
+            exited_on = self.exited_on
 
         invested_at: None | str | Unset
         if isinstance(self.invested_at, Unset):
@@ -181,6 +220,8 @@ class PortfolioPositionAttributes:
             field_dict["status"] = status
         if exit_reason is not UNSET:
             field_dict["exit_reason"] = exit_reason
+        if exited_on is not UNSET:
+            field_dict["exited_on"] = exited_on
         if invested_at is not UNSET:
             field_dict["invested_at"] = invested_at
         if currency is not UNSET:
@@ -258,12 +299,70 @@ class PortfolioPositionAttributes:
         else:
             status = PortfolioPositionAttributesStatus(_status)
 
-        _exit_reason = d.pop("exit_reason", UNSET)
-        exit_reason: PortfolioPositionAttributesExitReason | Unset
-        if isinstance(_exit_reason, Unset):
-            exit_reason = UNSET
-        else:
-            exit_reason = PortfolioPositionAttributesExitReason(_exit_reason)
+        def _parse_exit_reason(
+            data: object,
+        ) -> (
+            None
+            | PortfolioPositionAttributesExitReasonType1
+            | PortfolioPositionAttributesExitReasonType2Type1
+            | PortfolioPositionAttributesExitReasonType3Type1
+            | Unset
+        ):
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, str):
+                    raise TypeError()
+                exit_reason_type_1 = PortfolioPositionAttributesExitReasonType1(data)
+
+                return exit_reason_type_1
+            except (TypeError, ValueError, AttributeError, KeyError):
+                pass
+            try:
+                if not isinstance(data, str):
+                    raise TypeError()
+                exit_reason_type_2_type_1 = PortfolioPositionAttributesExitReasonType2Type1(data)
+
+                return exit_reason_type_2_type_1
+            except (TypeError, ValueError, AttributeError, KeyError):
+                pass
+            try:
+                if not isinstance(data, str):
+                    raise TypeError()
+                exit_reason_type_3_type_1 = PortfolioPositionAttributesExitReasonType3Type1(data)
+
+                return exit_reason_type_3_type_1
+            except (TypeError, ValueError, AttributeError, KeyError):
+                pass
+            return cast(
+                None
+                | PortfolioPositionAttributesExitReasonType1
+                | PortfolioPositionAttributesExitReasonType2Type1
+                | PortfolioPositionAttributesExitReasonType3Type1
+                | Unset,
+                data,
+            )
+
+        exit_reason = _parse_exit_reason(d.pop("exit_reason", UNSET))
+
+        def _parse_exited_on(data: object) -> datetime.date | None | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, str):
+                    raise TypeError()
+                exited_on_type_0 = datetime.date.fromisoformat(data)
+
+                return exited_on_type_0
+            except (TypeError, ValueError, AttributeError, KeyError):
+                pass
+            return cast(datetime.date | None | Unset, data)
+
+        exited_on = _parse_exited_on(d.pop("exited_on", UNSET))
 
         def _parse_invested_at(data: object) -> datetime.datetime | None | Unset:
             if data is None:
@@ -353,6 +452,7 @@ class PortfolioPositionAttributes:
             security=security,
             status=status,
             exit_reason=exit_reason,
+            exited_on=exited_on,
             invested_at=invested_at,
             currency=currency,
             cost_basis_cents=cost_basis_cents,

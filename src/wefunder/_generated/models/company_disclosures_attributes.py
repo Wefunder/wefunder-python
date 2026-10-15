@@ -49,6 +49,16 @@ class CompanyDisclosuresAttributes:
     """
     Attributes:
         offering_id (str | Unset): The round whose Form C this is (`ofr_...`).
+        currency (str | Unset): ISO 4217 code, upper-case, of the round's own figures: `use_of_funds`,
+            `prior_offerings`, `outstanding_notes`, `outstanding_debts` and `related_parties`. The round's currency — `USD`
+            for a Reg CF round, `EUR` for an ECSP round. The financial statements, `ratios.revenue_per_employee` and
+            `current_position` are in `financials_currency` instead. Example: USD.
+        financials_currency (str | Unset): ISO 4217 code of the financial statements AND the founder's current-position
+            figures (cash on hand, average monthly revenue, cost of goods, expenses) and `ratios.revenue_per_employee`.
+            Falls back to `currency`. On the disclosures editor these fields share one denomination, which is this one. ISO
+            4217 code, upper-case, of the Form C `financial_statements` and of `ratios.revenue_per_employee`. The currency
+            the issuer declared for its statements; equals `currency` unless the issuer declared another (a EUR round can
+            file DKK, RON, GBP or USD statements). Example: USD.
         filing (CompanyDisclosuresAttributesFiling | Unset):
         business (CompanyDisclosuresAttributesBusiness | Unset):
         financial_statements (CompanyDisclosuresAttributesFinancialStatements | Unset): One column per fiscal year on
@@ -78,6 +88,8 @@ class CompanyDisclosuresAttributes:
     """
 
     offering_id: str | Unset = UNSET
+    currency: str | Unset = UNSET
+    financials_currency: str | Unset = UNSET
     filing: CompanyDisclosuresAttributesFiling | Unset = UNSET
     business: CompanyDisclosuresAttributesBusiness | Unset = UNSET
     financial_statements: CompanyDisclosuresAttributesFinancialStatements | Unset = UNSET
@@ -110,6 +122,10 @@ class CompanyDisclosuresAttributes:
         )
 
         offering_id = self.offering_id
+
+        currency = self.currency
+
+        financials_currency = self.financials_currency
 
         filing: dict[str, Any] | Unset = UNSET
         if not isinstance(self.filing, Unset):
@@ -264,6 +280,10 @@ class CompanyDisclosuresAttributes:
         field_dict.update({})
         if offering_id is not UNSET:
             field_dict["offering_id"] = offering_id
+        if currency is not UNSET:
+            field_dict["currency"] = currency
+        if financials_currency is not UNSET:
+            field_dict["financials_currency"] = financials_currency
         if filing is not UNSET:
             field_dict["filing"] = filing
         if business is not UNSET:
@@ -344,6 +364,10 @@ class CompanyDisclosuresAttributes:
 
         d = dict(src_dict)
         offering_id = d.pop("offering_id", UNSET)
+
+        currency = d.pop("currency", UNSET)
+
+        financials_currency = d.pop("financials_currency", UNSET)
 
         _filing = d.pop("filing", UNSET)
         filing: CompanyDisclosuresAttributesFiling | Unset
@@ -627,6 +651,8 @@ class CompanyDisclosuresAttributes:
 
         company_disclosures_attributes = cls(
             offering_id=offering_id,
+            currency=currency,
+            financials_currency=financials_currency,
             filing=filing,
             business=business,
             financial_statements=financial_statements,

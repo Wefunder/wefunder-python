@@ -37,7 +37,8 @@ class WefunderRound:
         amount_raised (None | str | Unset): This round's own soft-confirmed amount, USD decimal string.
         investor_count (int | None | Unset):
         opened_at (datetime.datetime | None | Unset):
-        closed_at (datetime.datetime | None | Unset):
+        closed_at (datetime.datetime | None | Unset): When the round finished raising. Null while the round is open; a
+            live round's scheduled close is `current_raise.closes_at`.
     """
 
     offering_id: str | Unset = UNSET

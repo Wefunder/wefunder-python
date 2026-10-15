@@ -80,9 +80,12 @@ def sync_detailed(
      Runs every check `POST /intents` runs — the action's feature flag, resource type and id,
     token binding, who may propose, and the handler's own validation — and returns what the
     reviewer would read, without minting anything. The draft step for agents: admitted by any
-    proposing scope **or** `read:explore`, and the action's own scope is not required, so a user
-    can shape the text before granting the write permission. Same request body as `POST /intents`
-    (without `idempotency_key`). Errors are the same as `POST /intents` would give.
+    proposing scope **or** `read:explore`, and the action's own scope is not required on the
+    token, so a user can shape the text before granting the write permission. The caller must
+    still be allowed to propose on the resource, and for a syndicate-owned token the application's
+    Installation scope ceiling still applies (an install granted only `read:syndicates` cannot
+    preview a `write:syndicates` action: `403 insufficient_scope`). Same request body as
+    `POST /intents` (without `idempotency_key`). Errors are the same as `POST /intents` would give.
 
     Args:
         body (PreviewIntentBody):
@@ -116,9 +119,12 @@ def sync(
      Runs every check `POST /intents` runs — the action's feature flag, resource type and id,
     token binding, who may propose, and the handler's own validation — and returns what the
     reviewer would read, without minting anything. The draft step for agents: admitted by any
-    proposing scope **or** `read:explore`, and the action's own scope is not required, so a user
-    can shape the text before granting the write permission. Same request body as `POST /intents`
-    (without `idempotency_key`). Errors are the same as `POST /intents` would give.
+    proposing scope **or** `read:explore`, and the action's own scope is not required on the
+    token, so a user can shape the text before granting the write permission. The caller must
+    still be allowed to propose on the resource, and for a syndicate-owned token the application's
+    Installation scope ceiling still applies (an install granted only `read:syndicates` cannot
+    preview a `write:syndicates` action: `403 insufficient_scope`). Same request body as
+    `POST /intents` (without `idempotency_key`). Errors are the same as `POST /intents` would give.
 
     Args:
         body (PreviewIntentBody):
@@ -147,9 +153,12 @@ async def asyncio_detailed(
      Runs every check `POST /intents` runs — the action's feature flag, resource type and id,
     token binding, who may propose, and the handler's own validation — and returns what the
     reviewer would read, without minting anything. The draft step for agents: admitted by any
-    proposing scope **or** `read:explore`, and the action's own scope is not required, so a user
-    can shape the text before granting the write permission. Same request body as `POST /intents`
-    (without `idempotency_key`). Errors are the same as `POST /intents` would give.
+    proposing scope **or** `read:explore`, and the action's own scope is not required on the
+    token, so a user can shape the text before granting the write permission. The caller must
+    still be allowed to propose on the resource, and for a syndicate-owned token the application's
+    Installation scope ceiling still applies (an install granted only `read:syndicates` cannot
+    preview a `write:syndicates` action: `403 insufficient_scope`). Same request body as
+    `POST /intents` (without `idempotency_key`). Errors are the same as `POST /intents` would give.
 
     Args:
         body (PreviewIntentBody):
@@ -181,9 +190,12 @@ async def asyncio(
      Runs every check `POST /intents` runs — the action's feature flag, resource type and id,
     token binding, who may propose, and the handler's own validation — and returns what the
     reviewer would read, without minting anything. The draft step for agents: admitted by any
-    proposing scope **or** `read:explore`, and the action's own scope is not required, so a user
-    can shape the text before granting the write permission. Same request body as `POST /intents`
-    (without `idempotency_key`). Errors are the same as `POST /intents` would give.
+    proposing scope **or** `read:explore`, and the action's own scope is not required on the
+    token, so a user can shape the text before granting the write permission. The caller must
+    still be allowed to propose on the resource, and for a syndicate-owned token the application's
+    Installation scope ceiling still applies (an install granted only `read:syndicates` cannot
+    preview a `write:syndicates` action: `403 insufficient_scope`). Same request body as
+    `POST /intents` (without `idempotency_key`). Errors are the same as `POST /intents` would give.
 
     Args:
         body (PreviewIntentBody):

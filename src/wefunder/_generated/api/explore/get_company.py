@@ -72,7 +72,8 @@ def sync_detailed(
     """Get a company page
 
      The company page behind an offering, as structured data — the "click a company" step after
-    `/explore`. Addressed by the `co_...` id every offering carries in `company.id`.
+    `/explore`. Addressed by the `co_...` id every offering carries in its top-level `company` field (a
+    bare string).
 
     Keeps apart the three raised numbers the page shows and readers conflate:
     `current_raise.amount_raised` (this campaign's live rounds combined, on Wefunder),
@@ -120,7 +121,8 @@ def sync(
     """Get a company page
 
      The company page behind an offering, as structured data — the "click a company" step after
-    `/explore`. Addressed by the `co_...` id every offering carries in `company.id`.
+    `/explore`. Addressed by the `co_...` id every offering carries in its top-level `company` field (a
+    bare string).
 
     Keeps apart the three raised numbers the page shows and readers conflate:
     `current_raise.amount_raised` (this campaign's live rounds combined, on Wefunder),
@@ -163,7 +165,8 @@ async def asyncio_detailed(
     """Get a company page
 
      The company page behind an offering, as structured data — the "click a company" step after
-    `/explore`. Addressed by the `co_...` id every offering carries in `company.id`.
+    `/explore`. Addressed by the `co_...` id every offering carries in its top-level `company` field (a
+    bare string).
 
     Keeps apart the three raised numbers the page shows and readers conflate:
     `current_raise.amount_raised` (this campaign's live rounds combined, on Wefunder),
@@ -209,7 +212,8 @@ async def asyncio(
     """Get a company page
 
      The company page behind an offering, as structured data — the "click a company" step after
-    `/explore`. Addressed by the `co_...` id every offering carries in `company.id`.
+    `/explore`. Addressed by the `co_...` id every offering carries in its top-level `company` field (a
+    bare string).
 
     Keeps apart the three raised numbers the page shows and readers conflate:
     `current_raise.amount_raised` (this campaign's live rounds combined, on Wefunder),

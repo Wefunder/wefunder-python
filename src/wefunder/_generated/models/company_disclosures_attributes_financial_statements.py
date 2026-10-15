@@ -20,12 +20,12 @@ class CompanyDisclosuresAttributesFinancialStatements:
     """One column per fiscal year on file; a year with no figures is omitted.
 
     Attributes:
-        most_recent (FiscalYearFinancials | Unset): One fiscal year's figures from the Form C, USD decimal strings (null
-            where not reported).
-        prior (FiscalYearFinancials | Unset): One fiscal year's figures from the Form C, USD decimal strings (null where
-            not reported).
-        prior_prior (FiscalYearFinancials | Unset): One fiscal year's figures from the Form C, USD decimal strings (null
-            where not reported).
+        most_recent (FiscalYearFinancials | Unset): One fiscal year's figures from the Form C, decimal strings in the
+            payload's `financials_currency` (null where not reported).
+        prior (FiscalYearFinancials | Unset): One fiscal year's figures from the Form C, decimal strings in the
+            payload's `financials_currency` (null where not reported).
+        prior_prior (FiscalYearFinancials | Unset): One fiscal year's figures from the Form C, decimal strings in the
+            payload's `financials_currency` (null where not reported).
     """
 
     most_recent: FiscalYearFinancials | Unset = UNSET

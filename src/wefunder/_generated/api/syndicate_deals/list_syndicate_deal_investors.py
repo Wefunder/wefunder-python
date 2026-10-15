@@ -92,8 +92,10 @@ def sync_detailed(
      Returns syndicate members who invested in this deal. Results are scoped to
     syndicate member user IDs only and sorted by amount descending.
 
-    The `user_email` field is **moderator-only** — it returns null for non-moderator
-    callers (i.e., users who are not a manager/operator of the syndicate).
+    **Manager/operator only.** Who invested how much is moderator data, as on the
+    web deal pipeline page: an ordinary member, backer, or follower of the syndicate
+    gets `403`, even with `read:syndicates`. Callers who pass that gate see
+    `user_email`.
 
     `amount` is whole dollars as a string (e.g. `"5000"` is $5,000).
 
@@ -141,8 +143,10 @@ def sync(
      Returns syndicate members who invested in this deal. Results are scoped to
     syndicate member user IDs only and sorted by amount descending.
 
-    The `user_email` field is **moderator-only** — it returns null for non-moderator
-    callers (i.e., users who are not a manager/operator of the syndicate).
+    **Manager/operator only.** Who invested how much is moderator data, as on the
+    web deal pipeline page: an ordinary member, backer, or follower of the syndicate
+    gets `403`, even with `read:syndicates`. Callers who pass that gate see
+    `user_email`.
 
     `amount` is whole dollars as a string (e.g. `"5000"` is $5,000).
 
@@ -185,8 +189,10 @@ async def asyncio_detailed(
      Returns syndicate members who invested in this deal. Results are scoped to
     syndicate member user IDs only and sorted by amount descending.
 
-    The `user_email` field is **moderator-only** — it returns null for non-moderator
-    callers (i.e., users who are not a manager/operator of the syndicate).
+    **Manager/operator only.** Who invested how much is moderator data, as on the
+    web deal pipeline page: an ordinary member, backer, or follower of the syndicate
+    gets `403`, even with `read:syndicates`. Callers who pass that gate see
+    `user_email`.
 
     `amount` is whole dollars as a string (e.g. `"5000"` is $5,000).
 
@@ -232,8 +238,10 @@ async def asyncio(
      Returns syndicate members who invested in this deal. Results are scoped to
     syndicate member user IDs only and sorted by amount descending.
 
-    The `user_email` field is **moderator-only** — it returns null for non-moderator
-    callers (i.e., users who are not a manager/operator of the syndicate).
+    **Manager/operator only.** Who invested how much is moderator data, as on the
+    web deal pipeline page: an ordinary member, backer, or follower of the syndicate
+    gets `403`, even with `read:syndicates`. Callers who pass that gate see
+    `user_email`.
 
     `amount` is whole dollars as a string (e.g. `"5000"` is $5,000).
 

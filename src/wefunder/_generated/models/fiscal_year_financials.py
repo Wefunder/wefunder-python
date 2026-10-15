@@ -13,23 +13,34 @@ T = TypeVar("T", bound="FiscalYearFinancials")
 
 @_attrs_define
 class FiscalYearFinancials:
-    """One fiscal year's figures from the Form C, USD decimal strings (null where not reported).
+    """One fiscal year's figures from the Form C, decimal strings in the payload's `financials_currency` (null where not
+    reported).
 
-    Attributes:
-        total_assets (None | str | Unset):
-        cash_and_equivalents (None | str | Unset):
-        accounts_receivable (None | str | Unset):
-        short_term_debt (None | str | Unset):
-        long_term_debt (None | str | Unset):
-        revenue (None | str | Unset):
-        cost_of_goods_sold (None | str | Unset):
-        taxes_paid (None | str | Unset):
-        net_income (None | str | Unset):
+        Attributes:
+            total_assets (None | str | Unset):
+            cash_and_equivalents (None | str | Unset):
+            accounts_receivable (None | str | Unset):
+            current_liabilities (None | str | Unset): Total current liabilities as filed on the Form C balance sheet —
+                including SAFE and convertible-note liabilities, accrued expenses and deferred revenue, not only borrowed money.
+                For borrowings see `outstanding_notes` and `outstanding_debts`, which itemize each instrument with its
+                principal.
+            non_current_liabilities (None | str | Unset): Total non-current liabilities as filed on the Form C balance
+                sheet. Same caveat as `current_liabilities`.
+            short_term_debt (None | str | Unset): Deprecated alias of `current_liabilities` (same value): the figure is
+                total current liabilities, not short-term debt. Will be removed in a future dated version.
+            long_term_debt (None | str | Unset): Deprecated alias of `non_current_liabilities` (same value): the figure is
+                total non-current liabilities, not long-term debt. Will be removed in a future dated version.
+            revenue (None | str | Unset):
+            cost_of_goods_sold (None | str | Unset):
+            taxes_paid (None | str | Unset):
+            net_income (None | str | Unset):
     """
 
     total_assets: None | str | Unset = UNSET
     cash_and_equivalents: None | str | Unset = UNSET
     accounts_receivable: None | str | Unset = UNSET
+    current_liabilities: None | str | Unset = UNSET
+    non_current_liabilities: None | str | Unset = UNSET
     short_term_debt: None | str | Unset = UNSET
     long_term_debt: None | str | Unset = UNSET
     revenue: None | str | Unset = UNSET
@@ -56,6 +67,18 @@ class FiscalYearFinancials:
             accounts_receivable = UNSET
         else:
             accounts_receivable = self.accounts_receivable
+
+        current_liabilities: None | str | Unset
+        if isinstance(self.current_liabilities, Unset):
+            current_liabilities = UNSET
+        else:
+            current_liabilities = self.current_liabilities
+
+        non_current_liabilities: None | str | Unset
+        if isinstance(self.non_current_liabilities, Unset):
+            non_current_liabilities = UNSET
+        else:
+            non_current_liabilities = self.non_current_liabilities
 
         short_term_debt: None | str | Unset
         if isinstance(self.short_term_debt, Unset):
@@ -102,6 +125,10 @@ class FiscalYearFinancials:
             field_dict["cash_and_equivalents"] = cash_and_equivalents
         if accounts_receivable is not UNSET:
             field_dict["accounts_receivable"] = accounts_receivable
+        if current_liabilities is not UNSET:
+            field_dict["current_liabilities"] = current_liabilities
+        if non_current_liabilities is not UNSET:
+            field_dict["non_current_liabilities"] = non_current_liabilities
         if short_term_debt is not UNSET:
             field_dict["short_term_debt"] = short_term_debt
         if long_term_debt is not UNSET:
@@ -147,6 +174,24 @@ class FiscalYearFinancials:
             return cast(None | str | Unset, data)
 
         accounts_receivable = _parse_accounts_receivable(d.pop("accounts_receivable", UNSET))
+
+        def _parse_current_liabilities(data: object) -> None | str | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            return cast(None | str | Unset, data)
+
+        current_liabilities = _parse_current_liabilities(d.pop("current_liabilities", UNSET))
+
+        def _parse_non_current_liabilities(data: object) -> None | str | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            return cast(None | str | Unset, data)
+
+        non_current_liabilities = _parse_non_current_liabilities(d.pop("non_current_liabilities", UNSET))
 
         def _parse_short_term_debt(data: object) -> None | str | Unset:
             if data is None:
@@ -206,6 +251,8 @@ class FiscalYearFinancials:
             total_assets=total_assets,
             cash_and_equivalents=cash_and_equivalents,
             accounts_receivable=accounts_receivable,
+            current_liabilities=current_liabilities,
+            non_current_liabilities=non_current_liabilities,
             short_term_debt=short_term_debt,
             long_term_debt=long_term_debt,
             revenue=revenue,

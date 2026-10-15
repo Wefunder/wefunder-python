@@ -7,7 +7,9 @@ from typing import TYPE_CHECKING, Any, TypeVar, cast
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
-from ..models.investment_delta_record_reason import InvestmentDeltaRecordReason
+from ..models.investment_delta_record_reason_type_1 import InvestmentDeltaRecordReasonType1
+from ..models.investment_delta_record_reason_type_2_type_1 import InvestmentDeltaRecordReasonType2Type1
+from ..models.investment_delta_record_reason_type_3_type_1 import InvestmentDeltaRecordReasonType3Type1
 from ..models.investment_delta_record_status import InvestmentDeltaRecordStatus
 from ..types import UNSET, Unset
 
@@ -23,10 +25,12 @@ T = TypeVar("T", bound="InvestmentDeltaRecord")
 
 @_attrs_define
 class InvestmentDeltaRecord:
-    """The record of one investment, or a tombstone (`visible: false`, only `id`). `visible` is
-    founder visibility: a user's own canceled investment is a full record with `visible: false`
-    and `status: canceled`. Investor PII keys are omitted without `read:investors:pii`, except on
-    the user's own records.
+    """The record of one investment, or a tombstone. A tombstone is `visible: false` with `id` and
+    the sync metadata (`observed_at`, `cursor`, `reason`) and no payload fields: no `status`,
+    `amounts`, `investor`. `visible` is founder visibility: a user's own canceled investment is a
+    full record with `visible: false` and `status: canceled`, so tell the two apart by the
+    presence of `status`, not by `visible`. Investor PII keys are omitted without
+    `read:investors:pii`, except on the user's own records.
 
         Attributes:
             id (str): Investment external id (`inv_…`), stable for the life of the investment.
@@ -57,9 +61,16 @@ class InvestmentDeltaRecord:
             blockers (list[InvestmentDeltaRecordBlockersItem] | Unset):
             contracts (list[InvestmentDeltaRecordContractsItem] | Unset):
             cursor (None | str | Unset): Ledger position of the change that listed this record (delta pages only).
-            reason (InvestmentDeltaRecordReason | Unset): Why the ledger row exists. `investor_deactivated` marks the first
-                republish after the investor's
-                account was deactivated (identity fields redacted). Delta pages only.
+            reason (InvestmentDeltaRecordReasonType1 | InvestmentDeltaRecordReasonType2Type1 |
+                InvestmentDeltaRecordReasonType3Type1 | None | Unset): Why the ledger row exists. Delta pages only; `null` on
+                list pages and on retrieve. Every
+                value is a record to upsert. `changed`: a partner-visible field moved. `recomputed`: the
+                investment's inputs did not change and the record moved only because Wefunder changed how
+                it derives a field; sync it, but a notification rule may skip it. `reprojected`: the
+                retired name for `recomputed`, still served on rows published before the rename for as
+                long as they are retained (90 days); treat it exactly like `recomputed`.
+                `investor_deactivated` marks the first republish after the investor's account was
+                deactivated (identity fields redacted).
     """
 
     id: str
@@ -84,7 +95,13 @@ class InvestmentDeltaRecord:
     blockers: list[InvestmentDeltaRecordBlockersItem] | Unset = UNSET
     contracts: list[InvestmentDeltaRecordContractsItem] | Unset = UNSET
     cursor: None | str | Unset = UNSET
-    reason: InvestmentDeltaRecordReason | Unset = UNSET
+    reason: (
+        InvestmentDeltaRecordReasonType1
+        | InvestmentDeltaRecordReasonType2Type1
+        | InvestmentDeltaRecordReasonType3Type1
+        | None
+        | Unset
+    ) = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
@@ -178,9 +195,17 @@ class InvestmentDeltaRecord:
         else:
             cursor = self.cursor
 
-        reason: str | Unset = UNSET
-        if not isinstance(self.reason, Unset):
+        reason: None | str | Unset
+        if isinstance(self.reason, Unset):
+            reason = UNSET
+        elif (
+            isinstance(self.reason, InvestmentDeltaRecordReasonType1)
+            or isinstance(self.reason, InvestmentDeltaRecordReasonType2Type1)
+            or isinstance(self.reason, InvestmentDeltaRecordReasonType3Type1)
+        ):
             reason = self.reason.value
+        else:
+            reason = self.reason
 
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
@@ -369,12 +394,53 @@ class InvestmentDeltaRecord:
 
         cursor = _parse_cursor(d.pop("cursor", UNSET))
 
-        _reason = d.pop("reason", UNSET)
-        reason: InvestmentDeltaRecordReason | Unset
-        if isinstance(_reason, Unset):
-            reason = UNSET
-        else:
-            reason = InvestmentDeltaRecordReason(_reason)
+        def _parse_reason(
+            data: object,
+        ) -> (
+            InvestmentDeltaRecordReasonType1
+            | InvestmentDeltaRecordReasonType2Type1
+            | InvestmentDeltaRecordReasonType3Type1
+            | None
+            | Unset
+        ):
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, str):
+                    raise TypeError()
+                reason_type_1 = InvestmentDeltaRecordReasonType1(data)
+
+                return reason_type_1
+            except (TypeError, ValueError, AttributeError, KeyError):
+                pass
+            try:
+                if not isinstance(data, str):
+                    raise TypeError()
+                reason_type_2_type_1 = InvestmentDeltaRecordReasonType2Type1(data)
+
+                return reason_type_2_type_1
+            except (TypeError, ValueError, AttributeError, KeyError):
+                pass
+            try:
+                if not isinstance(data, str):
+                    raise TypeError()
+                reason_type_3_type_1 = InvestmentDeltaRecordReasonType3Type1(data)
+
+                return reason_type_3_type_1
+            except (TypeError, ValueError, AttributeError, KeyError):
+                pass
+            return cast(
+                InvestmentDeltaRecordReasonType1
+                | InvestmentDeltaRecordReasonType2Type1
+                | InvestmentDeltaRecordReasonType3Type1
+                | None
+                | Unset,
+                data,
+            )
+
+        reason = _parse_reason(d.pop("reason", UNSET))
 
         investment_delta_record = cls(
             id=id,

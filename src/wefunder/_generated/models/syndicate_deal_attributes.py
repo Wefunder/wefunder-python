@@ -50,7 +50,8 @@ class SyndicateDealAttributes:
         description (None | str | Unset): Deal funding purpose / description Example: Example text.
         created_at (datetime.datetime | Unset):  Example: 2025-03-01T12:00:00Z.
         updated_at (datetime.datetime | Unset):  Example: 2025-03-01T12:00:00Z.
-        closed_at (datetime.datetime | None | Unset):  Example: 2025-03-01T12:00:00Z.
+        closed_at (datetime.datetime | None | Unset): When the deal finished raising. Null while `status` is `upcoming`
+            or `open`. Example: 2025-03-01T12:00:00Z.
         funding_started_at (datetime.datetime | None | Unset): ISO 8601 timestamp when funding opened Example:
             2025-03-01T12:00:00Z.
     """

@@ -1,30 +1,5 @@
 """Contains all the data models used in inputs/outputs"""
 
-from .anonymized_attribution import AnonymizedAttribution
-from .anonymized_attribution_amount_tier import AnonymizedAttributionAmountTier
-from .anonymized_attribution_attribution import AnonymizedAttributionAttribution
-from .anonymized_attribution_attribution_quality_score import AnonymizedAttributionAttributionQualityScore
-from .anonymized_attribution_attribution_time_to_invest_bucket import AnonymizedAttributionAttributionTimeToInvestBucket
-from .anonymized_attribution_status import AnonymizedAttributionStatus
-from .anonymized_attribution_status_bucket import AnonymizedAttributionStatusBucket
-from .attributed_investment_list_envelope import AttributedInvestmentListEnvelope
-from .attributed_investment_list_envelope_meta import AttributedInvestmentListEnvelopeMeta
-from .attributed_investment_list_envelope_meta_detail_level import AttributedInvestmentListEnvelopeMetaDetailLevel
-from .attribution_campaign_access import AttributionCampaignAccess
-from .attribution_campaign_summary import AttributionCampaignSummary
-from .attribution_campaign_summary_list_envelope import AttributionCampaignSummaryListEnvelope
-from .attribution_me import AttributionMe
-from .attribution_me_envelope import AttributionMeEnvelope
-from .attribution_partner_type_0 import AttributionPartnerType0
-from .attribution_partner_type_0_status import AttributionPartnerType0Status
-from .attribution_stats import AttributionStats
-from .attribution_stats_by_campaign_item import AttributionStatsByCampaignItem
-from .attribution_stats_by_source_item import AttributionStatsBySourceItem
-from .attribution_stats_envelope import AttributionStatsEnvelope
-from .attribution_stats_period import AttributionStatsPeriod
-from .attribution_stats_quality_breakdown import AttributionStatsQualityBreakdown
-from .attribution_stats_totals import AttributionStatsTotals
-from .attribution_user import AttributionUser
 from .audit_event import AuditEvent
 from .audit_event_attributes import AuditEventAttributes
 from .audit_event_attributes_new_values_type_0 import AuditEventAttributesNewValuesType0
@@ -86,7 +61,9 @@ from .company_pitch_type import CompanyPitchType
 from .company_question import CompanyQuestion
 from .company_question_attributes import CompanyQuestionAttributes
 from .company_question_attributes_answers_item import CompanyQuestionAttributesAnswersItem
-from .company_question_attributes_match import CompanyQuestionAttributesMatch
+from .company_question_attributes_match_type_1 import CompanyQuestionAttributesMatchType1
+from .company_question_attributes_match_type_2_type_1 import CompanyQuestionAttributesMatchType2Type1
+from .company_question_attributes_match_type_3_type_1 import CompanyQuestionAttributesMatchType3Type1
 from .company_question_list_envelope import CompanyQuestionListEnvelope
 from .company_question_list_envelope_meta import CompanyQuestionListEnvelopeMeta
 from .company_question_person import CompanyQuestionPerson
@@ -121,13 +98,18 @@ from .create_installation_token_body import CreateInstallationTokenBody
 from .create_intent_body import CreateIntentBody
 from .create_intent_body_action_name import CreateIntentBodyActionName
 from .create_intent_body_params import CreateIntentBodyParams
-from .create_partner_invite_body import CreatePartnerInviteBody
-from .create_partner_invite_body_direction import CreatePartnerInviteBodyDirection
+from .create_offering_investment_session_body import CreateOfferingInvestmentSessionBody
+from .create_offering_member_link_body import CreateOfferingMemberLinkBody
+from .create_referral_code_body import CreateReferralCodeBody
+from .create_referral_code_body_metadata import CreateReferralCodeBodyMetadata
+from .create_syndicate_join_session_body import CreateSyndicateJoinSessionBody
+from .create_syndicate_join_session_body_join_session import CreateSyndicateJoinSessionBodyJoinSession
+from .create_syndicate_join_session_body_join_session_display import CreateSyndicateJoinSessionBodyJoinSessionDisplay
+from .create_syndicate_join_session_body_join_session_mode import CreateSyndicateJoinSessionBodyJoinSessionMode
+from .create_syndicate_join_session_response_201 import CreateSyndicateJoinSessionResponse201
 from .create_webhook_endpoint_body import CreateWebhookEndpointBody
 from .create_webhook_endpoint_body_events_item import CreateWebhookEndpointBodyEventsItem
 from .create_webhook_endpoint_body_mode import CreateWebhookEndpointBodyMode
-from .create_webhook_subscription_body import CreateWebhookSubscriptionBody
-from .create_webhook_subscription_body_events_item import CreateWebhookSubscriptionBodyEventsItem
 from .current_raise import CurrentRaise
 from .deal_investor import DealInvestor
 from .deal_investor_attributes import DealInvestorAttributes
@@ -165,19 +147,13 @@ from .followed_company import FollowedCompany
 from .followed_company_attributes import FollowedCompanyAttributes
 from .followed_company_list_envelope import FollowedCompanyListEnvelope
 from .followed_company_type import FollowedCompanyType
-from .full_attribution import FullAttribution
-from .full_attribution_attribution import FullAttributionAttribution
-from .full_attribution_attribution_quality_score import FullAttributionAttributionQualityScore
-from .full_attribution_attribution_time_to_invest_bucket import FullAttributionAttributionTimeToInvestBucket
-from .full_attribution_investor import FullAttributionInvestor
-from .full_attribution_status import FullAttributionStatus
-from .full_attribution_status_bucket import FullAttributionStatusBucket
 from .fund_security import FundSecurity
 from .fund_security_terms import FundSecurityTerms
 from .fund_security_type import FundSecurityType
 from .get_company_disclosures_sections_item import GetCompanyDisclosuresSectionsItem
 from .get_company_pitch_sections_item import GetCompanyPitchSectionsItem
 from .get_portfolio_status import GetPortfolioStatus
+from .get_syndicate_join_session_response_200 import GetSyndicateJoinSessionResponse200
 from .get_syndicate_portfolio_status import GetSyndicatePortfolioStatus
 from .installation import Installation
 from .installation_attributes import InstallationAttributes
@@ -212,7 +188,9 @@ from .investment_delta_record_blockers_item import InvestmentDeltaRecordBlockers
 from .investment_delta_record_contracts_item import InvestmentDeltaRecordContractsItem
 from .investment_delta_record_investor import InvestmentDeltaRecordInvestor
 from .investment_delta_record_investor_address import InvestmentDeltaRecordInvestorAddress
-from .investment_delta_record_reason import InvestmentDeltaRecordReason
+from .investment_delta_record_reason_type_1 import InvestmentDeltaRecordReasonType1
+from .investment_delta_record_reason_type_2_type_1 import InvestmentDeltaRecordReasonType2Type1
+from .investment_delta_record_reason_type_3_type_1 import InvestmentDeltaRecordReasonType3Type1
 from .investment_delta_record_status import InvestmentDeltaRecordStatus
 from .investment_envelope import InvestmentEnvelope
 from .investment_envelope_meta import InvestmentEnvelopeMeta
@@ -223,8 +201,16 @@ from .investment_list_envelope_meta_mode import InvestmentListEnvelopeMetaMode
 from .investment_session import InvestmentSession
 from .investment_session_attributes import InvestmentSessionAttributes
 from .investment_session_attributes_events_item import InvestmentSessionAttributesEventsItem
-from .investment_session_attributes_funding_status import InvestmentSessionAttributesFundingStatus
-from .investment_session_attributes_kyc_status import InvestmentSessionAttributesKycStatus
+from .investment_session_attributes_funding_status_type_1 import InvestmentSessionAttributesFundingStatusType1
+from .investment_session_attributes_funding_status_type_2_type_1 import (
+    InvestmentSessionAttributesFundingStatusType2Type1,
+)
+from .investment_session_attributes_funding_status_type_3_type_1 import (
+    InvestmentSessionAttributesFundingStatusType3Type1,
+)
+from .investment_session_attributes_kyc_status_type_1 import InvestmentSessionAttributesKycStatusType1
+from .investment_session_attributes_kyc_status_type_2_type_1 import InvestmentSessionAttributesKycStatusType2Type1
+from .investment_session_attributes_kyc_status_type_3_type_1 import InvestmentSessionAttributesKycStatusType3Type1
 from .investment_session_attributes_metadata import InvestmentSessionAttributesMetadata
 from .investment_session_attributes_status import InvestmentSessionAttributesStatus
 from .investment_session_create_input import InvestmentSessionCreateInput
@@ -240,7 +226,9 @@ from .investor_list_envelope import InvestorListEnvelope
 from .invite_link import InviteLink
 from .invite_link_attributes import InviteLinkAttributes
 from .invite_link_attributes_events_item import InviteLinkAttributesEventsItem
-from .invite_link_attributes_status import InviteLinkAttributesStatus
+from .invite_link_attributes_status_type_1 import InviteLinkAttributesStatusType1
+from .invite_link_attributes_status_type_2_type_1 import InviteLinkAttributesStatusType2Type1
+from .invite_link_attributes_status_type_3_type_1 import InviteLinkAttributesStatusType3Type1
 from .invite_link_create_input import InviteLinkCreateInput
 from .invite_link_envelope import InviteLinkEnvelope
 from .invite_link_envelope_meta import InviteLinkEnvelopeMeta
@@ -249,31 +237,39 @@ from .invite_link_list_envelope_meta import InviteLinkListEnvelopeMeta
 from .invite_link_update_input import InviteLinkUpdateInput
 from .invite_syndicate_member_body import InviteSyndicateMemberBody
 from .invite_syndicate_member_body_syndicate_permission import InviteSyndicateMemberBodySyndicatePermission
-from .list_activity_status import ListActivityStatus
-from .list_attributed_investments_detail_level import ListAttributedInvestmentsDetailLevel
 from .list_company_questions_sort import ListCompanyQuestionsSort
 from .list_eligible_install_targets_target_type import ListEligibleInstallTargetsTargetType
 from .list_intents_status import ListIntentsStatus
+from .list_investment_sessions_status import ListInvestmentSessionsStatus
 from .list_investments_status import ListInvestmentsStatus
+from .list_offering_investment_sessions_status import ListOfferingInvestmentSessionsStatus
 from .list_offerings_business_model_item import ListOfferingsBusinessModelItem
 from .list_offerings_exemption import ListOfferingsExemption
 from .list_offerings_industry_item import ListOfferingsIndustryItem
 from .list_offerings_security import ListOfferingsSecurity
 from .list_offerings_sort import ListOfferingsSort
+from .list_offerings_status import ListOfferingsStatus
 from .list_portfolio_positions_status import ListPortfolioPositionsStatus
+from .list_syndicate_join_sessions_response_200 import ListSyndicateJoinSessionsResponse200
 from .list_syndicate_members_accredited import ListSyndicateMembersAccredited
 from .list_syndicate_members_has_invested import ListSyndicateMembersHasInvested
 from .list_syndicate_members_permission import ListSyndicateMembersPermission
 from .list_syndicate_members_sort import ListSyndicateMembersSort
 from .list_syndicate_portfolio_positions_status import ListSyndicatePortfolioPositionsStatus
-from .marketing_partner import MarketingPartner
-from .marketing_partner_envelope import MarketingPartnerEnvelope
-from .marketing_partner_status import MarketingPartnerStatus
 from .member_investment import MemberInvestment
 from .member_investment_attributes import MemberInvestmentAttributes
 from .member_investment_attributes_status import MemberInvestmentAttributesStatus
 from .member_investment_list_envelope import MemberInvestmentListEnvelope
 from .member_investment_list_envelope_meta import MemberInvestmentListEnvelopeMeta
+from .member_link import MemberLink
+from .member_link_attributes import MemberLinkAttributes
+from .member_link_attributes_state import MemberLinkAttributesState
+from .member_link_create_input import MemberLinkCreateInput
+from .member_link_envelope import MemberLinkEnvelope
+from .member_link_envelope_meta import MemberLinkEnvelopeMeta
+from .member_link_list_envelope import MemberLinkListEnvelope
+from .member_link_list_envelope_meta import MemberLinkListEnvelopeMeta
+from .member_link_type import MemberLinkType
 from .my_company import MyCompany
 from .my_company_attributes import MyCompanyAttributes
 from .my_company_list_envelope import MyCompanyListEnvelope
@@ -288,6 +284,7 @@ from .offering_envelope import OfferingEnvelope
 from .offering_list_envelope import OfferingListEnvelope
 from .offering_list_envelope_meta import OfferingListEnvelopeMeta
 from .offering_list_envelope_meta_filters import OfferingListEnvelopeMetaFilters
+from .offering_list_envelope_meta_status import OfferingListEnvelopeMetaStatus
 from .offering_stats_envelope import OfferingStatsEnvelope
 from .offering_stats_envelope_data import OfferingStatsEnvelopeData
 from .offering_stats_envelope_data_by_status import OfferingStatsEnvelopeDataByStatus
@@ -312,15 +309,6 @@ from .partner_investment_attributes_accreditation_type_0_status import (
 from .partner_investment_attributes_accreditation_type_0_type import PartnerInvestmentAttributesAccreditationType0Type
 from .partner_investment_attributes_status import PartnerInvestmentAttributesStatus
 from .partner_investment_envelope import PartnerInvestmentEnvelope
-from .partner_investment_list_envelope import PartnerInvestmentListEnvelope
-from .partner_investor import PartnerInvestor
-from .partner_investor_attributes import PartnerInvestorAttributes
-from .partner_investor_list_envelope import PartnerInvestorListEnvelope
-from .partner_invite import PartnerInvite
-from .partner_invite_direction import PartnerInviteDirection
-from .partner_invite_envelope import PartnerInviteEnvelope
-from .partner_invite_list_envelope import PartnerInviteListEnvelope
-from .partner_invite_status import PartnerInviteStatus
 from .partner_webhook_event import PartnerWebhookEvent
 from .partner_webhook_event_data import PartnerWebhookEventData
 from .partner_webhook_event_envelope import PartnerWebhookEventEnvelope
@@ -344,7 +332,9 @@ from .portfolio_holding_status import PortfolioHoldingStatus
 from .portfolio_position import PortfolioPosition
 from .portfolio_position_attributes import PortfolioPositionAttributes
 from .portfolio_position_attributes_asset_type import PortfolioPositionAttributesAssetType
-from .portfolio_position_attributes_exit_reason import PortfolioPositionAttributesExitReason
+from .portfolio_position_attributes_exit_reason_type_1 import PortfolioPositionAttributesExitReasonType1
+from .portfolio_position_attributes_exit_reason_type_2_type_1 import PortfolioPositionAttributesExitReasonType2Type1
+from .portfolio_position_attributes_exit_reason_type_3_type_1 import PortfolioPositionAttributesExitReasonType3Type1
 from .portfolio_position_attributes_status import PortfolioPositionAttributesStatus
 from .portfolio_position_list_envelope import PortfolioPositionListEnvelope
 from .portfolio_position_list_envelope_meta import PortfolioPositionListEnvelopeMeta
@@ -361,7 +351,26 @@ from .portfolio_summary_envelope_data_attributes_position_counts import (
 )
 from .preview_intent_body import PreviewIntentBody
 from .preview_intent_body_params import PreviewIntentBodyParams
-from .register_as_partner_body import RegisterAsPartnerBody
+from .referral_code import ReferralCode
+from .referral_code_attributes import ReferralCodeAttributes
+from .referral_code_attributes_metadata import ReferralCodeAttributesMetadata
+from .referral_code_attributes_target_type_0 import ReferralCodeAttributesTargetType0
+from .referral_code_attributes_target_type_0_type import ReferralCodeAttributesTargetType0Type
+from .referral_code_envelope import ReferralCodeEnvelope
+from .referral_code_envelope_meta import ReferralCodeEnvelopeMeta
+from .referral_code_list_envelope import ReferralCodeListEnvelope
+from .referral_code_list_envelope_meta import ReferralCodeListEnvelopeMeta
+from .referral_code_stats_company import ReferralCodeStatsCompany
+from .referral_code_stats_company_investments_item import ReferralCodeStatsCompanyInvestmentsItem
+from .referral_code_stats_company_level import ReferralCodeStatsCompanyLevel
+from .referral_code_stats_envelope import ReferralCodeStatsEnvelope
+from .referral_code_stats_envelope_data import ReferralCodeStatsEnvelopeData
+from .referral_code_stats_envelope_data_attributes import ReferralCodeStatsEnvelopeDataAttributes
+from .referral_code_stats_envelope_meta import ReferralCodeStatsEnvelopeMeta
+from .referral_code_utm import ReferralCodeUtm
+from .referral_code_visits import ReferralCodeVisits
+from .referral_cohort import ReferralCohort
+from .referral_cohort_investors import ReferralCohortInvestors
 from .reorder_syndicate_members_body import ReorderSyndicateMembersBody
 from .revenue_share_security import RevenueShareSecurity
 from .revenue_share_security_terms import RevenueShareSecurityTerms
@@ -386,20 +395,14 @@ from .spv_close_intent_envelope_meta import SpvCloseIntentEnvelopeMeta
 from .spv_create_input import SpvCreateInput
 from .spv_create_input_metadata import SpvCreateInputMetadata
 from .spv_envelope import SpvEnvelope
-from .spv_list_envelope import SpvListEnvelope
 from .spv_metrics import SpvMetrics
 from .spv_settings import SpvSettings
 from .spv_settings_accreditation_type import SpvSettingsAccreditationType
-from .spv_status import SpvStatus
-from .spv_status_attributes import SpvStatusAttributes
-from .spv_status_attributes_status import SpvStatusAttributesStatus
-from .spv_status_envelope import SpvStatusEnvelope
-from .spv_status_envelope_meta import SpvStatusEnvelopeMeta
 from .spv_terms import SpvTerms
-from .spv_terms_safe_type import SpvTermsSafeType
+from .spv_terms_safe_type_type_1 import SpvTermsSafeTypeType1
+from .spv_terms_safe_type_type_2_type_1 import SpvTermsSafeTypeType2Type1
+from .spv_terms_safe_type_type_3_type_1 import SpvTermsSafeTypeType3Type1
 from .spv_terms_structure import SpvTermsStructure
-from .spv_with_meta_envelope import SpvWithMetaEnvelope
-from .spv_with_meta_envelope_meta import SpvWithMetaEnvelopeMeta
 from .syndicate import Syndicate
 from .syndicate_attributes import SyndicateAttributes
 from .syndicate_attributes_annual_subscription import SyndicateAttributesAnnualSubscription
@@ -407,13 +410,22 @@ from .syndicate_attributes_traditional_fund import SyndicateAttributesTraditiona
 from .syndicate_deal import SyndicateDeal
 from .syndicate_deal_attributes import SyndicateDealAttributes
 from .syndicate_deal_attributes_status import SyndicateDealAttributesStatus
-from .syndicate_deal_close_intent_envelope import SyndicateDealCloseIntentEnvelope
-from .syndicate_deal_close_intent_envelope_meta import SyndicateDealCloseIntentEnvelopeMeta
+from .syndicate_deal_created_envelope import SyndicateDealCreatedEnvelope
+from .syndicate_deal_created_envelope_meta import SyndicateDealCreatedEnvelopeMeta
+from .syndicate_deal_created_envelope_meta_target_company_type_0 import (
+    SyndicateDealCreatedEnvelopeMetaTargetCompanyType0,
+)
 from .syndicate_deal_detail_envelope import SyndicateDealDetailEnvelope
 from .syndicate_deal_envelope import SyndicateDealEnvelope
-from .syndicate_deal_finalize_intent_envelope import SyndicateDealFinalizeIntentEnvelope
-from .syndicate_deal_finalize_intent_envelope_meta import SyndicateDealFinalizeIntentEnvelopeMeta
 from .syndicate_deal_list_envelope import SyndicateDealListEnvelope
+from .syndicate_deal_readiness_envelope import SyndicateDealReadinessEnvelope
+from .syndicate_deal_readiness_envelope_data import SyndicateDealReadinessEnvelopeData
+from .syndicate_deal_readiness_envelope_data_attributes import SyndicateDealReadinessEnvelopeDataAttributes
+from .syndicate_deal_readiness_envelope_data_attributes_status import SyndicateDealReadinessEnvelopeDataAttributesStatus
+from .syndicate_deal_readiness_envelope_data_type import SyndicateDealReadinessEnvelopeDataType
+from .syndicate_deal_readiness_item import SyndicateDealReadinessItem
+from .syndicate_deal_readiness_item_key import SyndicateDealReadinessItemKey
+from .syndicate_deal_readiness_item_status import SyndicateDealReadinessItemStatus
 from .syndicate_detail_envelope import SyndicateDetailEnvelope
 from .syndicate_list_envelope import SyndicateListEnvelope
 from .syndicate_member import SyndicateMember
@@ -435,6 +447,7 @@ from .tag_ref import TagRef
 from .target_company_input import TargetCompanyInput
 from .test_webhook_endpoint_body import TestWebhookEndpointBody
 from .test_webhook_endpoint_body_event import TestWebhookEndpointBodyEvent
+from .update_referral_code_body import UpdateReferralCodeBody
 from .update_syndicate_body import UpdateSyndicateBody
 from .update_syndicate_body_syndicate import UpdateSyndicateBodySyndicate
 from .update_syndicate_member_body import UpdateSyndicateMemberBody
@@ -447,8 +460,6 @@ from .user_envelope import UserEnvelope
 from .validation_error import ValidationError
 from .validation_error_error import ValidationErrorError
 from .validation_error_error_details_item import ValidationErrorErrorDetailsItem
-from .webhook_delivery import WebhookDelivery
-from .webhook_delivery_status import WebhookDeliveryStatus
 from .webhook_endpoint import WebhookEndpoint
 from .webhook_endpoint_attributes import WebhookEndpointAttributes
 from .webhook_endpoint_attributes_mode import WebhookEndpointAttributesMode
@@ -467,51 +478,10 @@ from .webhook_endpoint_test_result_envelope_data_error_type_3_type_1 import (
 )
 from .webhook_endpoint_test_result_envelope_data_payload import WebhookEndpointTestResultEnvelopeDataPayload
 from .webhook_endpoint_test_result_envelope_meta import WebhookEndpointTestResultEnvelopeMeta
-from .webhook_subscription import WebhookSubscription
-from .webhook_subscription_envelope import WebhookSubscriptionEnvelope
-from .webhook_subscription_events_item import WebhookSubscriptionEventsItem
-from .webhook_subscription_list_envelope import WebhookSubscriptionListEnvelope
-from .webhook_subscription_list_envelope_meta import WebhookSubscriptionListEnvelopeMeta
-from .webhook_subscription_with_recent_deliveries_envelope import WebhookSubscriptionWithRecentDeliveriesEnvelope
-from .webhook_subscription_with_recent_deliveries_envelope_data import (
-    WebhookSubscriptionWithRecentDeliveriesEnvelopeData,
-)
-from .webhook_subscription_with_secret_2_envelope import WebhookSubscriptionWithSecret2Envelope
-from .webhook_subscription_with_secret_2_envelope_data import WebhookSubscriptionWithSecret2EnvelopeData
-from .webhook_subscription_with_secret_envelope import WebhookSubscriptionWithSecretEnvelope
-from .webhook_subscription_with_secret_envelope_data import WebhookSubscriptionWithSecretEnvelopeData
-from .webhook_test_result import WebhookTestResult
-from .webhook_test_result_envelope import WebhookTestResultEnvelope
-from .webhook_test_result_payload_preview import WebhookTestResultPayloadPreview
 from .wefunder_round import WefunderRound
 from .wefunder_round_status import WefunderRoundStatus
 
 __all__ = (
-    "AnonymizedAttribution",
-    "AnonymizedAttributionAmountTier",
-    "AnonymizedAttributionAttribution",
-    "AnonymizedAttributionAttributionQualityScore",
-    "AnonymizedAttributionAttributionTimeToInvestBucket",
-    "AnonymizedAttributionStatus",
-    "AnonymizedAttributionStatusBucket",
-    "AttributedInvestmentListEnvelope",
-    "AttributedInvestmentListEnvelopeMeta",
-    "AttributedInvestmentListEnvelopeMetaDetailLevel",
-    "AttributionCampaignAccess",
-    "AttributionCampaignSummary",
-    "AttributionCampaignSummaryListEnvelope",
-    "AttributionMe",
-    "AttributionMeEnvelope",
-    "AttributionPartnerType0",
-    "AttributionPartnerType0Status",
-    "AttributionStats",
-    "AttributionStatsByCampaignItem",
-    "AttributionStatsBySourceItem",
-    "AttributionStatsEnvelope",
-    "AttributionStatsPeriod",
-    "AttributionStatsQualityBreakdown",
-    "AttributionStatsTotals",
-    "AttributionUser",
     "AuditEvent",
     "AuditEventAttributes",
     "AuditEventAttributesNewValuesType0",
@@ -563,7 +533,9 @@ __all__ = (
     "CompanyQuestion",
     "CompanyQuestionAttributes",
     "CompanyQuestionAttributesAnswersItem",
-    "CompanyQuestionAttributesMatch",
+    "CompanyQuestionAttributesMatchType1",
+    "CompanyQuestionAttributesMatchType2Type1",
+    "CompanyQuestionAttributesMatchType3Type1",
     "CompanyQuestionListEnvelope",
     "CompanyQuestionListEnvelopeMeta",
     "CompanyQuestionPerson",
@@ -598,13 +570,18 @@ __all__ = (
     "CreateIntentBody",
     "CreateIntentBodyActionName",
     "CreateIntentBodyParams",
-    "CreatePartnerInviteBody",
-    "CreatePartnerInviteBodyDirection",
+    "CreateOfferingInvestmentSessionBody",
+    "CreateOfferingMemberLinkBody",
+    "CreateReferralCodeBody",
+    "CreateReferralCodeBodyMetadata",
+    "CreateSyndicateJoinSessionBody",
+    "CreateSyndicateJoinSessionBodyJoinSession",
+    "CreateSyndicateJoinSessionBodyJoinSessionDisplay",
+    "CreateSyndicateJoinSessionBodyJoinSessionMode",
+    "CreateSyndicateJoinSessionResponse201",
     "CreateWebhookEndpointBody",
     "CreateWebhookEndpointBodyEventsItem",
     "CreateWebhookEndpointBodyMode",
-    "CreateWebhookSubscriptionBody",
-    "CreateWebhookSubscriptionBodyEventsItem",
     "CurrentRaise",
     "DealInvestor",
     "DealInvestorAttributes",
@@ -642,19 +619,13 @@ __all__ = (
     "FollowStateEnvelopeData",
     "FollowStateEnvelopeDataAttributes",
     "FollowStateEnvelopeDataType",
-    "FullAttribution",
-    "FullAttributionAttribution",
-    "FullAttributionAttributionQualityScore",
-    "FullAttributionAttributionTimeToInvestBucket",
-    "FullAttributionInvestor",
-    "FullAttributionStatus",
-    "FullAttributionStatusBucket",
     "FundSecurity",
     "FundSecurityTerms",
     "FundSecurityType",
     "GetCompanyDisclosuresSectionsItem",
     "GetCompanyPitchSectionsItem",
     "GetPortfolioStatus",
+    "GetSyndicateJoinSessionResponse200",
     "GetSyndicatePortfolioStatus",
     "Installation",
     "InstallationAttributes",
@@ -689,7 +660,9 @@ __all__ = (
     "InvestmentDeltaRecordContractsItem",
     "InvestmentDeltaRecordInvestor",
     "InvestmentDeltaRecordInvestorAddress",
-    "InvestmentDeltaRecordReason",
+    "InvestmentDeltaRecordReasonType1",
+    "InvestmentDeltaRecordReasonType2Type1",
+    "InvestmentDeltaRecordReasonType3Type1",
     "InvestmentDeltaRecordStatus",
     "InvestmentEnvelope",
     "InvestmentEnvelopeMeta",
@@ -700,8 +673,12 @@ __all__ = (
     "InvestmentSession",
     "InvestmentSessionAttributes",
     "InvestmentSessionAttributesEventsItem",
-    "InvestmentSessionAttributesFundingStatus",
-    "InvestmentSessionAttributesKycStatus",
+    "InvestmentSessionAttributesFundingStatusType1",
+    "InvestmentSessionAttributesFundingStatusType2Type1",
+    "InvestmentSessionAttributesFundingStatusType3Type1",
+    "InvestmentSessionAttributesKycStatusType1",
+    "InvestmentSessionAttributesKycStatusType2Type1",
+    "InvestmentSessionAttributesKycStatusType3Type1",
     "InvestmentSessionAttributesMetadata",
     "InvestmentSessionAttributesStatus",
     "InvestmentSessionCreateInput",
@@ -717,7 +694,9 @@ __all__ = (
     "InviteLink",
     "InviteLinkAttributes",
     "InviteLinkAttributesEventsItem",
-    "InviteLinkAttributesStatus",
+    "InviteLinkAttributesStatusType1",
+    "InviteLinkAttributesStatusType2Type1",
+    "InviteLinkAttributesStatusType3Type1",
     "InviteLinkCreateInput",
     "InviteLinkEnvelope",
     "InviteLinkEnvelopeMeta",
@@ -726,31 +705,39 @@ __all__ = (
     "InviteLinkUpdateInput",
     "InviteSyndicateMemberBody",
     "InviteSyndicateMemberBodySyndicatePermission",
-    "ListActivityStatus",
-    "ListAttributedInvestmentsDetailLevel",
     "ListCompanyQuestionsSort",
     "ListEligibleInstallTargetsTargetType",
     "ListIntentsStatus",
+    "ListInvestmentSessionsStatus",
     "ListInvestmentsStatus",
+    "ListOfferingInvestmentSessionsStatus",
     "ListOfferingsBusinessModelItem",
     "ListOfferingsExemption",
     "ListOfferingsIndustryItem",
     "ListOfferingsSecurity",
     "ListOfferingsSort",
+    "ListOfferingsStatus",
     "ListPortfolioPositionsStatus",
+    "ListSyndicateJoinSessionsResponse200",
     "ListSyndicateMembersAccredited",
     "ListSyndicateMembersHasInvested",
     "ListSyndicateMembersPermission",
     "ListSyndicateMembersSort",
     "ListSyndicatePortfolioPositionsStatus",
-    "MarketingPartner",
-    "MarketingPartnerEnvelope",
-    "MarketingPartnerStatus",
     "MemberInvestment",
     "MemberInvestmentAttributes",
     "MemberInvestmentAttributesStatus",
     "MemberInvestmentListEnvelope",
     "MemberInvestmentListEnvelopeMeta",
+    "MemberLink",
+    "MemberLinkAttributes",
+    "MemberLinkAttributesState",
+    "MemberLinkCreateInput",
+    "MemberLinkEnvelope",
+    "MemberLinkEnvelopeMeta",
+    "MemberLinkListEnvelope",
+    "MemberLinkListEnvelopeMeta",
+    "MemberLinkType",
     "MyCompany",
     "MyCompanyAttributes",
     "MyCompanyListEnvelope",
@@ -765,6 +752,7 @@ __all__ = (
     "OfferingListEnvelope",
     "OfferingListEnvelopeMeta",
     "OfferingListEnvelopeMetaFilters",
+    "OfferingListEnvelopeMetaStatus",
     "OfferingStatsEnvelope",
     "OfferingStatsEnvelopeData",
     "OfferingStatsEnvelopeDataByStatus",
@@ -785,15 +773,6 @@ __all__ = (
     "PartnerInvestmentAttributesAccreditationType0Type",
     "PartnerInvestmentAttributesStatus",
     "PartnerInvestmentEnvelope",
-    "PartnerInvestmentListEnvelope",
-    "PartnerInvestor",
-    "PartnerInvestorAttributes",
-    "PartnerInvestorListEnvelope",
-    "PartnerInvite",
-    "PartnerInviteDirection",
-    "PartnerInviteEnvelope",
-    "PartnerInviteListEnvelope",
-    "PartnerInviteStatus",
     "PartnerWebhookEvent",
     "PartnerWebhookEventData",
     "PartnerWebhookEventEnvelope",
@@ -817,7 +796,9 @@ __all__ = (
     "PortfolioPosition",
     "PortfolioPositionAttributes",
     "PortfolioPositionAttributesAssetType",
-    "PortfolioPositionAttributesExitReason",
+    "PortfolioPositionAttributesExitReasonType1",
+    "PortfolioPositionAttributesExitReasonType2Type1",
+    "PortfolioPositionAttributesExitReasonType3Type1",
     "PortfolioPositionAttributesStatus",
     "PortfolioPositionListEnvelope",
     "PortfolioPositionListEnvelopeMeta",
@@ -832,7 +813,26 @@ __all__ = (
     "PortfolioSummaryEnvelopeDataAttributesPositionCounts",
     "PreviewIntentBody",
     "PreviewIntentBodyParams",
-    "RegisterAsPartnerBody",
+    "ReferralCode",
+    "ReferralCodeAttributes",
+    "ReferralCodeAttributesMetadata",
+    "ReferralCodeAttributesTargetType0",
+    "ReferralCodeAttributesTargetType0Type",
+    "ReferralCodeEnvelope",
+    "ReferralCodeEnvelopeMeta",
+    "ReferralCodeListEnvelope",
+    "ReferralCodeListEnvelopeMeta",
+    "ReferralCodeStatsCompany",
+    "ReferralCodeStatsCompanyInvestmentsItem",
+    "ReferralCodeStatsCompanyLevel",
+    "ReferralCodeStatsEnvelope",
+    "ReferralCodeStatsEnvelopeData",
+    "ReferralCodeStatsEnvelopeDataAttributes",
+    "ReferralCodeStatsEnvelopeMeta",
+    "ReferralCodeUtm",
+    "ReferralCodeVisits",
+    "ReferralCohort",
+    "ReferralCohortInvestors",
     "ReorderSyndicateMembersBody",
     "RevenueShareSecurity",
     "RevenueShareSecurityTerms",
@@ -857,20 +857,14 @@ __all__ = (
     "SpvCreateInput",
     "SpvCreateInputMetadata",
     "SpvEnvelope",
-    "SpvListEnvelope",
     "SpvMetrics",
     "SpvSettings",
     "SpvSettingsAccreditationType",
-    "SpvStatus",
-    "SpvStatusAttributes",
-    "SpvStatusAttributesStatus",
-    "SpvStatusEnvelope",
-    "SpvStatusEnvelopeMeta",
     "SpvTerms",
-    "SpvTermsSafeType",
+    "SpvTermsSafeTypeType1",
+    "SpvTermsSafeTypeType2Type1",
+    "SpvTermsSafeTypeType3Type1",
     "SpvTermsStructure",
-    "SpvWithMetaEnvelope",
-    "SpvWithMetaEnvelopeMeta",
     "Syndicate",
     "SyndicateAttributes",
     "SyndicateAttributesAnnualSubscription",
@@ -878,13 +872,20 @@ __all__ = (
     "SyndicateDeal",
     "SyndicateDealAttributes",
     "SyndicateDealAttributesStatus",
-    "SyndicateDealCloseIntentEnvelope",
-    "SyndicateDealCloseIntentEnvelopeMeta",
+    "SyndicateDealCreatedEnvelope",
+    "SyndicateDealCreatedEnvelopeMeta",
+    "SyndicateDealCreatedEnvelopeMetaTargetCompanyType0",
     "SyndicateDealDetailEnvelope",
     "SyndicateDealEnvelope",
-    "SyndicateDealFinalizeIntentEnvelope",
-    "SyndicateDealFinalizeIntentEnvelopeMeta",
     "SyndicateDealListEnvelope",
+    "SyndicateDealReadinessEnvelope",
+    "SyndicateDealReadinessEnvelopeData",
+    "SyndicateDealReadinessEnvelopeDataAttributes",
+    "SyndicateDealReadinessEnvelopeDataAttributesStatus",
+    "SyndicateDealReadinessEnvelopeDataType",
+    "SyndicateDealReadinessItem",
+    "SyndicateDealReadinessItemKey",
+    "SyndicateDealReadinessItemStatus",
     "SyndicateDetailEnvelope",
     "SyndicateListEnvelope",
     "SyndicateMember",
@@ -904,6 +905,7 @@ __all__ = (
     "TargetCompanyInput",
     "TestWebhookEndpointBody",
     "TestWebhookEndpointBodyEvent",
+    "UpdateReferralCodeBody",
     "UpdateSyndicateBody",
     "UpdateSyndicateBodySyndicate",
     "UpdateSyndicateMemberBody",
@@ -916,8 +918,6 @@ __all__ = (
     "ValidationError",
     "ValidationErrorError",
     "ValidationErrorErrorDetailsItem",
-    "WebhookDelivery",
-    "WebhookDeliveryStatus",
     "WebhookEndpoint",
     "WebhookEndpointAttributes",
     "WebhookEndpointAttributesMode",
@@ -932,20 +932,6 @@ __all__ = (
     "WebhookEndpointTestResultEnvelopeDataErrorType3Type1",
     "WebhookEndpointTestResultEnvelopeDataPayload",
     "WebhookEndpointTestResultEnvelopeMeta",
-    "WebhookSubscription",
-    "WebhookSubscriptionEnvelope",
-    "WebhookSubscriptionEventsItem",
-    "WebhookSubscriptionListEnvelope",
-    "WebhookSubscriptionListEnvelopeMeta",
-    "WebhookSubscriptionWithRecentDeliveriesEnvelope",
-    "WebhookSubscriptionWithRecentDeliveriesEnvelopeData",
-    "WebhookSubscriptionWithSecret2Envelope",
-    "WebhookSubscriptionWithSecret2EnvelopeData",
-    "WebhookSubscriptionWithSecretEnvelope",
-    "WebhookSubscriptionWithSecretEnvelopeData",
-    "WebhookTestResult",
-    "WebhookTestResultEnvelope",
-    "WebhookTestResultPayloadPreview",
     "WefunderRound",
     "WefunderRoundStatus",
 )

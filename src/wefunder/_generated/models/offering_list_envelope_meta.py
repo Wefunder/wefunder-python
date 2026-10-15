@@ -6,6 +6,7 @@ from typing import TYPE_CHECKING, Any, TypeVar, cast
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
+from ..models.offering_list_envelope_meta_status import OfferingListEnvelopeMetaStatus
 from ..types import UNSET, Unset
 
 if TYPE_CHECKING:
@@ -20,9 +21,12 @@ class OfferingListEnvelopeMeta:
     """
     Attributes:
         total_count (int | Unset): Total number of offerings across all pages. Example: 119.
-        page_count (int | Unset): Number of offerings on this page (at most 25). Example: 25.
+        page_count (int | Unset): Number of offerings on this page (at most `per_page`). Example: 25.
         has_more (bool | Unset):  Example: True.
-        sort (str | Unset): The sort applied to this response. Example: most_raised.
+        status (OfferingListEnvelopeMetaStatus | Unset): The `status` applied to this response. Example: live.
+        sort (str | Unset): The sort applied to this response. `recently_closed` for `status=closed`, which has a fixed
+            order. Example: most_raised.
+        personalized (bool | Unset): True when the response is the logged-in (`read:explore`) view. Example: False.
         filters (OfferingListEnvelopeMetaFilters | Unset): The filters applied to this response (validated values),
             empty when none. Example: {'security': 'safe', 'testing_the_waters': False}.
         next_cursor (int | None | Unset): Opaque pagination cursor — pass as `cursor` to fetch the next page. Present
@@ -32,7 +36,9 @@ class OfferingListEnvelopeMeta:
     total_count: int | Unset = UNSET
     page_count: int | Unset = UNSET
     has_more: bool | Unset = UNSET
+    status: OfferingListEnvelopeMetaStatus | Unset = UNSET
     sort: str | Unset = UNSET
+    personalized: bool | Unset = UNSET
     filters: OfferingListEnvelopeMetaFilters | Unset = UNSET
     next_cursor: int | None | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
@@ -44,7 +50,13 @@ class OfferingListEnvelopeMeta:
 
         has_more = self.has_more
 
+        status: str | Unset = UNSET
+        if not isinstance(self.status, Unset):
+            status = self.status.value
+
         sort = self.sort
+
+        personalized = self.personalized
 
         filters: dict[str, Any] | Unset = UNSET
         if not isinstance(self.filters, Unset):
@@ -65,8 +77,12 @@ class OfferingListEnvelopeMeta:
             field_dict["page_count"] = page_count
         if has_more is not UNSET:
             field_dict["has_more"] = has_more
+        if status is not UNSET:
+            field_dict["status"] = status
         if sort is not UNSET:
             field_dict["sort"] = sort
+        if personalized is not UNSET:
+            field_dict["personalized"] = personalized
         if filters is not UNSET:
             field_dict["filters"] = filters
         if next_cursor is not UNSET:
@@ -85,7 +101,16 @@ class OfferingListEnvelopeMeta:
 
         has_more = d.pop("has_more", UNSET)
 
+        _status = d.pop("status", UNSET)
+        status: OfferingListEnvelopeMetaStatus | Unset
+        if isinstance(_status, Unset):
+            status = UNSET
+        else:
+            status = OfferingListEnvelopeMetaStatus(_status)
+
         sort = d.pop("sort", UNSET)
+
+        personalized = d.pop("personalized", UNSET)
 
         _filters = d.pop("filters", UNSET)
         filters: OfferingListEnvelopeMetaFilters | Unset
@@ -107,7 +132,9 @@ class OfferingListEnvelopeMeta:
             total_count=total_count,
             page_count=page_count,
             has_more=has_more,
+            status=status,
             sort=sort,
+            personalized=personalized,
             filters=filters,
             next_cursor=next_cursor,
         )

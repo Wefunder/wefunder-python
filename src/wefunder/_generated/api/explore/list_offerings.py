@@ -1,6 +1,6 @@
 import datetime
 from http import HTTPStatus
-from typing import Any, cast
+from typing import Any
 
 import httpx
 
@@ -12,6 +12,7 @@ from ...models.list_offerings_exemption import ListOfferingsExemption
 from ...models.list_offerings_industry_item import ListOfferingsIndustryItem
 from ...models.list_offerings_security import ListOfferingsSecurity
 from ...models.list_offerings_sort import ListOfferingsSort
+from ...models.list_offerings_status import ListOfferingsStatus
 from ...models.offering_list_envelope import OfferingListEnvelope
 from ...types import UNSET, Response, Unset
 
@@ -19,6 +20,8 @@ from ...types import UNSET, Response, Unset
 def _get_kwargs(
     *,
     cursor: int | Unset = UNSET,
+    per_page: int | Unset = 25,
+    status: ListOfferingsStatus | Unset = ListOfferingsStatus.LIVE,
     sort: ListOfferingsSort | Unset = ListOfferingsSort.MOST_RAISED,
     exemption: ListOfferingsExemption | Unset = UNSET,
     security: ListOfferingsSecurity | Unset = UNSET,
@@ -34,6 +37,14 @@ def _get_kwargs(
     params: dict[str, Any] = {}
 
     params["cursor"] = cursor
+
+    params["per_page"] = per_page
+
+    json_status: str | Unset = UNSET
+    if not isinstance(status, Unset):
+        json_status = status.value
+
+    params["status"] = json_status
 
     json_sort: str | Unset = UNSET
     if not isinstance(sort, Unset):
@@ -97,14 +108,15 @@ def _get_kwargs(
 
 def _parse_response(
     *, client: AuthenticatedClient | Client, response: httpx.Response
-) -> Any | Error | OfferingListEnvelope | None:
+) -> Error | OfferingListEnvelope | None:
     if response.status_code == 200:
         response_200 = OfferingListEnvelope.from_dict(response.json())
 
         return response_200
 
     if response.status_code == 400:
-        response_400 = cast(Any, None)
+        response_400 = Error.from_dict(response.json())
+
         return response_400
 
     if response.status_code == 401:
@@ -125,7 +137,7 @@ def _parse_response(
 
 def _build_response(
     *, client: AuthenticatedClient | Client, response: httpx.Response
-) -> Response[Any | Error | OfferingListEnvelope]:
+) -> Response[Error | OfferingListEnvelope]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -138,6 +150,8 @@ def sync_detailed(
     *,
     client: AuthenticatedClient,
     cursor: int | Unset = UNSET,
+    per_page: int | Unset = 25,
+    status: ListOfferingsStatus | Unset = ListOfferingsStatus.LIVE,
     sort: ListOfferingsSort | Unset = ListOfferingsSort.MOST_RAISED,
     exemption: ListOfferingsExemption | Unset = UNSET,
     security: ListOfferingsSecurity | Unset = UNSET,
@@ -148,7 +162,7 @@ def sync_detailed(
     industry: list[ListOfferingsIndustryItem] | Unset = UNSET,
     business_model: list[ListOfferingsBusinessModelItem] | Unset = UNSET,
     followed: bool | Unset = UNSET,
-) -> Response[Any | Error | OfferingListEnvelope]:
+) -> Response[Error | OfferingListEnvelope]:
     """List public offerings
 
      Returns the offerings shown on wefunder.com/explore — the curated set of companies that
@@ -170,8 +184,17 @@ def sync_detailed(
     never hold `read:explore`; a token with `read:explore` but no resolvable user gets the
     public view.
 
-    Order with `sort` (default: most raised); paginate with `cursor`. `meta.total_count` is
-    the number of offerings across all pages, after filters.
+    Order with `sort` (default: most raised); paginate with `cursor` and `per_page`.
+    `meta.total_count` is the number of offerings across all pages, after filters.
+
+    **Closed rounds (`status`).** By default the list is live rounds. `status=closed` lists
+    rounds that finished raising instead, newest `closed_at` first. It is not limited to one
+    per company or to the curated explore set: it covers every finished round that
+    `GET /offerings/{id}` serves to a logged-out visitor, for companies listed in Wefunder's
+    public directory. `status=all` returns the live list first, then the closed list. With
+    `status=closed` or `status=all`, `exemption` is the only filter accepted, and `sort`
+    orders only the live part. Closed rounds follow the public view even for a
+    `read:explore` token.
 
     **Filters** are objective, per-offering terms — exemption family, security type,
     TTW vs. live, minimum investment ceiling, close date, amount raised floor. The response
@@ -181,9 +204,12 @@ def sync_detailed(
     Use this endpoint to:
     - Discover and monitor active deals
     - Build deal aggregators and public listings
+    - Bulk-list closed rounds (`status=closed`)
 
     Args:
         cursor (int | Unset):
+        per_page (int | Unset):  Default: 25.
+        status (ListOfferingsStatus | Unset):  Default: ListOfferingsStatus.LIVE.
         sort (ListOfferingsSort | Unset):  Default: ListOfferingsSort.MOST_RAISED.
         exemption (ListOfferingsExemption | Unset):
         security (ListOfferingsSecurity | Unset):
@@ -200,11 +226,13 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Any | Error | OfferingListEnvelope]
+        Response[Error | OfferingListEnvelope]
     """
 
     kwargs = _get_kwargs(
         cursor=cursor,
+        per_page=per_page,
+        status=status,
         sort=sort,
         exemption=exemption,
         security=security,
@@ -228,6 +256,8 @@ def sync(
     *,
     client: AuthenticatedClient,
     cursor: int | Unset = UNSET,
+    per_page: int | Unset = 25,
+    status: ListOfferingsStatus | Unset = ListOfferingsStatus.LIVE,
     sort: ListOfferingsSort | Unset = ListOfferingsSort.MOST_RAISED,
     exemption: ListOfferingsExemption | Unset = UNSET,
     security: ListOfferingsSecurity | Unset = UNSET,
@@ -238,7 +268,7 @@ def sync(
     industry: list[ListOfferingsIndustryItem] | Unset = UNSET,
     business_model: list[ListOfferingsBusinessModelItem] | Unset = UNSET,
     followed: bool | Unset = UNSET,
-) -> Any | Error | OfferingListEnvelope | None:
+) -> Error | OfferingListEnvelope | None:
     """List public offerings
 
      Returns the offerings shown on wefunder.com/explore — the curated set of companies that
@@ -260,8 +290,17 @@ def sync(
     never hold `read:explore`; a token with `read:explore` but no resolvable user gets the
     public view.
 
-    Order with `sort` (default: most raised); paginate with `cursor`. `meta.total_count` is
-    the number of offerings across all pages, after filters.
+    Order with `sort` (default: most raised); paginate with `cursor` and `per_page`.
+    `meta.total_count` is the number of offerings across all pages, after filters.
+
+    **Closed rounds (`status`).** By default the list is live rounds. `status=closed` lists
+    rounds that finished raising instead, newest `closed_at` first. It is not limited to one
+    per company or to the curated explore set: it covers every finished round that
+    `GET /offerings/{id}` serves to a logged-out visitor, for companies listed in Wefunder's
+    public directory. `status=all` returns the live list first, then the closed list. With
+    `status=closed` or `status=all`, `exemption` is the only filter accepted, and `sort`
+    orders only the live part. Closed rounds follow the public view even for a
+    `read:explore` token.
 
     **Filters** are objective, per-offering terms — exemption family, security type,
     TTW vs. live, minimum investment ceiling, close date, amount raised floor. The response
@@ -271,9 +310,12 @@ def sync(
     Use this endpoint to:
     - Discover and monitor active deals
     - Build deal aggregators and public listings
+    - Bulk-list closed rounds (`status=closed`)
 
     Args:
         cursor (int | Unset):
+        per_page (int | Unset):  Default: 25.
+        status (ListOfferingsStatus | Unset):  Default: ListOfferingsStatus.LIVE.
         sort (ListOfferingsSort | Unset):  Default: ListOfferingsSort.MOST_RAISED.
         exemption (ListOfferingsExemption | Unset):
         security (ListOfferingsSecurity | Unset):
@@ -290,12 +332,14 @@ def sync(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Any | Error | OfferingListEnvelope
+        Error | OfferingListEnvelope
     """
 
     return sync_detailed(
         client=client,
         cursor=cursor,
+        per_page=per_page,
+        status=status,
         sort=sort,
         exemption=exemption,
         security=security,
@@ -313,6 +357,8 @@ async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
     cursor: int | Unset = UNSET,
+    per_page: int | Unset = 25,
+    status: ListOfferingsStatus | Unset = ListOfferingsStatus.LIVE,
     sort: ListOfferingsSort | Unset = ListOfferingsSort.MOST_RAISED,
     exemption: ListOfferingsExemption | Unset = UNSET,
     security: ListOfferingsSecurity | Unset = UNSET,
@@ -323,7 +369,7 @@ async def asyncio_detailed(
     industry: list[ListOfferingsIndustryItem] | Unset = UNSET,
     business_model: list[ListOfferingsBusinessModelItem] | Unset = UNSET,
     followed: bool | Unset = UNSET,
-) -> Response[Any | Error | OfferingListEnvelope]:
+) -> Response[Error | OfferingListEnvelope]:
     """List public offerings
 
      Returns the offerings shown on wefunder.com/explore — the curated set of companies that
@@ -345,8 +391,17 @@ async def asyncio_detailed(
     never hold `read:explore`; a token with `read:explore` but no resolvable user gets the
     public view.
 
-    Order with `sort` (default: most raised); paginate with `cursor`. `meta.total_count` is
-    the number of offerings across all pages, after filters.
+    Order with `sort` (default: most raised); paginate with `cursor` and `per_page`.
+    `meta.total_count` is the number of offerings across all pages, after filters.
+
+    **Closed rounds (`status`).** By default the list is live rounds. `status=closed` lists
+    rounds that finished raising instead, newest `closed_at` first. It is not limited to one
+    per company or to the curated explore set: it covers every finished round that
+    `GET /offerings/{id}` serves to a logged-out visitor, for companies listed in Wefunder's
+    public directory. `status=all` returns the live list first, then the closed list. With
+    `status=closed` or `status=all`, `exemption` is the only filter accepted, and `sort`
+    orders only the live part. Closed rounds follow the public view even for a
+    `read:explore` token.
 
     **Filters** are objective, per-offering terms — exemption family, security type,
     TTW vs. live, minimum investment ceiling, close date, amount raised floor. The response
@@ -356,9 +411,12 @@ async def asyncio_detailed(
     Use this endpoint to:
     - Discover and monitor active deals
     - Build deal aggregators and public listings
+    - Bulk-list closed rounds (`status=closed`)
 
     Args:
         cursor (int | Unset):
+        per_page (int | Unset):  Default: 25.
+        status (ListOfferingsStatus | Unset):  Default: ListOfferingsStatus.LIVE.
         sort (ListOfferingsSort | Unset):  Default: ListOfferingsSort.MOST_RAISED.
         exemption (ListOfferingsExemption | Unset):
         security (ListOfferingsSecurity | Unset):
@@ -375,11 +433,13 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Any | Error | OfferingListEnvelope]
+        Response[Error | OfferingListEnvelope]
     """
 
     kwargs = _get_kwargs(
         cursor=cursor,
+        per_page=per_page,
+        status=status,
         sort=sort,
         exemption=exemption,
         security=security,
@@ -401,6 +461,8 @@ async def asyncio(
     *,
     client: AuthenticatedClient,
     cursor: int | Unset = UNSET,
+    per_page: int | Unset = 25,
+    status: ListOfferingsStatus | Unset = ListOfferingsStatus.LIVE,
     sort: ListOfferingsSort | Unset = ListOfferingsSort.MOST_RAISED,
     exemption: ListOfferingsExemption | Unset = UNSET,
     security: ListOfferingsSecurity | Unset = UNSET,
@@ -411,7 +473,7 @@ async def asyncio(
     industry: list[ListOfferingsIndustryItem] | Unset = UNSET,
     business_model: list[ListOfferingsBusinessModelItem] | Unset = UNSET,
     followed: bool | Unset = UNSET,
-) -> Any | Error | OfferingListEnvelope | None:
+) -> Error | OfferingListEnvelope | None:
     """List public offerings
 
      Returns the offerings shown on wefunder.com/explore — the curated set of companies that
@@ -433,8 +495,17 @@ async def asyncio(
     never hold `read:explore`; a token with `read:explore` but no resolvable user gets the
     public view.
 
-    Order with `sort` (default: most raised); paginate with `cursor`. `meta.total_count` is
-    the number of offerings across all pages, after filters.
+    Order with `sort` (default: most raised); paginate with `cursor` and `per_page`.
+    `meta.total_count` is the number of offerings across all pages, after filters.
+
+    **Closed rounds (`status`).** By default the list is live rounds. `status=closed` lists
+    rounds that finished raising instead, newest `closed_at` first. It is not limited to one
+    per company or to the curated explore set: it covers every finished round that
+    `GET /offerings/{id}` serves to a logged-out visitor, for companies listed in Wefunder's
+    public directory. `status=all` returns the live list first, then the closed list. With
+    `status=closed` or `status=all`, `exemption` is the only filter accepted, and `sort`
+    orders only the live part. Closed rounds follow the public view even for a
+    `read:explore` token.
 
     **Filters** are objective, per-offering terms — exemption family, security type,
     TTW vs. live, minimum investment ceiling, close date, amount raised floor. The response
@@ -444,9 +515,12 @@ async def asyncio(
     Use this endpoint to:
     - Discover and monitor active deals
     - Build deal aggregators and public listings
+    - Bulk-list closed rounds (`status=closed`)
 
     Args:
         cursor (int | Unset):
+        per_page (int | Unset):  Default: 25.
+        status (ListOfferingsStatus | Unset):  Default: ListOfferingsStatus.LIVE.
         sort (ListOfferingsSort | Unset):  Default: ListOfferingsSort.MOST_RAISED.
         exemption (ListOfferingsExemption | Unset):
         security (ListOfferingsSecurity | Unset):
@@ -463,13 +537,15 @@ async def asyncio(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Any | Error | OfferingListEnvelope
+        Error | OfferingListEnvelope
     """
 
     return (
         await asyncio_detailed(
             client=client,
             cursor=cursor,
+            per_page=per_page,
+            status=status,
             sort=sort,
             exemption=exemption,
             security=security,

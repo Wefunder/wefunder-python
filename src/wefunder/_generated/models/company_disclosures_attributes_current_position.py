@@ -17,14 +17,18 @@ class CompanyDisclosuresAttributesCurrentPosition:
     """The founder's own disclosure of where the company stands today, each field when supplied.
 
     Attributes:
-        cash_on_hand (None | str | Unset): USD, decimal string.
+        currency (str | Unset): ISO 4217 code every amount in this object is denominated in. Equals the top-level
+            `financials_currency` (the currency the founder declared for the financial statements; the same field feeds
+            these figures on the disclosures editor). Example: DKK.
+        cash_on_hand (None | str | Unset): Decimal string in `financials_currency`.
         cash_on_hand_as_of (datetime.date | None | Unset):
-        average_monthly_revenue (None | str | Unset): USD, decimal string.
-        average_monthly_cost_of_goods (None | str | Unset): USD, decimal string.
-        average_monthly_expenses (None | str | Unset): USD, decimal string.
-        average_monthly_burn (None | str | Unset): USD, decimal string.
+        average_monthly_revenue (None | str | Unset): Decimal string in `financials_currency`.
+        average_monthly_cost_of_goods (None | str | Unset): Decimal string in `financials_currency`.
+        average_monthly_expenses (None | str | Unset): Decimal string in `financials_currency`.
+        average_monthly_burn (None | str | Unset): Decimal string in `financials_currency`.
     """
 
+    currency: str | Unset = UNSET
     cash_on_hand: None | str | Unset = UNSET
     cash_on_hand_as_of: datetime.date | None | Unset = UNSET
     average_monthly_revenue: None | str | Unset = UNSET
@@ -34,6 +38,8 @@ class CompanyDisclosuresAttributesCurrentPosition:
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
+        currency = self.currency
+
         cash_on_hand: None | str | Unset
         if isinstance(self.cash_on_hand, Unset):
             cash_on_hand = UNSET
@@ -75,6 +81,8 @@ class CompanyDisclosuresAttributesCurrentPosition:
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update({})
+        if currency is not UNSET:
+            field_dict["currency"] = currency
         if cash_on_hand is not UNSET:
             field_dict["cash_on_hand"] = cash_on_hand
         if cash_on_hand_as_of is not UNSET:
@@ -93,6 +101,7 @@ class CompanyDisclosuresAttributesCurrentPosition:
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
+        currency = d.pop("currency", UNSET)
 
         def _parse_cash_on_hand(data: object) -> None | str | Unset:
             if data is None:
@@ -159,6 +168,7 @@ class CompanyDisclosuresAttributesCurrentPosition:
         average_monthly_burn = _parse_average_monthly_burn(d.pop("average_monthly_burn", UNSET))
 
         company_disclosures_attributes_current_position = cls(
+            currency=currency,
             cash_on_hand=cash_on_hand,
             cash_on_hand_as_of=cash_on_hand_as_of,
             average_monthly_revenue=average_monthly_revenue,

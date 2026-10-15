@@ -76,7 +76,11 @@ def sync_detailed(
     total raised, and recent activity.
 
     `total_raised` and `total_investors` are computed from directory-selected deals
-    (one per company). `total_deals` and `live_deals` use all linked deals.
+    (one per directory company: its live round, else its most recent successful round).
+    `total_deals` counts the syndicate's visible deal set in every state (the rounds
+    `GET /syndicates/{syndicate_id}/deals` draws from, which excludes invite-only
+    companies' rounds and testing-the-waters rounds of directory companies);
+    `live_deals` is the live subset of it, the rows that endpoint lists.
 
     `total_raised` is whole dollars as a string.
 
@@ -113,7 +117,11 @@ def sync(
     total raised, and recent activity.
 
     `total_raised` and `total_investors` are computed from directory-selected deals
-    (one per company). `total_deals` and `live_deals` use all linked deals.
+    (one per directory company: its live round, else its most recent successful round).
+    `total_deals` counts the syndicate's visible deal set in every state (the rounds
+    `GET /syndicates/{syndicate_id}/deals` draws from, which excludes invite-only
+    companies' rounds and testing-the-waters rounds of directory companies);
+    `live_deals` is the live subset of it, the rows that endpoint lists.
 
     `total_raised` is whole dollars as a string.
 
@@ -145,7 +153,11 @@ async def asyncio_detailed(
     total raised, and recent activity.
 
     `total_raised` and `total_investors` are computed from directory-selected deals
-    (one per company). `total_deals` and `live_deals` use all linked deals.
+    (one per directory company: its live round, else its most recent successful round).
+    `total_deals` counts the syndicate's visible deal set in every state (the rounds
+    `GET /syndicates/{syndicate_id}/deals` draws from, which excludes invite-only
+    companies' rounds and testing-the-waters rounds of directory companies);
+    `live_deals` is the live subset of it, the rows that endpoint lists.
 
     `total_raised` is whole dollars as a string.
 
@@ -180,7 +192,11 @@ async def asyncio(
     total raised, and recent activity.
 
     `total_raised` and `total_investors` are computed from directory-selected deals
-    (one per company). `total_deals` and `live_deals` use all linked deals.
+    (one per directory company: its live round, else its most recent successful round).
+    `total_deals` counts the syndicate's visible deal set in every state (the rounds
+    `GET /syndicates/{syndicate_id}/deals` draws from, which excludes invite-only
+    companies' rounds and testing-the-waters rounds of directory companies);
+    `live_deals` is the live subset of it, the rows that endpoint lists.
 
     `total_raised` is whole dollars as a string.
 
