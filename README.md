@@ -184,7 +184,8 @@ Retries are bounded (`retry.max_retries`, default 2) and differ by failure: a `4
 method after waiting out `X-RateLimit-Reset`; transient network errors and `5xx` responses are retried
 only for idempotent methods (`GET`, `HEAD`, `OPTIONS`); a `401` is recovered once, for any method, by
 refreshing or re-minting the token and resending. Size request timeouts with the rate-limit wait in
-mind, since a rate-limited write can be attempted up to three times.
+mind, since rate limiting alone can attempt a write up to three times, and the one-time 401 recovery
+can add one more.
 
 ## Async
 
