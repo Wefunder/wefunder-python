@@ -45,6 +45,11 @@ def main() -> int:
             print(line)
     if proc.returncode != 0:
         return proc.returncode
+    # The generator exits 0 after skipping a schema it cannot process, and still emits imports of
+    # the model it skipped: the layer then raises ModuleNotFoundError on the first real response.
+    if "Warning(s) encountered while generating" in proc.stdout + proc.stderr:
+        print("error: the generator skipped part of the spec (see above); the client is unusable.", file=sys.stderr)
+        return 1
     # Same passes the generator would run, but via this interpreter's pinned ruff.
     subprocess.run(
         [sys.executable, "-m", "ruff", "check", str(OUT), "--fix-only", "--extend-select=I", "-q"], cwd=ROOT, check=True
